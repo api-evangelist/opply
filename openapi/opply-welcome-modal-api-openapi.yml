@@ -1,0 +1,124 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Welcome Modal API
+  version: 0.0.0
+tags:
+- name: Welcome Modal
+paths:
+  /api/v1/users/welcome-modal/me/:
+    get:
+      operationId: api_v1_users_welcome_modal_me_retrieve
+      description: Per-user dismissal state for the post-relaunch welcome modal.
+      tags:
+      - Welcome Modal
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WelcomeModalState'
+          description: ''
+    post:
+      operationId: api_v1_users_welcome_modal_me_create
+      description: Per-user dismissal state for the post-relaunch welcome modal.
+      tags:
+      - Welcome Modal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WelcomeModalDismissalRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WelcomeModalDismissalRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WelcomeModalDismissalRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WelcomeModalDismissal'
+          description: ''
+components:
+  schemas:
+    WelcomeModalState:
+      type: object
+      description: Response shape for `GET /users/welcome-modal/me/`.
+      properties:
+        dismissed:
+          type: boolean
+        action:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/WelcomeModalActionEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        dismissed_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - action
+      - dismissed
+      - dismissed_at
+    WelcomeModalDismissal:
+      type: object
+      properties:
+        action:
+          allOf:
+          - $ref: '#/components/schemas/WelcomeModalActionEnum'
+          description: 'Which CTA the user chose when dismissing the welcome modal.
+
+
+            * `place_an_order` - Place an order
+
+            * `payments` - Payments
+
+            * `explore` - Explore'
+        dismissed_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - action
+      - dismissed_at
+    WelcomeModalDismissalRequest:
+      type: object
+      description: Inbound payload for `POST /users/welcome-modal/me/`.
+      properties:
+        action:
+          $ref: '#/components/schemas/WelcomeModalActionEnum'
+      required:
+      - action
+    WelcomeModalActionEnum:
+      enum:
+      - place_an_order
+      - payments
+      - explore
+      type: string
+      description: '* `place_an_order` - Place an order
+
+        * `payments` - Payments
+
+        * `explore` - Explore'
+    NullEnum:
+      enum:
+      - null
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

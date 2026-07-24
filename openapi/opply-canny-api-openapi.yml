@@ -1,0 +1,41 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Canny API
+  version: 0.0.0
+tags:
+- name: Canny
+paths:
+  /api/v1/canny/generate-token/:
+    get:
+      operationId: api_v1_canny_generate_token_retrieve
+      tags:
+      - Canny
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CannyTokenResponse'
+          description: ''
+components:
+  schemas:
+    CannyTokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+      required:
+      - token
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

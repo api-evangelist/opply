@@ -1,0 +1,167 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Masquerade API
+  version: 0.0.0
+tags:
+- name: Masquerade
+paths:
+  /api/v1/companies/merchant-of-record/masquerade/companies/{company_uuid}/users/:
+    get:
+      operationId: api_v1_companies_merchant_of_record_masquerade_companies_users_list
+      description: Get a list of users that can be masqueraded for a specific company.
+      summary: List users for a company managed by MoR
+      parameters:
+      - in: path
+        name: company_uuid
+        schema:
+          type: string
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Masquerade
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMasqueradeableUserList'
+          description: ''
+  /api/v1/companies/merchant-of-record/masquerade/get-temporary-token/:
+    post:
+      operationId: api_v1_companies_merchant_of_record_masquerade_get_temporary_token_create
+      description: Get a temporary token for a user from a company managed by the MoR. Use this token with the existing /api/v1/users/admin_panel/get_token/ endpoint to exchange for a real token.
+      summary: Get temporary token for masquerade mode
+      tags:
+      - Masquerade
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MasqueradeTargetUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MasqueradeTargetUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MasqueradeTargetUser'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MasqueradeTokenResponse'
+          description: ''
+        '400':
+          description: No response body
+        '403':
+          description: No response body
+components:
+  schemas:
+    MasqueradeTokenResponse:
+      type: object
+      description: Response serializer containing the temporary token and target user/company info.
+      properties:
+        token:
+          type: string
+        target_user_email:
+          type: string
+          format: email
+        target_user_name:
+          type: string
+        target_company_name:
+          type: string
+        target_company_type:
+          $ref: '#/components/schemas/CompanyTypeEnum'
+      required:
+      - target_company_name
+      - target_company_type
+      - target_user_email
+      - target_user_name
+      - token
+    CompanyTypeEnum:
+      enum:
+      - brand
+      - supplier
+      - merchant_of_record
+      type: string
+      description: '* `brand` - Brand
+
+        * `supplier` - Supplier
+
+        * `merchant_of_record` - Merchant of Record'
+    MasqueradeableUser:
+      type: object
+      description: Serializer for listing users that can be masqueraded.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        full_name:
+          type: string
+      required:
+      - email
+      - full_name
+      - uuid
+    PaginatedMasqueradeableUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MasqueradeableUser'
+    MasqueradeTargetUser:
+      type: object
+      description: Request serializer for masquerade target user.
+      properties:
+        user_uuid:
+          type: string
+          format: uuid
+      required:
+      - user_uuid
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

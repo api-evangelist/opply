@@ -1,0 +1,256 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed API
+  version: 0.0.0
+tags:
+- name: Activity Feed
+paths:
+  /api/v1/activity-feed/:
+    get:
+      operationId: api_v1_activity_feed_list
+      description: 'Company-scoped activity feed.
+
+
+        Returns cursor-paginated feed items, newest first, for the authenticated
+
+        user''s company. All employees see all activity — no role-based filtering.
+
+        A single item is also retrievable by UUID (``/activity-feed/{uuid}/``) —
+
+        used by the agent''s "Chat about this" read tool.
+
+
+        Pagination is via the standard DRF cursor (``cursor`` query param).
+
+        Filter params: ``source``, ``event_type``, ``order_uuid``.'
+      summary: List activity feed items
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      tags:
+      - Activity Feed
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFeedItemReadList'
+          description: ''
+  /api/v1/activity-feed/{uuid}/:
+    get:
+      operationId: api_v1_activity_feed_retrieve
+      description: 'Company-scoped activity feed.
+
+
+        Returns cursor-paginated feed items, newest first, for the authenticated
+
+        user''s company. All employees see all activity — no role-based filtering.
+
+        A single item is also retrievable by UUID (``/activity-feed/{uuid}/``) —
+
+        used by the agent''s "Chat about this" read tool.
+
+
+        Pagination is via the standard DRF cursor (``cursor`` query param).
+
+        Filter params: ``source``, ``event_type``, ``order_uuid``.'
+      summary: Fetch a single activity feed item by UUID
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Activity Feed
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedItemRead'
+          description: ''
+  /api/v1/activity-feed/mark-read/:
+    post:
+      operationId: api_v1_activity_feed_mark_read_create
+      description: 'Company-scoped activity feed.
+
+
+        Returns cursor-paginated feed items, newest first, for the authenticated
+
+        user''s company. All employees see all activity — no role-based filtering.
+
+        A single item is also retrievable by UUID (``/activity-feed/{uuid}/``) —
+
+        used by the agent''s "Chat about this" read tool.
+
+
+        Pagination is via the standard DRF cursor (``cursor`` query param).
+
+        Filter params: ``source``, ``event_type``, ``order_uuid``.'
+      summary: Advance the current user's read cursor to now
+      tags:
+      - Activity Feed
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedItemRead'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FeedItemRead'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FeedItemRead'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedItemRead'
+          description: ''
+  /api/v1/activity-feed/unread-count/:
+    get:
+      operationId: api_v1_activity_feed_unread_count_retrieve
+      description: 'Company-scoped activity feed.
+
+
+        Returns cursor-paginated feed items, newest first, for the authenticated
+
+        user''s company. All employees see all activity — no role-based filtering.
+
+        A single item is also retrievable by UUID (``/activity-feed/{uuid}/``) —
+
+        used by the agent''s "Chat about this" read tool.
+
+
+        Pagination is via the standard DRF cursor (``cursor`` query param).
+
+        Filter params: ``source``, ``event_type``, ``order_uuid``.'
+      summary: Unread item count for current user
+      tags:
+      - Activity Feed
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedItemRead'
+          description: ''
+components:
+  schemas:
+    FeedItemRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        source:
+          type: string
+        event_type:
+          type: string
+          readOnly: true
+        order_uuid:
+          type: string
+          format: uuid
+          nullable: true
+        order_number:
+          type: string
+          nullable: true
+        actor_email:
+          type: string
+          format: email
+          nullable: true
+        actor_first_name:
+          type: string
+          nullable: true
+        actor_last_name:
+          type: string
+          nullable: true
+        summary:
+          type: string
+        body_text:
+          type: string
+        occurred_at:
+          type: string
+          format: date-time
+        created:
+          type: string
+          format: date-time
+        status:
+          allOf:
+          - $ref: '#/components/schemas/FeedItemStatusEnum'
+          readOnly: true
+      required:
+      - actor_email
+      - actor_first_name
+      - actor_last_name
+      - body_text
+      - created
+      - event_type
+      - occurred_at
+      - order_uuid
+      - source
+      - status
+      - summary
+      - uuid
+    PaginatedFeedItemReadList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeedItemRead'
+    FeedItemStatusEnum:
+      enum:
+      - queued
+      - processing
+      - integrating
+      - processed
+      type: string
+      description: '* `queued` - Queued
+
+        * `processing` - Processing
+
+        * `integrating` - Integrating
+
+        * `processed` - Processed'
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

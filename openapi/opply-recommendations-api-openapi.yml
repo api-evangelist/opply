@@ -1,0 +1,901 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Recommendations API
+  version: 0.0.0
+tags:
+- name: Recommendations
+paths:
+  /api/v1/recommendations/:
+    get:
+      operationId: api_v1_recommendations_list
+      description: 'Buyer-scoped recommendations (the agent-curated nudge feed).
+
+
+        Scoped to ``audience=buyer`` recommendations whose subject is the
+
+        authenticated user''s company. ``list`` defaults to ``state=active`` (the
+
+        feed); pass ``?state=`` for the History view. The CTA/lifecycle actions
+
+        (dismiss/snooze/act/restore) and the agent write-path actions
+
+        (create/supersede/mark_stale, behind the MCP tools) all live here.
+
+
+        Impact is never stored on a recommendation — it is read from the cited
+
+        insight(s) at render time (see ``RecommendationReadSerializer``).'
+      summary: List recommendations for the current buyer
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - in: query
+        name: state
+        schema:
+          type: string
+        description: Filter by lifecycle state (`active`, `snoozed`, `dismissed`, `superseded`, `acted`, `stale`). Defaults to `active`.
+      tags:
+      - Recommendations
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRecommendationReadList'
+          description: ''
+  /api/v1/recommendations/{uuid}/:
+    get:
+      operationId: api_v1_recommendations_retrieve
+      description: 'Buyer-scoped recommendations (the agent-curated nudge feed).
+
+
+        Scoped to ``audience=buyer`` recommendations whose subject is the
+
+        authenticated user''s company. ``list`` defaults to ``state=active`` (the
+
+        feed); pass ``?state=`` for the History view. The CTA/lifecycle actions
+
+        (dismiss/snooze/act/restore) and the agent write-path actions
+
+        (create/supersede/mark_stale, behind the MCP tools) all live here.
+
+
+        Impact is never stored on a recommendation — it is read from the cited
+
+        insight(s) at render time (see ``RecommendationReadSerializer``).'
+      summary: Fetch a single recommendation by UUID (any lifecycle state)
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Recommendations
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationRead'
+          description: ''
+  /api/v1/recommendations/{uuid}/act/:
+    post:
+      operationId: api_v1_recommendations_act_create
+      description: 'Buyer-scoped recommendations (the agent-curated nudge feed).
+
+
+        Scoped to ``audience=buyer`` recommendations whose subject is the
+
+        authenticated user''s company. ``list`` defaults to ``state=active`` (the
+
+        feed); pass ``?state=`` for the History view. The CTA/lifecycle actions
+
+        (dismiss/snooze/act/restore) and the agent write-path actions
+
+        (create/supersede/mark_stale, behind the MCP tools) all live here.
+
+
+        Impact is never stored on a recommendation — it is read from the cited
+
+        insight(s) at render time (see ``RecommendationReadSerializer``).'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Recommendations
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationActResponse'
+          description: ''
+  /api/v1/recommendations/{uuid}/dismiss/:
+    post:
+      operationId: api_v1_recommendations_dismiss_create
+      description: 'Buyer-scoped recommendations (the agent-curated nudge feed).
+
+
+        Scoped to ``audience=buyer`` recommendations whose subject is the
+
+        authenticated user''s company. ``list`` defaults to ``state=active`` (the
+
+        feed); pass ``?state=`` for the History view. The CTA/lifecycle actions
+
+        (dismiss/snooze/act/restore) and the agent write-path actions
+
+        (create/supersede/mark_stale, behind the MCP tools) all live here.
+
+
+        Impact is never stored on a recommendation — it is read from the cited
+
+        insight(s) at render time (see ``RecommendationReadSerializer``).'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Recommendations
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationRead'
+          description: ''
+  /api/v1/recommendations/{uuid}/mark-stale/:
+    post:
+      operationId: api_v1_recommendations_mark_stale_create
+      description: 'Buyer-scoped recommendations (the agent-curated nudge feed).
+
+
+        Scoped to ``audience=buyer`` recommendations whose subject is the
+
+        authenticated user''s company. ``list`` defaults to ``state=active`` (the
+
+        feed); pass ``?state=`` for the History view. The CTA/lifecycle actions
+
+        (dismiss/snooze/act/restore) and the agent write-path actions
+
+        (create/supersede/mark_stale, behind the MCP tools) all live here.
+
+
+        Impact is never stored on a recommendation — it is read from the cited
+
+        insight(s) at render time (see ``RecommendationReadSerializer``).'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarkStaleRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MarkStaleRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MarkStaleRequest'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationRead'
+          description: ''
+  /api/v1/recommendations/{uuid}/restore/:
+    post:
+      operationId: api_v1_recommendations_restore_create
+      description: 'Buyer-scoped recommendations (the agent-curated nudge feed).
+
+
+        Scoped to ``audience=buyer`` recommendations whose subject is the
+
+        authenticated user''s company. ``list`` defaults to ``state=active`` (the
+
+        feed); pass ``?state=`` for the History view. The CTA/lifecycle actions
+
+        (dismiss/snooze/act/restore) and the agent write-path actions
+
+        (create/supersede/mark_stale, behind the MCP tools) all live here.
+
+
+        Impact is never stored on a recommendation — it is read from the cited
+
+        insight(s) at render time (see ``RecommendationReadSerializer``).'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Recommendations
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationRead'
+          description: ''
+  /api/v1/recommendations/{uuid}/snooze/:
+    post:
+      operationId: api_v1_recommendations_snooze_create
+      description: 'Buyer-scoped recommendations (the agent-curated nudge feed).
+
+
+        Scoped to ``audience=buyer`` recommendations whose subject is the
+
+        authenticated user''s company. ``list`` defaults to ``state=active`` (the
+
+        feed); pass ``?state=`` for the History view. The CTA/lifecycle actions
+
+        (dismiss/snooze/act/restore) and the agent write-path actions
+
+        (create/supersede/mark_stale, behind the MCP tools) all live here.
+
+
+        Impact is never stored on a recommendation — it is read from the cited
+
+        insight(s) at render time (see ``RecommendationReadSerializer``).'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SnoozeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SnoozeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SnoozeRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationRead'
+          description: ''
+  /api/v1/recommendations/{uuid}/supersede/:
+    post:
+      operationId: api_v1_recommendations_supersede_create
+      description: 'Buyer-scoped recommendations (the agent-curated nudge feed).
+
+
+        Scoped to ``audience=buyer`` recommendations whose subject is the
+
+        authenticated user''s company. ``list`` defaults to ``state=active`` (the
+
+        feed); pass ``?state=`` for the History view. The CTA/lifecycle actions
+
+        (dismiss/snooze/act/restore) and the agent write-path actions
+
+        (create/supersede/mark_stale, behind the MCP tools) all live here.
+
+
+        Impact is never stored on a recommendation — it is read from the cited
+
+        insight(s) at render time (see ``RecommendationReadSerializer``).'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupersedeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupersedeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupersedeRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationRead'
+          description: ''
+  /api/v1/recommendations/recent-actions/:
+    get:
+      operationId: api_v1_recommendations_recent_actions_retrieve
+      description: 'Buyer-scoped recommendations (the agent-curated nudge feed).
+
+
+        Scoped to ``audience=buyer`` recommendations whose subject is the
+
+        authenticated user''s company. ``list`` defaults to ``state=active`` (the
+
+        feed); pass ``?state=`` for the History view. The CTA/lifecycle actions
+
+        (dismiss/snooze/act/restore) and the agent write-path actions
+
+        (create/supersede/mark_stale, behind the MCP tools) all live here.
+
+
+        Impact is never stored on a recommendation — it is read from the cited
+
+        insight(s) at render time (see ``RecommendationReadSerializer``).'
+      summary: Recent recipient actions (for the agent's cooldown check)
+      parameters:
+      - in: query
+        name: days
+        schema:
+          type: integer
+        description: Look-back window in days (default 30).
+      tags:
+      - Recommendations
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/recommendations/seed-recommendation/:
+    post:
+      operationId: api_v1_recommendations_seed_recommendation_create
+      description: '``POST /api/v1/recommendations/seed-recommendation/`` — staff-only.
+
+
+        Body ``{company_uuid?}``. Creates a ready-made ``supplier_concentration``
+
+        recommendation directly — **no agent run** — for that buyer (defaulting to
+
+        the caller''s own company). Use when the recommender agent declines to create
+
+        one and you just want a fresh nudge in the feed to exercise the CTA. Returns
+
+        the recommendation uuid. Targeting another company requires staff access.'
+      tags:
+      - Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_DebugCompanyTargetRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/_DebugCompanyTargetRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/_DebugCompanyTargetRequest'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeedRecommendationResponse'
+          description: ''
+  /api/v1/recommendations/trigger-recommendations/:
+    post:
+      operationId: api_v1_recommendations_trigger_recommendations_create
+      description: '``POST /api/v1/recommendations/trigger-recommendations/`` — staff-only.
+
+
+        Body ``{company_uuid?}``. Creates the recommender-run Task for that buyer
+
+        (defaulting to the caller''s own company); the existing dispatch path then
+
+        runs the agent. Returns the Task + AgentTaskRun uuids so the debug UI can
+
+        link to them. Targeting a company other than your own requires staff access.'
+      tags:
+      - Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_DebugCompanyTargetRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/_DebugCompanyTargetRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/_DebugCompanyTargetRequest'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggerRecommenderRunResponse'
+          description: ''
+components:
+  schemas:
+    SeedRecommendationResponse:
+      type: object
+      properties:
+        recommendation_uuid:
+          type: string
+          format: uuid
+      required:
+      - recommendation_uuid
+    TriggerRecommenderRunResponse:
+      type: object
+      properties:
+        task_uuid:
+          type: string
+          format: uuid
+        run_uuid:
+          type: string
+          format: uuid
+          nullable: true
+      required:
+      - run_uuid
+      - task_uuid
+    _DebugCompanyTargetRequest:
+      type: object
+      properties:
+        company_uuid:
+          type: string
+          format: uuid
+    RecommendationStateEnum:
+      enum:
+      - active
+      - superseded
+      - dismissed
+      - snoozed
+      - acted
+      - stale
+      type: string
+      description: '* `active` - Active
+
+        * `superseded` - Superseded
+
+        * `dismissed` - Dismissed
+
+        * `snoozed` - Snoozed
+
+        * `acted` - Acted
+
+        * `stale` - Stale'
+    SupersedeRequest:
+      type: object
+      properties:
+        new_recommendation_uuid:
+          type: string
+          format: uuid
+      required:
+      - new_recommendation_uuid
+    RecommendationRead:
+      type: object
+      description: 'Buyer-facing read view of a recommendation, with its cited insights.
+
+
+        ``cited_insights`` is ordered primary-first so the FE can read
+
+        ``cited_insights[0]`` as the headline driver. Impact lives only on the
+
+        cited insights — there is deliberately no impact field on the recommendation.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        kind:
+          type: string
+          description: Recommendation type code (e.g. `supplier_concentration`). The catalog of kinds + their templates lives in `@opply/agent-protocol`; this column stores whatever the agent emits.
+          maxLength: 64
+        audience:
+          allOf:
+          - $ref: '#/components/schemas/RecommendationAudienceEnum'
+          description: 'Who should see/act on this recommendation. Agent-supplied (defaulted from the kind). The buyer feed filters to `buyer`; other audiences are served by their own (future) surfaces.
+
+
+            * `buyer` - Buyer
+
+            * `mor` - Merchant of Record
+
+            * `supplier` - Supplier'
+        title:
+          type: string
+          description: Agent-phrased headline.
+          maxLength: 512
+        description:
+          type: string
+          description: Agent-phrased body. No $ figure is stored here.
+        evidence:
+          type: string
+          description: Agent-authored **markdown** for the card's "Why am I seeing this?" section (freeform bullets with ballpark figures the agent gathered from deterministic reads over ingested data). Rendered as sanitized markdown FE-side — never raw HTML. May carry ballpark numbers, but never the headline impact $ (that lives on the cited insight).
+        visual:
+          oneOf:
+          - type: object
+            title: ShareVisual
+            properties:
+              type:
+                type: string
+                enum:
+                - share
+              a:
+                type: number
+                minimum: 0
+                maximum: 100
+              left:
+                type: string
+              right:
+                type: string
+            required:
+            - type
+            - a
+            - left
+            - right
+          - type: object
+            title: PairVisual
+            properties:
+              type:
+                type: string
+                enum:
+                - pair
+              a:
+                type: object
+                additionalProperties: true
+              b:
+                type: object
+                additionalProperties: true
+            required:
+            - type
+            - a
+            - b
+          - type: object
+            title: NoVisual
+            description: Empty object when the kind has no visual (visualType 'none').
+            additionalProperties: false
+          readOnly: true
+        severity:
+          allOf:
+          - $ref: '#/components/schemas/RecommendationSeverityEnum'
+          description: 'Ranking weight 1..4 (agent-assigned, defaulted from the kind).
+
+
+            * `1` - Low
+
+            * `2` - Medium
+
+            * `3` - High
+
+            * `4` - Critical'
+          minimum: 0
+          maximum: 32767
+        cta_label:
+          type: string
+          description: Optional CTA button label (agent-phrased).
+          maxLength: 64
+        cta_target:
+          type: string
+          description: Optional internal route the CTA navigates to (`/`-prefixed; validated FE-side).
+          maxLength: 512
+        state:
+          allOf:
+          - $ref: '#/components/schemas/RecommendationStateEnum'
+          description: 'Per-recipient interaction lifecycle. See RecommendationState.
+
+
+            * `active` - Active
+
+            * `superseded` - Superseded
+
+            * `dismissed` - Dismissed
+
+            * `snoozed` - Snoozed
+
+            * `acted` - Acted
+
+            * `stale` - Stale'
+        snoozed_until:
+          type: string
+          format: date-time
+          nullable: true
+        expires_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: When set and in the past, the expiry sweep flips the row to `stale`.
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        cited_insights:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+      required:
+      - cited_insights
+      - created
+      - description
+      - kind
+      - title
+      - uuid
+      - visual
+    PaginatedRecommendationReadList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecommendationRead'
+    MarkStaleRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+          default: ''
+          maxLength: 512
+    RecommendationSeverityEnum:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      type: integer
+      description: '* `1` - Low
+
+        * `2` - Medium
+
+        * `3` - High
+
+        * `4` - Critical'
+    SnoozeRequest:
+      type: object
+      properties:
+        until:
+          type: string
+          format: date-time
+      required:
+      - until
+    RecommendationActResponse:
+      type: object
+      description: 'The ``act`` response: the read view plus the uuid of the follow-up task the
+
+        CTA created (``null`` for kinds with no task action), so the FE can show a
+
+        "task created" toast that deep-links to it instead of navigating away.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        kind:
+          type: string
+          description: Recommendation type code (e.g. `supplier_concentration`). The catalog of kinds + their templates lives in `@opply/agent-protocol`; this column stores whatever the agent emits.
+          maxLength: 64
+        audience:
+          allOf:
+          - $ref: '#/components/schemas/RecommendationAudienceEnum'
+          description: 'Who should see/act on this recommendation. Agent-supplied (defaulted from the kind). The buyer feed filters to `buyer`; other audiences are served by their own (future) surfaces.
+
+
+            * `buyer` - Buyer
+
+            * `mor` - Merchant of Record
+
+            * `supplier` - Supplier'
+        title:
+          type: string
+          description: Agent-phrased headline.
+          maxLength: 512
+        description:
+          type: string
+          description: Agent-phrased body. No $ figure is stored here.
+        evidence:
+          type: string
+          description: Agent-authored **markdown** for the card's "Why am I seeing this?" section (freeform bullets with ballpark figures the agent gathered from deterministic reads over ingested data). Rendered as sanitized markdown FE-side — never raw HTML. May carry ballpark numbers, but never the headline impact $ (that lives on the cited insight).
+        visual:
+          oneOf:
+          - type: object
+            title: ShareVisual
+            properties:
+              type:
+                type: string
+                enum:
+                - share
+              a:
+                type: number
+                minimum: 0
+                maximum: 100
+              left:
+                type: string
+              right:
+                type: string
+            required:
+            - type
+            - a
+            - left
+            - right
+          - type: object
+            title: PairVisual
+            properties:
+              type:
+                type: string
+                enum:
+                - pair
+              a:
+                type: object
+                additionalProperties: true
+              b:
+                type: object
+                additionalProperties: true
+            required:
+            - type
+            - a
+            - b
+          - type: object
+            title: NoVisual
+            description: Empty object when the kind has no visual (visualType 'none').
+            additionalProperties: false
+          readOnly: true
+        severity:
+          allOf:
+          - $ref: '#/components/schemas/RecommendationSeverityEnum'
+          description: 'Ranking weight 1..4 (agent-assigned, defaulted from the kind).
+
+
+            * `1` - Low
+
+            * `2` - Medium
+
+            * `3` - High
+
+            * `4` - Critical'
+          minimum: 0
+          maximum: 32767
+        cta_label:
+          type: string
+          description: Optional CTA button label (agent-phrased).
+          maxLength: 64
+        cta_target:
+          type: string
+          description: Optional internal route the CTA navigates to (`/`-prefixed; validated FE-side).
+          maxLength: 512
+        state:
+          allOf:
+          - $ref: '#/components/schemas/RecommendationStateEnum'
+          description: 'Per-recipient interaction lifecycle. See RecommendationState.
+
+
+            * `active` - Active
+
+            * `superseded` - Superseded
+
+            * `dismissed` - Dismissed
+
+            * `snoozed` - Snoozed
+
+            * `acted` - Acted
+
+            * `stale` - Stale'
+        snoozed_until:
+          type: string
+          format: date-time
+          nullable: true
+        expires_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: When set and in the past, the expiry sweep flips the row to `stale`.
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        cited_insights:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created_task_uuid:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+      required:
+      - cited_insights
+      - created
+      - created_task_uuid
+      - description
+      - kind
+      - title
+      - uuid
+      - visual
+    RecommendationAudienceEnum:
+      enum:
+      - buyer
+      - mor
+      - supplier
+      type: string
+      description: '* `buyer` - Buyer
+
+        * `mor` - Merchant of Record
+
+        * `supplier` - Supplier'
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

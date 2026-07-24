@@ -1,0 +1,309 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Customer Status API
+  version: 0.0.0
+tags:
+- name: Customer Status
+paths:
+  /api/v1/crm/companies/{uuid}/status/:
+    get:
+      operationId: api_v1_crm_companies_status_retrieve
+      description: 'Get the current (most recent) status for a customer.
+
+
+        Returns 404 if no status has been set yet.'
+      summary: Get current customer status
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Customer Status
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerStatus'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerStatusNotFoundResponse'
+          description: No status has been set for this customer
+    put:
+      operationId: api_v1_crm_companies_status_update
+      description: 'Set a new status for the customer.
+
+
+        Creates a new status record (does not update existing).'
+      summary: Update customer status
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Customer Status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerStatusUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomerStatusUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomerStatusUpdate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerStatus'
+          description: ''
+  /api/v1/crm/companies/{uuid}/status/history/:
+    get:
+      operationId: api_v1_crm_companies_status_history_list
+      description: 'Get the full status history for a customer.
+
+
+        Returns all status records ordered by most recent first (paginated).'
+      summary: Get customer status history
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Customer Status
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCustomerStatusList'
+          description: ''
+components:
+  schemas:
+    CustomerHealthStatusEnum:
+      enum:
+      - healthy
+      - average
+      - at_risk
+      - new
+      - churned
+      - on_hold
+      type: string
+      description: '* `healthy` - Healthy
+
+        * `average` - Average
+
+        * `at_risk` - At Risk
+
+        * `new` - New
+
+        * `churned` - Churned
+
+        * `on_hold` - On Hold'
+    CustomerHoldReasonEnum:
+      enum:
+      - overdue_payments
+      - new_contract_required
+      - verification_needed
+      - other
+      type: string
+      description: '* `overdue_payments` - Overdue Payments
+
+        * `new_contract_required` - New Contract Required
+
+        * `verification_needed` - Verification Needed
+
+        * `other` - Other'
+    BlankEnum:
+      enum:
+      - ''
+    CustomerStatus:
+      type: object
+      description: Serializer for reading CustomerStatus records.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/CustomerHealthStatusEnum'
+          readOnly: true
+          description: 'Health status of the customer (healthy, average, at_risk, new, churned, on_hold)
+
+
+            * `healthy` - Healthy
+
+            * `average` - Average
+
+            * `at_risk` - At Risk
+
+            * `new` - New
+
+            * `churned` - Churned
+
+            * `on_hold` - On Hold'
+        on_hold_reason_category:
+          allOf:
+          - $ref: '#/components/schemas/CustomerHoldReasonEnum'
+          readOnly: true
+          description: 'Buyer-facing reason the account is on hold, picked from a dropdown. Only populated when status is ON_HOLD; blank otherwise. The buyer sees this option''s label — except OTHER, where they see on_hold_public_reason.
+
+
+            * `overdue_payments` - Overdue Payments
+
+            * `new_contract_required` - New Contract Required
+
+            * `verification_needed` - Verification Needed
+
+            * `other` - Other'
+        on_hold_public_reason:
+          type: string
+          readOnly: true
+          description: Free-text reason shown to the buyer, used ONLY when on_hold_reason_category is OTHER. Blank otherwise (and for non-ON_HOLD statuses).
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_by:
+          allOf:
+          - $ref: '#/components/schemas/UpdatedBy'
+          readOnly: true
+      required:
+      - created
+      - on_hold_public_reason
+      - on_hold_reason_category
+      - status
+      - updated_by
+      - uuid
+    PaginatedCustomerStatusList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerStatus'
+    UpdatedBy:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - uuid
+    CustomerStatusNotFoundResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+      required:
+      - detail
+    CustomerStatusUpdate:
+      type: object
+      description: Serializer for updating a customer's status.
+      properties:
+        status:
+          allOf:
+          - $ref: '#/components/schemas/CustomerHealthStatusEnum'
+          description: 'New health status for the customer
+
+
+            * `healthy` - Healthy
+
+            * `average` - Average
+
+            * `at_risk` - At Risk
+
+            * `new` - New
+
+            * `churned` - Churned
+
+            * `on_hold` - On Hold'
+        on_hold_reason_category:
+          default: ''
+          description: 'Buyer-facing reason category (dropdown). Only stored when status is ON_HOLD.
+
+
+            * `overdue_payments` - Overdue Payments
+
+            * `new_contract_required` - New Contract Required
+
+            * `verification_needed` - Verification Needed
+
+            * `other` - Other'
+          oneOf:
+          - $ref: '#/components/schemas/CustomerHoldReasonEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        on_hold_public_reason:
+          type: string
+          default: ''
+          description: Free-text reason, only stored when status is ON_HOLD and the category is OTHER.
+          maxLength: 1000
+      required:
+      - status
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

@@ -1,0 +1,282 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Deals API
+  version: 0.0.0
+tags:
+- name: Deals
+paths:
+  /api/v1/deals/:
+    get:
+      operationId: api_v1_deals_list
+      summary: Deal endpoints.
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      tags:
+      - Deals
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deals'
+          description: ''
+    post:
+      operationId: api_v1_deals_create
+      summary: Deal endpoints.
+      tags:
+      - Deals
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Deals'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Deals'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Deals'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deals'
+          description: ''
+  /api/v1/deals/{deal_uuid}/notes/:
+    get:
+      operationId: api_v1_deals_notes_list
+      summary: Deal Notes endpoints.
+      parameters:
+      - in: path
+        name: deal_uuid
+        schema:
+          type: string
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      tags:
+      - Deals
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notes'
+          description: ''
+    post:
+      operationId: api_v1_deals_notes_create
+      summary: Endpoint to create a note for a deal.
+      parameters:
+      - in: path
+        name: deal_uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Deals
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notes'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Notes'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Notes'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notes'
+          description: ''
+  /api/v1/deals/{deal_uuid}/notes/{uuid}/:
+    get:
+      operationId: api_v1_deals_notes_retrieve
+      summary: Deal Notes endpoints.
+      parameters:
+      - in: path
+        name: deal_uuid
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Deals
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notes'
+          description: ''
+  /api/v1/deals/{uuid}/:
+    get:
+      operationId: api_v1_deals_retrieve
+      summary: Deal endpoints.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Deals
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deals'
+          description: ''
+  /api/v1/deals/{uuid}/assign-thread/:
+    post:
+      operationId: api_v1_deals_assign_thread_create
+      summary: Endpoint to assign the thread to the deal
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Deals
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignThread'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AssignThread'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AssignThread'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
+          description: ''
+  /api/v1/deals/get-deal-from-thread/{thread_id}/:
+    get:
+      operationId: api_v1_deals_get_deal_from_thread_retrieve
+      summary: Get the deal associated with the thread.
+      parameters:
+      - in: path
+        name: thread_id
+        schema:
+          type: string
+          pattern: ^thread-f:\d+$
+        required: true
+      tags:
+      - Deals
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deals'
+          description: ''
+        '404':
+          description: No response body
+components:
+  schemas:
+    AssignThread:
+      type: object
+      properties:
+        external_id:
+          type: string
+          maxLength: 100
+      required:
+      - external_id
+    Notes:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        deal_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        content:
+          type: string
+        external_user_identifier:
+          type: string
+          maxLength: 100
+      required:
+      - content
+      - created
+      - created_by_uuid
+      - deal_uuid
+      - external_user_identifier
+      - uuid
+    Deals:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 100
+        notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notes'
+          readOnly: true
+      required:
+      - id
+      - notes
+      - title
+      - uuid
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

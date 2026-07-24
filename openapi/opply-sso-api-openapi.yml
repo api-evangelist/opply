@@ -1,0 +1,43 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed SSO API
+  version: 0.0.0
+tags:
+- name: SSO
+paths:
+  /api/v1/users/sso/mint-temporary-token/:
+    post:
+      operationId: api_v1_users_sso_mint_temporary_token_create
+      description: Returns a single-use, 5-minute temporary token bound to the authenticated user. Used by the cross-frontend redirect handshake; the destination frontend exchanges it via POST /api/v1/users/admin_panel/get_token/.
+      summary: Mint a temporary token for the current user
+      tags:
+      - SSO
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SsoTemporaryToken'
+          description: ''
+components:
+  schemas:
+    SsoTemporaryToken:
+      type: object
+      properties:
+        token:
+          type: string
+      required:
+      - token
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

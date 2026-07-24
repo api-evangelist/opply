@@ -1,0 +1,798 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Ingredients API
+  version: 0.0.0
+tags:
+- name: Ingredients
+paths:
+  /api/v1/inquiries/ingredients/:
+    get:
+      operationId: api_v1_inquiries_ingredients_list
+      summary: List of all inquiries for a brand
+      parameters:
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Supports searching using a string/substring of product_name
+      - in: query
+        name: ordering
+        schema:
+          type: string
+        description: Supports sorting by name created. Use - to filter backwards
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: product_uuid
+        schema:
+          type: string
+        description: Supports searching by product to which ingredient is assigned
+      tags:
+      - Ingredients
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedIngredientList'
+          description: ''
+    post:
+      operationId: api_v1_inquiries_ingredients_create
+      summary: Ingredient creation endpoint.
+      tags:
+      - Ingredients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ingredient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Ingredient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Ingredient'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ingredient'
+          description: ''
+  /api/v1/inquiries/ingredients/{uuid}/:
+    get:
+      operationId: api_v1_inquiries_ingredients_retrieve
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Ingredients
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ingredient'
+          description: ''
+    put:
+      operationId: api_v1_inquiries_ingredients_update
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Ingredients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ingredient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Ingredient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Ingredient'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ingredient'
+          description: ''
+    patch:
+      operationId: api_v1_inquiries_ingredients_partial_update
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Ingredients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedIngredient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedIngredient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedIngredient'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ingredient'
+          description: ''
+    delete:
+      operationId: api_v1_inquiries_ingredients_destroy
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Ingredients
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/inquiries/ingredients/{uuid}/delete-documents/:
+    delete:
+      operationId: api_v1_inquiries_ingredients_delete_documents_destroy
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Ingredients
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '404':
+          description: No response body
+        '200':
+          description: No response body
+  /api/v1/inquiries/ingredients/{uuid}/documents/:
+    get:
+      operationId: api_v1_inquiries_ingredients_documents_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Ingredients
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInquiryDocumentList'
+          description: ''
+  /api/v1/inquiries/ingredients/{uuid}/retrieve-assigned-ingredient/:
+    get:
+      operationId: api_v1_inquiries_ingredients_retrieve_assigned_ingredient_retrieve
+      summary: Retrieve assigned (copy) ingredients
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Ingredients
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ingredient'
+          description: ''
+  /api/v1/inquiries/ingredients/{uuid}/upload/:
+    post:
+      operationId: api_v1_inquiries_ingredients_upload_create
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Ingredients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InquiryDocument'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InquiryDocument'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InquiryDocument'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/inquiries/ingredients/process-csv/:
+    post:
+      operationId: api_v1_inquiries_ingredients_process_csv_create
+      description: 'Import ingredients from a CSV file.
+
+
+        The UUID is the UUID of an uploaded CompanyDocument.
+
+        The response UUID is a UUID that can be used to check the status of the task.'
+      summary: Import ingredients from a CSV file
+      tags:
+      - Ingredients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessCSV'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProcessCSV'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProcessCSV'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskCreated'
+          description: ''
+  /api/v1/inquiries/ingredients/process-csv/status/{task_id}/:
+    get:
+      operationId: api_v1_inquiries_ingredients_process_csv_status_retrieve
+      description: Poll the status of a previously triggered CSV import task.
+      summary: Get the status of an ingredients CSV import task
+      parameters:
+      - in: path
+        name: task_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Ingredients
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResult'
+          description: ''
+components:
+  schemas:
+    BlankEnum:
+      enum:
+      - ''
+    TaskCreated:
+      type: object
+      properties:
+        task_id:
+          type: string
+          format: uuid
+      required:
+      - task_id
+    InquiryDocument:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        document:
+          type: string
+          format: uri
+        description:
+          type: string
+          nullable: true
+      required:
+      - document
+      - uuid
+    Ingredient:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        current_unit_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+          nullable: true
+          default: '0.00'
+        currency:
+          $ref: '#/components/schemas/Currencies'
+        description:
+          type: string
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          nullable: true
+          default: '0.00'
+        unit_of_measurement:
+          nullable: true
+          default: kg
+          oneOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        allergen_requirements:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/AllergenRequirementsEnum'
+            - $ref: '#/components/schemas/BlankEnum'
+        allergen_declaration:
+          type: boolean
+        dietary_certificate:
+          type: boolean
+        diet_requirements:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/DietRequirementsEnum'
+            - $ref: '#/components/schemas/BlankEnum'
+        current_supplier:
+          type: string
+        frequency:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/FrequencyEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        article:
+          type: string
+          format: uuid
+          nullable: true
+        existing_suppliers:
+          type: array
+          items:
+            type: string
+            format: uuid
+          readOnly: true
+          nullable: true
+        parent_uuid:
+          type: string
+          format: uuid
+          nullable: true
+      required:
+      - description
+      - existing_suppliers
+      - id
+      - name
+      - uuid
+    FrequencyEnum:
+      enum:
+      - weekly
+      - monthly
+      - quarterly
+      - annually
+      type: string
+      description: '* `weekly` - Weekly
+
+        * `monthly` - Monthly
+
+        * `quarterly` - Quarterly
+
+        * `annually` - Annually'
+    UnitOfMeasurementEnum:
+      enum:
+      - fl oz
+      - g
+      - mg
+      - gals
+      - kg
+      - L
+      - tons
+      - oz
+      - lbs
+      - pcs
+      - pt
+      - ml
+      - boxes
+      - pallets
+      - tsp
+      - tbsp
+      - units
+      - cases
+      - trays
+      type: string
+      description: '* `fl oz` - Fluid Ounces
+
+        * `g` - Grams
+
+        * `mg` - milligrams
+
+        * `gals` - Gallons
+
+        * `kg` - Kilograms
+
+        * `L` - Liters
+
+        * `tons` - Metric Tons
+
+        * `oz` - Ounces
+
+        * `lbs` - Pounds
+
+        * `pcs` - Pieces
+
+        * `pt` - Pints
+
+        * `ml` - Milliliter
+
+        * `boxes` - Boxes
+
+        * `pallets` - Pallets
+
+        * `tsp` - Teaspoons
+
+        * `tbsp` - Tablespoons
+
+        * `units` - Units
+
+        * `cases` - Cases
+
+        * `trays` - Trays'
+    TaskResult:
+      type: object
+      properties:
+        task_id:
+          type: string
+          description: Celery ID for the Task that was run
+          maxLength: 255
+        status:
+          allOf:
+          - $ref: '#/components/schemas/TaskResultStatusEnum'
+          title: Task State
+          description: 'Current state of the task being run
+
+
+            * `FAILURE` - FAILURE
+
+            * `PENDING` - PENDING
+
+            * `RECEIVED` - RECEIVED
+
+            * `RETRY` - RETRY
+
+            * `REVOKED` - REVOKED
+
+            * `STARTED` - STARTED
+
+            * `SUCCESS` - SUCCESS'
+        result:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          readOnly: true
+      required:
+      - result
+      - task_id
+    ProcessCSV:
+      type: object
+      properties:
+        company_document_uuid:
+          type: string
+          format: uuid
+      required:
+      - company_document_uuid
+    TaskResultStatusEnum:
+      enum:
+      - FAILURE
+      - PENDING
+      - RECEIVED
+      - RETRY
+      - REVOKED
+      - STARTED
+      - SUCCESS
+      type: string
+      description: '* `FAILURE` - FAILURE
+
+        * `PENDING` - PENDING
+
+        * `RECEIVED` - RECEIVED
+
+        * `RETRY` - RETRY
+
+        * `REVOKED` - REVOKED
+
+        * `STARTED` - STARTED
+
+        * `SUCCESS` - SUCCESS'
+    PaginatedInquiryDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InquiryDocument'
+    DietRequirementsEnum:
+      enum:
+      - kosher
+      - halal
+      - organic
+      - vegan
+      - vegetarian
+      type: string
+      description: '* `kosher` - Kosher
+
+        * `halal` - Halal
+
+        * `organic` - Organic
+
+        * `vegan` - Vegan
+
+        * `vegetarian` - Vegetarian'
+    PaginatedIngredientList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+    PatchedIngredient:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        current_unit_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+          nullable: true
+          default: '0.00'
+        currency:
+          $ref: '#/components/schemas/Currencies'
+        description:
+          type: string
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          nullable: true
+          default: '0.00'
+        unit_of_measurement:
+          nullable: true
+          default: kg
+          oneOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        allergen_requirements:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/AllergenRequirementsEnum'
+            - $ref: '#/components/schemas/BlankEnum'
+        allergen_declaration:
+          type: boolean
+        dietary_certificate:
+          type: boolean
+        diet_requirements:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/DietRequirementsEnum'
+            - $ref: '#/components/schemas/BlankEnum'
+        current_supplier:
+          type: string
+        frequency:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/FrequencyEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        article:
+          type: string
+          format: uuid
+          nullable: true
+        existing_suppliers:
+          type: array
+          items:
+            type: string
+            format: uuid
+          readOnly: true
+          nullable: true
+        parent_uuid:
+          type: string
+          format: uuid
+          nullable: true
+    Currencies:
+      enum:
+      - EUR
+      - USD
+      - GBP
+      - CAD
+      type: string
+      description: '* `EUR` - EUR
+
+        * `USD` - USD
+
+        * `GBP` - GBP
+
+        * `CAD` - CAD'
+    AllergenRequirementsEnum:
+      enum:
+      - celery
+      - cereals_containing_gluten
+      - crustaceans
+      - eggs
+      - fish
+      - lupin
+      - milk
+      - molluscs
+      - mustard
+      - nuts
+      - peanuts
+      - sesame_seeds
+      - soya
+      - sulphur_dioxide
+      type: string
+      description: '* `celery` - Celery
+
+        * `cereals_containing_gluten` - Cereals Containing Gluten
+
+        * `crustaceans` - Crustaceans
+
+        * `eggs` - Eggs
+
+        * `fish` - Fish
+
+        * `lupin` - Lupin
+
+        * `milk` - Milk
+
+        * `molluscs` - Molluscs
+
+        * `mustard` - Mustard
+
+        * `nuts` - Nuts
+
+        * `peanuts` - Peanuts
+
+        * `sesame_seeds` - Sesame Seeds
+
+        * `soya` - Soya
+
+        * `sulphur_dioxide` - Sulphur Dioxide'
+    NullEnum:
+      enum:
+      - null
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

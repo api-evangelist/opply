@@ -1,0 +1,864 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed System Tasks API
+  version: 0.0.0
+tags:
+- name: System Tasks
+paths:
+  /api/v1/system-tasks/definitions/:
+    get:
+      operationId: api_v1_system_tasks_definitions_list
+      description: '``GET`` — list system-task definitions with rollup counts, scoped to the caller.'
+      summary: List system-task definitions with rollup
+      parameters:
+      - in: query
+        name: company_uuid
+        schema:
+          type: string
+      tags:
+      - System Tasks
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SystemTaskDefinitionRollup'
+          description: ''
+  /api/v1/system-tasks/definitions/{key}/state/:
+    post:
+      operationId: api_v1_system_tasks_definitions_state_create
+      description: '``POST`` — pause / resume **every** installed tenant''s series for one
+
+        definition (the definition-level master switch on the MoR page).
+
+
+        Definitions are config-in-code (no persisted per-definition flag), so the
+
+        "enabled" state is derived from the tenant recurrences and toggled in bulk
+
+        here. Same authorisation + system-task scoping as the per-tenant action.
+
+        Resuming recomputes each series'' ``next_run_at`` from now and silently skips
+
+        any exhausted series (whole batch never 400s on one dead series).'
+      summary: Pause or resume all tenant series for a system-task definition
+      parameters:
+      - in: path
+        name: key
+        schema:
+          type: string
+        required: true
+      tags:
+      - System Tasks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SystemTaskStateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SystemTaskStateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SystemTaskStateRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemTaskDefinitionStateResult'
+          description: ''
+  /api/v1/system-tasks/recurrences/{recurrence_uuid}/state/:
+    post:
+      operationId: api_v1_system_tasks_recurrences_state_create
+      description: '``POST`` — pause / resume one tenant''s system-task series.
+
+
+        A MoR operates *other tenants''* system-task recurrences, whose template
+
+        ``task.company`` is the buyer — not the MoR — so the tenant-scoped
+
+        ``TaskRecurrenceViewSet.disable/enable`` (``task__company=user_company``)
+
+        can''t reach them (404). This mirrors that behaviour but authorises through
+
+        the same cross-tenant ``_scope_companies`` gate the rest of the page uses,
+
+        and only ever addresses **system-task** recurrences (``system_task_key``
+
+        set) — a leaked UUID for a normal user series can''t be toggled here.
+
+
+        Body ``{is_enabled}``: ``false`` pauses (beat stops materialising),
+
+        ``true`` resumes and recomputes ``next_run_at`` from now so a long-paused
+
+        series doesn''t try to backfill. Resuming an exhausted series returns 400.'
+      summary: Pause or resume a tenant's system-task series
+      parameters:
+      - in: path
+        name: recurrence_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - System Tasks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SystemTaskStateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SystemTaskStateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SystemTaskStateRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemTaskSchedule'
+          description: ''
+  /api/v1/system-tasks/sync/:
+    post:
+      operationId: api_v1_system_tasks_sync_create
+      description: '``POST`` — on-demand fan-out trigger. Runs the sync inline and returns a
+
+        result summary so the button can report what happened (e.g. "0 new, 2 already
+
+        up to date") rather than a blind fire-and-forget.
+
+
+        MoR/staff only (tenants never trigger fan-out). Body: ``{key?, company_uuid?}``.
+
+        Runs synchronously because the summary is the whole point of the button; the
+
+        sync is idempotent and cheap after the first run (existence checks). The beat
+
+        / deploy / onboarding-signal paths stay async via the Celery task.'
+      summary: Run a system-task fan-out and return a result summary
+      tags:
+      - System Tasks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SystemTaskSyncRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SystemTaskSyncRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SystemTaskSyncRequest'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemTaskSyncResult'
+          description: ''
+  /api/v1/system-tasks/tasks/:
+    get:
+      operationId: api_v1_system_tasks_tasks_list
+      description: '``GET ?key=`` — per-tenant *series* rows for one definition, scoped to the caller.
+
+
+        Tenant-centric (not occurrence-centric): each installed tenant is one row —
+
+        its schedule (from the template ``TaskRecurrence``), pre-run gate state, latest
+
+        run, and its occurrence history. This keeps a scheduled job legible even when
+
+        it has no occurrences yet (future first slot) or keeps getting skipped by the
+
+        gate (hourly job, no new work) — the common case for a gated cron job.'
+      summary: List per-tenant series (schedule + gate + occurrences) for a system-task definition
+      parameters:
+      - in: query
+        name: company_uuid
+        schema:
+          type: string
+      - in: query
+        name: key
+        schema:
+          type: string
+        required: true
+      tags:
+      - System Tasks
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SystemTaskTenant'
+          description: ''
+components:
+  schemas:
+    SystemTaskGateStatus:
+      type: object
+      description: 'Pre-run gate observability read off the tenant''s ``TaskRecurrence`` (see
+
+        ``system_tasks/gate.py``). Present even when the gate keeps skipping and no
+
+        occurrence is ever materialised — which is the whole point.'
+      properties:
+        last_checked_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_skipped_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_skip_reason:
+          type: string
+        consecutive_skips:
+          type: integer
+        currently_skipping:
+          type: boolean
+      required:
+      - consecutive_skips
+      - currently_skipping
+      - last_checked_at
+      - last_skip_reason
+      - last_skipped_at
+    UserMinimal:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+        is_agent:
+          type: boolean
+          readOnly: true
+        is_mor_router:
+          type: boolean
+          readOnly: true
+      required:
+      - email
+      - is_agent
+      - is_mor_router
+      - name
+      - uuid
+    TaskStatusEnum:
+      enum:
+      - open
+      - in_progress
+      - waiting_approval
+      - done
+      type: string
+      description: '* `open` - Open
+
+        * `in_progress` - In Progress
+
+        * `waiting_approval` - Waiting Approval
+
+        * `done` - Done'
+    SystemTaskTenant:
+      type: object
+      description: 'One installed tenant''s series for the drill-in: schedule + gate state +
+
+        latest-run summary + its occurrence history.
+
+
+        The tenant is the primary unit here (not the occurrence): a scheduled job is
+
+        visible the moment it''s installed, before — and between — occurrences. The
+
+        view builds these rows from each tenant''s template ``TaskRecurrence``.'
+      properties:
+        company:
+          allOf:
+          - $ref: '#/components/schemas/_CompanyRef'
+          nullable: true
+        schedule:
+          allOf:
+          - $ref: '#/components/schemas/SystemTaskSchedule'
+          nullable: true
+        gate_status:
+          allOf:
+          - $ref: '#/components/schemas/SystemTaskGateStatus'
+          nullable: true
+        latest_run_status:
+          type: string
+          nullable: true
+        last_run_at:
+          type: string
+          format: date-time
+          nullable: true
+        occurrences_created:
+          type: integer
+        occurrences:
+          type: array
+          items:
+            $ref: '#/components/schemas/SystemTaskInstance'
+      required:
+      - company
+      - gate_status
+      - last_run_at
+      - latest_run_status
+      - occurrences
+      - occurrences_created
+      - schedule
+    SystemTaskStateRequest:
+      type: object
+      description: 'Body for the pause/resume actions — ``is_enabled=false`` pauses,
+
+        ``true`` resumes (recomputing the next slot from now). Shared by the
+
+        per-tenant and the definition-level (bulk) toggle since the shape is
+
+        identical, so the name is scope-agnostic.'
+      properties:
+        is_enabled:
+          type: boolean
+      required:
+      - is_enabled
+    SystemTaskDefinitionRollup:
+      type: object
+      description: Rollup for one system-task definition, scoped to the caller.
+      properties:
+        key:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        agent_slug:
+          type: string
+        agent_name:
+          type: string
+        eligible_tenants:
+          type: integer
+        installed_tenants:
+          type: integer
+        runs_succeeded:
+          type: integer
+        runs_failed:
+          type: integer
+        last_run_at:
+          type: string
+          format: date-time
+          nullable: true
+        tenants_skipped_last_check:
+          type: integer
+        last_skip_at:
+          type: string
+          format: date-time
+          nullable: true
+        is_enabled:
+          type: boolean
+      required:
+      - agent_name
+      - agent_slug
+      - description
+      - eligible_tenants
+      - installed_tenants
+      - is_enabled
+      - key
+      - last_run_at
+      - last_skip_at
+      - name
+      - runs_failed
+      - runs_succeeded
+      - tenants_skipped_last_check
+    SystemTaskSyncRequest:
+      type: object
+      description: 'Optional scoping for an on-demand fan-out. Omit both to sync everything.
+
+
+        Declared so the generated OpenAPI client documents the request body — the
+
+        view reads ``key`` / ``company_uuid`` off ``request.data``.'
+      properties:
+        key:
+          type: string
+        company_uuid:
+          type: string
+          format: uuid
+    SystemTaskSyncResult:
+      type: object
+      description: Counts returned by an on-demand fan-out (the ``Sync`` buttons).
+      properties:
+        processed:
+          type: integer
+        templates_created:
+          type: integer
+        skipped_existing:
+          type: integer
+        failed:
+          type: integer
+      required:
+      - failed
+      - processed
+      - skipped_existing
+      - templates_created
+    SystemTaskDefinitionStateResult:
+      type: object
+      description: 'Result of the definition-level (bulk) pause/resume: the resulting enabled
+
+        state for the definition plus how many tenant series were actually flipped.'
+      properties:
+        key:
+          type: string
+        is_enabled:
+          type: boolean
+        updated_count:
+          type: integer
+      required:
+      - is_enabled
+      - key
+      - updated_count
+    SystemTaskInstance:
+      type: object
+      description: 'A system-task occurrence with its owning tenant + latest agent-run status.
+
+
+        ``latest_run_status`` (read from a queryset annotation) lets the FE filter by
+
+        the agent-run outcome — ``failed`` isn''t a Task status, it''s a run outcome.
+
+        Null when the occurrence has no run yet.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        number:
+          type: integer
+          readOnly: true
+          nullable: true
+          description: 'Per-company task number (human-facing id, e.g. #12).'
+        title:
+          type: string
+          maxLength: 512
+        description:
+          type: string
+        due_date:
+          type: string
+          format: date
+          nullable: true
+        status:
+          $ref: '#/components/schemas/TaskStatusEnum'
+        completed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        priority:
+          $ref: '#/components/schemas/TaskPriorityEnum'
+        is_private:
+          type: boolean
+        assignee:
+          allOf:
+          - $ref: '#/components/schemas/UserMinimal'
+          readOnly: true
+        assignee_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+          nullable: true
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/UserMinimal'
+          readOnly: true
+        watchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserMinimal'
+          readOnly: true
+        watcher_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          writeOnly: true
+        show_buyer_chat_notice:
+          type: boolean
+          description: 'True only for a MoR-side viewer of a buyer task routed to "Opply".
+
+
+            The MoR handler needs to know the task chat is cross-tenant: the buyer
+
+            can read it (MoR authors are masked as "Opply" on the buyer side, but the
+
+            messages themselves are visible). Buyer-side viewers get ``False`` — the
+
+            task is already theirs and the notice would be meaningless to them. Keyed
+
+            off the same ``viewer_is_buyer_side`` helper the assignee/watcher masking
+
+            uses, so the notice and the masking never disagree.'
+          readOnly: true
+        requester:
+          type: object
+          nullable: true
+          properties:
+            uuid:
+              type: string
+              format: uuid
+            name:
+              type: string
+          readOnly: true
+        targets:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        target_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedItemInput'
+          writeOnly: true
+        parent_task:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          readOnly: true
+        parent_task_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+          nullable: true
+        subtasks:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        attachments:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+          description: List of task attachments
+        unread_chat_count:
+          type: integer
+          description: 'Caller''s unread in-app chat count — present only when the queryset was
+
+            annotated (list / `/me`); 0 on retrieve / create responses.'
+          readOnly: true
+        unread_mention_count:
+          type: integer
+          description: 'How many of the caller''s unread messages @-mention them — drives the
+
+            red attention badge. Annotated on list / `/me`; 0 elsewhere.'
+          readOnly: true
+        plan_awaiting_revision:
+          type: boolean
+          description: 'True while the task waits for plan approval AND the newest
+
+            post-version plan-thread message is human-authored — i.e. a human
+
+            requested changes and the chat-dispatch hook guarantees the agent
+
+            answers, so "action required" attention cues can pause. Mirrors the
+
+            detail panel''s ``awaitingRevision`` derivation (an agent reply — even
+
+            without a revision — hands the turn back). Annotated on list / `/me`;
+
+            False elsewhere.'
+          readOnly: true
+        status_locked:
+          type: boolean
+          description: 'True while the DB status is ``waiting_approval`` — server-managed
+
+            by the plan gate. Clients key status-control read-only-ness on THIS
+
+            (not on the rendered ``status``, which is masked to ``in_progress``
+
+            for viewers without decision rights and would otherwise re-enable
+
+            controls whose PATCH the gate rejects).'
+          readOnly: true
+        recurrence_summary:
+          type: object
+          nullable: true
+          properties:
+            uuid:
+              type: string
+              format: uuid
+            is_template:
+              type: boolean
+            is_enabled:
+              type: boolean
+            frequency:
+              type: string
+            interval:
+              type: integer
+            weekdays:
+              type: array
+              items:
+                type: string
+            monthly_mode:
+              type: string
+            weekday_ordinal:
+              type: integer
+              nullable: true
+            cron_expression:
+              type: string
+              nullable: true
+            starts_at:
+              type: string
+              format: date-time
+              nullable: true
+            ends_mode:
+              type: string
+            ends_on:
+              type: string
+              format: date
+              nullable: true
+            ends_after_count:
+              type: integer
+              nullable: true
+            overlap_policy:
+              type: string
+            next_run_at:
+              type: string
+              format: date-time
+              nullable: true
+            last_run_at:
+              type: string
+              format: date-time
+              nullable: true
+            occurrences_created:
+              type: integer
+          readOnly: true
+        plan:
+          type: object
+          nullable: true
+          properties:
+            uuid:
+              type: string
+              format: uuid
+            version:
+              type: integer
+            status:
+              type: string
+              enum:
+              - pending_approval
+              - approved
+              - rejected
+              - superseded
+            body:
+              type: string
+            feedback:
+              type: string
+            approver_kind:
+              type: string
+              enum:
+              - task_participants
+              - merchant_of_record
+            decided_by_name:
+              type: string
+              nullable: true
+            decided_at:
+              type: string
+              format: date-time
+              nullable: true
+            created:
+              type: string
+              format: date-time
+            viewer_can_decide:
+              type: boolean
+            versions:
+              type: array
+              items:
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    format: uuid
+                  version:
+                    type: integer
+                  status:
+                    type: string
+                    enum:
+                    - pending_approval
+                    - approved
+                    - rejected
+                    - superseded
+                  body:
+                    type: string
+                  feedback:
+                    type: string
+                  approver_kind:
+                    type: string
+                    enum:
+                    - task_participants
+                    - merchant_of_record
+                  decided_by_name:
+                    type: string
+                    nullable: true
+                  decided_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  created:
+                    type: string
+                    format: date-time
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        company:
+          type: object
+          nullable: true
+          properties:
+            uuid:
+              type: string
+              format: uuid
+            name:
+              type: string
+          readOnly: true
+        latest_run_status:
+          type: string
+          nullable: true
+          readOnly: true
+      required:
+      - assignee
+      - attachments
+      - company
+      - completed_at
+      - created
+      - created_by
+      - latest_run_status
+      - modified
+      - number
+      - parent_task
+      - plan
+      - plan_awaiting_revision
+      - recurrence_summary
+      - requester
+      - show_buyer_chat_notice
+      - status_locked
+      - subtasks
+      - targets
+      - title
+      - unread_chat_count
+      - unread_mention_count
+      - uuid
+      - watchers
+    _CompanyRef:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - uuid
+    SystemTaskSchedule:
+      type: object
+      description: 'The tenant''s recurrence rule, so the drill-in can show *when* it runs.
+
+
+        ``recurrence_uuid`` is the target for the MoR-scoped pause/resume action
+
+        (``SystemTaskRecurrenceStateView``) — the drill-in can''t reach the tenant''s
+
+        series through the tenant-scoped ``TaskRecurrenceViewSet``.'
+      properties:
+        recurrence_uuid:
+          type: string
+          format: uuid
+        frequency:
+          type: string
+        cron_expression:
+          type: string
+          nullable: true
+        interval:
+          type: integer
+        next_run_at:
+          type: string
+          format: date-time
+          nullable: true
+        timezone:
+          type: string
+        is_enabled:
+          type: boolean
+      required:
+      - cron_expression
+      - frequency
+      - interval
+      - is_enabled
+      - next_run_at
+      - recurrence_uuid
+      - timezone
+    TaskPriorityEnum:
+      enum:
+      - low
+      - medium
+      - high
+      - urgent
+      type: string
+      description: '* `low` - Low
+
+        * `medium` - Medium
+
+        * `high` - High
+
+        * `urgent` - Urgent'
+    RelatedItemInput:
+      type: object
+      description: 'One write-side related-item: a target ``type`` + entity ``uuid``.'
+      properties:
+        type:
+          type: string
+        uuid:
+          type: string
+          format: uuid
+      required:
+      - type
+      - uuid
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

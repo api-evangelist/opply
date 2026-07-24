@@ -1,0 +1,879 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Agents API
+  version: 0.0.0
+tags:
+- name: Agents
+paths:
+  /api/v1/agents/admin/installations/:
+    get:
+      operationId: api_v1_agents_admin_installations_list
+      description: '``GET /api/v1/agents/admin/installations/`` — installable agents + current install status.'
+      summary: List installable agents for the current tenant (admin only)
+      tags:
+      - Agents
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AgentInstallationAdminRow'
+          description: ''
+  /api/v1/agents/admin/installations/{agent_uuid}/:
+    patch:
+      operationId: api_v1_agents_admin_installations_partial_update
+      description: '``PATCH /api/v1/agents/admin/installations/<agent_uuid>/`` — set installation status.
+
+
+        If no installation exists and ``status=''active''``, the installation (and its
+
+        shadow user) is created via ``create_installation``. Otherwise the existing
+
+        installation''s status is updated. Returns the serialized row.'
+      summary: Set the installation status for an agent on the current tenant (admin only)
+      parameters:
+      - in: path
+        name: agent_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Agents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patched_SetStatusInput'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Patched_SetStatusInput'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Patched_SetStatusInput'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentInstallationAdminRow'
+          description: ''
+        '404':
+          description: Agent not found or not installable.
+  /api/v1/agents/debug/system-tasks/:
+    get:
+      operationId: api_v1_agents_debug_system_tasks_list
+      description: '``GET /api/v1/agents/debug/system-tasks/`` — agent-assigned tasks for a company.
+
+
+        Optional ``?company_uuid=`` (defaults to the caller''s own company; targeting
+
+        another company requires staff). Returns the most recent agent-assigned Tasks
+
+        serialized with ``TaskSerializer``.'
+      summary: List agent (system) tasks for a company (staff cross-tenant; self otherwise)
+      tags:
+      - Agents
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+          description: ''
+  /api/v1/agents/fleet/:
+    get:
+      operationId: api_v1_agents_fleet_list
+      description: '``GET /api/v1/agents/fleet/`` — every enabled agent + install counts (MoR only).'
+      summary: 'Fleet overview: all agents + per-agent install counts (MoR only)'
+      tags:
+      - Agents
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FleetAgent'
+          description: ''
+  /api/v1/agents/fleet/{slug}/:
+    get:
+      operationId: api_v1_agents_fleet_retrieve
+      description: '``GET /api/v1/agents/fleet/<slug>/`` — one agent''s detail + run stats + install list (MoR only).'
+      summary: 'Fleet detail: one agent''s run stats + install list (MoR only)'
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - Agents
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentFleetDetail'
+          description: ''
+  /api/v1/agents/installations/me/:
+    get:
+      operationId: api_v1_agents_installations_me_retrieve
+      description: Returns the active ``AgentInstallation`` for ``request.user_company`` along with the shadow user's UUID + name. Used by the buyer FE to address the agent when creating a new Task. Returns ``204 No Content`` when the tenant has no active installation.
+      summary: Get the active agent installation for the current tenant
+      tags:
+      - Agents
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentInstallationMe'
+          description: ''
+        '204':
+          description: Tenant has no active agent installation.
+  /api/v1/agents/mor-router/me/:
+    get:
+      operationId: api_v1_agents_mor_router_me_retrieve
+      description: '``GET /api/v1/agents/mor-router/me/`` — the buyer''s MoR tasks-router ("Opply").
+
+
+        Lets the buyer FE surface "Opply" as an assignable actor: a buyer assigns a
+
+        task to ``shadow_user.uuid`` and the BE stamps ``Task.mor_router``. Returns
+
+        ``available=false`` when the buyer has no MoR, or the MoR has no active
+
+        router install. The shadow user''s ``name`` is the MoR''s display name
+
+        ("Opply"), matching the read-layer masking.'
+      summary: Get the buyer's Merchant-of-Record tasks-router ('Opply')
+      tags:
+      - Agents
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MorRouterMe'
+          description: ''
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        number:
+          type: integer
+          readOnly: true
+          nullable: true
+          description: 'Per-company task number (human-facing id, e.g. #12).'
+        title:
+          type: string
+          maxLength: 512
+        description:
+          type: string
+        due_date:
+          type: string
+          format: date
+          nullable: true
+        status:
+          $ref: '#/components/schemas/TaskStatusEnum'
+        completed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        priority:
+          $ref: '#/components/schemas/TaskPriorityEnum'
+        is_private:
+          type: boolean
+        assignee:
+          allOf:
+          - $ref: '#/components/schemas/UserMinimal'
+          readOnly: true
+        assignee_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+          nullable: true
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/UserMinimal'
+          readOnly: true
+        watchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserMinimal'
+          readOnly: true
+        watcher_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          writeOnly: true
+        show_buyer_chat_notice:
+          type: boolean
+          description: 'True only for a MoR-side viewer of a buyer task routed to "Opply".
+
+
+            The MoR handler needs to know the task chat is cross-tenant: the buyer
+
+            can read it (MoR authors are masked as "Opply" on the buyer side, but the
+
+            messages themselves are visible). Buyer-side viewers get ``False`` — the
+
+            task is already theirs and the notice would be meaningless to them. Keyed
+
+            off the same ``viewer_is_buyer_side`` helper the assignee/watcher masking
+
+            uses, so the notice and the masking never disagree.'
+          readOnly: true
+        requester:
+          type: object
+          nullable: true
+          properties:
+            uuid:
+              type: string
+              format: uuid
+            name:
+              type: string
+          readOnly: true
+        targets:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        target_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedItemInput'
+          writeOnly: true
+        parent_task:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          readOnly: true
+        parent_task_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+          nullable: true
+        subtasks:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        attachments:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+          description: List of task attachments
+        unread_chat_count:
+          type: integer
+          description: 'Caller''s unread in-app chat count — present only when the queryset was
+
+            annotated (list / `/me`); 0 on retrieve / create responses.'
+          readOnly: true
+        unread_mention_count:
+          type: integer
+          description: 'How many of the caller''s unread messages @-mention them — drives the
+
+            red attention badge. Annotated on list / `/me`; 0 elsewhere.'
+          readOnly: true
+        plan_awaiting_revision:
+          type: boolean
+          description: 'True while the task waits for plan approval AND the newest
+
+            post-version plan-thread message is human-authored — i.e. a human
+
+            requested changes and the chat-dispatch hook guarantees the agent
+
+            answers, so "action required" attention cues can pause. Mirrors the
+
+            detail panel''s ``awaitingRevision`` derivation (an agent reply — even
+
+            without a revision — hands the turn back). Annotated on list / `/me`;
+
+            False elsewhere.'
+          readOnly: true
+        status_locked:
+          type: boolean
+          description: 'True while the DB status is ``waiting_approval`` — server-managed
+
+            by the plan gate. Clients key status-control read-only-ness on THIS
+
+            (not on the rendered ``status``, which is masked to ``in_progress``
+
+            for viewers without decision rights and would otherwise re-enable
+
+            controls whose PATCH the gate rejects).'
+          readOnly: true
+        recurrence_summary:
+          type: object
+          nullable: true
+          properties:
+            uuid:
+              type: string
+              format: uuid
+            is_template:
+              type: boolean
+            is_enabled:
+              type: boolean
+            frequency:
+              type: string
+            interval:
+              type: integer
+            weekdays:
+              type: array
+              items:
+                type: string
+            monthly_mode:
+              type: string
+            weekday_ordinal:
+              type: integer
+              nullable: true
+            cron_expression:
+              type: string
+              nullable: true
+            starts_at:
+              type: string
+              format: date-time
+              nullable: true
+            ends_mode:
+              type: string
+            ends_on:
+              type: string
+              format: date
+              nullable: true
+            ends_after_count:
+              type: integer
+              nullable: true
+            overlap_policy:
+              type: string
+            next_run_at:
+              type: string
+              format: date-time
+              nullable: true
+            last_run_at:
+              type: string
+              format: date-time
+              nullable: true
+            occurrences_created:
+              type: integer
+          readOnly: true
+        plan:
+          type: object
+          nullable: true
+          properties:
+            uuid:
+              type: string
+              format: uuid
+            version:
+              type: integer
+            status:
+              type: string
+              enum:
+              - pending_approval
+              - approved
+              - rejected
+              - superseded
+            body:
+              type: string
+            feedback:
+              type: string
+            approver_kind:
+              type: string
+              enum:
+              - task_participants
+              - merchant_of_record
+            decided_by_name:
+              type: string
+              nullable: true
+            decided_at:
+              type: string
+              format: date-time
+              nullable: true
+            created:
+              type: string
+              format: date-time
+            viewer_can_decide:
+              type: boolean
+            versions:
+              type: array
+              items:
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    format: uuid
+                  version:
+                    type: integer
+                  status:
+                    type: string
+                    enum:
+                    - pending_approval
+                    - approved
+                    - rejected
+                    - superseded
+                  body:
+                    type: string
+                  feedback:
+                    type: string
+                  approver_kind:
+                    type: string
+                    enum:
+                    - task_participants
+                    - merchant_of_record
+                  decided_by_name:
+                    type: string
+                    nullable: true
+                  decided_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  created:
+                    type: string
+                    format: date-time
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - assignee
+      - attachments
+      - completed_at
+      - created
+      - created_by
+      - modified
+      - number
+      - parent_task
+      - plan
+      - plan_awaiting_revision
+      - recurrence_summary
+      - requester
+      - show_buyer_chat_notice
+      - status_locked
+      - subtasks
+      - targets
+      - title
+      - unread_chat_count
+      - unread_mention_count
+      - uuid
+      - watchers
+    MorRouterMe:
+      type: object
+      description: Whether the caller's MoR exposes an "Opply" tasks-router, and how to address it.
+      properties:
+        available:
+          type: boolean
+        shadow_user:
+          allOf:
+          - $ref: '#/components/schemas/_ShadowUserRef'
+          nullable: true
+      required:
+      - available
+      - shadow_user
+    _InstallationRef:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/AgentInstallationStatusEnum'
+        installed_by:
+          allOf:
+          - $ref: '#/components/schemas/_InstalledBy'
+          nullable: true
+        installed_at:
+          type: string
+          format: date-time
+      required:
+      - installed_at
+      - installed_by
+      - status
+      - uuid
+    AgentFleetDetail:
+      type: object
+      properties:
+        agent:
+          $ref: '#/components/schemas/_FleetAgentDetailAgent'
+        runs:
+          $ref: '#/components/schemas/_RunStats'
+        installations:
+          type: array
+          items:
+            $ref: '#/components/schemas/_FleetInstallation'
+      required:
+      - agent
+      - installations
+      - runs
+    _ShadowUserRef:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - uuid
+    TaskPriorityEnum:
+      enum:
+      - low
+      - medium
+      - high
+      - urgent
+      type: string
+      description: '* `low` - Low
+
+        * `medium` - Medium
+
+        * `high` - High
+
+        * `urgent` - Urgent'
+    Patched_SetStatusInput:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/AgentInstallationStatusEnum'
+    UserMinimal:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+        is_agent:
+          type: boolean
+          readOnly: true
+        is_mor_router:
+          type: boolean
+          readOnly: true
+      required:
+      - email
+      - is_agent
+      - is_mor_router
+      - name
+      - uuid
+    _AgentRef:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        slug:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+        description:
+          type: string
+        is_taskable:
+          type: boolean
+      required:
+      - description
+      - is_taskable
+      - name
+      - slug
+      - uuid
+    _FleetAgentDetailAgent:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        slug:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+        description:
+          type: string
+        is_taskable:
+          type: boolean
+        is_router:
+          type: boolean
+        is_enabled:
+          type: boolean
+        scope_kind:
+          type: string
+        installable_by_company_types:
+          type: array
+          items:
+            type: string
+        has_runtime:
+          type: boolean
+        default_allowed_tools:
+          type: array
+          items:
+            type: string
+      required:
+      - default_allowed_tools
+      - description
+      - has_runtime
+      - installable_by_company_types
+      - is_enabled
+      - is_router
+      - is_taskable
+      - name
+      - scope_kind
+      - slug
+      - uuid
+    AgentInstallationStatusEnum:
+      enum:
+      - active
+      - paused
+      - revoked
+      type: string
+      description: '* `active` - Active
+
+        * `paused` - Paused
+
+        * `revoked` - Revoked'
+    RelatedItemInput:
+      type: object
+      description: 'One write-side related-item: a target ``type`` + entity ``uuid``.'
+      properties:
+        type:
+          type: string
+        uuid:
+          type: string
+          format: uuid
+      required:
+      - type
+      - uuid
+    _CompanyRef:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - uuid
+    _RunStats:
+      type: object
+      properties:
+        latest_run_at:
+          type: string
+          format: date-time
+          nullable: true
+        succeeded:
+          type: integer
+        failed:
+          type: integer
+        running:
+          type: integer
+        total:
+          type: integer
+      required:
+      - failed
+      - latest_run_at
+      - running
+      - succeeded
+      - total
+    AgentInstallationMe:
+      type: object
+      description: The shape the FE consumes — enough to address the agent and render its name.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        status:
+          type: string
+        agent:
+          $ref: '#/components/schemas/_AgentRef'
+        shadow_user:
+          $ref: '#/components/schemas/_ShadowUserRef'
+      required:
+      - agent
+      - shadow_user
+      - status
+      - uuid
+    AgentInstallationAdminRow:
+      type: object
+      properties:
+        agent:
+          $ref: '#/components/schemas/_AgentRef'
+        installation:
+          allOf:
+          - $ref: '#/components/schemas/_InstallationRef'
+          nullable: true
+      required:
+      - agent
+      - installation
+    _InstalledBy:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - uuid
+    TaskStatusEnum:
+      enum:
+      - open
+      - in_progress
+      - waiting_approval
+      - done
+      type: string
+      description: '* `open` - Open
+
+        * `in_progress` - In Progress
+
+        * `waiting_approval` - Waiting Approval
+
+        * `done` - Done'
+    _FleetInstallation:
+      type: object
+      properties:
+        company:
+          allOf:
+          - $ref: '#/components/schemas/_CompanyRef'
+          nullable: true
+        status:
+          type: string
+        installed_by:
+          allOf:
+          - $ref: '#/components/schemas/_UserRef'
+          nullable: true
+        installed_at:
+          type: string
+          format: date-time
+        shadow_user:
+          allOf:
+          - $ref: '#/components/schemas/_UserRef'
+          nullable: true
+      required:
+      - company
+      - installed_at
+      - installed_by
+      - shadow_user
+      - status
+    _InstallCounts:
+      type: object
+      properties:
+        active:
+          type: integer
+        paused:
+          type: integer
+        revoked:
+          type: integer
+        total:
+          type: integer
+      required:
+      - active
+      - paused
+      - revoked
+      - total
+    FleetAgent:
+      type: object
+      description: One agent row on the fleet overview.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        slug:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+        description:
+          type: string
+        is_taskable:
+          type: boolean
+        is_router:
+          type: boolean
+        is_enabled:
+          type: boolean
+        scope_kind:
+          type: string
+        installable_by_company_types:
+          type: array
+          items:
+            type: string
+        installs:
+          $ref: '#/components/schemas/_InstallCounts'
+      required:
+      - description
+      - installable_by_company_types
+      - installs
+      - is_enabled
+      - is_router
+      - is_taskable
+      - name
+      - scope_kind
+      - slug
+      - uuid
+    _UserRef:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - uuid
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

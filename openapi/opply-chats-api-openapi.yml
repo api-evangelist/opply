@@ -1,0 +1,624 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Chats API
+  version: 0.0.0
+tags:
+- name: Chats
+paths:
+  /api/v1/channels/{channel_uuid}/messages/:
+    get:
+      operationId: api_v1_channels_messages_list
+      parameters:
+      - in: path
+        name: channel_uuid
+        schema:
+          type: string
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - Chats
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMessageList'
+          description: ''
+    post:
+      operationId: api_v1_channels_messages_create
+      parameters:
+      - in: path
+        name: channel_uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Chats
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Message'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Message'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+  /api/v1/channels/{channel_uuid}/messages/{id}/create-resumable-upload-session/:
+    post:
+      operationId: api_v1_channels_messages_create_resumable_upload_session_create
+      summary: Request a resumable file upload URL
+      parameters:
+      - in: path
+        name: channel_uuid
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this message.
+        required: true
+      tags:
+      - Chats
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleUpload'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GoogleUpload'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GoogleUpload'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleUploadResponse'
+          description: ''
+  /api/v1/channels/{channel_uuid}/messages/{id}/upload-complete/:
+    post:
+      operationId: api_v1_channels_messages_upload_complete_create
+      summary: Set an upload as done
+      parameters:
+      - in: path
+        name: channel_uuid
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this message.
+        required: true
+      tags:
+      - Chats
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleUploadComplete'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GoogleUploadComplete'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GoogleUploadComplete'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/URL'
+          description: ''
+  /api/v1/channels/chats/:
+    get:
+      operationId: api_v1_channels_chats_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - Chats
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedChannelList'
+          description: ''
+  /api/v1/channels/chats/{uuid}/:
+    get:
+      operationId: api_v1_channels_chats_retrieve
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Chats
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+          description: ''
+  /api/v1/channels/chats/{uuid}/mark-read/:
+    post:
+      operationId: api_v1_channels_chats_mark_read_create
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Chats
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnreadCount'
+          description: ''
+  /api/v1/channels/chats/search-messages/:
+    post:
+      operationId: api_v1_channels_chats_search_messages_create
+      description: Endpoint to search messages or chats by text
+      tags:
+      - Chats
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchMessagesRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SearchMessagesRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SearchMessagesRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchMessagesResponse'
+          description: ''
+components:
+  schemas:
+    ChannelForMessageCompany:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+      required:
+      - uuid
+    GoogleUpload:
+      type: object
+      properties:
+        file_name:
+          type: string
+          maxLength: 1024
+        size:
+          type: integer
+          minimum: 1
+        content_type:
+          type: string
+          maxLength: 256
+        field_name:
+          type: string
+          maxLength: 256
+      required:
+      - field_name
+      - file_name
+      - size
+    UnreadCount:
+      type: object
+      properties:
+        unread_count:
+          type: integer
+      required:
+      - unread_count
+    ChannelObjectHistoryActionEnum:
+      enum:
+      - request_created
+      - quote_created
+      - contract_created
+      - order_created
+      - purchase_request_created
+      - purchase_request_quote_created
+      - purchase_request_order_created
+      type: string
+      description: '* `request_created` - Request Created
+
+        * `quote_created` - Quote Created
+
+        * `contract_created` - Contract Created
+
+        * `order_created` - Order Created
+
+        * `purchase_request_created` - Purchase Request Created
+
+        * `purchase_request_quote_created` - Purchase Request Quote Created
+
+        * `purchase_request_order_created` - Purchase Request Order Created'
+    Message:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        text:
+          type: string
+          nullable: true
+        attachment:
+          type: string
+          format: uri
+          readOnly: true
+          nullable: true
+        sender:
+          allOf:
+          - $ref: '#/components/schemas/ShortUser'
+          readOnly: true
+        is_read:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        channel:
+          allOf:
+          - $ref: '#/components/schemas/ChannelForMessage'
+          readOnly: true
+        buyer_name:
+          type: string
+          readOnly: true
+        supplier_name:
+          type: string
+          readOnly: true
+        file_name:
+          type: string
+          writeOnly: true
+      required:
+      - attachment
+      - buyer_name
+      - channel
+      - created
+      - is_read
+      - modified
+      - sender
+      - supplier_name
+      - uuid
+    GoogleUploadResponse:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+        token:
+          type: string
+      required:
+      - token
+      - url
+    NullEnum:
+      enum:
+      - null
+    URL:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+      required:
+      - url
+    ShortUser:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name_short:
+          type: string
+          readOnly: true
+      required:
+      - last_name_short
+      - uuid
+    SearchMessagesResponse:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        matched_text:
+          type: string
+          readOnly: true
+        text:
+          type: string
+          nullable: true
+        attachment:
+          type: string
+          format: uri
+          nullable: true
+        sender:
+          type: integer
+        sender_name:
+          type: string
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        channel:
+          $ref: '#/components/schemas/ChannelForMessage'
+        page_number:
+          type: string
+          readOnly: true
+      required:
+      - channel
+      - created
+      - matched_text
+      - modified
+      - page_number
+      - sender
+      - sender_name
+      - uuid
+    ChannelCompany:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+      required:
+      - uuid
+    GoogleUploadComplete:
+      type: object
+      properties:
+        token:
+          type: string
+      required:
+      - token
+    ChannelObjectHistory:
+      type: object
+      properties:
+        object_type:
+          type: string
+          readOnly: true
+        object_uuid:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        action:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/ChannelObjectHistoryActionEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        data:
+          nullable: true
+      required:
+      - created
+      - object_type
+      - object_uuid
+    ChannelForMessage:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        new_messages_check:
+          type: string
+          format: date-time
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChannelForMessageCompany'
+          readOnly: true
+        related_object_type:
+          type: string
+          readOnly: true
+        related_object_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        logo_url:
+          type: string
+          readOnly: true
+      required:
+      - companies
+      - logo_url
+      - name
+      - related_object_type
+      - related_object_uuid
+      - uuid
+    BlankEnum:
+      enum:
+      - ''
+    PaginatedMessageList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+        unread_count:
+          type: integer
+          example: 123
+    Channel:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        new_messages_check:
+          type: string
+          format: date-time
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChannelCompany'
+          readOnly: true
+        latest_message:
+          allOf:
+          - $ref: '#/components/schemas/Message'
+          readOnly: true
+        related_object_type:
+          type: string
+          readOnly: true
+        related_object_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        object_history:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChannelObjectHistory'
+        buyer_name:
+          type: string
+          readOnly: true
+        supplier_name:
+          type: string
+          readOnly: true
+      required:
+      - buyer_name
+      - companies
+      - latest_message
+      - object_history
+      - related_object_type
+      - related_object_uuid
+      - supplier_name
+      - uuid
+    PaginatedChannelList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Channel'
+        unread_count:
+          type: integer
+          example: 123
+    SearchMessagesRequest:
+      type: object
+      properties:
+        text:
+          type: string
+      required:
+      - text
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

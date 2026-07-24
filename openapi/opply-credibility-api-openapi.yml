@@ -1,0 +1,91 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Credibility API
+  version: 0.0.0
+tags:
+- name: Credibility
+paths:
+  /api/v1/contract-interest/contract/:
+    post:
+      operationId: api_v1_contract_interest_contract_create
+      tags:
+      - Credibility
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContractInterest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ContractInterest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ContractInterest'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContractInterest'
+          description: ''
+components:
+  schemas:
+    ContractInterest:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        product_name:
+          type: string
+          maxLength: 255
+        number_of_deliveries_per_year:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        volume_per_delivery:
+          type: number
+          format: double
+        unit_price:
+          type: number
+          format: double
+          nullable: true
+        is_one_off_purchase:
+          type: boolean
+        company_name:
+          type: string
+          maxLength: 255
+        company_number:
+          type: string
+          maxLength: 50
+        company_address:
+          type: string
+      required:
+      - company_address
+      - company_name
+      - company_number
+      - email
+      - number_of_deliveries_per_year
+      - product_name
+      - uuid
+      - volume_per_delivery
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

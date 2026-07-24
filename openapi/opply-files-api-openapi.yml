@@ -1,0 +1,740 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Files API
+  version: 0.0.0
+tags:
+- name: Files
+paths:
+  /api/v1/files/{uuid}/:
+    get:
+      operationId: api_v1_files_retrieve
+      description: 'Unified read access to any tenant file.
+
+
+        A single ``/api/v1/files/<uuid>/`` rail backs every file source the user
+
+        can already reach via the REST API (task attachments, order docs, PO
+
+        PDFs, financial documents, …) — resolution and auth go through the
+
+        registry at ``apps/files/services/file_registry.py``.
+
+
+        The MCP ``get_file`` tool is a thin wrapper over this viewset; the
+
+        perimeter lives here.'
+      summary: Get file metadata
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+        required: true
+      tags:
+      - Files
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileMetadata'
+          description: ''
+        '404':
+          description: File not found.
+  /api/v1/files/{uuid}/content/:
+    get:
+      operationId: api_v1_files_content_retrieve
+      description: 'Unified read access to any tenant file.
+
+
+        A single ``/api/v1/files/<uuid>/`` rail backs every file source the user
+
+        can already reach via the REST API (task attachments, order docs, PO
+
+        PDFs, financial documents, …) — resolution and auth go through the
+
+        registry at ``apps/files/services/file_registry.py``.
+
+
+        The MCP ``get_file`` tool is a thin wrapper over this viewset; the
+
+        perimeter lives here.'
+      summary: Download file bytes
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+        required: true
+      tags:
+      - Files
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+          description: 'Streamed file bytes. ``Content-Type`` matches the file''s MIME; ``Content-Disposition: attachment; filename=...`` is set.'
+        '413':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileTooLarge'
+          description: ''
+        '404':
+          description: File not found.
+  /api/v1/files/{uuid}/url/:
+    get:
+      operationId: api_v1_files_url_retrieve
+      description: 'Unified read access to any tenant file.
+
+
+        A single ``/api/v1/files/<uuid>/`` rail backs every file source the user
+
+        can already reach via the REST API (task attachments, order docs, PO
+
+        PDFs, financial documents, …) — resolution and auth go through the
+
+        registry at ``apps/files/services/file_registry.py``.
+
+
+        The MCP ``get_file`` tool is a thin wrapper over this viewset; the
+
+        perimeter lives here.'
+      summary: Get a short-lived signed download URL
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+        required: true
+      tags:
+      - Files
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileSignedUrl'
+          description: ''
+        '404':
+          description: File not found.
+  /api/v1/files/attachments/:
+    post:
+      operationId: api_v1_files_attachments_create
+      description: Staff-only test harness for the generic attachments flow.
+      summary: '[staff] Mint a pending attachment + presigned upload'
+      tags:
+      - Files
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttachmentTestCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AttachmentTestCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AttachmentTestCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttachmentCreateResponse'
+          description: ''
+  /api/v1/files/attachments/{uuid}/:
+    get:
+      operationId: api_v1_files_attachments_retrieve
+      description: Staff-only test harness for the generic attachments flow.
+      summary: '[staff] Get an attachment''s scan status'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Files
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttachmentStatus'
+          description: ''
+        '404':
+          description: Attachment not found.
+  /api/v1/files/attachments/{uuid}/confirm/:
+    post:
+      operationId: api_v1_files_attachments_confirm_create
+      description: Staff-only test harness for the generic attachments flow.
+      summary: '[staff] Confirm upload (drives the scan-disabled promotion)'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Files
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttachmentStatus'
+          description: ''
+        '404':
+          description: Attachment not found.
+  /api/v1/files/attachments/{uuid}/url/:
+    get:
+      operationId: api_v1_files_attachments_url_retrieve
+      description: Staff-only test harness for the generic attachments flow.
+      summary: '[staff] Get a presigned download URL'
+      parameters:
+      - in: query
+        name: disposition
+        schema:
+          type: string
+          enum:
+          - attachment
+          - inline
+        description: 'Content-Disposition of the signed URL: ''attachment'' (default, browser downloads the file) or ''inline'' (browser renders it in place, e.g. a PDF preview opened in a new tab).'
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: query
+        name: variant
+        schema:
+          type: string
+          enum:
+          - original
+          - thumbnail
+        description: 'Which object to sign: ''original'' (default, full-size) or ''thumbnail'' (downscaled image preview). A 409 is returned for ''thumbnail'' when none has been generated — fall back to ''original''.'
+      tags:
+      - Files
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttachmentDownloadUrl'
+          description: ''
+        '404':
+          description: Attachment not found.
+        '409':
+          description: Not downloadable yet (scan not clean/skipped) or no thumbnail.
+  /api/v1/files/message-attachments/:
+    post:
+      operationId: api_v1_files_message_attachments_create
+      description: Create an unbound, PENDING message attachment scoped to the caller's company and return a presigned POST for the browser to upload the bytes directly to S3.
+      summary: Mint a pending message attachment + presigned upload
+      tags:
+      - Files
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageAttachmentCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MessageAttachmentCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MessageAttachmentCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttachmentCreateResponse'
+          description: ''
+  /api/v1/files/message-attachments/{uuid}/:
+    get:
+      operationId: api_v1_files_message_attachments_retrieve
+      description: Return the malware-scan lifecycle state of one of the caller's own message attachments.
+      summary: Get a message attachment's scan status
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Files
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttachmentStatus'
+          description: ''
+        '404':
+          description: Attachment not found.
+  /api/v1/files/message-attachments/{uuid}/confirm/:
+    post:
+      operationId: api_v1_files_message_attachments_confirm_create
+      description: Signal that the client finished uploading the bytes; backfills the size and, when malware scanning is disabled, promotes the object and marks it SKIPPED.
+      summary: Confirm upload (drives the scan-disabled promotion)
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Files
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttachmentStatus'
+          description: ''
+        '404':
+          description: Attachment not found.
+  /api/v1/files/message-attachments/{uuid}/url/:
+    get:
+      operationId: api_v1_files_message_attachments_url_retrieve
+      description: Return a short-lived presigned GET URL for a downloadable (CLEAN/SKIPPED) attachment.
+      summary: Get a presigned download URL
+      parameters:
+      - in: query
+        name: disposition
+        schema:
+          type: string
+          enum:
+          - attachment
+          - inline
+        description: 'Content-Disposition of the signed URL: ''attachment'' (default, browser downloads the file) or ''inline'' (browser renders it in place, e.g. a PDF preview opened in a new tab).'
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: query
+        name: variant
+        schema:
+          type: string
+          enum:
+          - original
+          - thumbnail
+        description: 'Which object to sign: ''original'' (default, full-size) or ''thumbnail'' (downscaled image preview). A 409 is returned for ''thumbnail'' when none has been generated — fall back to ''original''.'
+      tags:
+      - Files
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttachmentDownloadUrl'
+          description: ''
+        '404':
+          description: Attachment not found.
+        '409':
+          description: Not downloadable yet (scan not clean/skipped) or no thumbnail.
+  /api/v1/files/upload/:
+    post:
+      operationId: api_v1_files_upload_create
+      description: 'Handle file upload requests.
+
+        file_name = Name of the file being uploaded
+
+        model_name = Name of the model related to this file. eg. for chats it would be ''Message''
+
+        field_name = Name of the field on the model where file is stored. eg. for chats it would be ''attachment'''
+      tags:
+      - Files
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileUpload'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FileUpload'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FileUpload'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileUploadResponse'
+          description: ''
+components:
+  schemas:
+    AttachmentCreateResponse:
+      type: object
+      description: Status fields plus the presigned POST to upload the bytes with.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        original_filename:
+          type: string
+          readOnly: true
+        mime_type:
+          type: string
+          readOnly: true
+        scan_status:
+          allOf:
+          - $ref: '#/components/schemas/AttachmentScanStatusEnum'
+          readOnly: true
+        size_bytes:
+          type: integer
+          readOnly: true
+          nullable: true
+        upload_confirmed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        scan_completed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        presigned_post:
+          allOf:
+          - $ref: '#/components/schemas/PresignedPost'
+          readOnly: true
+      required:
+      - mime_type
+      - original_filename
+      - presigned_post
+      - scan_completed_at
+      - scan_status
+      - size_bytes
+      - upload_confirmed_at
+      - uuid
+    AttachmentDownloadUrl:
+      type: object
+      description: A short-lived presigned GET URL for a downloadable attachment.
+      properties:
+        download_url:
+          type: string
+          format: uri
+          readOnly: true
+        expires_in_seconds:
+          type: integer
+          readOnly: true
+      required:
+      - download_url
+      - expires_in_seconds
+    FileUploadResponse:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+        token:
+          type: string
+        file_name:
+          type: string
+      required:
+      - file_name
+      - token
+      - url
+    FileSignedUrl:
+      type: object
+      description: 'Returned by ``GET /api/v1/files/<uuid>/url/`` — metadata + a
+
+        short-lived signed download URL.'
+      properties:
+        type:
+          type: string
+          description: Registered file-resource type slug (e.g. ``task-attachment``).
+        uuid:
+          type: string
+          format: uuid
+          description: UUID of the file row.
+        filename:
+          type: string
+          description: Sanitised filename suitable for ``Content-Disposition``.
+        content_type:
+          type: string
+          description: MIME type of the file bytes.
+        size_bytes:
+          type: integer
+          minimum: 0
+          description: Size of the file in bytes.
+        download_url:
+          type: string
+          format: uri
+          description: Short-lived signed GCS/S3 download URL.
+        expires_in_seconds:
+          type: integer
+          minimum: 0
+          description: Seconds until ``download_url`` expires.
+      required:
+      - content_type
+      - download_url
+      - expires_in_seconds
+      - filename
+      - size_bytes
+      - type
+      - uuid
+    FileMetadata:
+      type: object
+      description: Metadata payload returned by ``GET /api/v1/files/<uuid>/``.
+      properties:
+        type:
+          type: string
+          description: Registered file-resource type slug (e.g. ``task-attachment``).
+        uuid:
+          type: string
+          format: uuid
+          description: UUID of the file row.
+        filename:
+          type: string
+          description: Sanitised filename suitable for ``Content-Disposition``.
+        content_type:
+          type: string
+          description: MIME type of the file bytes.
+        size_bytes:
+          type: integer
+          minimum: 0
+          description: Size of the file in bytes.
+      required:
+      - content_type
+      - filename
+      - size_bytes
+      - type
+      - uuid
+    FileUpload:
+      type: object
+      properties:
+        file_name:
+          type: string
+          description: Name of the file being uploaded
+          maxLength: 1024
+        model_name:
+          type: string
+          description: Name of the model related to this file. eg. for chats it would be 'Message'
+          maxLength: 256
+        field_name:
+          type: string
+          description: Name of the field on the model where file is stored. eg. for chats it would be 'attachment'
+          maxLength: 256
+        content_type:
+          type: string
+          description: Content type of the file.
+          maxLength: 256
+        size:
+          type: integer
+          minimum: 1
+          description: File size.
+      required:
+      - content_type
+      - field_name
+      - file_name
+      - model_name
+      - size
+    AttachmentScanStatusEnum:
+      enum:
+      - pending
+      - clean
+      - malicious
+      - failed
+      - skipped
+      type: string
+      description: '* `pending` - Pending scan
+
+        * `clean` - Clean
+
+        * `malicious` - Malicious
+
+        * `failed` - Scan failed
+
+        * `skipped` - Scan skipped'
+    PresignedPost:
+      type: object
+      description: The presigned POST the browser uploads the bytes with.
+      properties:
+        url:
+          type: string
+          format: uri
+        fields:
+          type: object
+          additionalProperties:
+            type: string
+      required:
+      - fields
+      - url
+    AttachmentStatus:
+      type: object
+      description: Read view of an ``Attachment`` row's lifecycle state.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        original_filename:
+          type: string
+          readOnly: true
+        mime_type:
+          type: string
+          readOnly: true
+        scan_status:
+          allOf:
+          - $ref: '#/components/schemas/AttachmentScanStatusEnum'
+          readOnly: true
+        size_bytes:
+          type: integer
+          readOnly: true
+          nullable: true
+        upload_confirmed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        scan_completed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+      required:
+      - mime_type
+      - original_filename
+      - scan_completed_at
+      - scan_status
+      - size_bytes
+      - upload_confirmed_at
+      - uuid
+    AttachmentTestCreate:
+      type: object
+      description: Request body for minting a pending attachment.
+      properties:
+        original_filename:
+          type: string
+          maxLength: 255
+        mime_type:
+          type: string
+          maxLength: 128
+        company_uuid:
+          type: string
+          format: uuid
+          description: Company the attachment is owned by (and used as its entity). Defaults to the caller's company.
+      required:
+      - mime_type
+      - original_filename
+    FileTooLarge:
+      type: object
+      description: '413 response from ``GET /api/v1/files/<uuid>/content/`` when the file
+
+        exceeds the inline cap — points the caller at the ``/url/`` action.'
+      properties:
+        type:
+          type: string
+          description: Registered file-resource type slug (e.g. ``task-attachment``).
+        uuid:
+          type: string
+          format: uuid
+          description: UUID of the file row.
+        filename:
+          type: string
+          description: Sanitised filename suitable for ``Content-Disposition``.
+        content_type:
+          type: string
+          description: MIME type of the file bytes.
+        size_bytes:
+          type: integer
+          minimum: 0
+          description: Size of the file in bytes.
+        detail:
+          type: string
+        max_inline_bytes:
+          type: integer
+          minimum: 0
+      required:
+      - content_type
+      - detail
+      - filename
+      - max_inline_bytes
+      - size_bytes
+      - type
+      - uuid
+    MessageAttachmentCreate:
+      type: object
+      description: 'Request body for minting an unbound message attachment.
+
+
+        No ``company_uuid`` / entity — the attachment is created unbound and scoped
+
+        to the caller''s company; it is bound to its ``Message`` server-side on send.'
+      properties:
+        original_filename:
+          type: string
+          maxLength: 255
+        mime_type:
+          type: string
+          maxLength: 128
+      required:
+      - mime_type
+      - original_filename
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

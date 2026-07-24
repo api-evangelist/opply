@@ -1,0 +1,229 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Insights API
+  version: 0.0.0
+tags:
+- name: Insights
+paths:
+  /api/v1/insights/:
+    get:
+      operationId: api_v1_insights_list
+      description: 'Buyer-scoped insights feed.
+
+
+        Returns cursor-paginated insights, newest first. The queryset surfaces both
+
+        insights bound to the authenticated user''s company AND cross-portfolio
+
+        insights with ``company IS NULL`` (e.g. industry trends, investor signals).
+
+        ``retrieve`` (by ``uuid``) backs the insights-recommender''s ``get_insight`` MCP
+
+        tool; it stays scoped by the same ``get_queryset``.
+
+
+        Filter params: ``insight_type``, ``source``, ``sector``.'
+      summary: List insights for the current buyer
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - in: query
+        name: insight_type
+        schema:
+          type: string
+        description: Filter by insight_type — free-text on the column, but the typical values are `pricing`, `peer`, `npd`, `reorder`, `investor`.
+      - in: query
+        name: sector
+        schema:
+          type: string
+        description: Filter by brain sector — mirrors ``FeedItemEventType`` values (`suppliers`, `ingredients`, `operations`, `compliance`, `commercial`, `financials`, `market`).
+      - in: query
+        name: source
+        schema:
+          type: string
+        description: Filter by producer identifier (e.g. `opply.enrichment`, `opply.news`).
+      tags:
+      - Insights
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInsightReadList'
+          description: ''
+  /api/v1/insights/debug/seed/:
+    post:
+      operationId: api_v1_insights_debug_seed_create
+      description: '``POST /api/v1/insights/debug/seed/`` — staff-only.
+
+
+        Body ``{company_uuid?}``. Idempotently seeds the sample insight(s) for that
+
+        buyer (defaulting to the caller''s own company) and returns their uuids.
+
+        Targeting a company other than your own requires staff access.'
+      tags:
+      - Insights
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_SeedInsightsRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/_SeedInsightsRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/_SeedInsightsRequest'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeedSampleInsightsResponse'
+          description: ''
+components:
+  schemas:
+    PaginatedInsightReadList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InsightRead'
+    _SeedInsightsRequest:
+      type: object
+      properties:
+        company_uuid:
+          type: string
+          format: uuid
+    SeedSampleInsightsResponse:
+      type: object
+      properties:
+        insight_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+      required:
+      - insight_uuids
+    InsightRead:
+      type: object
+      description: 'Read view of an Insight for the buyer-facing rail.
+
+
+        `insight_type` is the model column verbatim where it matches one of the
+
+        known `InsightType` values; otherwise it falls through to
+
+        `InsightType.INVESTOR` so the FE never has to deal with stale or
+
+        experimental category strings. ``sector`` is a proper enum at the DB
+
+        level, so it''s returned verbatim — values outside ``InsightSector``
+
+        fall through to ``undefined`` (the brain UI filters those out).'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        source:
+          type: string
+          description: Producer identifier, e.g. opply.enrichment, hubspot
+          maxLength: 128
+        kicker:
+          type: string
+          description: Short uppercase label rendered above the insight headline (e.g. 'Pricing trend', 'Peer-network signal'). Optional — defaults to empty string when not set.
+          maxLength: 128
+        title:
+          type: string
+          description: Short headline for the insight
+          maxLength: 512
+        description:
+          type: string
+          description: Longer body text describing the insight
+        insight_type:
+          type: string
+          readOnly: true
+        sector:
+          type: string
+          readOnly: true
+        meta:
+          type: string
+          description: Optional subtitle rendered next to the kicker on the InsightCard (e.g. 'Diageo · Littleconnell Brewery · €300M'). Defaults to empty string when not set.
+          maxLength: 255
+        tags:
+          type: array
+          items:
+            type: string
+            maxLength: 128
+          description: Free-text labels attached to the insight (e.g. category, severity, topic)
+        occurred_at:
+          type: string
+          format: date-time
+          description: When the insight was generated by its producer
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        payload:
+          description: 'Free-form structured data emitted by the producer (e.g. quantified $ impact as {"impact_amount": "12345.67", "impact_currency": "GBP"}). Defaults to an empty object. Shape is producer-owned; no schema migration needed to add keys.'
+        news_id:
+          type: string
+          description: External identifier for the news article (when sourced from a news producer).
+          maxLength: 128
+        url:
+          type: string
+          format: uri
+          description: Canonical URL for the underlying news article, if any.
+          maxLength: 2048
+        body_excerpt:
+          type: string
+          description: Verbatim excerpt from the source article. `description` is the producer's summary written for the buyer; `body_excerpt` is the original text for reference.
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the underlying news article was published. Distinct from `occurred_at`, which is when the producer emitted the insight.
+      required:
+      - created
+      - description
+      - insight_type
+      - occurred_at
+      - sector
+      - source
+      - title
+      - uuid
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

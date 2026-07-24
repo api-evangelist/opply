@@ -1,0 +1,143 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Registration Validation API
+  version: 0.0.0
+tags:
+- name: Registration Validation
+paths:
+  /api/v1/companies/companies-house/search/:
+    get:
+      operationId: api_v1_companies_companies_house_search_retrieve
+      description: 'GET /api/v1/companies/companies-house/search/?q=<name>&limit=10
+
+
+        Autocomplete endpoint backing the registered-company picker in MoR forms.
+
+        Returns up to `limit` ranked, active-only candidates from Companies House.
+
+        Returns 503 on a Companies House outage so the FE can fall back to plain
+
+        text input rather than blocking the user. Implemented as an APIView (not a
+
+        ViewSet `list` action) so drf-spectacular emits the response as an object
+
+        with a `results` array rather than auto-wrapping the whole body in `[]`.'
+      summary: Search Companies House for active companies by name
+      parameters:
+      - in: query
+        name: limit
+        schema:
+          type: integer
+        description: Maximum number of results to return (1-20, default 10).
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: Search query (minimum 2 characters).
+        required: true
+      tags:
+      - Registration Validation
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompaniesHouseSearchResponse'
+          description: ''
+        '400':
+          description: No response body
+        '503':
+          description: No response body
+  /api/v1/companies/validate-registration/:
+    post:
+      operationId: api_v1_companies_validate_registration_create
+      description: Validates company registration details against Companies House (for GB) or performs basic validation (for non-GB). Returns normalised registration data on success. This is advisory — save-time enforcement happens in the buyer/supplier serializers via the same shared service.
+      summary: Validate company registration details
+      tags:
+      - Registration Validation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationValidationInput'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RegistrationValidationInput'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RegistrationValidationInput'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistrationValidationResponse'
+          description: ''
+        '400':
+          description: No response body
+components:
+  schemas:
+    CompaniesHouseSearchResult:
+      type: object
+      properties:
+        registration_name:
+          type: string
+        registration_number:
+          type: string
+      required:
+      - registration_name
+      - registration_number
+    RegistrationValidationResponse:
+      type: object
+      properties:
+        registration_name:
+          type: string
+          nullable: true
+        registration_number:
+          type: string
+          nullable: true
+        registration_country_code:
+          type: string
+      required:
+      - registration_country_code
+      - registration_name
+      - registration_number
+    RegistrationValidationInput:
+      type: object
+      properties:
+        registration_name:
+          type: string
+          nullable: true
+        registration_number:
+          type: string
+          nullable: true
+        registration_country_code:
+          type: string
+      required:
+      - registration_country_code
+    CompaniesHouseSearchResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompaniesHouseSearchResult'
+      required:
+      - results
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

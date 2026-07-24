@@ -1,0 +1,103 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed .well-known API
+  version: 0.0.0
+tags:
+- name: .well-known
+paths:
+  /.well-known/oauth-authorization-server:
+    get:
+      operationId: .well_known_oauth_authorization_server_retrieve
+      description: 'RFC 8414 — OAuth 2.0 Authorization Server Metadata.
+
+        Advertised at /.well-known/oauth-authorization-server.'
+      tags:
+      - .well-known
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /.well-known/oauth-protected-resource:
+    get:
+      operationId: .well_known_oauth_protected_resource_retrieve
+      description: 'RFC 9728 — OAuth 2.0 Protected Resource Metadata.
+
+
+        Advertised at /.well-known/oauth-protected-resource for the main Opply MCP,
+
+        and at a path-scoped variant per additional MCP endpoint (e.g. Zendesk at
+
+        /.well-known/oauth-protected-resource/api/v1/mcp/zendesk). ``resource_suffix``
+
+        is appended to the ``/api/v1/mcp/`` base so the advertised ``resource``
+
+        matches the endpoint the client is connecting to.
+
+
+        ``scopes_supported`` is scoped to the endpoint so each MCP has its own consent
+
+        surface: ``scope_prefix`` narrows to a single endpoint''s scopes (e.g.
+
+        ``zendesk`` → ``zendesk:read``/``zendesk:write``), while
+
+        ``exclude_scope_prefixes`` drops another endpoint''s scopes from the main
+
+        metadata (so the root Opply MCP does not advertise ``zendesk:*``).'
+      tags:
+      - .well-known
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /.well-known/oauth-protected-resource/api/v1/mcp/zendesk:
+    get:
+      operationId: .well_known_oauth_protected_resource_api_v1_mcp_zendesk_retrieve
+      description: 'RFC 9728 — OAuth 2.0 Protected Resource Metadata.
+
+
+        Advertised at /.well-known/oauth-protected-resource for the main Opply MCP,
+
+        and at a path-scoped variant per additional MCP endpoint (e.g. Zendesk at
+
+        /.well-known/oauth-protected-resource/api/v1/mcp/zendesk). ``resource_suffix``
+
+        is appended to the ``/api/v1/mcp/`` base so the advertised ``resource``
+
+        matches the endpoint the client is connecting to.
+
+
+        ``scopes_supported`` is scoped to the endpoint so each MCP has its own consent
+
+        surface: ``scope_prefix`` narrows to a single endpoint''s scopes (e.g.
+
+        ``zendesk`` → ``zendesk:read``/``zendesk:write``), while
+
+        ``exclude_scope_prefixes`` drops another endpoint''s scopes from the main
+
+        metadata (so the root Opply MCP does not advertise ``zendesk:*``).'
+      tags:
+      - .well-known
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

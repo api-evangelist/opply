@@ -1,0 +1,925 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Users API
+  version: 0.0.0
+tags:
+- name: Users
+paths:
+  /api/v1/users/delete_user:
+    delete:
+      operationId: api_v1_users_delete_user_destroy
+      tags:
+      - Users
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/users/login/:
+    post:
+      operationId: api_v1_users_login_create
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAuthToken'
+          description: ''
+  /api/v1/users/login/admin/:
+    post:
+      operationId: api_v1_users_login_admin_create
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAuthToken'
+          description: ''
+  /api/v1/users/oauth/get_token/:
+    get:
+      operationId: api_v1_users_oauth_get_token_retrieve
+      description: Updates and retrieves user accounts
+      summary: get an OAuth token to access our Lambda API
+      tags:
+      - Users
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+          description: ''
+  /api/v1/users/reset-password/commit/:
+    post:
+      operationId: api_v1_users_reset_password_commit_create
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetCommit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetCommit'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetCommit'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAuthToken'
+          description: ''
+        '204':
+          description: No response body
+  /api/v1/users/reset-password/init/:
+    post:
+      operationId: api_v1_users_reset_password_init_create
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetInit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetInit'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetInit'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleMessageResponse'
+          description: ''
+  /api/v1/users/users/{uuid}/:
+    get:
+      operationId: api_v1_users_users_retrieve
+      description: Updates and retrieves user accounts
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Users
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: api_v1_users_users_update
+      description: Updates and retrieves user accounts
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: api_v1_users_users_partial_update
+      description: Updates and retrieves user accounts
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/v1/users/users/company-members/:
+    get:
+      operationId: api_v1_users_users_company_members_list
+      description: Returns a list of team members
+      summary: List of company members
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Users
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCompanyMembersListList'
+          description: ''
+  /api/v1/users/users/connect/google/:
+    post:
+      operationId: api_v1_users_users_connect_google_create
+      description: Updates and retrieves user accounts
+      summary: Connect Google account for Deals
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleHandshake'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GoogleHandshake'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GoogleHandshake'
+        required: true
+      responses:
+        '200':
+          description: No response body
+  /api/v1/users/users/create-member/:
+    post:
+      operationId: api_v1_users_users_create_member_create
+      description: Create a member from a company after invitation was accepted
+      summary: Create a company member from invite
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInviteAcceptRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserInviteAcceptRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserInviteAcceptRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUser'
+          description: ''
+  /api/v1/users/users/generate-jwt-token/:
+    post:
+      operationId: api_v1_users_users_generate_jwt_token_create
+      description: Updates and retrieves user accounts
+      summary: Generate JWT token for a user
+      tags:
+      - Users
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserJWTTokenResponse'
+          description: ''
+  /api/v1/users/users/info/:
+    get:
+      operationId: api_v1_users_users_info_retrieve
+      description: Returns information about the current user
+      tags:
+      - Users
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Userflow'
+          description: ''
+  /api/v1/users/users/invite-user/:
+    post:
+      operationId: api_v1_users_users_invite_user_create
+      description: 'Invites user to join current company. Only admins of the
+
+        current company may issue invites — `created_by` (the founder)
+
+        is always admin via the owner-admin backfill, so they can
+
+        invite without extra plumbing.'
+      summary: Invite a user to join the company
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInviteCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserInviteCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserInviteCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailInviteResponse'
+          description: ''
+  /api/v1/users/users/me/:
+    get:
+      operationId: api_v1_users_users_me_retrieve
+      description: Updates and retrieves user accounts
+      summary: Get supplier's details for Deals.
+      tags:
+      - Users
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+          description: ''
+  /api/v1/users/users/remove-member/:
+    post:
+      operationId: api_v1_users_users_remove_member_create
+      description: Removes a member from a company, currently only if invite wasn't accepted
+      summary: Remove company member
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveMember'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RemoveMember'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RemoveMember'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
+          description: ''
+  /api/v1/users/users/set-admin/:
+    post:
+      operationId: api_v1_users_users_set_admin_create
+      description: 'Toggle the admin permission for a member of the caller''s company.
+
+
+        Only admins may call this. The founder (`Company.created_by`) is
+
+        always admin and cannot be demoted — the request is rejected
+
+        with 400.'
+      summary: Grant or revoke admin permission for a team member
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetAdmin'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetAdmin'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SetAdmin'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyMembersList'
+          description: ''
+  /api/v1/users/users/update-info/:
+    patch:
+      operationId: api_v1_users_users_update_info_partial_update
+      description: Partially update information about the current user
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Userflow'
+          description: ''
+  /api/v1/users/users/update-password/:
+    put:
+      operationId: api_v1_users_users_update_password_update
+      description: Updates password for the current user
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePassword'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdatePassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UpdatePassword'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    SingleMessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          maxLength: 255
+      required:
+      - message
+    CreateUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 128
+        auth_token:
+          type: string
+          readOnly: true
+      required:
+      - auth_token
+      - email
+      - id
+      - password
+    SetAdmin:
+      type: object
+      properties:
+        user_uuid:
+          type: string
+          format: uuid
+        is_admin:
+          type: boolean
+      required:
+      - is_admin
+      - user_uuid
+    UserAuthToken:
+      type: object
+      properties:
+        token:
+          type: string
+          readOnly: true
+      required:
+      - token
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        job_title:
+          type: string
+          nullable: true
+          maxLength: 255
+        tc_version:
+          type: number
+          format: double
+      required:
+      - email
+      - id
+      - uuid
+    UserJWTTokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+      required:
+      - token
+    EmailInviteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        is_admin:
+          type: boolean
+        status:
+          $ref: '#/components/schemas/EmailInviteResponseStatusEnum'
+        company:
+          type: integer
+      required:
+      - company
+      - created
+      - email
+      - first_name
+      - id
+      - last_name
+      - modified
+      - uuid
+    GoogleHandshake:
+      type: object
+      properties:
+        opply_jwt:
+          type: string
+      required:
+      - opply_jwt
+    UserInviteCreate:
+      type: object
+      properties:
+        first_name:
+          type: string
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        is_admin:
+          type: boolean
+          default: false
+      required:
+      - email
+      - first_name
+      - last_name
+    PasswordResetInit:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+      - email
+      - password
+    Token:
+      type: object
+      properties:
+        access_token:
+          type: string
+      required:
+      - access_token
+    UpdatePassword:
+      type: object
+      properties:
+        current_password:
+          type: string
+        password:
+          type: string
+          maxLength: 128
+      required:
+      - current_password
+      - password
+    Userflow:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        job_title:
+          type: string
+          nullable: true
+          maxLength: 255
+        tc_version:
+          type: number
+          format: double
+        userflow_signature:
+          type: string
+          readOnly: true
+        signed_up_at:
+          type: string
+          readOnly: true
+        role:
+          allOf:
+          - $ref: '#/components/schemas/CompanyRoleEnum'
+          readOnly: true
+      required:
+      - email
+      - id
+      - role
+      - signed_up_at
+      - userflow_signature
+      - uuid
+    CompanyRoleEnum:
+      enum:
+      - admin
+      - member
+      - staff
+      type: string
+      description: '* `admin` - Admin
+
+        * `member` - Member
+
+        * `staff` - Staff'
+    PatchedUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        job_title:
+          type: string
+          nullable: true
+          maxLength: 255
+        tc_version:
+          type: number
+          format: double
+    UserInviteAcceptRequest:
+      type: object
+      properties:
+        invite_uuid:
+          type: string
+          format: uuid
+        password:
+          type: string
+      required:
+      - invite_uuid
+      - password
+    CompanyMembersList:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          nullable: true
+        first_name:
+          type: string
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+        email:
+          type: string
+          format: email
+        status:
+          $ref: '#/components/schemas/CompanyMembersListStatusEnum'
+        is_admin:
+          type: boolean
+          default: false
+      required:
+      - email
+      - first_name
+      - last_name
+      - status
+      - uuid
+    UserDetails:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        company_name:
+          type: string
+          readOnly: true
+      required:
+      - company_name
+      - email
+      - uuid
+    PaginatedCompanyMembersListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyMembersList'
+    RemoveMember:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    EmailInviteResponseStatusEnum:
+      enum:
+      - pending
+      - accepted
+      type: string
+      description: '* `pending` - Pending
+
+        * `accepted` - Accepted'
+    PasswordResetCommit:
+      type: object
+      properties:
+        key:
+          type: string
+        password:
+          type: string
+        confirm_password:
+          type: string
+        auto_login:
+          type: boolean
+          default: false
+          description: If true, the response includes the user's auth token so the client can log them in immediately. Used by the welcome / first-password-set onboarding flow to avoid bouncing the user back through the login screen.
+      required:
+      - confirm_password
+      - key
+      - password
+    CompanyMembersListStatusEnum:
+      enum:
+      - pending
+      - accepted
+      - owner
+      type: string
+      description: '* `pending` - Pending
+
+        * `accepted` - Accepted
+
+        * `owner` - Owner'
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

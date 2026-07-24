@@ -1,0 +1,259 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Buyer Financial Documents API
+  version: 0.0.0
+tags:
+- name: Buyer Financial Documents
+paths:
+  /api/v1/companies/brand/financial-documents/:
+    get:
+      operationId: api_v1_companies_brand_financial_documents_list
+      description: 'List, upload and delete financial documents that buyers attach to support
+
+        credit-limit reviews.
+
+
+        Tenant isolation: queryset is always filtered to ``request.user_company``.'
+      summary: Buyer financial documents (P&L, balance sheet, management accounts)
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Buyer Financial Documents
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBuyerFinancialDocumentList'
+          description: ''
+    post:
+      operationId: api_v1_companies_brand_financial_documents_create
+      description: 'List, upload and delete financial documents that buyers attach to support
+
+        credit-limit reviews.
+
+
+        Tenant isolation: queryset is always filtered to ``request.user_company``.'
+      summary: Upload a financial document
+      tags:
+      - Buyer Financial Documents
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BuyerFinancialDocumentUpload'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerFinancialDocument'
+          description: ''
+  /api/v1/companies/brand/financial-documents/{uuid}/:
+    delete:
+      operationId: api_v1_companies_brand_financial_documents_destroy
+      description: 'List, upload and delete financial documents that buyers attach to support
+
+        credit-limit reviews.
+
+
+        Tenant isolation: queryset is always filtered to ``request.user_company``.'
+      summary: Delete a financial document
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Buyer Financial Documents
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: Document deleted
+components:
+  schemas:
+    BuyerFinancialDocumentUpload:
+      type: object
+      description: Write serializer for multipart uploads.
+      properties:
+        file:
+          type: string
+          format: binary
+        type:
+          allOf:
+          - $ref: '#/components/schemas/BuyerFinancialDocumentTypeEnum'
+          default: management_accounts
+      required:
+      - file
+    BuyerFinancialDocumentTypeEnum:
+      enum:
+      - management_accounts
+      - audited_accounts
+      - balance_sheet
+      - profit_and_loss
+      - cashflow_forecast
+      - sales_tax_exemption
+      - other
+      type: string
+      description: '* `management_accounts` - Management Accounts
+
+        * `audited_accounts` - Audited Accounts
+
+        * `balance_sheet` - Balance Sheet
+
+        * `profit_and_loss` - Profit and Loss
+
+        * `cashflow_forecast` - Cashflow Forecast
+
+        * `sales_tax_exemption` - Sales Tax Exemption
+
+        * `other` - Other'
+    PaginatedBuyerFinancialDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerFinancialDocument'
+    BuyerFinancialDocument:
+      type: object
+      description: Read serializer returned for list/create responses.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/BuyerFinancialDocumentTypeEnum'
+          readOnly: true
+          description: 'Category of financial document — drives how the credit team triages the upload.
+
+
+            * `management_accounts` - Management Accounts
+
+            * `audited_accounts` - Audited Accounts
+
+            * `balance_sheet` - Balance Sheet
+
+            * `profit_and_loss` - Profit and Loss
+
+            * `cashflow_forecast` - Cashflow Forecast
+
+            * `sales_tax_exemption` - Sales Tax Exemption
+
+            * `other` - Other'
+        original_filename:
+          type: string
+          readOnly: true
+          description: Filename as supplied by the user at upload time (preserved for display).
+        file_size_bytes:
+          type: integer
+          readOnly: true
+          description: Size of the uploaded file in bytes; capped at the application-level upload limit.
+        file_url:
+          type: string
+          nullable: true
+          readOnly: true
+        uploaded_by_name:
+          type: string
+          nullable: true
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+          description: Display name (sales-tax exemptions only; blank for other financial docs).
+        start_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          description: Start date of document validity (sales-tax exemptions only).
+        end_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          description: End/expiry date of document validity (sales-tax exemptions only).
+        certificate_number:
+          type: string
+          readOnly: true
+          description: Permit / exemption / certificate number as printed (sales-tax exemptions only).
+        jurisdiction:
+          type: string
+          readOnly: true
+          description: State/region the document applies in, as printed (e.g. 'Michigan'). For US documents the structured counterpart is us_state_jurisdiction.
+        issuing_authority:
+          type: string
+          readOnly: true
+          description: Body that issued the document (e.g. 'Michigan Department of Treasury').
+        holder_name:
+          type: string
+          readOnly: true
+          description: Entity the document is issued to as printed — normally the buyer company.
+      required:
+      - certificate_number
+      - created_at
+      - end_date
+      - file_size_bytes
+      - file_url
+      - holder_name
+      - issuing_authority
+      - jurisdiction
+      - name
+      - original_filename
+      - start_date
+      - type
+      - uploaded_by_name
+      - uuid
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

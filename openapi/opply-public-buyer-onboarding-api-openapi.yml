@@ -1,0 +1,3605 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Public Buyer Onboarding API
+  version: 0.0.0
+tags:
+- name: Public Buyer Onboarding
+paths:
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/:
+    get:
+      operationId: api_v1_buyer_onboarding_public_buyers_retrieve
+      description: Get buyer onboarding details including country information.
+      summary: Get buyer onboarding details
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerOnboardingDetail'
+          description: ''
+        '404':
+          description: Buyer onboarding not found
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/account-details/:
+    get:
+      operationId: api_v1_buyer_onboarding_public_buyers_account_details_retrieve
+      description: Get account details for this buyer.
+      summary: Get account details
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetail'
+          description: ''
+        '404':
+          description: Account details not found or buyer onboarding not found
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/account-details/create/:
+    post:
+      operationId: api_v1_buyer_onboarding_public_buyers_account_details_create_create
+      description: Create account details for this buyer. Can only be created once.
+      summary: Create account details
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AccountDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AccountDetail'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetail'
+          description: ''
+        '400':
+          description: Invalid input data or account details already exist
+        '404':
+          description: Buyer onboarding not found
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/account-details/update/:
+    patch:
+      operationId: api_v1_buyer_onboarding_public_buyers_account_details_update_partial_update
+      description: Update account details for this buyer.
+      summary: Update account details
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAccountDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAccountDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAccountDetail'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetail'
+          description: ''
+        '400':
+          description: Invalid input data
+        '404':
+          description: Account details not found or buyer onboarding not found
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/delivery-addresses/:
+    get:
+      operationId: api_v1_buyer_onboarding_public_buyers_delivery_addresses_list
+      description: Get all delivery addresses for the buyer onboarding.
+      summary: Get delivery addresses
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBuyerOnboardingDeliveryAddressList'
+          description: ''
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/delivery-addresses/{address_uuid}/delete/:
+    delete:
+      operationId: api_v1_buyer_onboarding_public_buyers_delivery_addresses_delete_destroy
+      description: Delete a delivery address by UUID.
+      summary: Delete delivery address
+      parameters:
+      - in: path
+        name: address_uuid
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: Address deleted successfully
+        '404':
+          description: Address not found
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/delivery-addresses/{address_uuid}/update/:
+    patch:
+      operationId: api_v1_buyer_onboarding_public_buyers_delivery_addresses_update_partial_update
+      description: Update an existing delivery address by UUID.
+      summary: Update delivery address
+      parameters:
+      - in: path
+        name: address_uuid
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBuyerOnboardingDeliveryAddress'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBuyerOnboardingDeliveryAddress'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBuyerOnboardingDeliveryAddress'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerOnboardingDeliveryAddress'
+          description: ''
+        '400':
+          description: Validation error
+        '404':
+          description: Address not found
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/delivery-addresses/create/:
+    post:
+      operationId: api_v1_buyer_onboarding_public_buyers_delivery_addresses_create_create
+      description: Create a new delivery address for the buyer onboarding.
+      summary: Create delivery address
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuyerOnboardingDeliveryAddress'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BuyerOnboardingDeliveryAddress'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BuyerOnboardingDeliveryAddress'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerOnboardingDeliveryAddress'
+          description: ''
+        '400':
+          description: Validation error
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/delivery-details/:
+    get:
+      operationId: api_v1_buyer_onboarding_public_buyers_delivery_details_retrieve
+      description: Get delivery details for this buyer.
+      summary: Get delivery details
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryDetails'
+          description: ''
+        '404':
+          description: Delivery details not found or buyer onboarding not found
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/delivery-details/create/:
+    post:
+      operationId: api_v1_buyer_onboarding_public_buyers_delivery_details_create_create
+      description: Create delivery details for this buyer. Can only be created once.
+      summary: Create delivery details
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryDetails'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeliveryDetails'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeliveryDetails'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryDetails'
+          description: ''
+        '400':
+          description: Invalid input data or delivery details already exist
+        '404':
+          description: Buyer onboarding not found
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/delivery-details/update/:
+    patch:
+      operationId: api_v1_buyer_onboarding_public_buyers_delivery_details_update_partial_update
+      description: Update delivery details for this buyer.
+      summary: Update delivery details
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDeliveryDetails'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDeliveryDetails'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDeliveryDetails'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryDetails'
+          description: ''
+        '400':
+          description: Invalid input data
+        '404':
+          description: Delivery details not found or buyer onboarding not found
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/delivery-emails/:
+    get:
+      operationId: api_v1_buyer_onboarding_public_buyers_delivery_emails_list
+      description: 'GET: Get all delivery emails for the buyer onboarding.
+
+
+        POST: Create or update delivery emails. Accepts an object with ''delivery_emails'' array. If UUID is provided and exists, the email will be updated. If UUID is not provided or doesn''t exist, a new email will be created. Emails not in the payload will be deleted.'
+      summary: Get or update delivery emails
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDeliveryEmailList'
+          description: ''
+        '400':
+          description: Validation error
+    post:
+      operationId: api_v1_buyer_onboarding_public_buyers_delivery_emails_create
+      description: 'GET: Get all delivery emails for the buyer onboarding.
+
+
+        POST: Create or update delivery emails. Accepts an object with ''delivery_emails'' array. If UUID is provided and exists, the email will be updated. If UUID is not provided or doesn''t exist, a new email will be created. Emails not in the payload will be deleted.'
+      summary: Get or update delivery emails
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryEmailList'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeliveryEmailList'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeliveryEmailList'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDeliveryEmailList'
+          description: ''
+        '400':
+          description: Validation error
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/documents/:
+    get:
+      operationId: api_v1_buyer_onboarding_public_buyers_documents_list
+      description: Get all documents for the buyer onboarding.
+      summary: List documents
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBuyerOnboardingDocumentList'
+          description: ''
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/documents/{document_uuid}/delete/:
+    delete:
+      operationId: api_v1_buyer_onboarding_public_buyers_documents_delete_destroy
+      description: Delete a document by UUID.
+      summary: Delete document
+      parameters:
+      - in: path
+        name: document_uuid
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: Document deleted successfully
+        '404':
+          description: Document not found
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/documents/upload/:
+    post:
+      operationId: api_v1_buyer_onboarding_public_buyers_documents_upload_create
+      description: Upload a document for the buyer onboarding.
+      summary: Upload document
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuyerOnboardingDocument'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BuyerOnboardingDocument'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BuyerOnboardingDocument'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerOnboardingDocument'
+          description: ''
+        '400':
+          description: Validation error
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/phases/:
+    get:
+      operationId: api_v1_buyer_onboarding_public_buyers_phases_list
+      description: Get all available onboarding phases with their step templates.
+      summary: Get onboarding phases
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOnboardingStepTemplateList'
+          description: ''
+        '404':
+          description: Buyer onboarding not found
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/steps/:
+    get:
+      operationId: api_v1_buyer_onboarding_public_buyers_steps_list
+      description: Get all onboarding steps for this buyer, organized by phase.
+      summary: List buyer onboarding steps
+      parameters:
+      - in: query
+        name: is_completed
+        schema:
+          type: boolean
+        description: Filter by completion status (true/false)
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: phase
+        schema:
+          type: string
+        description: Filter by phase (phase_1, phase_2, phase_3, phase_4)
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBuyerOnboardingStepList'
+          description: ''
+        '404':
+          description: Buyer onboarding not found
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/steps/{step_id}/:
+    get:
+      operationId: api_v1_buyer_onboarding_public_buyers_steps_retrieve
+      description: Get details of a specific onboarding step.
+      summary: Get buyer onboarding step
+      parameters:
+      - in: path
+        name: step_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerOnboardingStep'
+          description: ''
+        '404':
+          description: Step not found
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/suppliers/:
+    get:
+      operationId: api_v1_buyer_onboarding_public_buyers_suppliers_list
+      description: Get all suppliers for this buyer.
+      summary: List suppliers
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSupplierList'
+          description: ''
+        '404':
+          description: Buyer onboarding not found
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/suppliers/{supplier_id}/:
+    get:
+      operationId: api_v1_buyer_onboarding_public_buyers_suppliers_retrieve
+      description: Get details of a specific supplier.
+      summary: Get supplier details
+      parameters:
+      - in: path
+        name: supplier_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supplier'
+          description: ''
+        '404':
+          description: Supplier not found
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/suppliers/{supplier_id}/update/:
+    patch:
+      operationId: api_v1_buyer_onboarding_public_buyers_suppliers_update_partial_update
+      description: Update a supplier for this buyer.
+      summary: Update supplier
+      parameters:
+      - in: path
+        name: supplier_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplier'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplier'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplier'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supplier'
+          description: ''
+        '400':
+          description: Invalid input data
+        '404':
+          description: Supplier not found or buyer onboarding not found
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/suppliers/complete/:
+    post:
+      operationId: api_v1_buyer_onboarding_public_buyers_suppliers_complete_create
+      description: Mark the supplier section as complete for this buyer.
+      summary: Mark supplier section as complete
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuyerOnboardingStep'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BuyerOnboardingStep'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BuyerOnboardingStep'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: Supplier section marked as complete
+        '404':
+          description: Buyer onboarding not found
+  /api/v1/buyer-onboarding/public/buyers/{uuid}/suppliers/create/:
+    post:
+      operationId: api_v1_buyer_onboarding_public_buyers_suppliers_create_create
+      description: Create a new supplier for this buyer.
+      summary: Create supplier
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Unique identifier for sharing the onboarding form
+        required: true
+      tags:
+      - Public Buyer Onboarding
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Supplier'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Supplier'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Supplier'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supplier'
+          description: ''
+        '400':
+          description: Invalid input data
+        '404':
+          description: Buyer onboarding not found
+components:
+  schemas:
+    BuyerOnboardingDocument:
+      type: object
+      description: Serializer for BuyerOnboardingDocument model.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unique identifier for document lookup
+        document:
+          type: string
+          format: uri
+          description: Uploaded document
+        document_url:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          nullable: true
+          description: Optional description of the document
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - document
+      - document_url
+      - modified_at
+      - uuid
+    Country:
+      enum:
+      - AF
+      - AX
+      - AL
+      - DZ
+      - AS
+      - AD
+      - AO
+      - AI
+      - AQ
+      - AG
+      - AR
+      - AM
+      - AW
+      - AU
+      - AT
+      - AZ
+      - BS
+      - BH
+      - BD
+      - BB
+      - BY
+      - BE
+      - BZ
+      - BJ
+      - BM
+      - BT
+      - BO
+      - BQ
+      - BA
+      - BW
+      - BV
+      - BR
+      - IO
+      - BN
+      - BG
+      - BF
+      - BI
+      - CV
+      - KH
+      - CM
+      - CA
+      - KY
+      - CF
+      - TD
+      - CL
+      - CN
+      - CX
+      - CC
+      - CO
+      - KM
+      - CG
+      - CD
+      - CK
+      - CR
+      - CI
+      - HR
+      - CU
+      - CW
+      - CY
+      - CZ
+      - DK
+      - DJ
+      - DM
+      - DO
+      - EC
+      - EG
+      - SV
+      - GQ
+      - ER
+      - EE
+      - SZ
+      - ET
+      - FK
+      - FO
+      - FJ
+      - FI
+      - FR
+      - GF
+      - PF
+      - TF
+      - GA
+      - GM
+      - GE
+      - DE
+      - GH
+      - GI
+      - GR
+      - GL
+      - GD
+      - GP
+      - GU
+      - GT
+      - GG
+      - GN
+      - GW
+      - GY
+      - HT
+      - HM
+      - VA
+      - HN
+      - HK
+      - HU
+      - IS
+      - IN
+      - ID
+      - IR
+      - IQ
+      - IE
+      - IM
+      - IL
+      - IT
+      - JM
+      - JP
+      - JE
+      - JO
+      - KZ
+      - KE
+      - KI
+      - KW
+      - KG
+      - LA
+      - LV
+      - LB
+      - LS
+      - LR
+      - LY
+      - LI
+      - LT
+      - LU
+      - MO
+      - MG
+      - MW
+      - MY
+      - MV
+      - ML
+      - MT
+      - MH
+      - MQ
+      - MR
+      - MU
+      - YT
+      - MX
+      - FM
+      - MD
+      - MC
+      - MN
+      - ME
+      - MS
+      - MA
+      - MZ
+      - MM
+      - NA
+      - NR
+      - NP
+      - NL
+      - NC
+      - NZ
+      - NI
+      - NE
+      - NG
+      - NU
+      - NF
+      - KP
+      - MK
+      - XI
+      - MP
+      - 'NO'
+      - OM
+      - PK
+      - PW
+      - PS
+      - PA
+      - PG
+      - PY
+      - PE
+      - PH
+      - PN
+      - PL
+      - PT
+      - PR
+      - QA
+      - RE
+      - RO
+      - RU
+      - RW
+      - BL
+      - SH
+      - KN
+      - LC
+      - MF
+      - PM
+      - VC
+      - WS
+      - SM
+      - ST
+      - SA
+      - SN
+      - RS
+      - SC
+      - SL
+      - SG
+      - SX
+      - SK
+      - SI
+      - SB
+      - SO
+      - ZA
+      - GS
+      - KR
+      - SS
+      - ES
+      - LK
+      - SD
+      - SR
+      - SJ
+      - SE
+      - CH
+      - SY
+      - TW
+      - TJ
+      - TZ
+      - TH
+      - TL
+      - TG
+      - TK
+      - TO
+      - TT
+      - TN
+      - TR
+      - TM
+      - TC
+      - TV
+      - UG
+      - UA
+      - AE
+      - GB
+      - UM
+      - US
+      - UY
+      - UZ
+      - VU
+      - VE
+      - VN
+      - VG
+      - VI
+      - WF
+      - EH
+      - YE
+      - ZM
+      - ZW
+      type: string
+      description: '* `AF` - Afghanistan
+
+        * `AX` - Åland Islands
+
+        * `AL` - Albania
+
+        * `DZ` - Algeria
+
+        * `AS` - American Samoa
+
+        * `AD` - Andorra
+
+        * `AO` - Angola
+
+        * `AI` - Anguilla
+
+        * `AQ` - Antarctica
+
+        * `AG` - Antigua and Barbuda
+
+        * `AR` - Argentina
+
+        * `AM` - Armenia
+
+        * `AW` - Aruba
+
+        * `AU` - Australia
+
+        * `AT` - Austria
+
+        * `AZ` - Azerbaijan
+
+        * `BS` - Bahamas
+
+        * `BH` - Bahrain
+
+        * `BD` - Bangladesh
+
+        * `BB` - Barbados
+
+        * `BY` - Belarus
+
+        * `BE` - Belgium
+
+        * `BZ` - Belize
+
+        * `BJ` - Benin
+
+        * `BM` - Bermuda
+
+        * `BT` - Bhutan
+
+        * `BO` - Bolivia
+
+        * `BQ` - Bonaire, Sint Eustatius and Saba
+
+        * `BA` - Bosnia and Herzegovina
+
+        * `BW` - Botswana
+
+        * `BV` - Bouvet Island
+
+        * `BR` - Brazil
+
+        * `IO` - British Indian Ocean Territory
+
+        * `BN` - Brunei
+
+        * `BG` - Bulgaria
+
+        * `BF` - Burkina Faso
+
+        * `BI` - Burundi
+
+        * `CV` - Cabo Verde
+
+        * `KH` - Cambodia
+
+        * `CM` - Cameroon
+
+        * `CA` - Canada
+
+        * `KY` - Cayman Islands
+
+        * `CF` - Central African Republic
+
+        * `TD` - Chad
+
+        * `CL` - Chile
+
+        * `CN` - China
+
+        * `CX` - Christmas Island
+
+        * `CC` - Cocos (Keeling) Islands
+
+        * `CO` - Colombia
+
+        * `KM` - Comoros
+
+        * `CG` - Congo
+
+        * `CD` - Congo (the Democratic Republic of the)
+
+        * `CK` - Cook Islands
+
+        * `CR` - Costa Rica
+
+        * `CI` - Côte d''Ivoire
+
+        * `HR` - Croatia
+
+        * `CU` - Cuba
+
+        * `CW` - Curaçao
+
+        * `CY` - Cyprus
+
+        * `CZ` - Czechia
+
+        * `DK` - Denmark
+
+        * `DJ` - Djibouti
+
+        * `DM` - Dominica
+
+        * `DO` - Dominican Republic
+
+        * `EC` - Ecuador
+
+        * `EG` - Egypt
+
+        * `SV` - El Salvador
+
+        * `GQ` - Equatorial Guinea
+
+        * `ER` - Eritrea
+
+        * `EE` - Estonia
+
+        * `SZ` - Eswatini
+
+        * `ET` - Ethiopia
+
+        * `FK` - Falkland Islands (Malvinas)
+
+        * `FO` - Faroe Islands
+
+        * `FJ` - Fiji
+
+        * `FI` - Finland
+
+        * `FR` - France
+
+        * `GF` - French Guiana
+
+        * `PF` - French Polynesia
+
+        * `TF` - French Southern Territories
+
+        * `GA` - Gabon
+
+        * `GM` - Gambia
+
+        * `GE` - Georgia
+
+        * `DE` - Germany
+
+        * `GH` - Ghana
+
+        * `GI` - Gibraltar
+
+        * `GR` - Greece
+
+        * `GL` - Greenland
+
+        * `GD` - Grenada
+
+        * `GP` - Guadeloupe
+
+        * `GU` - Guam
+
+        * `GT` - Guatemala
+
+        * `GG` - Guernsey
+
+        * `GN` - Guinea
+
+        * `GW` - Guinea-Bissau
+
+        * `GY` - Guyana
+
+        * `HT` - Haiti
+
+        * `HM` - Heard Island and McDonald Islands
+
+        * `VA` - Holy See
+
+        * `HN` - Honduras
+
+        * `HK` - Hong Kong
+
+        * `HU` - Hungary
+
+        * `IS` - Iceland
+
+        * `IN` - India
+
+        * `ID` - Indonesia
+
+        * `IR` - Iran
+
+        * `IQ` - Iraq
+
+        * `IE` - Ireland
+
+        * `IM` - Isle of Man
+
+        * `IL` - Israel
+
+        * `IT` - Italy
+
+        * `JM` - Jamaica
+
+        * `JP` - Japan
+
+        * `JE` - Jersey
+
+        * `JO` - Jordan
+
+        * `KZ` - Kazakhstan
+
+        * `KE` - Kenya
+
+        * `KI` - Kiribati
+
+        * `KW` - Kuwait
+
+        * `KG` - Kyrgyzstan
+
+        * `LA` - Laos
+
+        * `LV` - Latvia
+
+        * `LB` - Lebanon
+
+        * `LS` - Lesotho
+
+        * `LR` - Liberia
+
+        * `LY` - Libya
+
+        * `LI` - Liechtenstein
+
+        * `LT` - Lithuania
+
+        * `LU` - Luxembourg
+
+        * `MO` - Macao
+
+        * `MG` - Madagascar
+
+        * `MW` - Malawi
+
+        * `MY` - Malaysia
+
+        * `MV` - Maldives
+
+        * `ML` - Mali
+
+        * `MT` - Malta
+
+        * `MH` - Marshall Islands
+
+        * `MQ` - Martinique
+
+        * `MR` - Mauritania
+
+        * `MU` - Mauritius
+
+        * `YT` - Mayotte
+
+        * `MX` - Mexico
+
+        * `FM` - Micronesia
+
+        * `MD` - Moldova
+
+        * `MC` - Monaco
+
+        * `MN` - Mongolia
+
+        * `ME` - Montenegro
+
+        * `MS` - Montserrat
+
+        * `MA` - Morocco
+
+        * `MZ` - Mozambique
+
+        * `MM` - Myanmar
+
+        * `NA` - Namibia
+
+        * `NR` - Nauru
+
+        * `NP` - Nepal
+
+        * `NL` - Netherlands
+
+        * `NC` - New Caledonia
+
+        * `NZ` - New Zealand
+
+        * `NI` - Nicaragua
+
+        * `NE` - Niger
+
+        * `NG` - Nigeria
+
+        * `NU` - Niue
+
+        * `NF` - Norfolk Island
+
+        * `KP` - North Korea
+
+        * `MK` - North Macedonia
+
+        * `XI` - Northern Ireland
+
+        * `MP` - Northern Mariana Islands
+
+        * `NO` - Norway
+
+        * `OM` - Oman
+
+        * `PK` - Pakistan
+
+        * `PW` - Palau
+
+        * `PS` - Palestine, State of
+
+        * `PA` - Panama
+
+        * `PG` - Papua New Guinea
+
+        * `PY` - Paraguay
+
+        * `PE` - Peru
+
+        * `PH` - Philippines
+
+        * `PN` - Pitcairn
+
+        * `PL` - Poland
+
+        * `PT` - Portugal
+
+        * `PR` - Puerto Rico
+
+        * `QA` - Qatar
+
+        * `RE` - Réunion
+
+        * `RO` - Romania
+
+        * `RU` - Russia
+
+        * `RW` - Rwanda
+
+        * `BL` - Saint Barthélemy
+
+        * `SH` - Saint Helena, Ascension and Tristan da Cunha
+
+        * `KN` - Saint Kitts and Nevis
+
+        * `LC` - Saint Lucia
+
+        * `MF` - Saint Martin (French part)
+
+        * `PM` - Saint Pierre and Miquelon
+
+        * `VC` - Saint Vincent and the Grenadines
+
+        * `WS` - Samoa
+
+        * `SM` - San Marino
+
+        * `ST` - Sao Tome and Principe
+
+        * `SA` - Saudi Arabia
+
+        * `SN` - Senegal
+
+        * `RS` - Serbia
+
+        * `SC` - Seychelles
+
+        * `SL` - Sierra Leone
+
+        * `SG` - Singapore
+
+        * `SX` - Sint Maarten (Dutch part)
+
+        * `SK` - Slovakia
+
+        * `SI` - Slovenia
+
+        * `SB` - Solomon Islands
+
+        * `SO` - Somalia
+
+        * `ZA` - South Africa
+
+        * `GS` - South Georgia and the South Sandwich Islands
+
+        * `KR` - South Korea
+
+        * `SS` - South Sudan
+
+        * `ES` - Spain
+
+        * `LK` - Sri Lanka
+
+        * `SD` - Sudan
+
+        * `SR` - Suriname
+
+        * `SJ` - Svalbard and Jan Mayen
+
+        * `SE` - Sweden
+
+        * `CH` - Switzerland
+
+        * `SY` - Syria
+
+        * `TW` - Taiwan
+
+        * `TJ` - Tajikistan
+
+        * `TZ` - Tanzania
+
+        * `TH` - Thailand
+
+        * `TL` - Timor-Leste
+
+        * `TG` - Togo
+
+        * `TK` - Tokelau
+
+        * `TO` - Tonga
+
+        * `TT` - Trinidad and Tobago
+
+        * `TN` - Tunisia
+
+        * `TR` - Türkiye
+
+        * `TM` - Turkmenistan
+
+        * `TC` - Turks and Caicos Islands
+
+        * `TV` - Tuvalu
+
+        * `UG` - Uganda
+
+        * `UA` - Ukraine
+
+        * `AE` - United Arab Emirates
+
+        * `GB` - United Kingdom
+
+        * `UM` - United States Minor Outlying Islands
+
+        * `US` - United States of America
+
+        * `UY` - Uruguay
+
+        * `UZ` - Uzbekistan
+
+        * `VU` - Vanuatu
+
+        * `VE` - Venezuela
+
+        * `VN` - Vietnam
+
+        * `VG` - Virgin Islands (British)
+
+        * `VI` - Virgin Islands (U.S.)
+
+        * `WF` - Wallis and Futuna
+
+        * `EH` - Western Sahara
+
+        * `YE` - Yemen
+
+        * `ZM` - Zambia
+
+        * `ZW` - Zimbabwe'
+    PriorityEnum:
+      enum:
+      - high
+      - medium
+      - low
+      type: string
+      description: '* `high` - High
+
+        * `medium` - Medium
+
+        * `low` - Low'
+    PaginatedBuyerOnboardingDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerOnboardingDocument'
+    PatchedDeliveryDetails:
+      type: object
+      description: Serializer for delivery details.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        delivery_address:
+          type: string
+          description: 'Delivery address (DEPRECATED: Use buyer_onboarding_delivery_address instead)'
+        delivery_location_type:
+          $ref: '#/components/schemas/DeliveryLocationTypeEnum'
+        delivery_location_type_display:
+          type: string
+          readOnly: true
+        delivery_location_type_other:
+          type: string
+          description: Specify delivery location type when 'Other' is selected
+          maxLength: 255
+        delivery_instructions:
+          type: string
+          description: Delivery instructions
+        delivery_contact_name:
+          type: string
+          description: 'Delivery contact name (DEPRECATED: Use delivery_address relationship instead)'
+          maxLength: 255
+        delivery_contact_phone_number:
+          type: string
+          description: 'Delivery contact phone number (DEPRECATED: Use delivery_address relationship instead)'
+          maxLength: 50
+        delivery_contact_email:
+          type: string
+          format: email
+          description: 'Delivery contact email (DEPRECATED: Use delivery_emails relationship instead)'
+          maxLength: 255
+        warehouse_receiving_hours:
+          type: string
+          description: Warehouse receiving hours
+          maxLength: 255
+        storage_capacity:
+          type: string
+          description: Storage capacity
+          maxLength: 255
+        access_requirements:
+          description: 'Access requirements
+
+
+            * `delivery_appointment` - Delivery appointment requirement
+
+            * `inside_delivery` - Inside delivery Required
+
+            * `lift_gate` - Lift gate required'
+          oneOf:
+          - $ref: '#/components/schemas/AccessRequirementsEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        is_sample_required:
+          type: boolean
+          description: Is a sample required?
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+    BuyerOnboardingStep:
+      type: object
+      description: Serializer for buyer onboarding step with template information.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        template_step:
+          type: integer
+          description: The template this step is based on
+        template_phase:
+          type: string
+          readOnly: true
+        template_phase_display:
+          type: string
+          readOnly: true
+        process_description:
+          type: string
+          readOnly: true
+        template_step_order:
+          type: integer
+          readOnly: true
+        notes:
+          type: string
+          description: Buyer-specific notes for this step
+        is_completed:
+          type: boolean
+          description: Whether this step is completed
+        completed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          description: When this step was completed
+        completed_by:
+          type: integer
+          readOnly: true
+          nullable: true
+          description: Who completed this step
+        completed_by_email:
+          type: string
+          format: email
+          readOnly: true
+        custom_step_order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+          description: Custom order for this buyer (overrides template step order)
+        is_step_visible:
+          type: boolean
+          description: Whether this step is visible for this buyer
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - completed_at
+      - completed_by
+      - completed_by_email
+      - created_at
+      - id
+      - modified_at
+      - process_description
+      - template_phase
+      - template_phase_display
+      - template_step
+      - template_step_order
+    NullEnum:
+      enum:
+      - null
+    PhoneCountryCodeEnum:
+      enum:
+      - '+376'
+      - '+971'
+      - '+93'
+      - '+1268'
+      - '+1264'
+      - '+355'
+      - '+374'
+      - '+244'
+      - '+672'
+      - '+54'
+      - '+1684'
+      - '+43'
+      - '+61'
+      - '+297'
+      - '+994'
+      - '+387'
+      - '+1246'
+      - '+880'
+      - '+32'
+      - '+226'
+      - '+359'
+      - '+973'
+      - '+257'
+      - '+229'
+      - '+590'
+      - '+1441'
+      - '+673'
+      - '+591'
+      - '+55'
+      - '+1242'
+      - '+975'
+      - '+267'
+      - '+375'
+      - '+501'
+      - '+1'
+      - '+243'
+      - '+236'
+      - '+242'
+      - '+41'
+      - '+225'
+      - '+682'
+      - '+56'
+      - '+237'
+      - '+86'
+      - '+57'
+      - '+506'
+      - '+53'
+      - '+238'
+      - '+357'
+      - '+420'
+      - '+49'
+      - '+253'
+      - '+45'
+      - '+1767'
+      - '+1809'
+      - '+213'
+      - '+593'
+      - '+372'
+      - '+20'
+      - '+212'
+      - '+291'
+      - '+34'
+      - '+251'
+      - '+358'
+      - '+679'
+      - '+500'
+      - '+691'
+      - '+298'
+      - '+33'
+      - '+241'
+      - '+44'
+      - '+1473'
+      - '+995'
+      - '+594'
+      - '+441481'
+      - '+233'
+      - '+350'
+      - '+299'
+      - '+220'
+      - '+224'
+      - '+240'
+      - '+30'
+      - '+502'
+      - '+1671'
+      - '+245'
+      - '+595'
+      - '+852'
+      - '+504'
+      - '+385'
+      - '+509'
+      - '+36'
+      - '+62'
+      - '+353'
+      - '+972'
+      - '+441624'
+      - '+91'
+      - '+246'
+      - '+964'
+      - '+98'
+      - '+354'
+      - '+39'
+      - '+441534'
+      - '+1876'
+      - '+962'
+      - '+81'
+      - '+254'
+      - '+996'
+      - '+855'
+      - '+686'
+      - '+269'
+      - '+1869'
+      - '+850'
+      - '+82'
+      - '+965'
+      - '+345'
+      - '+7'
+      - '+856'
+      - '+961'
+      - '+1758'
+      - '+423'
+      - '+94'
+      - '+231'
+      - '+266'
+      - '+370'
+      - '+352'
+      - '+371'
+      - '+218'
+      - '+377'
+      - '+373'
+      - '+382'
+      - '+261'
+      - '+692'
+      - '+389'
+      - '+223'
+      - '+95'
+      - '+976'
+      - '+853'
+      - '+1670'
+      - '+596'
+      - '+222'
+      - '+1664'
+      - '+356'
+      - '+230'
+      - '+960'
+      - '+265'
+      - '+52'
+      - '+60'
+      - '+258'
+      - '+264'
+      - '+687'
+      - '+227'
+      - '+234'
+      - '+505'
+      - '+31'
+      - '+47'
+      - '+977'
+      - '+674'
+      - '+683'
+      - '+64'
+      - '+968'
+      - '+507'
+      - '+51'
+      - '+689'
+      - '+675'
+      - '+63'
+      - '+92'
+      - '+48'
+      - '+508'
+      - '+1787'
+      - '+970'
+      - '+351'
+      - '+680'
+      - '+974'
+      - '+262'
+      - '+40'
+      - '+381'
+      - '+250'
+      - '+966'
+      - '+677'
+      - '+248'
+      - '+249'
+      - '+46'
+      - '+65'
+      - '+290'
+      - '+386'
+      - '+421'
+      - '+232'
+      - '+378'
+      - '+221'
+      - '+252'
+      - '+597'
+      - '+239'
+      - '+503'
+      - '+963'
+      - '+268'
+      - '+1649'
+      - '+235'
+      - '+228'
+      - '+66'
+      - '+992'
+      - '+690'
+      - '+670'
+      - '+993'
+      - '+216'
+      - '+676'
+      - '+90'
+      - '+1868'
+      - '+688'
+      - '+886'
+      - '+255'
+      - '+380'
+      - '+256'
+      - '+598'
+      - '+998'
+      - '+379'
+      - '+1784'
+      - '+58'
+      - '+1284'
+      - '+1340'
+      - '+84'
+      - '+678'
+      - '+681'
+      - '+685'
+      - '+967'
+      - '+27'
+      - '+260'
+      - '+263'
+      type: string
+      description: '* `+376` - +376
+
+        * `+971` - +971
+
+        * `+93` - +93
+
+        * `+1268` - +1268
+
+        * `+1264` - +1264
+
+        * `+355` - +355
+
+        * `+374` - +374
+
+        * `+244` - +244
+
+        * `+672` - +672
+
+        * `+54` - +54
+
+        * `+1684` - +1684
+
+        * `+43` - +43
+
+        * `+61` - +61
+
+        * `+297` - +297
+
+        * `+994` - +994
+
+        * `+387` - +387
+
+        * `+1246` - +1246
+
+        * `+880` - +880
+
+        * `+32` - +32
+
+        * `+226` - +226
+
+        * `+359` - +359
+
+        * `+973` - +973
+
+        * `+257` - +257
+
+        * `+229` - +229
+
+        * `+590` - +590
+
+        * `+1441` - +1441
+
+        * `+673` - +673
+
+        * `+591` - +591
+
+        * `+55` - +55
+
+        * `+1242` - +1242
+
+        * `+975` - +975
+
+        * `+267` - +267
+
+        * `+375` - +375
+
+        * `+501` - +501
+
+        * `+1` - +1
+
+        * `+243` - +243
+
+        * `+236` - +236
+
+        * `+242` - +242
+
+        * `+41` - +41
+
+        * `+225` - +225
+
+        * `+682` - +682
+
+        * `+56` - +56
+
+        * `+237` - +237
+
+        * `+86` - +86
+
+        * `+57` - +57
+
+        * `+506` - +506
+
+        * `+53` - +53
+
+        * `+238` - +238
+
+        * `+357` - +357
+
+        * `+420` - +420
+
+        * `+49` - +49
+
+        * `+253` - +253
+
+        * `+45` - +45
+
+        * `+1767` - +1767
+
+        * `+1809` - +1809
+
+        * `+213` - +213
+
+        * `+593` - +593
+
+        * `+372` - +372
+
+        * `+20` - +20
+
+        * `+212` - +212
+
+        * `+291` - +291
+
+        * `+34` - +34
+
+        * `+251` - +251
+
+        * `+358` - +358
+
+        * `+679` - +679
+
+        * `+500` - +500
+
+        * `+691` - +691
+
+        * `+298` - +298
+
+        * `+33` - +33
+
+        * `+241` - +241
+
+        * `+44` - +44
+
+        * `+1473` - +1473
+
+        * `+995` - +995
+
+        * `+594` - +594
+
+        * `+441481` - +441481
+
+        * `+233` - +233
+
+        * `+350` - +350
+
+        * `+299` - +299
+
+        * `+220` - +220
+
+        * `+224` - +224
+
+        * `+240` - +240
+
+        * `+30` - +30
+
+        * `+502` - +502
+
+        * `+1671` - +1671
+
+        * `+245` - +245
+
+        * `+595` - +595
+
+        * `+852` - +852
+
+        * `+504` - +504
+
+        * `+385` - +385
+
+        * `+509` - +509
+
+        * `+36` - +36
+
+        * `+62` - +62
+
+        * `+353` - +353
+
+        * `+972` - +972
+
+        * `+441624` - +441624
+
+        * `+91` - +91
+
+        * `+246` - +246
+
+        * `+964` - +964
+
+        * `+98` - +98
+
+        * `+354` - +354
+
+        * `+39` - +39
+
+        * `+441534` - +441534
+
+        * `+1876` - +1876
+
+        * `+962` - +962
+
+        * `+81` - +81
+
+        * `+254` - +254
+
+        * `+996` - +996
+
+        * `+855` - +855
+
+        * `+686` - +686
+
+        * `+269` - +269
+
+        * `+1869` - +1869
+
+        * `+850` - +850
+
+        * `+82` - +82
+
+        * `+965` - +965
+
+        * `+345` - +345
+
+        * `+7` - +7
+
+        * `+856` - +856
+
+        * `+961` - +961
+
+        * `+1758` - +1758
+
+        * `+423` - +423
+
+        * `+94` - +94
+
+        * `+231` - +231
+
+        * `+266` - +266
+
+        * `+370` - +370
+
+        * `+352` - +352
+
+        * `+371` - +371
+
+        * `+218` - +218
+
+        * `+377` - +377
+
+        * `+373` - +373
+
+        * `+382` - +382
+
+        * `+261` - +261
+
+        * `+692` - +692
+
+        * `+389` - +389
+
+        * `+223` - +223
+
+        * `+95` - +95
+
+        * `+976` - +976
+
+        * `+853` - +853
+
+        * `+1670` - +1670
+
+        * `+596` - +596
+
+        * `+222` - +222
+
+        * `+1664` - +1664
+
+        * `+356` - +356
+
+        * `+230` - +230
+
+        * `+960` - +960
+
+        * `+265` - +265
+
+        * `+52` - +52
+
+        * `+60` - +60
+
+        * `+258` - +258
+
+        * `+264` - +264
+
+        * `+687` - +687
+
+        * `+227` - +227
+
+        * `+234` - +234
+
+        * `+505` - +505
+
+        * `+31` - +31
+
+        * `+47` - +47
+
+        * `+977` - +977
+
+        * `+674` - +674
+
+        * `+683` - +683
+
+        * `+64` - +64
+
+        * `+968` - +968
+
+        * `+507` - +507
+
+        * `+51` - +51
+
+        * `+689` - +689
+
+        * `+675` - +675
+
+        * `+63` - +63
+
+        * `+92` - +92
+
+        * `+48` - +48
+
+        * `+508` - +508
+
+        * `+1787` - +1787
+
+        * `+970` - +970
+
+        * `+351` - +351
+
+        * `+680` - +680
+
+        * `+974` - +974
+
+        * `+262` - +262
+
+        * `+40` - +40
+
+        * `+381` - +381
+
+        * `+250` - +250
+
+        * `+966` - +966
+
+        * `+677` - +677
+
+        * `+248` - +248
+
+        * `+249` - +249
+
+        * `+46` - +46
+
+        * `+65` - +65
+
+        * `+290` - +290
+
+        * `+386` - +386
+
+        * `+421` - +421
+
+        * `+232` - +232
+
+        * `+378` - +378
+
+        * `+221` - +221
+
+        * `+252` - +252
+
+        * `+597` - +597
+
+        * `+239` - +239
+
+        * `+503` - +503
+
+        * `+963` - +963
+
+        * `+268` - +268
+
+        * `+1649` - +1649
+
+        * `+235` - +235
+
+        * `+228` - +228
+
+        * `+66` - +66
+
+        * `+992` - +992
+
+        * `+690` - +690
+
+        * `+670` - +670
+
+        * `+993` - +993
+
+        * `+216` - +216
+
+        * `+676` - +676
+
+        * `+90` - +90
+
+        * `+1868` - +1868
+
+        * `+688` - +688
+
+        * `+886` - +886
+
+        * `+255` - +255
+
+        * `+380` - +380
+
+        * `+256` - +256
+
+        * `+598` - +598
+
+        * `+998` - +998
+
+        * `+379` - +379
+
+        * `+1784` - +1784
+
+        * `+58` - +58
+
+        * `+1284` - +1284
+
+        * `+1340` - +1340
+
+        * `+84` - +84
+
+        * `+678` - +678
+
+        * `+681` - +681
+
+        * `+685` - +685
+
+        * `+967` - +967
+
+        * `+27` - +27
+
+        * `+260` - +260
+
+        * `+263` - +263'
+    DeliveryEmailList:
+      type: object
+      description: 'Serializer for handling create/update/delete operations on a list of delivery emails.
+
+        Accepts a list of delivery email objects and handles validation, creation, updates, and deletions.'
+      properties:
+        delivery_emails:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          description: List of delivery email objects with 'uuid' (optional), 'label', and 'email_address'
+      required:
+      - delivery_emails
+    AccountDetail:
+      type: object
+      description: "Serializer for account details with country-specific validation.\nSupports DUNS field and AccountEmail management.\n\nUK buyers require: company_name, vat_number, company_registration_number,\n                  registered_address, contact_name, contact_phone_number,\n                  contact_email_address\n\nUS buyers require: company_name, vat_number (as EIN), registered_address,\n                  contact_name, contact_phone_number, contact_email_address"
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        company_name:
+          type: string
+          description: Company name
+          maxLength: 255
+        vat_number:
+          type: string
+          description: VAT number
+          maxLength: 100
+        duns:
+          type: string
+          nullable: true
+        company_registration_number:
+          type: string
+          description: Company Registration Number (UK only)
+          maxLength: 100
+        registered_address:
+          type: string
+          description: Registered company address
+        contact_name:
+          type: string
+          maxLength: 255
+        contact_phone_number:
+          type: string
+          maxLength: 50
+        contact_email_address:
+          type: string
+          format: email
+          description: 'Contact email address (DEPRECATED: Use account_emails relationship instead)'
+          maxLength: 255
+        tax_exemption_certificate:
+          type: boolean
+          description: Tax exemption certificate (US only)
+        account_emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountEmail'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - account_emails
+      - company_name
+      - contact_name
+      - contact_phone_number
+      - created_at
+      - id
+      - modified_at
+      - registered_address
+      - vat_number
+    PaginatedSupplierList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Supplier'
+    CountryTypeEnum:
+      enum:
+      - EU
+      - GB
+      - Other
+      type: string
+      description: '* `EU` - Eu
+
+        * `GB` - Gb
+
+        * `Other` - Other'
+    DeliveryEmail:
+      type: object
+      description: Serializer for DeliveryEmail model.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unique identifier for delivery email lookup
+        label:
+          type: string
+          description: Label for this delivery contact (e.g. 'Goods In')
+          maxLength: 255
+        email_address:
+          type: string
+          format: email
+          description: Delivery contact email
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - email_address
+      - label
+      - modified_at
+      - uuid
+    DeliveryLocationTypeEnum:
+      enum:
+      - warehouse
+      - factory
+      - distribution_center
+      - retail_location
+      - other
+      type: string
+      description: '* `warehouse` - Warehouse
+
+        * `factory` - Factory
+
+        * `distribution_center` - Distribution Center
+
+        * `retail_location` - Retail Location
+
+        * `other` - Other'
+    AddressTypeEnum:
+      enum:
+      - billing_address
+      - delivery_address
+      - dispatch_address
+      - company_address
+      type: string
+      description: '* `billing_address` - Billing address
+
+        * `delivery_address` - Delivery address
+
+        * `dispatch_address` - Dispatch address
+
+        * `company_address` - Company address'
+    BuyerOnboardingCountry:
+      enum:
+      - us
+      - uk
+      type: string
+      description: '* `us` - United States
+
+        * `uk` - United Kingdom'
+    BuyerOnboardingDetail:
+      type: object
+      description: 'Detailed serializer for buyer onboarding.
+
+        Includes all related information.
+
+
+        For self-onboarded buyers (`buyer_onboarding.company` is set), the
+
+        name / email fields are derived from the canonical `Company` /
+
+        `User`, and `has_account_details` / `has_delivery_details` consider
+
+        Company columns alongside the legacy AccountDetail/DeliveryDetails
+
+        tables.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unique identifier for sharing the onboarding form
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          readOnly: true
+        country:
+          $ref: '#/components/schemas/BuyerOnboardingCountry'
+        company_uuid:
+          type: string
+          readOnly: true
+        company_name:
+          type: string
+          readOnly: true
+        notes:
+          type: string
+          description: Internal notes
+        submitted_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          description: When the buyer submitted the form
+        is_submitted:
+          type: string
+          readOnly: true
+        total_steps:
+          type: string
+          readOnly: true
+        completed_steps:
+          type: string
+          readOnly: true
+        has_account_details:
+          type: string
+          readOnly: true
+        has_delivery_details:
+          type: string
+          readOnly: true
+        suppliers_count:
+          type: string
+          readOnly: true
+        suppliers_pending_review_count:
+          type: string
+          readOnly: true
+        suppliers_completed:
+          type: string
+          readOnly: true
+        suppliers_completed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          description: When the supplier section was marked as complete
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - company_name
+      - company_uuid
+      - completed_steps
+      - country
+      - created_at
+      - email
+      - has_account_details
+      - has_delivery_details
+      - is_submitted
+      - modified_at
+      - name
+      - submitted_at
+      - suppliers_completed
+      - suppliers_completed_at
+      - suppliers_count
+      - suppliers_pending_review_count
+      - total_steps
+      - uuid
+    PatchedBuyerOnboardingDeliveryAddress:
+      type: object
+      description: 'Serializer for BuyerOnboardingDeliveryAddress model.
+
+        Includes all BaseAddress fields plus delivery-specific fields.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        address_type:
+          $ref: '#/components/schemas/AddressTypeEnum'
+        contact_full_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        contact_phone:
+          type: string
+          nullable: true
+          maxLength: 50
+        building:
+          type: string
+          nullable: true
+          maxLength: 100
+        street_1:
+          type: string
+          nullable: true
+          maxLength: 255
+        street_2:
+          type: string
+          nullable: true
+          maxLength: 255
+        town:
+          type: string
+          nullable: true
+          maxLength: 100
+        region:
+          type: string
+          nullable: true
+          maxLength: 100
+        postcode:
+          type: string
+          nullable: true
+          maxLength: 100
+        country:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        place_id:
+          type: string
+          nullable: true
+          maxLength: 100
+        latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+          nullable: true
+        longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+          nullable: true
+        vat_number:
+          type: string
+          nullable: true
+          maxLength: 50
+        vat_country_code:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        vat_exempt:
+          type: boolean
+        phone_country_code:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        delivery_instructions:
+          type: string
+          nullable: true
+        collection_instructions:
+          type: string
+          nullable: true
+        country_type:
+          $ref: '#/components/schemas/CountryTypeEnum'
+        eori_number:
+          type: string
+          maxLength: 20
+        ein_number:
+          type: string
+          maxLength: 20
+        delivery_location_type:
+          description: 'Type of delivery location
+
+
+            * `warehouse` - Warehouse
+
+            * `factory` - Factory
+
+            * `distribution_center` - Distribution Center
+
+            * `retail_location` - Retail Location
+
+            * `other` - Other'
+          oneOf:
+          - $ref: '#/components/schemas/DeliveryLocationTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        delivery_location_type_display:
+          type: string
+          readOnly: true
+        delivery_location_type_other:
+          type: string
+          description: Specify delivery location type when 'Other' is selected
+          maxLength: 255
+        warehouse_receiving_hours:
+          type: string
+          description: Warehouse receiving hours
+          maxLength: 255
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+    DeliveryDetails:
+      type: object
+      description: Serializer for delivery details.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        delivery_address:
+          type: string
+          description: 'Delivery address (DEPRECATED: Use buyer_onboarding_delivery_address instead)'
+        delivery_location_type:
+          $ref: '#/components/schemas/DeliveryLocationTypeEnum'
+        delivery_location_type_display:
+          type: string
+          readOnly: true
+        delivery_location_type_other:
+          type: string
+          description: Specify delivery location type when 'Other' is selected
+          maxLength: 255
+        delivery_instructions:
+          type: string
+          description: Delivery instructions
+        delivery_contact_name:
+          type: string
+          description: 'Delivery contact name (DEPRECATED: Use delivery_address relationship instead)'
+          maxLength: 255
+        delivery_contact_phone_number:
+          type: string
+          description: 'Delivery contact phone number (DEPRECATED: Use delivery_address relationship instead)'
+          maxLength: 50
+        delivery_contact_email:
+          type: string
+          format: email
+          description: 'Delivery contact email (DEPRECATED: Use delivery_emails relationship instead)'
+          maxLength: 255
+        warehouse_receiving_hours:
+          type: string
+          description: Warehouse receiving hours
+          maxLength: 255
+        storage_capacity:
+          type: string
+          description: Storage capacity
+          maxLength: 255
+        access_requirements:
+          description: 'Access requirements
+
+
+            * `delivery_appointment` - Delivery appointment requirement
+
+            * `inside_delivery` - Inside delivery Required
+
+            * `lift_gate` - Lift gate required'
+          oneOf:
+          - $ref: '#/components/schemas/AccessRequirementsEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        is_sample_required:
+          type: boolean
+          description: Is a sample required?
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - delivery_location_type
+      - delivery_location_type_display
+      - id
+      - modified_at
+    AccessRequirementsEnum:
+      enum:
+      - delivery_appointment
+      - inside_delivery
+      - lift_gate
+      type: string
+      description: '* `delivery_appointment` - Delivery appointment requirement
+
+        * `inside_delivery` - Inside delivery Required
+
+        * `lift_gate` - Lift gate required'
+    PaginatedBuyerOnboardingStepList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerOnboardingStep'
+    PaginatedOnboardingStepTemplateList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OnboardingStepTemplate'
+    PaginatedDeliveryEmailList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeliveryEmail'
+    BlankEnum:
+      enum:
+      - ''
+    BuyerOnboardingDeliveryAddress:
+      type: object
+      description: 'Serializer for BuyerOnboardingDeliveryAddress model.
+
+        Includes all BaseAddress fields plus delivery-specific fields.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        address_type:
+          $ref: '#/components/schemas/AddressTypeEnum'
+        contact_full_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        contact_phone:
+          type: string
+          nullable: true
+          maxLength: 50
+        building:
+          type: string
+          nullable: true
+          maxLength: 100
+        street_1:
+          type: string
+          nullable: true
+          maxLength: 255
+        street_2:
+          type: string
+          nullable: true
+          maxLength: 255
+        town:
+          type: string
+          nullable: true
+          maxLength: 100
+        region:
+          type: string
+          nullable: true
+          maxLength: 100
+        postcode:
+          type: string
+          nullable: true
+          maxLength: 100
+        country:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        place_id:
+          type: string
+          nullable: true
+          maxLength: 100
+        latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+          nullable: true
+        longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+          nullable: true
+        vat_number:
+          type: string
+          nullable: true
+          maxLength: 50
+        vat_country_code:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        vat_exempt:
+          type: boolean
+        phone_country_code:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        delivery_instructions:
+          type: string
+          nullable: true
+        collection_instructions:
+          type: string
+          nullable: true
+        country_type:
+          $ref: '#/components/schemas/CountryTypeEnum'
+        eori_number:
+          type: string
+          maxLength: 20
+        ein_number:
+          type: string
+          maxLength: 20
+        delivery_location_type:
+          description: 'Type of delivery location
+
+
+            * `warehouse` - Warehouse
+
+            * `factory` - Factory
+
+            * `distribution_center` - Distribution Center
+
+            * `retail_location` - Retail Location
+
+            * `other` - Other'
+          oneOf:
+          - $ref: '#/components/schemas/DeliveryLocationTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        delivery_location_type_display:
+          type: string
+          readOnly: true
+        delivery_location_type_other:
+          type: string
+          description: Specify delivery location type when 'Other' is selected
+          maxLength: 255
+        warehouse_receiving_hours:
+          type: string
+          description: Warehouse receiving hours
+          maxLength: 255
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created
+      - delivery_location_type_display
+      - modified
+      - name
+      - uuid
+    OnboardingStepTemplate:
+      type: object
+      description: Serializer for onboarding step template.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        phase:
+          $ref: '#/components/schemas/PhaseEnum'
+        phase_display:
+          type: string
+          readOnly: true
+        process_description:
+          type: string
+          description: Description of the process step
+        step_order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Order in which steps should appear within the phase
+        is_template_active:
+          type: boolean
+          description: Whether this step is active and will be included for new buyers
+      required:
+      - id
+      - phase
+      - phase_display
+      - process_description
+    PhaseEnum:
+      enum:
+      - phase_1
+      - phase_2
+      - phase_3
+      - phase_4
+      type: string
+      description: '* `phase_1` - Phase 1
+
+        * `phase_2` - Phase 2
+
+        * `phase_3` - Phase 3
+
+        * `phase_4` - Phase 4'
+    Supplier:
+      type: object
+      description: 'Serializer for supplier information.
+
+
+        Only includes fields that are actively used in the public buyer onboarding form.
+
+        Other model fields are kept for backward compatibility but not exposed in the API.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        supplier_name:
+          type: string
+          description: Supplier name
+          maxLength: 255
+        average_monthly_spend:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+          description: Average monthly spend with this supplier
+        invoice_currency:
+          type: string
+          description: Invoice/Payment currency (e.g., USD, GBP, EUR)
+          maxLength: 3
+        payment_terms:
+          type: string
+          description: Supplier payment terms
+        priority:
+          description: 'Priority to onboard this supplier
+
+
+            * `high` - High
+
+            * `medium` - Medium
+
+            * `low` - Low'
+          oneOf:
+          - $ref: '#/components/schemas/PriorityEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        supplier_country:
+          type: string
+          description: Supplier country
+          maxLength: 100
+        arranges_delivery:
+          type: boolean
+          description: Does the supplier arrange delivery?
+        lead_time:
+          type: string
+          description: Agreed lead time
+          maxLength: 255
+        is_organic:
+          type: boolean
+          description: Is this an organic supplier?
+        relationship_notes:
+          type: string
+          description: Any noteworthy information about your trading relationship
+        supplier_spreadsheet:
+          type: string
+          format: uri
+          nullable: true
+          description: Supplier spreadsheet
+        supplier_spreadsheet_url:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - modified_at
+      - supplier_name
+      - supplier_spreadsheet_url
+    PatchedSupplier:
+      type: object
+      description: 'Serializer for supplier information.
+
+
+        Only includes fields that are actively used in the public buyer onboarding form.
+
+        Other model fields are kept for backward compatibility but not exposed in the API.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        supplier_name:
+          type: string
+          description: Supplier name
+          maxLength: 255
+        average_monthly_spend:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+          description: Average monthly spend with this supplier
+        invoice_currency:
+          type: string
+          description: Invoice/Payment currency (e.g., USD, GBP, EUR)
+          maxLength: 3
+        payment_terms:
+          type: string
+          description: Supplier payment terms
+        priority:
+          description: 'Priority to onboard this supplier
+
+
+            * `high` - High
+
+            * `medium` - Medium
+
+            * `low` - Low'
+          oneOf:
+          - $ref: '#/components/schemas/PriorityEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        supplier_country:
+          type: string
+          description: Supplier country
+          maxLength: 100
+        arranges_delivery:
+          type: boolean
+          description: Does the supplier arrange delivery?
+        lead_time:
+          type: string
+          description: Agreed lead time
+          maxLength: 255
+        is_organic:
+          type: boolean
+          description: Is this an organic supplier?
+        relationship_notes:
+          type: string
+          description: Any noteworthy information about your trading relationship
+        supplier_spreadsheet:
+          type: string
+          format: uri
+          nullable: true
+          description: Supplier spreadsheet
+        supplier_spreadsheet_url:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PaginatedBuyerOnboardingDeliveryAddressList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerOnboardingDeliveryAddress'
+    AccountEmail:
+      type: object
+      description: Serializer for AccountEmail model.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unique identifier for account email lookup
+        label:
+          type: string
+          description: Label for this contact (e.g. 'Accounts Payable')
+          maxLength: 255
+        email_address:
+          type: string
+          format: email
+          description: Contact email address
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - email_address
+      - label
+      - modified_at
+      - uuid
+    PatchedAccountDetail:
+      type: object
+      description: "Serializer for account details with country-specific validation.\nSupports DUNS field and AccountEmail management.\n\nUK buyers require: company_name, vat_number, company_registration_number,\n                  registered_address, contact_name, contact_phone_number,\n                  contact_email_address\n\nUS buyers require: company_name, vat_number (as EIN), registered_address,\n                  contact_name, contact_phone_number, contact_email_address"
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        company_name:
+          type: string
+          description: Company name
+          maxLength: 255
+        vat_number:
+          type: string
+          description: VAT number
+          maxLength: 100
+        duns:
+          type: string
+          nullable: true
+        company_registration_number:
+          type: string
+          description: Company Registration Number (UK only)
+          maxLength: 100
+        registered_address:
+          type: string
+          description: Registered company address
+        contact_name:
+          type: string
+          maxLength: 255
+        contact_phone_number:
+          type: string
+          maxLength: 50
+        contact_email_address:
+          type: string
+          format: email
+          description: 'Contact email address (DEPRECATED: Use account_emails relationship instead)'
+          maxLength: 255
+        tax_exemption_certificate:
+          type: boolean
+          description: Tax exemption certificate (US only)
+        account_emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountEmail'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

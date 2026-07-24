@@ -1,0 +1,124 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Integrations API
+  version: 0.0.0
+tags:
+- name: Integrations
+paths:
+  /api/v1/integrations/xero/supplier-spend/:
+    get:
+      operationId: api_v1_integrations_xero_supplier_spend_list
+      description: Deterministic supplier-spend metrics over the buyer's ingested Xero bills.
+      summary: Deterministic Xero supplier-spend breakdown for the current buyer.
+      parameters:
+      - in: query
+        name: window_months
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 36
+        description: Look-back window in months (default 12, clamped to 1..36).
+      tags:
+      - Integrations
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/XeroSupplierSpend'
+          description: ''
+components:
+  schemas:
+    XeroSupplierSpend:
+      type: object
+      description: Response shape for the supplier-spend aggregation (schema only).
+      properties:
+        base_currency:
+          type: string
+        window_months:
+          type: integer
+        total_spend:
+          type: string
+        bill_count:
+          type: integer
+        supplier_count:
+          type: integer
+        skipped_bills:
+          type: integer
+        suppliers:
+          type: array
+          items:
+            $ref: '#/components/schemas/_SupplierSpendRow'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/_CategorySpendRow'
+      required:
+      - base_currency
+      - bill_count
+      - categories
+      - skipped_bills
+      - supplier_count
+      - suppliers
+      - total_spend
+      - window_months
+    _CategorySpendRow:
+      type: object
+      properties:
+        account_code:
+          type: string
+        spend:
+          type: string
+        supplier_count:
+          type: integer
+        supplier_names:
+          type: array
+          items:
+            type: string
+      required:
+      - account_code
+      - spend
+      - supplier_count
+      - supplier_names
+    _SupplierSpendRow:
+      type: object
+      properties:
+        contact_id:
+          type: string
+        name:
+          type: string
+        bill_count:
+          type: integer
+        spend:
+          type: string
+        spend_share:
+          type: number
+          format: double
+        credit_note_total:
+          type: string
+        credit_note_ratio:
+          type: number
+          format: double
+      required:
+      - bill_count
+      - contact_id
+      - credit_note_ratio
+      - credit_note_total
+      - name
+      - spend
+      - spend_share
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

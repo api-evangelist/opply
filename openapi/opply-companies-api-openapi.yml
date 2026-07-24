@@ -1,0 +1,5267 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Companies API
+  version: 0.0.0
+tags:
+- name: Companies
+paths:
+  /api/v1/companies/documents/:
+    get:
+      operationId: api_v1_companies_documents_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCompanyDocumentList'
+          description: ''
+    post:
+      operationId: api_v1_companies_documents_create
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyDocument'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CompanyDocument'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CompanyDocument'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyDocument'
+          description: ''
+  /api/v1/companies/documents/{uuid}/:
+    get:
+      operationId: api_v1_companies_documents_retrieve
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyDocument'
+          description: ''
+    delete:
+      operationId: api_v1_companies_documents_destroy
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/companies/documents/{uuid}/create-resumable-upload-session/:
+    post:
+      operationId: api_v1_companies_documents_create_resumable_upload_session_create
+      summary: Request a resumable file upload URL
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleUpload'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GoogleUpload'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GoogleUpload'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleUploadResponse'
+          description: ''
+  /api/v1/companies/documents/{uuid}/upload-complete/:
+    post:
+      operationId: api_v1_companies_documents_upload_complete_create
+      summary: Set an upload as done
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleUploadComplete'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GoogleUploadComplete'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GoogleUploadComplete'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/URL'
+          description: ''
+  /api/v1/companies/merchant-of-record-brands/:
+    get:
+      operationId: api_v1_companies_merchant_of_record_brands_list
+      description: Retrieve a list of brand companies where the current user's company serves as the Merchant of Record.
+      summary: List brands associated with Merchant of Record
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Filter brands by name (case-insensitive partial match)
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMerchantOfRecordCompanyList'
+          description: ''
+  /api/v1/companies/merchant-of-record-buyers/:
+    post:
+      operationId: api_v1_companies_merchant_of_record_buyers_create
+      description: Create a new buyer/brand company with associated user and address
+      summary: Create a new buyer/brand
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MoRBuyerCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MoRBuyerCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MoRBuyerCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MoRBuyerDetailResponse'
+          description: ''
+  /api/v1/companies/merchant-of-record-buyers/{uuid}/:
+    get:
+      operationId: api_v1_companies_merchant_of_record_buyers_retrieve
+      description: Retrieve detailed information about a buyer/brand company
+      summary: Get buyer/brand details
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantOfRecordBuyerDetail'
+          description: ''
+    patch:
+      operationId: api_v1_companies_merchant_of_record_buyers_partial_update
+      description: Partially update buyer/brand company information. User email cannot be changed after creation.
+      summary: Update buyer/brand details
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMoRBuyerUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMoRBuyerUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMoRBuyerUpdate'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MoRBuyerDetailResponse'
+          description: ''
+  /api/v1/companies/merchant-of-record-buyers/{uuid}/compliance-documents/:
+    get:
+      operationId: api_v1_companies_merchant_of_record_buyers_compliance_documents_list
+      description: 'Returns the buyer''s certification/compliance documents (sales tax exemption certificates, organic/quality certifications, etc.) with their lifecycle status and free-text notes. Documents filed by the onboarding extraction agent also carry a structured `extraction` object (jurisdiction, certificate number, issuing authority); manually uploaded documents have `extraction: null`. Read-only; ordered newest-first.'
+      summary: List compliance documents held by this buyer
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMoRBuyerComplianceDocumentList'
+          description: ''
+  /api/v1/companies/merchant-of-record-buyers/{uuid}/connect-allianz/:
+    post:
+      operationId: api_v1_companies_merchant_of_record_buyers_connect_allianz_create
+      description: Validate the given Allianz company ID against the Allianz API and, on success, persist allianz_company_id and is_connected_to_allianz=True on the buyer. Set skip_validation=true to bypass the API call (for local/staging environments).
+      summary: Connect buyer to Allianz
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AllianzConnect'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AllianzConnect'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AllianzConnect'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MoRBuyerDetailResponse'
+          description: ''
+        '400':
+          description: Invalid Allianz company ID or API error
+  /api/v1/companies/merchant-of-record-buyers/{uuid}/financial-documents/:
+    get:
+      operationId: api_v1_companies_merchant_of_record_buyers_financial_documents_list
+      description: Returns the financial documents (P&L, balance sheet, management accounts, etc.) the buyer has uploaded to support credit reviews. Read-only; ordered newest-first.
+      summary: List financial documents uploaded by this buyer
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBuyerFinancialDocumentList'
+          description: ''
+  /api/v1/companies/merchant-of-record-buyers/{uuid}/onboarding-suppliers/:
+    get:
+      operationId: api_v1_companies_merchant_of_record_buyers_onboarding_suppliers_retrieve
+      description: ViewSet for MoR users to view, create, and update buyer/brand details and their suppliers
+      summary: Manage Buyer/Brand details for Merchant of Record
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantOfRecordBuyerDetail'
+          description: ''
+  /api/v1/companies/merchant-of-record-buyers/{uuid}/suppliers/:
+    get:
+      operationId: api_v1_companies_merchant_of_record_buyers_suppliers_list
+      description: Get a list of suppliers associated with this buyer
+      summary: Get suppliers for a buyer
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBuyerSupplierList'
+          description: ''
+  /api/v1/companies/merchant-of-record-buyers/{uuid}/users/:
+    post:
+      operationId: api_v1_companies_merchant_of_record_buyers_users_create
+      description: 'Create an additional user on an existing buyer company scoped to the requesting MoR. The user is created without a password and emailed a set-password link once the transaction commits: buyers still onboarding (`onboarding_state=in_progress`) receive the buyer-onboarding invite whose link points at the buyer web app; active buyers receive the standard password-create email. Pass `is_admin=true` to grant the new user the company admin permission; otherwise they join as a member.'
+      summary: Add a user to a buyer/brand
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MoRBuyerUserCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MoRBuyerUserCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MoRBuyerUserCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MoRBuyerUserResponse'
+          description: ''
+        '400':
+          description: Invalid input data (e.g. email already registered)
+        '403':
+          description: User is not a Merchant of Record
+        '404':
+          description: Buyer not found for this MoR
+  /api/v1/companies/merchant-of-record-company-addresses/:
+    get:
+      operationId: api_v1_companies_merchant_of_record_company_addresses_list
+      description: 'ViewSet for retrieving and creating company addresses filtered by company UUID.
+
+        Intended for use by Merchant of Record users.'
+      summary: List company addresses by company UUID
+      parameters:
+      - in: query
+        name: address_type
+        schema:
+          type: string
+        description: Optional address-type filter (e.g. 'delivery_address' for delivery pickers)
+      - in: query
+        name: company_uuid
+        schema:
+          type: string
+          format: uuid
+        description: UUID of the company to filter addresses by
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCompanyAddressList'
+          description: ''
+    post:
+      operationId: api_v1_companies_merchant_of_record_company_addresses_create
+      description: 'ViewSet for retrieving and creating company addresses filtered by company UUID.
+
+        Intended for use by Merchant of Record users.'
+      summary: Create a new company address for a given company UUID
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCompanyAddress'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateCompanyAddress'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateCompanyAddress'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyAddress'
+          description: ''
+  /api/v1/companies/merchant-of-record-company-addresses/{uuid}/:
+    put:
+      operationId: api_v1_companies_merchant_of_record_company_addresses_update
+      description: 'ViewSet for retrieving and creating company addresses filtered by company UUID.
+
+        Intended for use by Merchant of Record users.'
+      summary: Manage company addresses filtered by Merchant of Record
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyAddress'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CompanyAddress'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CompanyAddress'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyAddress'
+          description: ''
+    patch:
+      operationId: api_v1_companies_merchant_of_record_company_addresses_partial_update
+      description: 'ViewSet for retrieving and creating company addresses filtered by company UUID.
+
+        Intended for use by Merchant of Record users.'
+      summary: Manage company addresses filtered by Merchant of Record
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCompanyAddress'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCompanyAddress'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCompanyAddress'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyAddress'
+          description: ''
+    delete:
+      operationId: api_v1_companies_merchant_of_record_company_addresses_destroy
+      description: 'ViewSet for retrieving and creating company addresses filtered by company UUID.
+
+        Intended for use by Merchant of Record users.'
+      summary: Manage company addresses filtered by Merchant of Record
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/companies/merchant-of-record-suppliers/:
+    get:
+      operationId: api_v1_companies_merchant_of_record_suppliers_list
+      description: Retrieve a list of supplier companies where the current user's company serves as the Merchant of Record.
+      summary: List suppliers associated with Merchant of Record
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Filter suppliers by name (case-insensitive partial match)
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMerchantOfRecordCompanyList'
+          description: ''
+  /api/v1/companies/merchant-of-record-suppliers/{uuid}/:
+    get:
+      operationId: api_v1_companies_merchant_of_record_suppliers_retrieve
+      description: Retrieve supplier details for a given company UUID.
+      summary: Get supplier basic information
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantOfRecordSupplier'
+          description: ''
+  /api/v1/companies/merchant-of-record-suppliers/{uuid}/add-buyer/:
+    post:
+      operationId: api_v1_companies_merchant_of_record_suppliers_add_buyer_create
+      description: Add a new buyer to this supplier by creating a referral relationship
+      summary: Add buyer to supplier
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierAddBuyer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupplierAddBuyer'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupplierAddBuyer'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                description: Buyer added successfully
+          description: ''
+  /api/v1/companies/merchant-of-record-suppliers/{uuid}/buyer-payment-terms/:
+    get:
+      operationId: api_v1_companies_merchant_of_record_suppliers_buyer_payment_terms_retrieve
+      description: Lookup payment terms for a buyer-supplier pair. Returns 204 No Content if none set.
+      summary: Get buyer-supplier payment terms
+      parameters:
+      - in: query
+        name: buyer_uuid
+        schema:
+          type: string
+          format: uuid
+        description: UUID of the buyer company
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerSupplierPaymentTerms'
+          description: ''
+        '204':
+          description: No payment terms found for this pair
+    post:
+      operationId: api_v1_companies_merchant_of_record_suppliers_buyer_payment_terms_create
+      description: Create payment terms for a buyer-supplier pair. Returns 400 if terms already exist.
+      summary: Create buyer-supplier payment terms
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuyerSupplierPaymentTermsCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BuyerSupplierPaymentTermsCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BuyerSupplierPaymentTermsCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerSupplierPaymentTerms'
+          description: ''
+        '400':
+          description: Validation error or terms already exist
+    patch:
+      operationId: api_v1_companies_merchant_of_record_suppliers_buyer_payment_terms_partial_update
+      description: Partially update payment terms for a buyer-supplier pair.
+      summary: Update buyer-supplier payment terms
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBuyerSupplierPaymentTermsCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBuyerSupplierPaymentTermsCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBuyerSupplierPaymentTermsCreate'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerSupplierPaymentTerms'
+          description: ''
+        '404':
+          description: No payment terms found for this pair
+    delete:
+      operationId: api_v1_companies_merchant_of_record_suppliers_buyer_payment_terms_destroy
+      description: Remove payment terms for a buyer-supplier pair.
+      summary: Delete buyer-supplier payment terms
+      parameters:
+      - in: query
+        name: buyer_uuid
+        schema:
+          type: string
+          format: uuid
+        description: UUID of the buyer company
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: No payment terms found for this pair
+  /api/v1/companies/merchant-of-record-suppliers/{uuid}/buyers/:
+    get:
+      operationId: api_v1_companies_merchant_of_record_suppliers_buyers_list
+      description: Get a list of buyers (brands) associated with this supplier through referrals
+      summary: Get buyers for supplier
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSupplierBuyerList'
+          description: ''
+  /api/v1/companies/merchant-of-record-suppliers/{uuid}/contacts/:
+    get:
+      operationId: api_v1_companies_merchant_of_record_suppliers_contacts_list
+      description: List all contacts for this supplier.
+      summary: List supplier contacts
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSupplierContactList'
+          description: ''
+    post:
+      operationId: api_v1_companies_merchant_of_record_suppliers_contacts_create
+      description: Create a new supplier contact.
+      summary: Create supplier contact
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierContact'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupplierContact'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupplierContact'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierContact'
+          description: ''
+        '400':
+          description: Validation error
+  /api/v1/companies/merchant-of-record-suppliers/{uuid}/contacts/{contact_uuid}/:
+    put:
+      operationId: api_v1_companies_merchant_of_record_suppliers_contacts_update
+      description: Full update (replace) of a supplier contact.
+      summary: Replace supplier contact
+      parameters:
+      - in: path
+        name: contact_uuid
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierContact'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupplierContact'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupplierContact'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierContact'
+          description: ''
+        '400':
+          description: Validation error
+        '404':
+          description: Not found
+    patch:
+      operationId: api_v1_companies_merchant_of_record_suppliers_contacts_partial_update
+      description: Partial update of a supplier contact.
+      summary: Partially update supplier contact
+      parameters:
+      - in: path
+        name: contact_uuid
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplierContact'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplierContact'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplierContact'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierContact'
+          description: ''
+        '400':
+          description: Validation error
+        '404':
+          description: Not found
+    delete:
+      operationId: api_v1_companies_merchant_of_record_suppliers_contacts_destroy
+      description: Delete a supplier contact.
+      summary: Delete supplier contact
+      parameters:
+      - in: path
+        name: contact_uuid
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Not found
+  /api/v1/companies/merchant-of-record-suppliers/{uuid}/payout-details/:
+    get:
+      operationId: api_v1_companies_merchant_of_record_suppliers_payout_details_retrieve
+      description: Retrieve payout details for this supplier.
+      summary: Get supplier payout details
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierPayoutDetails'
+          description: ''
+        '404':
+          description: Not found
+    post:
+      operationId: api_v1_companies_merchant_of_record_suppliers_payout_details_create
+      description: Create payout details for this supplier. Only one record is allowed per supplier.
+      summary: Create supplier payout details
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierPayoutDetails'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupplierPayoutDetails'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupplierPayoutDetails'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierPayoutDetails'
+          description: ''
+        '400':
+          description: Validation error or already exists
+    patch:
+      operationId: api_v1_companies_merchant_of_record_suppliers_payout_details_partial_update
+      description: Partially update payout details for this supplier.
+      summary: Update supplier payout details
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplierPayoutDetails'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplierPayoutDetails'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplierPayoutDetails'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierPayoutDetails'
+          description: ''
+        '404':
+          description: Not found
+    delete:
+      operationId: api_v1_companies_merchant_of_record_suppliers_payout_details_destroy
+      description: Delete payout details for this supplier.
+      summary: Delete supplier payout details
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: Deleted
+  /api/v1/companies/merchant-of-record-suppliers/{uuid}/remove-buyer/:
+    post:
+      operationId: api_v1_companies_merchant_of_record_suppliers_remove_buyer_create
+      description: Remove a buyer from this supplier by deleting the referral relationship
+      summary: Remove buyer from supplier
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierRemoveBuyer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupplierRemoveBuyer'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupplierRemoveBuyer'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Buyer removed successfully
+          description: ''
+  /api/v1/companies/merchant-of-record-suppliers/{uuid}/sites/:
+    get:
+      operationId: api_v1_companies_merchant_of_record_suppliers_sites_list
+      description: List sites for this supplier.
+      summary: List supplier sites
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSupplierSiteList'
+          description: ''
+    post:
+      operationId: api_v1_companies_merchant_of_record_suppliers_sites_create
+      description: Create a new site for this supplier.
+      summary: Create supplier site
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantOfRecordSupplierSiteCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MerchantOfRecordSupplierSiteCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MerchantOfRecordSupplierSiteCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierSite'
+          description: ''
+        '400':
+          description: Validation error
+  /api/v1/companies/merchant-of-record-suppliers/{uuid}/update/:
+    patch:
+      operationId: api_v1_companies_merchant_of_record_suppliers_update_partial_update
+      description: Update supplier payout terms and days until payout due.
+      summary: Update supplier payout information
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMerchantOfRecordSupplierUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMerchantOfRecordSupplierUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMerchantOfRecordSupplierUpdate'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantOfRecordSupplier'
+          description: ''
+  /api/v1/companies/merchant-of-record-suppliers/{uuid}/update-buyers/:
+    patch:
+      operationId: api_v1_companies_merchant_of_record_suppliers_update_buyers_partial_update
+      description: Update the complete list of buyers for this supplier
+      summary: Update supplier buyers
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplierUpdateBuyers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplierUpdateBuyers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplierUpdateBuyers'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Buyers updated successfully
+          description: ''
+components:
+  schemas:
+    GoogleUpload:
+      type: object
+      properties:
+        file_name:
+          type: string
+          maxLength: 1024
+        size:
+          type: integer
+          minimum: 1
+        content_type:
+          type: string
+          maxLength: 256
+        field_name:
+          type: string
+          maxLength: 256
+      required:
+      - field_name
+      - file_name
+      - size
+    ProductTypeEnum:
+      enum:
+      - confect_snacks
+      - conv_food
+      - bread_cereals
+      - sauces_spices
+      - spreads
+      - tea
+      - coffee
+      - water
+      - carb_drinks
+      - alc_drinks
+      - juice_drinks
+      - energy_drinks
+      - cosmetics
+      - milk_dairy
+      - free_form_alt
+      - other
+      type: string
+      description: '* `confect_snacks` - Confectionery & Snacks
+
+        * `conv_food` - Convenience Food
+
+        * `bread_cereals` - Bread & Cereals
+
+        * `sauces_spices` - Sauces & Spices
+
+        * `spreads` - Spreads
+
+        * `tea` - Tea
+
+        * `coffee` - Coffee
+
+        * `water` - Water
+
+        * `carb_drinks` - Carbonated Drinks
+
+        * `alc_drinks` - Alcoholic Drinks
+
+        * `juice_drinks` - Juice Drinks
+
+        * `energy_drinks` - Energy Drinks
+
+        * `cosmetics` - Cosmetics
+
+        * `milk_dairy` - Milk & Dairy
+
+        * `free_form_alt` - Free Form Alternative
+
+        * `other` - Other'
+    PatchedSupplierUpdateBuyers:
+      type: object
+      description: Serializer for updating the entire list of buyers for a supplier.
+      properties:
+        buyer_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: List of buyer UUIDs to associate with this supplier
+    Country:
+      enum:
+      - AF
+      - AX
+      - AL
+      - DZ
+      - AS
+      - AD
+      - AO
+      - AI
+      - AQ
+      - AG
+      - AR
+      - AM
+      - AW
+      - AU
+      - AT
+      - AZ
+      - BS
+      - BH
+      - BD
+      - BB
+      - BY
+      - BE
+      - BZ
+      - BJ
+      - BM
+      - BT
+      - BO
+      - BQ
+      - BA
+      - BW
+      - BV
+      - BR
+      - IO
+      - BN
+      - BG
+      - BF
+      - BI
+      - CV
+      - KH
+      - CM
+      - CA
+      - KY
+      - CF
+      - TD
+      - CL
+      - CN
+      - CX
+      - CC
+      - CO
+      - KM
+      - CG
+      - CD
+      - CK
+      - CR
+      - CI
+      - HR
+      - CU
+      - CW
+      - CY
+      - CZ
+      - DK
+      - DJ
+      - DM
+      - DO
+      - EC
+      - EG
+      - SV
+      - GQ
+      - ER
+      - EE
+      - SZ
+      - ET
+      - FK
+      - FO
+      - FJ
+      - FI
+      - FR
+      - GF
+      - PF
+      - TF
+      - GA
+      - GM
+      - GE
+      - DE
+      - GH
+      - GI
+      - GR
+      - GL
+      - GD
+      - GP
+      - GU
+      - GT
+      - GG
+      - GN
+      - GW
+      - GY
+      - HT
+      - HM
+      - VA
+      - HN
+      - HK
+      - HU
+      - IS
+      - IN
+      - ID
+      - IR
+      - IQ
+      - IE
+      - IM
+      - IL
+      - IT
+      - JM
+      - JP
+      - JE
+      - JO
+      - KZ
+      - KE
+      - KI
+      - KW
+      - KG
+      - LA
+      - LV
+      - LB
+      - LS
+      - LR
+      - LY
+      - LI
+      - LT
+      - LU
+      - MO
+      - MG
+      - MW
+      - MY
+      - MV
+      - ML
+      - MT
+      - MH
+      - MQ
+      - MR
+      - MU
+      - YT
+      - MX
+      - FM
+      - MD
+      - MC
+      - MN
+      - ME
+      - MS
+      - MA
+      - MZ
+      - MM
+      - NA
+      - NR
+      - NP
+      - NL
+      - NC
+      - NZ
+      - NI
+      - NE
+      - NG
+      - NU
+      - NF
+      - KP
+      - MK
+      - XI
+      - MP
+      - 'NO'
+      - OM
+      - PK
+      - PW
+      - PS
+      - PA
+      - PG
+      - PY
+      - PE
+      - PH
+      - PN
+      - PL
+      - PT
+      - PR
+      - QA
+      - RE
+      - RO
+      - RU
+      - RW
+      - BL
+      - SH
+      - KN
+      - LC
+      - MF
+      - PM
+      - VC
+      - WS
+      - SM
+      - ST
+      - SA
+      - SN
+      - RS
+      - SC
+      - SL
+      - SG
+      - SX
+      - SK
+      - SI
+      - SB
+      - SO
+      - ZA
+      - GS
+      - KR
+      - SS
+      - ES
+      - LK
+      - SD
+      - SR
+      - SJ
+      - SE
+      - CH
+      - SY
+      - TW
+      - TJ
+      - TZ
+      - TH
+      - TL
+      - TG
+      - TK
+      - TO
+      - TT
+      - TN
+      - TR
+      - TM
+      - TC
+      - TV
+      - UG
+      - UA
+      - AE
+      - GB
+      - UM
+      - US
+      - UY
+      - UZ
+      - VU
+      - VE
+      - VN
+      - VG
+      - VI
+      - WF
+      - EH
+      - YE
+      - ZM
+      - ZW
+      type: string
+      description: '* `AF` - Afghanistan
+
+        * `AX` - Åland Islands
+
+        * `AL` - Albania
+
+        * `DZ` - Algeria
+
+        * `AS` - American Samoa
+
+        * `AD` - Andorra
+
+        * `AO` - Angola
+
+        * `AI` - Anguilla
+
+        * `AQ` - Antarctica
+
+        * `AG` - Antigua and Barbuda
+
+        * `AR` - Argentina
+
+        * `AM` - Armenia
+
+        * `AW` - Aruba
+
+        * `AU` - Australia
+
+        * `AT` - Austria
+
+        * `AZ` - Azerbaijan
+
+        * `BS` - Bahamas
+
+        * `BH` - Bahrain
+
+        * `BD` - Bangladesh
+
+        * `BB` - Barbados
+
+        * `BY` - Belarus
+
+        * `BE` - Belgium
+
+        * `BZ` - Belize
+
+        * `BJ` - Benin
+
+        * `BM` - Bermuda
+
+        * `BT` - Bhutan
+
+        * `BO` - Bolivia
+
+        * `BQ` - Bonaire, Sint Eustatius and Saba
+
+        * `BA` - Bosnia and Herzegovina
+
+        * `BW` - Botswana
+
+        * `BV` - Bouvet Island
+
+        * `BR` - Brazil
+
+        * `IO` - British Indian Ocean Territory
+
+        * `BN` - Brunei
+
+        * `BG` - Bulgaria
+
+        * `BF` - Burkina Faso
+
+        * `BI` - Burundi
+
+        * `CV` - Cabo Verde
+
+        * `KH` - Cambodia
+
+        * `CM` - Cameroon
+
+        * `CA` - Canada
+
+        * `KY` - Cayman Islands
+
+        * `CF` - Central African Republic
+
+        * `TD` - Chad
+
+        * `CL` - Chile
+
+        * `CN` - China
+
+        * `CX` - Christmas Island
+
+        * `CC` - Cocos (Keeling) Islands
+
+        * `CO` - Colombia
+
+        * `KM` - Comoros
+
+        * `CG` - Congo
+
+        * `CD` - Congo (the Democratic Republic of the)
+
+        * `CK` - Cook Islands
+
+        * `CR` - Costa Rica
+
+        * `CI` - Côte d''Ivoire
+
+        * `HR` - Croatia
+
+        * `CU` - Cuba
+
+        * `CW` - Curaçao
+
+        * `CY` - Cyprus
+
+        * `CZ` - Czechia
+
+        * `DK` - Denmark
+
+        * `DJ` - Djibouti
+
+        * `DM` - Dominica
+
+        * `DO` - Dominican Republic
+
+        * `EC` - Ecuador
+
+        * `EG` - Egypt
+
+        * `SV` - El Salvador
+
+        * `GQ` - Equatorial Guinea
+
+        * `ER` - Eritrea
+
+        * `EE` - Estonia
+
+        * `SZ` - Eswatini
+
+        * `ET` - Ethiopia
+
+        * `FK` - Falkland Islands (Malvinas)
+
+        * `FO` - Faroe Islands
+
+        * `FJ` - Fiji
+
+        * `FI` - Finland
+
+        * `FR` - France
+
+        * `GF` - French Guiana
+
+        * `PF` - French Polynesia
+
+        * `TF` - French Southern Territories
+
+        * `GA` - Gabon
+
+        * `GM` - Gambia
+
+        * `GE` - Georgia
+
+        * `DE` - Germany
+
+        * `GH` - Ghana
+
+        * `GI` - Gibraltar
+
+        * `GR` - Greece
+
+        * `GL` - Greenland
+
+        * `GD` - Grenada
+
+        * `GP` - Guadeloupe
+
+        * `GU` - Guam
+
+        * `GT` - Guatemala
+
+        * `GG` - Guernsey
+
+        * `GN` - Guinea
+
+        * `GW` - Guinea-Bissau
+
+        * `GY` - Guyana
+
+        * `HT` - Haiti
+
+        * `HM` - Heard Island and McDonald Islands
+
+        * `VA` - Holy See
+
+        * `HN` - Honduras
+
+        * `HK` - Hong Kong
+
+        * `HU` - Hungary
+
+        * `IS` - Iceland
+
+        * `IN` - India
+
+        * `ID` - Indonesia
+
+        * `IR` - Iran
+
+        * `IQ` - Iraq
+
+        * `IE` - Ireland
+
+        * `IM` - Isle of Man
+
+        * `IL` - Israel
+
+        * `IT` - Italy
+
+        * `JM` - Jamaica
+
+        * `JP` - Japan
+
+        * `JE` - Jersey
+
+        * `JO` - Jordan
+
+        * `KZ` - Kazakhstan
+
+        * `KE` - Kenya
+
+        * `KI` - Kiribati
+
+        * `KW` - Kuwait
+
+        * `KG` - Kyrgyzstan
+
+        * `LA` - Laos
+
+        * `LV` - Latvia
+
+        * `LB` - Lebanon
+
+        * `LS` - Lesotho
+
+        * `LR` - Liberia
+
+        * `LY` - Libya
+
+        * `LI` - Liechtenstein
+
+        * `LT` - Lithuania
+
+        * `LU` - Luxembourg
+
+        * `MO` - Macao
+
+        * `MG` - Madagascar
+
+        * `MW` - Malawi
+
+        * `MY` - Malaysia
+
+        * `MV` - Maldives
+
+        * `ML` - Mali
+
+        * `MT` - Malta
+
+        * `MH` - Marshall Islands
+
+        * `MQ` - Martinique
+
+        * `MR` - Mauritania
+
+        * `MU` - Mauritius
+
+        * `YT` - Mayotte
+
+        * `MX` - Mexico
+
+        * `FM` - Micronesia
+
+        * `MD` - Moldova
+
+        * `MC` - Monaco
+
+        * `MN` - Mongolia
+
+        * `ME` - Montenegro
+
+        * `MS` - Montserrat
+
+        * `MA` - Morocco
+
+        * `MZ` - Mozambique
+
+        * `MM` - Myanmar
+
+        * `NA` - Namibia
+
+        * `NR` - Nauru
+
+        * `NP` - Nepal
+
+        * `NL` - Netherlands
+
+        * `NC` - New Caledonia
+
+        * `NZ` - New Zealand
+
+        * `NI` - Nicaragua
+
+        * `NE` - Niger
+
+        * `NG` - Nigeria
+
+        * `NU` - Niue
+
+        * `NF` - Norfolk Island
+
+        * `KP` - North Korea
+
+        * `MK` - North Macedonia
+
+        * `XI` - Northern Ireland
+
+        * `MP` - Northern Mariana Islands
+
+        * `NO` - Norway
+
+        * `OM` - Oman
+
+        * `PK` - Pakistan
+
+        * `PW` - Palau
+
+        * `PS` - Palestine, State of
+
+        * `PA` - Panama
+
+        * `PG` - Papua New Guinea
+
+        * `PY` - Paraguay
+
+        * `PE` - Peru
+
+        * `PH` - Philippines
+
+        * `PN` - Pitcairn
+
+        * `PL` - Poland
+
+        * `PT` - Portugal
+
+        * `PR` - Puerto Rico
+
+        * `QA` - Qatar
+
+        * `RE` - Réunion
+
+        * `RO` - Romania
+
+        * `RU` - Russia
+
+        * `RW` - Rwanda
+
+        * `BL` - Saint Barthélemy
+
+        * `SH` - Saint Helena, Ascension and Tristan da Cunha
+
+        * `KN` - Saint Kitts and Nevis
+
+        * `LC` - Saint Lucia
+
+        * `MF` - Saint Martin (French part)
+
+        * `PM` - Saint Pierre and Miquelon
+
+        * `VC` - Saint Vincent and the Grenadines
+
+        * `WS` - Samoa
+
+        * `SM` - San Marino
+
+        * `ST` - Sao Tome and Principe
+
+        * `SA` - Saudi Arabia
+
+        * `SN` - Senegal
+
+        * `RS` - Serbia
+
+        * `SC` - Seychelles
+
+        * `SL` - Sierra Leone
+
+        * `SG` - Singapore
+
+        * `SX` - Sint Maarten (Dutch part)
+
+        * `SK` - Slovakia
+
+        * `SI` - Slovenia
+
+        * `SB` - Solomon Islands
+
+        * `SO` - Somalia
+
+        * `ZA` - South Africa
+
+        * `GS` - South Georgia and the South Sandwich Islands
+
+        * `KR` - South Korea
+
+        * `SS` - South Sudan
+
+        * `ES` - Spain
+
+        * `LK` - Sri Lanka
+
+        * `SD` - Sudan
+
+        * `SR` - Suriname
+
+        * `SJ` - Svalbard and Jan Mayen
+
+        * `SE` - Sweden
+
+        * `CH` - Switzerland
+
+        * `SY` - Syria
+
+        * `TW` - Taiwan
+
+        * `TJ` - Tajikistan
+
+        * `TZ` - Tanzania
+
+        * `TH` - Thailand
+
+        * `TL` - Timor-Leste
+
+        * `TG` - Togo
+
+        * `TK` - Tokelau
+
+        * `TO` - Tonga
+
+        * `TT` - Trinidad and Tobago
+
+        * `TN` - Tunisia
+
+        * `TR` - Türkiye
+
+        * `TM` - Turkmenistan
+
+        * `TC` - Turks and Caicos Islands
+
+        * `TV` - Tuvalu
+
+        * `UG` - Uganda
+
+        * `UA` - Ukraine
+
+        * `AE` - United Arab Emirates
+
+        * `GB` - United Kingdom
+
+        * `UM` - United States Minor Outlying Islands
+
+        * `US` - United States of America
+
+        * `UY` - Uruguay
+
+        * `UZ` - Uzbekistan
+
+        * `VU` - Vanuatu
+
+        * `VE` - Venezuela
+
+        * `VN` - Vietnam
+
+        * `VG` - Virgin Islands (British)
+
+        * `VI` - Virgin Islands (U.S.)
+
+        * `WF` - Wallis and Futuna
+
+        * `EH` - Western Sahara
+
+        * `YE` - Yemen
+
+        * `ZM` - Zambia
+
+        * `ZW` - Zimbabwe'
+    DocumentLifecycleStatusEnum:
+      enum:
+      - valid
+      - expired
+      - expiring_soon
+      - renewed
+      type: string
+      description: '* `valid` - Valid
+
+        * `expired` - Expired
+
+        * `expiring_soon` - Expiring Soon
+
+        * `renewed` - Renewed'
+    BuyerSupplierPaymentTerms:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        buyer_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        supplier_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        payment_terms:
+          $ref: '#/components/schemas/AppOrderPaymentTermsEnum'
+        days_until_payment_due:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Number of days after dispatch until payment is due from the buyer
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - buyer_uuid
+      - created
+      - modified
+      - payment_terms
+      - supplier_uuid
+      - uuid
+    MerchantOfRecordSupplierSiteCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+      required:
+      - name
+    MoRBuyerCreate:
+      type: object
+      description: 'Serializer for creating a new Buyer (Brand) company by MoR users.
+
+        Creates the company, user, address, and employee atomically.'
+      properties:
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+        company_name:
+          type: string
+          maxLength: 255
+        product_type:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductTypeEnum'
+          default:
+          - other
+        registration_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        registration_number:
+          type: string
+          nullable: true
+          maxLength: 255
+        website:
+          type: string
+          nullable: true
+          maxLength: 255
+        phone_country_code:
+          type: string
+          nullable: true
+          maxLength: 10
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 50
+        buyer_accounts_email_address:
+          type: string
+          format: email
+          nullable: true
+        buyer_delivery_email_address:
+          type: string
+          format: email
+          nullable: true
+        duns:
+          type: string
+          nullable: true
+          maxLength: 50
+        company_address:
+          $ref: '#/components/schemas/MoRBuyerAddressCreate'
+        send_welcome_email:
+          type: boolean
+          default: true
+        send_contract_ready_email:
+          type: boolean
+          default: false
+      required:
+      - company_address
+      - company_name
+      - email
+      - first_name
+      - last_name
+    CompanyAddress:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        address_type:
+          $ref: '#/components/schemas/AddressTypeEnum'
+        contact_full_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        contact_phone:
+          type: string
+          nullable: true
+          maxLength: 50
+        building:
+          type: string
+          nullable: true
+          maxLength: 100
+        street_1:
+          type: string
+          nullable: true
+          maxLength: 255
+        street_2:
+          type: string
+          nullable: true
+          maxLength: 255
+        town:
+          type: string
+          nullable: true
+          maxLength: 100
+        region:
+          type: string
+          nullable: true
+          maxLength: 100
+        postcode:
+          type: string
+          nullable: true
+          maxLength: 100
+        country:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        place_id:
+          type: string
+          nullable: true
+          maxLength: 100
+        latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+          nullable: true
+        longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+          nullable: true
+        vat_number:
+          type: string
+          nullable: true
+          maxLength: 50
+        vat_country_code:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        vat_exempt:
+          type: boolean
+        phone_country_code:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        delivery_instructions:
+          type: string
+          nullable: true
+        collection_instructions:
+          type: string
+          nullable: true
+        country_type:
+          $ref: '#/components/schemas/CountryTypeEnum'
+        eori_number:
+          type: string
+          maxLength: 20
+        ein_number:
+          type: string
+          maxLength: 20
+        notes:
+          type: string
+        delivery_location_type:
+          type: string
+          description: Type of delivery location (warehouse, factory, distribution_center, retail_location, other).
+          maxLength: 50
+        delivery_location_type_other:
+          type: string
+          description: Free-text description when delivery_location_type == 'other'.
+          maxLength: 255
+        warehouse_receiving_hours:
+          type: string
+          description: Free-text receiving hours (e.g. 'Mon-Fri 9am-5pm').
+          maxLength: 255
+      required:
+      - created
+      - id
+      - modified
+      - name
+      - uuid
+    DocumentType:
+      type: object
+      description: Shared serializer for the DocumentType taxonomy (buyer, supplier, Opply documents).
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+      required:
+      - name
+      - uuid
+    SupplierAddBuyer:
+      type: object
+      description: Serializer for adding a buyer to a supplier by creating a referral relationship.
+      properties:
+        buyer_uuid:
+          type: string
+          format: uuid
+          description: UUID of the buyer (brand) company to associate with this supplier
+      required:
+      - buyer_uuid
+    MerchantOfRecordBuyerDetail:
+      type: object
+      description: Detailed serializer for buyer/brand information for MoR users
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        registration_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        registration_number:
+          type: string
+          nullable: true
+          maxLength: 255
+        website:
+          type: string
+          nullable: true
+          maxLength: 255
+        phone_country_code:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 50
+        buyer_accounts_email_address:
+          type: string
+          format: email
+          nullable: true
+          maxLength: 254
+        buyer_delivery_email_address:
+          type: string
+          format: email
+          nullable: true
+          maxLength: 254
+        sku_ordering_enabled:
+          type: boolean
+        duns:
+          type: string
+          nullable: true
+          description: DUNS number for creditworthiness checks and payouts
+          maxLength: 50
+        product_type:
+          $ref: '#/components/schemas/ProductTypeEnum'
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        primary_address:
+          type: string
+          readOnly: true
+        primary_user:
+          type: string
+          readOnly: true
+        is_connected_to_allianz:
+          type: boolean
+          description: Indicates if company is integrated with Allianz credit insurance
+        allianz_company_id:
+          type: string
+          nullable: true
+          description: Allianz company ID for credit limit integration
+          maxLength: 255
+        two_buyer_config:
+          allOf:
+          - $ref: '#/components/schemas/TwoBuyerConfig'
+          readOnly: true
+      required:
+      - created
+      - name
+      - primary_address
+      - primary_user
+      - two_buyer_config
+      - uuid
+    MerchantOfRecordSupplier:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        supplier_payout_terms:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/SupplierPayoutTermsEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        supplier_days_until_payout_due:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        duns:
+          type: string
+          nullable: true
+          description: DUNS number for creditworthiness checks and payouts
+          maxLength: 50
+        supplier_type:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/SupplierTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        supplier_lead_time_days:
+          type: integer
+          maximum: 365
+          minimum: 0
+          nullable: true
+          description: Default number of calendar days this supplier needs between order and delivery. Factored into the earliest selectable delivery date on orders.
+        registration_country_code:
+          type: string
+          nullable: true
+          readOnly: true
+      required:
+      - name
+      - registration_country_code
+      - uuid
+    SupplierTypeEnum:
+      enum:
+      - producer
+      - manufacturer
+      - broker
+      - other
+      - not_applicable
+      type: string
+      description: '* `producer` - Producer
+
+        * `manufacturer` - Manufacturer
+
+        * `broker` - Broker
+
+        * `other` - Other
+
+        * `not_applicable` - N/A'
+    GoogleUploadResponse:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+        token:
+          type: string
+      required:
+      - token
+      - url
+    CompanyDocumentCategory:
+      enum:
+      - ingredients_list
+      - other
+      type: string
+      description: '* `ingredients_list` - Ingredients List
+
+        * `other` - Other'
+    NullEnum:
+      enum:
+      - null
+    PhoneCountryCodeEnum:
+      enum:
+      - '+376'
+      - '+971'
+      - '+93'
+      - '+1268'
+      - '+1264'
+      - '+355'
+      - '+374'
+      - '+244'
+      - '+672'
+      - '+54'
+      - '+1684'
+      - '+43'
+      - '+61'
+      - '+297'
+      - '+994'
+      - '+387'
+      - '+1246'
+      - '+880'
+      - '+32'
+      - '+226'
+      - '+359'
+      - '+973'
+      - '+257'
+      - '+229'
+      - '+590'
+      - '+1441'
+      - '+673'
+      - '+591'
+      - '+55'
+      - '+1242'
+      - '+975'
+      - '+267'
+      - '+375'
+      - '+501'
+      - '+1'
+      - '+243'
+      - '+236'
+      - '+242'
+      - '+41'
+      - '+225'
+      - '+682'
+      - '+56'
+      - '+237'
+      - '+86'
+      - '+57'
+      - '+506'
+      - '+53'
+      - '+238'
+      - '+357'
+      - '+420'
+      - '+49'
+      - '+253'
+      - '+45'
+      - '+1767'
+      - '+1809'
+      - '+213'
+      - '+593'
+      - '+372'
+      - '+20'
+      - '+212'
+      - '+291'
+      - '+34'
+      - '+251'
+      - '+358'
+      - '+679'
+      - '+500'
+      - '+691'
+      - '+298'
+      - '+33'
+      - '+241'
+      - '+44'
+      - '+1473'
+      - '+995'
+      - '+594'
+      - '+441481'
+      - '+233'
+      - '+350'
+      - '+299'
+      - '+220'
+      - '+224'
+      - '+240'
+      - '+30'
+      - '+502'
+      - '+1671'
+      - '+245'
+      - '+595'
+      - '+852'
+      - '+504'
+      - '+385'
+      - '+509'
+      - '+36'
+      - '+62'
+      - '+353'
+      - '+972'
+      - '+441624'
+      - '+91'
+      - '+246'
+      - '+964'
+      - '+98'
+      - '+354'
+      - '+39'
+      - '+441534'
+      - '+1876'
+      - '+962'
+      - '+81'
+      - '+254'
+      - '+996'
+      - '+855'
+      - '+686'
+      - '+269'
+      - '+1869'
+      - '+850'
+      - '+82'
+      - '+965'
+      - '+345'
+      - '+7'
+      - '+856'
+      - '+961'
+      - '+1758'
+      - '+423'
+      - '+94'
+      - '+231'
+      - '+266'
+      - '+370'
+      - '+352'
+      - '+371'
+      - '+218'
+      - '+377'
+      - '+373'
+      - '+382'
+      - '+261'
+      - '+692'
+      - '+389'
+      - '+223'
+      - '+95'
+      - '+976'
+      - '+853'
+      - '+1670'
+      - '+596'
+      - '+222'
+      - '+1664'
+      - '+356'
+      - '+230'
+      - '+960'
+      - '+265'
+      - '+52'
+      - '+60'
+      - '+258'
+      - '+264'
+      - '+687'
+      - '+227'
+      - '+234'
+      - '+505'
+      - '+31'
+      - '+47'
+      - '+977'
+      - '+674'
+      - '+683'
+      - '+64'
+      - '+968'
+      - '+507'
+      - '+51'
+      - '+689'
+      - '+675'
+      - '+63'
+      - '+92'
+      - '+48'
+      - '+508'
+      - '+1787'
+      - '+970'
+      - '+351'
+      - '+680'
+      - '+974'
+      - '+262'
+      - '+40'
+      - '+381'
+      - '+250'
+      - '+966'
+      - '+677'
+      - '+248'
+      - '+249'
+      - '+46'
+      - '+65'
+      - '+290'
+      - '+386'
+      - '+421'
+      - '+232'
+      - '+378'
+      - '+221'
+      - '+252'
+      - '+597'
+      - '+239'
+      - '+503'
+      - '+963'
+      - '+268'
+      - '+1649'
+      - '+235'
+      - '+228'
+      - '+66'
+      - '+992'
+      - '+690'
+      - '+670'
+      - '+993'
+      - '+216'
+      - '+676'
+      - '+90'
+      - '+1868'
+      - '+688'
+      - '+886'
+      - '+255'
+      - '+380'
+      - '+256'
+      - '+598'
+      - '+998'
+      - '+379'
+      - '+1784'
+      - '+58'
+      - '+1284'
+      - '+1340'
+      - '+84'
+      - '+678'
+      - '+681'
+      - '+685'
+      - '+967'
+      - '+27'
+      - '+260'
+      - '+263'
+      type: string
+      description: '* `+376` - +376
+
+        * `+971` - +971
+
+        * `+93` - +93
+
+        * `+1268` - +1268
+
+        * `+1264` - +1264
+
+        * `+355` - +355
+
+        * `+374` - +374
+
+        * `+244` - +244
+
+        * `+672` - +672
+
+        * `+54` - +54
+
+        * `+1684` - +1684
+
+        * `+43` - +43
+
+        * `+61` - +61
+
+        * `+297` - +297
+
+        * `+994` - +994
+
+        * `+387` - +387
+
+        * `+1246` - +1246
+
+        * `+880` - +880
+
+        * `+32` - +32
+
+        * `+226` - +226
+
+        * `+359` - +359
+
+        * `+973` - +973
+
+        * `+257` - +257
+
+        * `+229` - +229
+
+        * `+590` - +590
+
+        * `+1441` - +1441
+
+        * `+673` - +673
+
+        * `+591` - +591
+
+        * `+55` - +55
+
+        * `+1242` - +1242
+
+        * `+975` - +975
+
+        * `+267` - +267
+
+        * `+375` - +375
+
+        * `+501` - +501
+
+        * `+1` - +1
+
+        * `+243` - +243
+
+        * `+236` - +236
+
+        * `+242` - +242
+
+        * `+41` - +41
+
+        * `+225` - +225
+
+        * `+682` - +682
+
+        * `+56` - +56
+
+        * `+237` - +237
+
+        * `+86` - +86
+
+        * `+57` - +57
+
+        * `+506` - +506
+
+        * `+53` - +53
+
+        * `+238` - +238
+
+        * `+357` - +357
+
+        * `+420` - +420
+
+        * `+49` - +49
+
+        * `+253` - +253
+
+        * `+45` - +45
+
+        * `+1767` - +1767
+
+        * `+1809` - +1809
+
+        * `+213` - +213
+
+        * `+593` - +593
+
+        * `+372` - +372
+
+        * `+20` - +20
+
+        * `+212` - +212
+
+        * `+291` - +291
+
+        * `+34` - +34
+
+        * `+251` - +251
+
+        * `+358` - +358
+
+        * `+679` - +679
+
+        * `+500` - +500
+
+        * `+691` - +691
+
+        * `+298` - +298
+
+        * `+33` - +33
+
+        * `+241` - +241
+
+        * `+44` - +44
+
+        * `+1473` - +1473
+
+        * `+995` - +995
+
+        * `+594` - +594
+
+        * `+441481` - +441481
+
+        * `+233` - +233
+
+        * `+350` - +350
+
+        * `+299` - +299
+
+        * `+220` - +220
+
+        * `+224` - +224
+
+        * `+240` - +240
+
+        * `+30` - +30
+
+        * `+502` - +502
+
+        * `+1671` - +1671
+
+        * `+245` - +245
+
+        * `+595` - +595
+
+        * `+852` - +852
+
+        * `+504` - +504
+
+        * `+385` - +385
+
+        * `+509` - +509
+
+        * `+36` - +36
+
+        * `+62` - +62
+
+        * `+353` - +353
+
+        * `+972` - +972
+
+        * `+441624` - +441624
+
+        * `+91` - +91
+
+        * `+246` - +246
+
+        * `+964` - +964
+
+        * `+98` - +98
+
+        * `+354` - +354
+
+        * `+39` - +39
+
+        * `+441534` - +441534
+
+        * `+1876` - +1876
+
+        * `+962` - +962
+
+        * `+81` - +81
+
+        * `+254` - +254
+
+        * `+996` - +996
+
+        * `+855` - +855
+
+        * `+686` - +686
+
+        * `+269` - +269
+
+        * `+1869` - +1869
+
+        * `+850` - +850
+
+        * `+82` - +82
+
+        * `+965` - +965
+
+        * `+345` - +345
+
+        * `+7` - +7
+
+        * `+856` - +856
+
+        * `+961` - +961
+
+        * `+1758` - +1758
+
+        * `+423` - +423
+
+        * `+94` - +94
+
+        * `+231` - +231
+
+        * `+266` - +266
+
+        * `+370` - +370
+
+        * `+352` - +352
+
+        * `+371` - +371
+
+        * `+218` - +218
+
+        * `+377` - +377
+
+        * `+373` - +373
+
+        * `+382` - +382
+
+        * `+261` - +261
+
+        * `+692` - +692
+
+        * `+389` - +389
+
+        * `+223` - +223
+
+        * `+95` - +95
+
+        * `+976` - +976
+
+        * `+853` - +853
+
+        * `+1670` - +1670
+
+        * `+596` - +596
+
+        * `+222` - +222
+
+        * `+1664` - +1664
+
+        * `+356` - +356
+
+        * `+230` - +230
+
+        * `+960` - +960
+
+        * `+265` - +265
+
+        * `+52` - +52
+
+        * `+60` - +60
+
+        * `+258` - +258
+
+        * `+264` - +264
+
+        * `+687` - +687
+
+        * `+227` - +227
+
+        * `+234` - +234
+
+        * `+505` - +505
+
+        * `+31` - +31
+
+        * `+47` - +47
+
+        * `+977` - +977
+
+        * `+674` - +674
+
+        * `+683` - +683
+
+        * `+64` - +64
+
+        * `+968` - +968
+
+        * `+507` - +507
+
+        * `+51` - +51
+
+        * `+689` - +689
+
+        * `+675` - +675
+
+        * `+63` - +63
+
+        * `+92` - +92
+
+        * `+48` - +48
+
+        * `+508` - +508
+
+        * `+1787` - +1787
+
+        * `+970` - +970
+
+        * `+351` - +351
+
+        * `+680` - +680
+
+        * `+974` - +974
+
+        * `+262` - +262
+
+        * `+40` - +40
+
+        * `+381` - +381
+
+        * `+250` - +250
+
+        * `+966` - +966
+
+        * `+677` - +677
+
+        * `+248` - +248
+
+        * `+249` - +249
+
+        * `+46` - +46
+
+        * `+65` - +65
+
+        * `+290` - +290
+
+        * `+386` - +386
+
+        * `+421` - +421
+
+        * `+232` - +232
+
+        * `+378` - +378
+
+        * `+221` - +221
+
+        * `+252` - +252
+
+        * `+597` - +597
+
+        * `+239` - +239
+
+        * `+503` - +503
+
+        * `+963` - +963
+
+        * `+268` - +268
+
+        * `+1649` - +1649
+
+        * `+235` - +235
+
+        * `+228` - +228
+
+        * `+66` - +66
+
+        * `+992` - +992
+
+        * `+690` - +690
+
+        * `+670` - +670
+
+        * `+993` - +993
+
+        * `+216` - +216
+
+        * `+676` - +676
+
+        * `+90` - +90
+
+        * `+1868` - +1868
+
+        * `+688` - +688
+
+        * `+886` - +886
+
+        * `+255` - +255
+
+        * `+380` - +380
+
+        * `+256` - +256
+
+        * `+598` - +598
+
+        * `+998` - +998
+
+        * `+379` - +379
+
+        * `+1784` - +1784
+
+        * `+58` - +58
+
+        * `+1284` - +1284
+
+        * `+1340` - +1340
+
+        * `+84` - +84
+
+        * `+678` - +678
+
+        * `+681` - +681
+
+        * `+685` - +685
+
+        * `+967` - +967
+
+        * `+27` - +27
+
+        * `+260` - +260
+
+        * `+263` - +263'
+    BuyerFinancialDocumentTypeEnum:
+      enum:
+      - management_accounts
+      - audited_accounts
+      - balance_sheet
+      - profit_and_loss
+      - cashflow_forecast
+      - sales_tax_exemption
+      - other
+      type: string
+      description: '* `management_accounts` - Management Accounts
+
+        * `audited_accounts` - Audited Accounts
+
+        * `balance_sheet` - Balance Sheet
+
+        * `profit_and_loss` - Profit and Loss
+
+        * `cashflow_forecast` - Cashflow Forecast
+
+        * `sales_tax_exemption` - Sales Tax Exemption
+
+        * `other` - Other'
+    PaginatedMoRBuyerComplianceDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MoRBuyerComplianceDocument'
+    PaginatedBuyerSupplierList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerSupplier'
+    PaginatedSupplierBuyerList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplierBuyer'
+    URL:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+      required:
+      - url
+    CountryTypeEnum:
+      enum:
+      - EU
+      - GB
+      - Other
+      type: string
+      description: '* `EU` - Eu
+
+        * `GB` - Gb
+
+        * `Other` - Other'
+    MoRBuyerAddressCreate:
+      type: object
+      description: Serializer for nested address creation within buyer creation.
+      properties:
+        address_line_1:
+          type: string
+          maxLength: 255
+        address_line_2:
+          type: string
+          maxLength: 255
+        town:
+          type: string
+          maxLength: 100
+        region:
+          type: string
+          maxLength: 100
+        postcode:
+          type: string
+          maxLength: 100
+        country:
+          type: string
+          maxLength: 2
+        vat_country_code:
+          type: string
+          maxLength: 2
+        vat_number:
+          type: string
+          maxLength: 50
+        ein:
+          type: string
+          maxLength: 20
+      required:
+      - address_line_1
+      - country
+      - postcode
+      - town
+    PatchedSupplierContact:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phone_number:
+          type: string
+          maxLength: 50
+        category:
+          $ref: '#/components/schemas/SupplierContactCategoryEnum'
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        notes:
+          type: string
+    PatchedMerchantOfRecordSupplierUpdate:
+      type: object
+      description: Serializer for updating supplier payout terms, days, DUNS, supplier type, and lead time
+      properties:
+        supplier_payout_terms:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/SupplierPayoutTermsEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        supplier_days_until_payout_due:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        duns:
+          type: string
+          nullable: true
+          description: DUNS number for creditworthiness checks and payouts
+          maxLength: 50
+        supplier_type:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/SupplierTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        supplier_lead_time_days:
+          type: integer
+          maximum: 365
+          minimum: 0
+          nullable: true
+          description: Default number of calendar days this supplier needs between order and delivery. Factored into the earliest selectable delivery date on orders.
+    MerchantOfRecordCompany:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        company_type:
+          $ref: '#/components/schemas/CompanyTypeEnum'
+        supplier_payout_terms:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/SupplierPayoutTermsEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        supplier_days_until_payout_due:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        is_on_hold:
+          type: boolean
+          readOnly: true
+        on_hold_reason:
+          type: string
+          readOnly: true
+      required:
+      - is_on_hold
+      - name
+      - on_hold_reason
+      - uuid
+    PaginatedSupplierSiteList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplierSite'
+    TwoBuyerConfigUpdate:
+      type: object
+      properties:
+        representative_first_name:
+          type: string
+          maxLength: 255
+        representative_last_name:
+          type: string
+          maxLength: 255
+        representative_email:
+          type: string
+          format: email
+        representative_phone_number:
+          type: string
+          maxLength: 50
+        invoice_emails:
+          type: array
+          items:
+            type: string
+            format: email
+    GoogleUploadComplete:
+      type: object
+      properties:
+        token:
+          type: string
+      required:
+      - token
+    AddressTypeEnum:
+      enum:
+      - billing_address
+      - delivery_address
+      - dispatch_address
+      - company_address
+      type: string
+      description: '* `billing_address` - Billing address
+
+        * `delivery_address` - Delivery address
+
+        * `dispatch_address` - Dispatch address
+
+        * `company_address` - Company address'
+    AppOrderPaymentTermsEnum:
+      enum:
+      - pay_before_dispatch
+      - pay_after_dispatch
+      - pay_on_28th_second_month_after_dispatch
+      - pay_end_of_month_of_dispatch_date
+      type: string
+      description: '* `pay_before_dispatch` - Pay Before Dispatch
+
+        * `pay_after_dispatch` - Pay After Dispatch
+
+        * `pay_on_28th_second_month_after_dispatch` - Pay on 28th second month after dispatch
+
+        * `pay_end_of_month_of_dispatch_date` - Pay End of Month of Dispatch Date'
+    CompanyDocument:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        document:
+          type: string
+          format: uri
+        description:
+          type: string
+          nullable: true
+        document_category:
+          $ref: '#/components/schemas/CompanyDocumentCategory'
+      required:
+      - document
+      - uuid
+    PatchedSupplierPayoutDetails:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        bank_country:
+          $ref: '#/components/schemas/BankingCountryTypeEnum'
+        bank_name:
+          type: string
+          maxLength: 255
+        account_holder_name:
+          type: string
+          maxLength: 255
+        account_number:
+          type: string
+          maxLength: 64
+        sort_code:
+          type: string
+          maxLength: 16
+        routing_number:
+          type: string
+          maxLength: 32
+        account_type:
+          oneOf:
+          - $ref: '#/components/schemas/AccountTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        iban:
+          type: string
+          maxLength: 64
+        bic:
+          type: string
+          maxLength: 32
+        account_holder_building:
+          type: string
+          maxLength: 100
+        account_holder_street_1:
+          type: string
+          maxLength: 255
+        account_holder_street_2:
+          type: string
+          maxLength: 255
+        account_holder_town:
+          type: string
+          maxLength: 100
+        account_holder_region:
+          type: string
+          maxLength: 100
+        account_holder_postcode:
+          type: string
+          maxLength: 100
+        account_holder_country:
+          $ref: '#/components/schemas/Country'
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        note:
+          type: string
+    PaginatedBuyerFinancialDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerFinancialDocument'
+    PaginatedMerchantOfRecordCompanyList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MerchantOfRecordCompany'
+    SupplierContactCategoryEnum:
+      enum:
+      - orders
+      - logistics
+      - finance
+      - other
+      type: string
+      description: '* `orders` - Orders
+
+        * `logistics` - Logistics and Supply Chain
+
+        * `finance` - Finance
+
+        * `other` - Other'
+    AccountTypeEnum:
+      enum:
+      - checking
+      - savings
+      type: string
+      description: '* `checking` - Checking
+
+        * `savings` - Savings'
+    USStateEnum:
+      enum:
+      - AL
+      - AK
+      - AZ
+      - AR
+      - CA
+      - CO
+      - CT
+      - DE
+      - FL
+      - GA
+      - HI
+      - ID
+      - IL
+      - IN
+      - IA
+      - KS
+      - KY
+      - LA
+      - ME
+      - MD
+      - MA
+      - MI
+      - MN
+      - MS
+      - MO
+      - MT
+      - NE
+      - NV
+      - NH
+      - NJ
+      - NM
+      - NY
+      - NC
+      - ND
+      - OH
+      - OK
+      - OR
+      - PA
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VT
+      - VA
+      - WA
+      - WV
+      - WI
+      - WY
+      - DC
+      - PR
+      - GU
+      - VI
+      - AS
+      - MP
+      type: string
+      description: '* `AL` - Alabama
+
+        * `AK` - Alaska
+
+        * `AZ` - Arizona
+
+        * `AR` - Arkansas
+
+        * `CA` - California
+
+        * `CO` - Colorado
+
+        * `CT` - Connecticut
+
+        * `DE` - Delaware
+
+        * `FL` - Florida
+
+        * `GA` - Georgia
+
+        * `HI` - Hawaii
+
+        * `ID` - Idaho
+
+        * `IL` - Illinois
+
+        * `IN` - Indiana
+
+        * `IA` - Iowa
+
+        * `KS` - Kansas
+
+        * `KY` - Kentucky
+
+        * `LA` - Louisiana
+
+        * `ME` - Maine
+
+        * `MD` - Maryland
+
+        * `MA` - Massachusetts
+
+        * `MI` - Michigan
+
+        * `MN` - Minnesota
+
+        * `MS` - Mississippi
+
+        * `MO` - Missouri
+
+        * `MT` - Montana
+
+        * `NE` - Nebraska
+
+        * `NV` - Nevada
+
+        * `NH` - New Hampshire
+
+        * `NJ` - New Jersey
+
+        * `NM` - New Mexico
+
+        * `NY` - New York
+
+        * `NC` - North Carolina
+
+        * `ND` - North Dakota
+
+        * `OH` - Ohio
+
+        * `OK` - Oklahoma
+
+        * `OR` - Oregon
+
+        * `PA` - Pennsylvania
+
+        * `RI` - Rhode Island
+
+        * `SC` - South Carolina
+
+        * `SD` - South Dakota
+
+        * `TN` - Tennessee
+
+        * `TX` - Texas
+
+        * `UT` - Utah
+
+        * `VT` - Vermont
+
+        * `VA` - Virginia
+
+        * `WA` - Washington
+
+        * `WV` - West Virginia
+
+        * `WI` - Wisconsin
+
+        * `WY` - Wyoming
+
+        * `DC` - District of Columbia
+
+        * `PR` - Puerto Rico
+
+        * `GU` - Guam
+
+        * `VI` - U.S. Virgin Islands
+
+        * `AS` - American Samoa
+
+        * `MP` - Northern Mariana Islands'
+    SupplierBuyer:
+      type: object
+      description: 'Serializer for buyer information associated with a supplier through referrals.
+
+        Includes payment terms if a BuyerSupplierPaymentTerms record exists for this pair.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        company_type:
+          allOf:
+          - $ref: '#/components/schemas/CompanyTypeEnum'
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        payment_terms:
+          type: string
+          readOnly: true
+        days_until_payment_due:
+          type: string
+          readOnly: true
+      required:
+      - company_type
+      - created
+      - days_until_payment_due
+      - name
+      - payment_terms
+      - uuid
+    BuyerSupplierPaymentTermsCreate:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        buyer_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        supplier_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        payment_terms:
+          $ref: '#/components/schemas/AppOrderPaymentTermsEnum'
+        days_until_payment_due:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Number of days after dispatch until payment is due from the buyer
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - buyer_uuid
+      - created
+      - modified
+      - payment_terms
+      - supplier_uuid
+      - uuid
+    BuyerSupplier:
+      type: object
+      description: 'Serializer for suppliers associated with a buyer.
+
+        Includes payment terms if a BuyerSupplierPaymentTerms record exists for this pair.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        status:
+          type: string
+          readOnly: true
+        supplier_type:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/SupplierTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        supplier_lead_time_days:
+          type: integer
+          maximum: 365
+          minimum: 0
+          nullable: true
+          description: Default number of calendar days this supplier needs between order and delivery. Factored into the earliest selectable delivery date on orders.
+        payment_terms:
+          type: string
+          readOnly: true
+        days_until_payment_due:
+          type: string
+          readOnly: true
+      required:
+      - days_until_payment_due
+      - name
+      - payment_terms
+      - status
+      - uuid
+    SupplierPayoutDetails:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        bank_country:
+          $ref: '#/components/schemas/BankingCountryTypeEnum'
+        bank_name:
+          type: string
+          maxLength: 255
+        account_holder_name:
+          type: string
+          maxLength: 255
+        account_number:
+          type: string
+          maxLength: 64
+        sort_code:
+          type: string
+          maxLength: 16
+        routing_number:
+          type: string
+          maxLength: 32
+        account_type:
+          oneOf:
+          - $ref: '#/components/schemas/AccountTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        iban:
+          type: string
+          maxLength: 64
+        bic:
+          type: string
+          maxLength: 32
+        account_holder_building:
+          type: string
+          maxLength: 100
+        account_holder_street_1:
+          type: string
+          maxLength: 255
+        account_holder_street_2:
+          type: string
+          maxLength: 255
+        account_holder_town:
+          type: string
+          maxLength: 100
+        account_holder_region:
+          type: string
+          maxLength: 100
+        account_holder_postcode:
+          type: string
+          maxLength: 100
+        account_holder_country:
+          $ref: '#/components/schemas/Country'
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        note:
+          type: string
+      required:
+      - account_holder_country
+      - account_holder_name
+      - account_holder_postcode
+      - account_holder_street_1
+      - account_holder_town
+      - account_number
+      - bank_country
+      - bank_name
+      - created
+      - modified
+      - uuid
+    MoRBuyerComplianceDocument:
+      type: object
+      description: 'Read shape for the MoR''s view of a buyer''s compliance documents.
+
+
+        Same fields as the buyer-facing serializer (minus the write-only upload
+
+        fields) plus the agent''s structured extraction detail when the document
+
+        came through onboarding. Jurisdiction / certificate number / issuing
+
+        authority are first-class ``BuyerDocument`` columns (also mirrored as
+
+        text in ``notes``); the nested ``extraction`` payload additionally
+
+        surfaces the agent-only fields that have no document column (e.g.
+
+        ``compliance_type``, ``type_hint``, ``us_state``, ``evidence``).'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/DocumentType'
+          readOnly: true
+        file:
+          type: string
+          format: uri
+          readOnly: true
+          description: The uploaded document file
+        name:
+          type: string
+          readOnly: true
+          description: Display name for the document
+        start_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          description: Start date of document validity
+        end_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          description: End/expiry date of document validity
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
+          readOnly: true
+          description: ISO country codes this document applies to. Empty = all countries.
+        certificate_number:
+          type: string
+          readOnly: true
+          description: Permit / exemption / certificate number as printed on the document
+        jurisdiction:
+          type: string
+          readOnly: true
+          description: State/region the document applies in, as printed on the document (e.g. 'Michigan'). For US documents the structured counterpart is us_state_jurisdiction.
+        us_state_jurisdiction:
+          readOnly: true
+          oneOf:
+          - $ref: '#/components/schemas/USStateEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        issuing_authority:
+          type: string
+          readOnly: true
+          description: Body that issued the document (e.g. 'Michigan Department of Treasury')
+        holder_name:
+          type: string
+          readOnly: true
+          description: Entity the document is issued to as printed — normally the buyer company
+        notes:
+          type: string
+          readOnly: true
+          nullable: true
+          description: Optional notes about this document
+        status:
+          allOf:
+          - $ref: '#/components/schemas/DocumentLifecycleStatusEnum'
+          readOnly: true
+        is_archived:
+          type: boolean
+          description: Return whether the document is archived (expired or renewed).
+          readOnly: true
+        superseded_by_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        extraction:
+          allOf:
+          - $ref: '#/components/schemas/_ComplianceExtractionDetail'
+          nullable: true
+          readOnly: true
+      required:
+      - certificate_number
+      - countries
+      - created
+      - end_date
+      - extraction
+      - file
+      - holder_name
+      - is_archived
+      - issuing_authority
+      - jurisdiction
+      - modified
+      - name
+      - notes
+      - start_date
+      - status
+      - superseded_by_uuid
+      - type
+      - us_state_jurisdiction
+      - uuid
+    PatchedBuyerSupplierPaymentTermsCreate:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        buyer_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        supplier_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        payment_terms:
+          $ref: '#/components/schemas/AppOrderPaymentTermsEnum'
+        days_until_payment_due:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Number of days after dispatch until payment is due from the buyer
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+    PaginatedCompanyDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyDocument'
+    PatchedCompanyAddress:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        address_type:
+          $ref: '#/components/schemas/AddressTypeEnum'
+        contact_full_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        contact_phone:
+          type: string
+          nullable: true
+          maxLength: 50
+        building:
+          type: string
+          nullable: true
+          maxLength: 100
+        street_1:
+          type: string
+          nullable: true
+          maxLength: 255
+        street_2:
+          type: string
+          nullable: true
+          maxLength: 255
+        town:
+          type: string
+          nullable: true
+          maxLength: 100
+        region:
+          type: string
+          nullable: true
+          maxLength: 100
+        postcode:
+          type: string
+          nullable: true
+          maxLength: 100
+        country:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        place_id:
+          type: string
+          nullable: true
+          maxLength: 100
+        latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+          nullable: true
+        longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+          nullable: true
+        vat_number:
+          type: string
+          nullable: true
+          maxLength: 50
+        vat_country_code:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        vat_exempt:
+          type: boolean
+        phone_country_code:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        delivery_instructions:
+          type: string
+          nullable: true
+        collection_instructions:
+          type: string
+          nullable: true
+        country_type:
+          $ref: '#/components/schemas/CountryTypeEnum'
+        eori_number:
+          type: string
+          maxLength: 20
+        ein_number:
+          type: string
+          maxLength: 20
+        notes:
+          type: string
+        delivery_location_type:
+          type: string
+          description: Type of delivery location (warehouse, factory, distribution_center, retail_location, other).
+          maxLength: 50
+        delivery_location_type_other:
+          type: string
+          description: Free-text description when delivery_location_type == 'other'.
+          maxLength: 255
+        warehouse_receiving_hours:
+          type: string
+          description: Free-text receiving hours (e.g. 'Mon-Fri 9am-5pm').
+          maxLength: 255
+    MoRBuyerUserResponse:
+      type: object
+      description: Response shape for `POST /merchant-of-record-buyers/{uuid}/users/`.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        is_admin:
+          type: boolean
+          readOnly: true
+      required:
+      - email
+      - first_name
+      - is_admin
+      - last_name
+      - uuid
+    ComplianceDocumentTypeEnum:
+      enum:
+      - SALES_TAX_EXEMPTION
+      - OTHER
+      type: string
+      description: '* `SALES_TAX_EXEMPTION` - Sales Tax Exemption
+
+        * `OTHER` - Other'
+    PatchedMoRBuyerUpdate:
+      type: object
+      description: 'Serializer for updating an existing Buyer (Brand) company by MoR users.
+
+        User email is NOT editable after creation.'
+      properties:
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        company_name:
+          type: string
+          maxLength: 255
+        product_type:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductTypeEnum'
+        registration_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        registration_number:
+          type: string
+          nullable: true
+          maxLength: 255
+        website:
+          type: string
+          nullable: true
+          maxLength: 255
+        phone_country_code:
+          type: string
+          nullable: true
+          maxLength: 10
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 50
+        buyer_accounts_email_address:
+          type: string
+          format: email
+          nullable: true
+        buyer_delivery_email_address:
+          type: string
+          format: email
+          nullable: true
+        duns:
+          type: string
+          nullable: true
+          maxLength: 50
+        sku_ordering_enabled:
+          type: boolean
+        company_address:
+          $ref: '#/components/schemas/MoRBuyerAddressUpdate'
+        two_buyer_config:
+          $ref: '#/components/schemas/TwoBuyerConfigUpdate'
+    MoRBuyerUserCreate:
+      type: object
+      description: 'Serializer for adding an additional user to an existing Buyer (Brand)
+
+        company by MoR users.
+
+
+        Follows the MoR provisioning paradigm (same as MoRBuyerCreateSerializer
+
+        and the buyer-onboarding invite): the User is created upfront with no
+
+        password, and a set-password link is emailed once the transaction
+
+        commits. Which email depends on the buyer''s onboarding state — see
+
+        `_send_buyer_user_password_email`.'
+      properties:
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        is_admin:
+          type: boolean
+          default: false
+      required:
+      - email
+      - first_name
+      - last_name
+    SupplierPayoutTermsEnum:
+      enum:
+      - payout_before_dispatch
+      - payout_after_dispatch
+      type: string
+      description: '* `payout_before_dispatch` - Payout Before Dispatch
+
+        * `payout_after_dispatch` - Payout After Dispatch'
+    SupplierSite:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        company:
+          type: integer
+      required:
+      - company
+      - name
+      - uuid
+    PaginatedSupplierContactList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplierContact'
+    MoRBuyerAddressUpdate:
+      type: object
+      description: Serializer for nested address updates. Country cannot be changed.
+      properties:
+        address_line_1:
+          type: string
+          maxLength: 255
+        address_line_2:
+          type: string
+          maxLength: 255
+        town:
+          type: string
+          maxLength: 100
+        region:
+          type: string
+          maxLength: 100
+        postcode:
+          type: string
+          maxLength: 100
+        vat_country_code:
+          type: string
+          maxLength: 2
+        vat_number:
+          type: string
+          maxLength: 50
+        ein:
+          type: string
+          maxLength: 20
+    CompanyTypeEnum:
+      enum:
+      - brand
+      - supplier
+      - merchant_of_record
+      type: string
+      description: '* `brand` - Brand
+
+        * `supplier` - Supplier
+
+        * `merchant_of_record` - Merchant of Record'
+    MoRBuyerDetailResponse:
+      type: object
+      description: 'Response serializer for buyer details after create/update.
+
+        Returns comprehensive buyer information.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        registration_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        registration_number:
+          type: string
+          nullable: true
+          maxLength: 255
+        website:
+          type: string
+          nullable: true
+          maxLength: 255
+        phone_country_code:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 50
+        buyer_accounts_email_address:
+          type: string
+          format: email
+          nullable: true
+          maxLength: 254
+        buyer_delivery_email_address:
+          type: string
+          format: email
+          nullable: true
+          maxLength: 254
+        sku_ordering_enabled:
+          type: boolean
+        duns:
+          type: string
+          nullable: true
+          description: DUNS number for creditworthiness checks and payouts
+          maxLength: 50
+        product_type:
+          $ref: '#/components/schemas/ProductTypeEnum'
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        primary_address:
+          type: string
+          readOnly: true
+        primary_user:
+          type: string
+          readOnly: true
+        is_connected_to_allianz:
+          type: boolean
+          description: Indicates if company is integrated with Allianz credit insurance
+        allianz_company_id:
+          type: string
+          nullable: true
+          description: Allianz company ID for credit limit integration
+          maxLength: 255
+      required:
+      - created
+      - name
+      - primary_address
+      - primary_user
+      - uuid
+    BlankEnum:
+      enum:
+      - ''
+    SupplierRemoveBuyer:
+      type: object
+      description: Serializer for removing a buyer from a supplier.
+      properties:
+        buyer_uuid:
+          type: string
+          format: uuid
+          description: UUID of the buyer to remove from this supplier
+      required:
+      - buyer_uuid
+    AllianzConnect:
+      type: object
+      description: Serializer for connecting a buyer company to an Allianz company record.
+      properties:
+        allianz_company_id:
+          type: string
+          description: The Allianz company ID to associate with this buyer.
+        skip_validation:
+          type: boolean
+          default: false
+          description: When true, skips the Allianz API validation and saves the company ID directly. Intended for local/staging environments where the Allianz API is unavailable.
+      required:
+      - allianz_company_id
+    TwoBuyerConfig:
+      type: object
+      properties:
+        representative_first_name:
+          type: string
+          maxLength: 255
+        representative_last_name:
+          type: string
+          maxLength: 255
+        representative_email:
+          type: string
+          format: email
+          maxLength: 254
+        representative_phone_number:
+          type: string
+          maxLength: 50
+        invoice_emails:
+          description: List of email addresses to receive Two invoices
+    PaginatedCompanyAddressList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyAddress'
+    BuyerFinancialDocument:
+      type: object
+      description: Read serializer returned for list/create responses.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/BuyerFinancialDocumentTypeEnum'
+          readOnly: true
+          description: 'Category of financial document — drives how the credit team triages the upload.
+
+
+            * `management_accounts` - Management Accounts
+
+            * `audited_accounts` - Audited Accounts
+
+            * `balance_sheet` - Balance Sheet
+
+            * `profit_and_loss` - Profit and Loss
+
+            * `cashflow_forecast` - Cashflow Forecast
+
+            * `sales_tax_exemption` - Sales Tax Exemption
+
+            * `other` - Other'
+        original_filename:
+          type: string
+          readOnly: true
+          description: Filename as supplied by the user at upload time (preserved for display).
+        file_size_bytes:
+          type: integer
+          readOnly: true
+          description: Size of the uploaded file in bytes; capped at the application-level upload limit.
+        file_url:
+          type: string
+          nullable: true
+          readOnly: true
+        uploaded_by_name:
+          type: string
+          nullable: true
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+          description: Display name (sales-tax exemptions only; blank for other financial docs).
+        start_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          description: Start date of document validity (sales-tax exemptions only).
+        end_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          description: End/expiry date of document validity (sales-tax exemptions only).
+        certificate_number:
+          type: string
+          readOnly: true
+          description: Permit / exemption / certificate number as printed (sales-tax exemptions only).
+        jurisdiction:
+          type: string
+          readOnly: true
+          description: State/region the document applies in, as printed (e.g. 'Michigan'). For US documents the structured counterpart is us_state_jurisdiction.
+        issuing_authority:
+          type: string
+          readOnly: true
+          description: Body that issued the document (e.g. 'Michigan Department of Treasury').
+        holder_name:
+          type: string
+          readOnly: true
+          description: Entity the document is issued to as printed — normally the buyer company.
+      required:
+      - certificate_number
+      - created_at
+      - end_date
+      - file_size_bytes
+      - file_url
+      - holder_name
+      - issuing_authority
+      - jurisdiction
+      - name
+      - original_filename
+      - start_date
+      - type
+      - uploaded_by_name
+      - uuid
+    CreateCompanyAddress:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        company_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        address_type:
+          $ref: '#/components/schemas/AddressTypeEnum'
+        contact_full_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        contact_phone:
+          type: string
+          nullable: true
+          maxLength: 50
+        building:
+          type: string
+          nullable: true
+          maxLength: 100
+        street_1:
+          type: string
+          nullable: true
+          maxLength: 255
+        street_2:
+          type: string
+          nullable: true
+          maxLength: 255
+        town:
+          type: string
+          nullable: true
+          maxLength: 100
+        region:
+          type: string
+          nullable: true
+          maxLength: 100
+        postcode:
+          type: string
+          nullable: true
+          maxLength: 100
+        country:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        place_id:
+          type: string
+          nullable: true
+          maxLength: 100
+        latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+          nullable: true
+        longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+          nullable: true
+        vat_number:
+          type: string
+          nullable: true
+          maxLength: 50
+        vat_country_code:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        vat_exempt:
+          type: boolean
+        phone_country_code:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        delivery_instructions:
+          type: string
+          nullable: true
+        collection_instructions:
+          type: string
+          nullable: true
+        country_type:
+          $ref: '#/components/schemas/CountryTypeEnum'
+        eori_number:
+          type: string
+          maxLength: 20
+        ein_number:
+          type: string
+          maxLength: 20
+        notes:
+          type: string
+        delivery_location_type:
+          type: string
+          description: Type of delivery location (warehouse, factory, distribution_center, retail_location, other).
+          maxLength: 50
+        delivery_location_type_other:
+          type: string
+          description: Free-text description when delivery_location_type == 'other'.
+          maxLength: 255
+        warehouse_receiving_hours:
+          type: string
+          description: Free-text receiving hours (e.g. 'Mon-Fri 9am-5pm').
+          maxLength: 255
+      required:
+      - company_uuid
+      - created
+      - id
+      - modified
+      - name
+      - uuid
+    _ComplianceExtractionDetail:
+      type: object
+      description: 'Structured certificate detail captured by the onboarding extraction
+
+        agent (`buyer_onboarding.ExtractedComplianceDocument`). Read-only nested
+
+        payload — present only on documents that were filed by the agent;
+
+        manually uploaded documents have no extraction row.'
+      properties:
+        compliance_type:
+          allOf:
+          - $ref: '#/components/schemas/ComplianceDocumentTypeEnum'
+          readOnly: true
+        type_hint:
+          type: string
+          readOnly: true
+        jurisdiction:
+          type: string
+          readOnly: true
+        us_state:
+          type: string
+          readOnly: true
+        country:
+          type: string
+          readOnly: true
+        certificate_number:
+          type: string
+          readOnly: true
+        issuing_authority:
+          type: string
+          readOnly: true
+        holder_name:
+          type: string
+          readOnly: true
+        issue_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+        expiry_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+      required:
+      - certificate_number
+      - compliance_type
+      - country
+      - expiry_date
+      - holder_name
+      - issue_date
+      - issuing_authority
+      - jurisdiction
+      - type_hint
+      - us_state
+    BankingCountryTypeEnum:
+      enum:
+      - US
+      - GB
+      - CA
+      - AT
+      - BE
+      - CY
+      - DE
+      - EE
+      - ES
+      - FI
+      - FR
+      - GR
+      - IE
+      - IT
+      - LT
+      - LU
+      - LV
+      - MT
+      - NL
+      - PT
+      - SI
+      - SK
+      - BG
+      - CZ
+      - DK
+      - HR
+      - HU
+      - PL
+      - RO
+      - SE
+      - EU
+      type: string
+      description: '* `US` - Us
+
+        * `GB` - Gb
+
+        * `CA` - Ca
+
+        * `AT` - At
+
+        * `BE` - Be
+
+        * `CY` - Cy
+
+        * `DE` - De
+
+        * `EE` - Ee
+
+        * `ES` - Es
+
+        * `FI` - Fi
+
+        * `FR` - Fr
+
+        * `GR` - Gr
+
+        * `IE` - Ie
+
+        * `IT` - It
+
+        * `LT` - Lt
+
+        * `LU` - Lu
+
+        * `LV` - Lv
+
+        * `MT` - Mt
+
+        * `NL` - Nl
+
+        * `PT` - Pt
+
+        * `SI` - Si
+
+        * `SK` - Sk
+
+        * `BG` - Bg
+
+        * `CZ` - Cz
+
+        * `DK` - Dk
+
+        * `HR` - Hr
+
+        * `HU` - Hu
+
+        * `PL` - Pl
+
+        * `RO` - Ro
+
+        * `SE` - Se
+
+        * `EU` - Eu'
+    SupplierContact:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phone_number:
+          type: string
+          maxLength: 50
+        category:
+          $ref: '#/components/schemas/SupplierContactCategoryEnum'
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        notes:
+          type: string
+      required:
+      - category
+      - created
+      - email
+      - first_name
+      - modified
+      - uuid
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

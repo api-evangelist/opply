@@ -1,0 +1,2990 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Catalog API
+  version: 0.0.0
+tags:
+- name: Catalog
+paths:
+  /api/v1/catalog/buyer-items/:
+    get:
+      operationId: api_v1_catalog_buyer_items_list
+      description: 'ViewSet for MoR users to manage buyer catalogue items.
+
+
+        Flat resource at /api/v1/catalog/buyer-items/.
+
+        Filter by buyer_company, is_active, category via query params.'
+      summary: Merchant of Record buyer item endpoints
+      parameters:
+      - in: query
+        name: buyer_company
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: category
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+      - in: query
+        name: kind
+        schema:
+          type: string
+          enum:
+          - ingredient
+          - packaging
+        description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+          * `ingredient` - Ingredient
+
+          * `packaging` - Packaging'
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Catalog
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBuyerItemListList'
+          description: ''
+    post:
+      operationId: api_v1_catalog_buyer_items_create
+      description: 'ViewSet for MoR users to manage buyer catalogue items.
+
+
+        Flat resource at /api/v1/catalog/buyer-items/.
+
+        Filter by buyer_company, is_active, category via query params.'
+      summary: Merchant of Record buyer item endpoints
+      tags:
+      - Catalog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuyerItemCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BuyerItemCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BuyerItemCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerItemCreate'
+          description: ''
+  /api/v1/catalog/buyer-items/{uuid}/:
+    get:
+      operationId: api_v1_catalog_buyer_items_retrieve
+      description: 'ViewSet for MoR users to manage buyer catalogue items.
+
+
+        Flat resource at /api/v1/catalog/buyer-items/.
+
+        Filter by buyer_company, is_active, category via query params.'
+      summary: Merchant of Record buyer item endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerItemDetail'
+          description: ''
+    put:
+      operationId: api_v1_catalog_buyer_items_update
+      description: 'ViewSet for MoR users to manage buyer catalogue items.
+
+
+        Flat resource at /api/v1/catalog/buyer-items/.
+
+        Filter by buyer_company, is_active, category via query params.'
+      summary: Merchant of Record buyer item endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuyerItemDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BuyerItemDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BuyerItemDetail'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerItemDetail'
+          description: ''
+    patch:
+      operationId: api_v1_catalog_buyer_items_partial_update
+      description: 'ViewSet for MoR users to manage buyer catalogue items.
+
+
+        Flat resource at /api/v1/catalog/buyer-items/.
+
+        Filter by buyer_company, is_active, category via query params.'
+      summary: Merchant of Record buyer item endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBuyerItemDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBuyerItemDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBuyerItemDetail'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerItemDetail'
+          description: ''
+    delete:
+      operationId: api_v1_catalog_buyer_items_destroy
+      description: 'ViewSet for MoR users to manage buyer catalogue items.
+
+
+        Flat resource at /api/v1/catalog/buyer-items/.
+
+        Filter by buyer_company, is_active, category via query params.'
+      summary: Merchant of Record buyer item endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/catalog/buyer-items/{uuid}/documents/:
+    get:
+      operationId: api_v1_catalog_buyer_items_documents_list
+      description: 'ViewSet for MoR users to manage buyer catalogue items.
+
+
+        Flat resource at /api/v1/catalog/buyer-items/.
+
+        Filter by buyer_company, is_active, category via query params.'
+      summary: List documents for a buyer item
+      parameters:
+      - in: query
+        name: buyer_company
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: category
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+      - in: query
+        name: kind
+        schema:
+          type: string
+          enum:
+          - ingredient
+          - packaging
+        description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+          * `ingredient` - Ingredient
+
+          * `packaging` - Packaging'
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBuyerItemDocumentList'
+          description: ''
+    post:
+      operationId: api_v1_catalog_buyer_items_documents_create
+      description: 'ViewSet for MoR users to manage buyer catalogue items.
+
+
+        Flat resource at /api/v1/catalog/buyer-items/.
+
+        Filter by buyer_company, is_active, category via query params.'
+      summary: Upload a document for a buyer item
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuyerItemDocumentUpload'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BuyerItemDocumentUpload'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BuyerItemDocumentUpload'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerItemDocument'
+          description: ''
+        '400':
+          description: Validation error
+        '404':
+          description: Item not found
+  /api/v1/catalog/buyer-items/{uuid}/documents/{document_uuid}/:
+    delete:
+      operationId: api_v1_catalog_buyer_items_documents_destroy
+      description: 'ViewSet for MoR users to manage buyer catalogue items.
+
+
+        Flat resource at /api/v1/catalog/buyer-items/.
+
+        Filter by buyer_company, is_active, category via query params.'
+      summary: Delete a document for a buyer item
+      parameters:
+      - in: path
+        name: document_uuid
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: Document deleted successfully
+        '404':
+          description: Item or document not found
+  /api/v1/catalog/items/:
+    get:
+      operationId: api_v1_catalog_items_list
+      description: 'Brand-facing CRUD for the buyer''s own catalogue items (materials).
+
+
+        Flat resource at /api/v1/catalog/items/. Scoped to the authenticated
+
+        user''s company via `request.user_company`.'
+      summary: Brand-facing catalog item endpoints
+      parameters:
+      - in: query
+        name: buyer_company
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: category
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+      - in: query
+        name: kind
+        schema:
+          type: string
+          enum:
+          - ingredient
+          - packaging
+        description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+          * `ingredient` - Ingredient
+
+          * `packaging` - Packaging'
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Catalog
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBrandBuyerItemListList'
+          description: ''
+    post:
+      operationId: api_v1_catalog_items_create
+      description: 'Brand-facing CRUD for the buyer''s own catalogue items (materials).
+
+
+        Flat resource at /api/v1/catalog/items/. Scoped to the authenticated
+
+        user''s company via `request.user_company`.'
+      summary: Brand-facing catalog item endpoints
+      tags:
+      - Catalog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BrandBuyerItemCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BrandBuyerItemCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BrandBuyerItemCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrandBuyerItemCreate'
+          description: ''
+  /api/v1/catalog/items/{uuid}/:
+    get:
+      operationId: api_v1_catalog_items_retrieve
+      description: 'Brand-facing CRUD for the buyer''s own catalogue items (materials).
+
+
+        Flat resource at /api/v1/catalog/items/. Scoped to the authenticated
+
+        user''s company via `request.user_company`.'
+      summary: Brand-facing catalog item endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrandBuyerItemDetail'
+          description: ''
+    put:
+      operationId: api_v1_catalog_items_update
+      description: 'Brand-facing CRUD for the buyer''s own catalogue items (materials).
+
+
+        Flat resource at /api/v1/catalog/items/. Scoped to the authenticated
+
+        user''s company via `request.user_company`.'
+      summary: Brand-facing catalog item endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BrandBuyerItemDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BrandBuyerItemDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BrandBuyerItemDetail'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrandBuyerItemDetail'
+          description: ''
+    patch:
+      operationId: api_v1_catalog_items_partial_update
+      description: 'Brand-facing CRUD for the buyer''s own catalogue items (materials).
+
+
+        Flat resource at /api/v1/catalog/items/. Scoped to the authenticated
+
+        user''s company via `request.user_company`.'
+      summary: Brand-facing catalog item endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBrandBuyerItemDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBrandBuyerItemDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBrandBuyerItemDetail'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrandBuyerItemDetail'
+          description: ''
+    delete:
+      operationId: api_v1_catalog_items_destroy
+      description: 'Brand-facing CRUD for the buyer''s own catalogue items (materials).
+
+
+        Flat resource at /api/v1/catalog/items/. Scoped to the authenticated
+
+        user''s company via `request.user_company`.'
+      summary: Brand-facing catalog item endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/catalog/supplier-items/:
+    get:
+      operationId: api_v1_catalog_supplier_items_list
+      description: 'ViewSet for MoR users to manage supplier catalogue items.
+
+
+        Flat resource at /api/v1/catalog/supplier-items/.
+
+        Filter by supplier_company, is_active, category via query params.'
+      summary: Merchant of Record supplier item endpoints
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+      - in: query
+        name: kind
+        schema:
+          type: string
+          enum:
+          - ingredient
+          - packaging
+        description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+          * `ingredient` - Ingredient
+
+          * `packaging` - Packaging'
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: supplier_company
+        schema:
+          type: string
+          format: uuid
+      tags:
+      - Catalog
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSupplierItemListList'
+          description: ''
+    post:
+      operationId: api_v1_catalog_supplier_items_create
+      description: 'ViewSet for MoR users to manage supplier catalogue items.
+
+
+        Flat resource at /api/v1/catalog/supplier-items/.
+
+        Filter by supplier_company, is_active, category via query params.'
+      summary: Merchant of Record supplier item endpoints
+      tags:
+      - Catalog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierItemCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupplierItemCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupplierItemCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierItemCreate'
+          description: ''
+  /api/v1/catalog/supplier-items/{uuid}/:
+    get:
+      operationId: api_v1_catalog_supplier_items_retrieve
+      description: 'ViewSet for MoR users to manage supplier catalogue items.
+
+
+        Flat resource at /api/v1/catalog/supplier-items/.
+
+        Filter by supplier_company, is_active, category via query params.'
+      summary: Merchant of Record supplier item endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierItemDetail'
+          description: ''
+    put:
+      operationId: api_v1_catalog_supplier_items_update
+      description: 'ViewSet for MoR users to manage supplier catalogue items.
+
+
+        Flat resource at /api/v1/catalog/supplier-items/.
+
+        Filter by supplier_company, is_active, category via query params.'
+      summary: Merchant of Record supplier item endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierItemDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupplierItemDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupplierItemDetail'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierItemDetail'
+          description: ''
+    patch:
+      operationId: api_v1_catalog_supplier_items_partial_update
+      description: 'ViewSet for MoR users to manage supplier catalogue items.
+
+
+        Flat resource at /api/v1/catalog/supplier-items/.
+
+        Filter by supplier_company, is_active, category via query params.'
+      summary: Merchant of Record supplier item endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplierItemDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplierItemDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplierItemDetail'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierItemDetail'
+          description: ''
+    delete:
+      operationId: api_v1_catalog_supplier_items_destroy
+      description: 'ViewSet for MoR users to manage supplier catalogue items.
+
+
+        Flat resource at /api/v1/catalog/supplier-items/.
+
+        Filter by supplier_company, is_active, category via query params.'
+      summary: Merchant of Record supplier item endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/catalog/supplier-items/{uuid}/documents/:
+    get:
+      operationId: api_v1_catalog_supplier_items_documents_list
+      description: 'ViewSet for MoR users to manage supplier catalogue items.
+
+
+        Flat resource at /api/v1/catalog/supplier-items/.
+
+        Filter by supplier_company, is_active, category via query params.'
+      summary: List documents for a supplier item
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+      - in: query
+        name: kind
+        schema:
+          type: string
+          enum:
+          - ingredient
+          - packaging
+        description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+          * `ingredient` - Ingredient
+
+          * `packaging` - Packaging'
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: supplier_company
+        schema:
+          type: string
+          format: uuid
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSupplierItemDocumentList'
+          description: ''
+    post:
+      operationId: api_v1_catalog_supplier_items_documents_create
+      description: 'ViewSet for MoR users to manage supplier catalogue items.
+
+
+        Flat resource at /api/v1/catalog/supplier-items/.
+
+        Filter by supplier_company, is_active, category via query params.'
+      summary: Upload a document for a supplier item
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierItemDocumentUpload'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupplierItemDocumentUpload'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupplierItemDocumentUpload'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierItemDocument'
+          description: ''
+        '400':
+          description: Validation error
+        '404':
+          description: Item not found
+  /api/v1/catalog/supplier-items/{uuid}/documents/{document_uuid}/:
+    delete:
+      operationId: api_v1_catalog_supplier_items_documents_destroy
+      description: 'ViewSet for MoR users to manage supplier catalogue items.
+
+
+        Flat resource at /api/v1/catalog/supplier-items/.
+
+        Filter by supplier_company, is_active, category via query params.'
+      summary: Delete a document for a supplier item
+      parameters:
+      - in: path
+        name: document_uuid
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Catalog
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: Document deleted successfully
+        '404':
+          description: Item or document not found
+components:
+  schemas:
+    BuyerItemDetail:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        item_name:
+          type: string
+          maxLength: 255
+        sku:
+          type: string
+          nullable: true
+          maxLength: 255
+        item_description:
+          type: string
+          nullable: true
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        buyer_company_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        buyer_company_name:
+          type: string
+          readOnly: true
+        category_uuid:
+          type: string
+          format: uuid
+          nullable: true
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        allergen_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllergenRequirementsEnum'
+        require_allergen_declaration:
+          type: boolean
+          description: A signed allergen declaration is required to source this material.
+        diet_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/DietRequirementsEnum'
+        require_dietary_certificate:
+          type: boolean
+          description: A dietary certificate is required to validate the diet requirements.
+        is_active:
+          type: boolean
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerItemDocument'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - buyer_company_name
+      - buyer_company_uuid
+      - created_at
+      - documents
+      - item_name
+      - modified_at
+      - uuid
+    PaginatedBuyerItemListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerItemList'
+    BrandBuyerItemList:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        item_name:
+          type: string
+          readOnly: true
+        sku:
+          type: string
+          readOnly: true
+          nullable: true
+        item_description:
+          type: string
+          readOnly: true
+          nullable: true
+        logo_url:
+          type: string
+          format: uri
+          readOnly: true
+        category_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          readOnly: true
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          readOnly: true
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        allergen_requirements:
+          readOnly: true
+          nullable: true
+          description: 'Allergens that must be absent or formally declared for this material.
+
+
+            * `celery` - Celery
+
+            * `cereals_containing_gluten` - Cereals Containing Gluten
+
+            * `crustaceans` - Crustaceans
+
+            * `eggs` - Eggs
+
+            * `fish` - Fish
+
+            * `lupin` - Lupin
+
+            * `milk` - Milk
+
+            * `molluscs` - Molluscs
+
+            * `mustard` - Mustard
+
+            * `nuts` - Nuts
+
+            * `peanuts` - Peanuts
+
+            * `sesame_seeds` - Sesame Seeds
+
+            * `soya` - Soya
+
+            * `sulphur_dioxide` - Sulphur Dioxide'
+          oneOf:
+          - $ref: '#/components/schemas/AllergenRequirementsEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        require_allergen_declaration:
+          type: boolean
+          readOnly: true
+          description: A signed allergen declaration is required to source this material.
+        diet_requirements:
+          readOnly: true
+          nullable: true
+          description: 'Dietary regimes the material must comply with.
+
+
+            * `kosher` - Kosher
+
+            * `halal` - Halal
+
+            * `organic` - Organic
+
+            * `vegan` - Vegan
+
+            * `vegetarian` - Vegetarian'
+          oneOf:
+          - $ref: '#/components/schemas/DietRequirementsEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        require_dietary_certificate:
+          type: boolean
+          readOnly: true
+          description: A dietary certificate is required to validate the diet requirements.
+        is_active:
+          type: boolean
+          readOnly: true
+        document_count:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - allergen_requirements
+      - category_uuid
+      - created_at
+      - diet_requirements
+      - document_count
+      - is_active
+      - item_description
+      - item_name
+      - kind
+      - logo_url
+      - require_allergen_declaration
+      - require_dietary_certificate
+      - sku
+      - unit_of_measurement
+      - uuid
+    SupplierItemDetail:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        item_name:
+          type: string
+          maxLength: 255
+        sku:
+          type: string
+          nullable: true
+          maxLength: 255
+        item_description:
+          type: string
+          nullable: true
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        supplier_company_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        supplier_company_name:
+          type: string
+          readOnly: true
+        category_uuid:
+          type: string
+          format: uuid
+          nullable: true
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        contained_allergens:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContainedAllergensEnum'
+        has_allergen_declaration:
+          type: boolean
+          description: A signed allergen declaration is available on file for this material.
+        diet_compliance:
+          type: array
+          items:
+            $ref: '#/components/schemas/DietComplianceEnum'
+        has_dietary_certificate:
+          type: boolean
+          description: A dietary certificate is available on file for this material.
+        is_active:
+          type: boolean
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplierItemDocument'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - documents
+      - item_name
+      - modified_at
+      - supplier_company_name
+      - supplier_company_uuid
+      - uuid
+    PaginatedSupplierItemListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplierItemList'
+    BuyerItemList:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        item_name:
+          type: string
+          readOnly: true
+        sku:
+          type: string
+          readOnly: true
+          nullable: true
+        item_description:
+          type: string
+          readOnly: true
+          nullable: true
+        logo_url:
+          type: string
+          format: uri
+          readOnly: true
+        buyer_company_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        buyer_company_name:
+          type: string
+          readOnly: true
+        merchant_of_record_company_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        category_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          readOnly: true
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          readOnly: true
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        allergen_requirements:
+          readOnly: true
+          nullable: true
+          description: 'Allergens that must be absent or formally declared for this material.
+
+
+            * `celery` - Celery
+
+            * `cereals_containing_gluten` - Cereals Containing Gluten
+
+            * `crustaceans` - Crustaceans
+
+            * `eggs` - Eggs
+
+            * `fish` - Fish
+
+            * `lupin` - Lupin
+
+            * `milk` - Milk
+
+            * `molluscs` - Molluscs
+
+            * `mustard` - Mustard
+
+            * `nuts` - Nuts
+
+            * `peanuts` - Peanuts
+
+            * `sesame_seeds` - Sesame Seeds
+
+            * `soya` - Soya
+
+            * `sulphur_dioxide` - Sulphur Dioxide'
+          oneOf:
+          - $ref: '#/components/schemas/AllergenRequirementsEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        require_allergen_declaration:
+          type: boolean
+          readOnly: true
+          description: A signed allergen declaration is required to source this material.
+        diet_requirements:
+          readOnly: true
+          nullable: true
+          description: 'Dietary regimes the material must comply with.
+
+
+            * `kosher` - Kosher
+
+            * `halal` - Halal
+
+            * `organic` - Organic
+
+            * `vegan` - Vegan
+
+            * `vegetarian` - Vegetarian'
+          oneOf:
+          - $ref: '#/components/schemas/DietRequirementsEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        require_dietary_certificate:
+          type: boolean
+          readOnly: true
+          description: A dietary certificate is required to validate the diet requirements.
+        is_active:
+          type: boolean
+          readOnly: true
+        document_count:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - allergen_requirements
+      - buyer_company_name
+      - buyer_company_uuid
+      - category_uuid
+      - created_at
+      - diet_requirements
+      - document_count
+      - is_active
+      - item_description
+      - item_name
+      - kind
+      - logo_url
+      - merchant_of_record_company_uuid
+      - require_allergen_declaration
+      - require_dietary_certificate
+      - sku
+      - unit_of_measurement
+      - uuid
+    ContainedAllergensEnum:
+      enum:
+      - celery
+      - cereals_containing_gluten
+      - crustaceans
+      - eggs
+      - fish
+      - lupin
+      - milk
+      - molluscs
+      - mustard
+      - nuts
+      - peanuts
+      - sesame_seeds
+      - soya
+      - sulphur_dioxide
+      type: string
+      description: '* `celery` - Celery
+
+        * `cereals_containing_gluten` - Cereals Containing Gluten
+
+        * `crustaceans` - Crustaceans
+
+        * `eggs` - Eggs
+
+        * `fish` - Fish
+
+        * `lupin` - Lupin
+
+        * `milk` - Milk
+
+        * `molluscs` - Molluscs
+
+        * `mustard` - Mustard
+
+        * `nuts` - Nuts
+
+        * `peanuts` - Peanuts
+
+        * `sesame_seeds` - Sesame Seeds
+
+        * `soya` - Soya
+
+        * `sulphur_dioxide` - Sulphur Dioxide'
+    NullEnum:
+      enum:
+      - null
+    AllergenRequirementsEnum:
+      enum:
+      - celery
+      - cereals_containing_gluten
+      - crustaceans
+      - eggs
+      - fish
+      - lupin
+      - milk
+      - molluscs
+      - mustard
+      - nuts
+      - peanuts
+      - sesame_seeds
+      - soya
+      - sulphur_dioxide
+      type: string
+      description: '* `celery` - Celery
+
+        * `cereals_containing_gluten` - Cereals Containing Gluten
+
+        * `crustaceans` - Crustaceans
+
+        * `eggs` - Eggs
+
+        * `fish` - Fish
+
+        * `lupin` - Lupin
+
+        * `milk` - Milk
+
+        * `molluscs` - Molluscs
+
+        * `mustard` - Mustard
+
+        * `nuts` - Nuts
+
+        * `peanuts` - Peanuts
+
+        * `sesame_seeds` - Sesame Seeds
+
+        * `soya` - Soya
+
+        * `sulphur_dioxide` - Sulphur Dioxide'
+    CatalogItemDocumentCategoryEnum:
+      enum:
+      - spec_sheet
+      - certificate_of_analysis
+      - british_retail_consortium
+      - international_organisation_for_standardisation
+      - foundation_food_safety_system_certification
+      - international_featured_standards
+      - safe_quality_food
+      type: string
+      description: '* `spec_sheet` - Spec Sheet
+
+        * `certificate_of_analysis` - Certificate of Analysis
+
+        * `british_retail_consortium` - British Retail Consortium
+
+        * `international_organisation_for_standardisation` - International Organisation for Standardisation
+
+        * `foundation_food_safety_system_certification` - Foundation Food Safety System Certification
+
+        * `international_featured_standards` - International Featured Standards
+
+        * `safe_quality_food` - Safe Quality Food'
+    PaginatedBrandBuyerItemListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BrandBuyerItemList'
+    PatchedBrandBuyerItemDetail:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        item_name:
+          type: string
+          maxLength: 255
+        sku:
+          type: string
+          nullable: true
+          maxLength: 255
+        item_description:
+          type: string
+          nullable: true
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        category_uuid:
+          type: string
+          format: uuid
+          nullable: true
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        allergen_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllergenRequirementsEnum'
+        require_allergen_declaration:
+          type: boolean
+          description: A signed allergen declaration is required to source this material.
+        diet_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/DietRequirementsEnum'
+        require_dietary_certificate:
+          type: boolean
+          description: A dietary certificate is required to validate the diet requirements.
+        is_active:
+          type: boolean
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerItemDocument'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+    SupplierItemDocument:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        document:
+          type: string
+          format: uri
+          readOnly: true
+        file_name:
+          type: string
+          readOnly: true
+        category:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemDocumentCategoryEnum'
+          readOnly: true
+        start_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          description: Start date of document validity
+        end_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          description: End/expiry date of document validity
+        is_active:
+          type: boolean
+          readOnly: true
+        status:
+          type: string
+          readOnly: true
+        is_archived:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - category
+      - created_at
+      - document
+      - end_date
+      - file_name
+      - is_active
+      - is_archived
+      - start_date
+      - status
+      - uuid
+    PaginatedBuyerItemDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerItemDocument'
+    CatalogItemKindEnum:
+      enum:
+      - ingredient
+      - packaging
+      type: string
+      description: '* `ingredient` - Ingredient
+
+        * `packaging` - Packaging'
+    SupplierItemDocumentUpload:
+      type: object
+      properties:
+        file_name:
+          type: string
+          writeOnly: true
+        category:
+          $ref: '#/components/schemas/CatalogItemDocumentCategoryEnum'
+        start_date:
+          type: string
+          format: date
+          nullable: true
+        end_date:
+          type: string
+          format: date
+          nullable: true
+      required:
+      - category
+      - file_name
+    PatchedSupplierItemDetail:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        item_name:
+          type: string
+          maxLength: 255
+        sku:
+          type: string
+          nullable: true
+          maxLength: 255
+        item_description:
+          type: string
+          nullable: true
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        supplier_company_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        supplier_company_name:
+          type: string
+          readOnly: true
+        category_uuid:
+          type: string
+          format: uuid
+          nullable: true
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        contained_allergens:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContainedAllergensEnum'
+        has_allergen_declaration:
+          type: boolean
+          description: A signed allergen declaration is available on file for this material.
+        diet_compliance:
+          type: array
+          items:
+            $ref: '#/components/schemas/DietComplianceEnum'
+        has_dietary_certificate:
+          type: boolean
+          description: A dietary certificate is available on file for this material.
+        is_active:
+          type: boolean
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplierItemDocument'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+    DietComplianceEnum:
+      enum:
+      - kosher
+      - halal
+      - organic
+      - vegan
+      - vegetarian
+      type: string
+      description: '* `kosher` - Kosher
+
+        * `halal` - Halal
+
+        * `organic` - Organic
+
+        * `vegan` - Vegan
+
+        * `vegetarian` - Vegetarian'
+    BuyerItemCreate:
+      type: object
+      properties:
+        item_name:
+          type: string
+          maxLength: 255
+        sku:
+          type: string
+          nullable: true
+          maxLength: 255
+        item_description:
+          type: string
+          nullable: true
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        buyer_company_uuid:
+          type: string
+          format: uuid
+        category_uuid:
+          type: string
+          format: uuid
+          nullable: true
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        allergen_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllergenRequirementsEnum'
+        require_allergen_declaration:
+          type: boolean
+          description: A signed allergen declaration is required to source this material.
+        diet_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/DietRequirementsEnum'
+        require_dietary_certificate:
+          type: boolean
+          description: A dietary certificate is required to validate the diet requirements.
+      required:
+      - buyer_company_uuid
+      - item_name
+    BrandBuyerItemDetail:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        item_name:
+          type: string
+          maxLength: 255
+        sku:
+          type: string
+          nullable: true
+          maxLength: 255
+        item_description:
+          type: string
+          nullable: true
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        category_uuid:
+          type: string
+          format: uuid
+          nullable: true
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        allergen_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllergenRequirementsEnum'
+        require_allergen_declaration:
+          type: boolean
+          description: A signed allergen declaration is required to source this material.
+        diet_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/DietRequirementsEnum'
+        require_dietary_certificate:
+          type: boolean
+          description: A dietary certificate is required to validate the diet requirements.
+        is_active:
+          type: boolean
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerItemDocument'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - documents
+      - item_name
+      - modified_at
+      - uuid
+    BuyerItemDocumentUpload:
+      type: object
+      properties:
+        file_name:
+          type: string
+          writeOnly: true
+        category:
+          $ref: '#/components/schemas/CatalogItemDocumentCategoryEnum'
+        start_date:
+          type: string
+          format: date
+          nullable: true
+        end_date:
+          type: string
+          format: date
+          nullable: true
+      required:
+      - category
+      - file_name
+    BuyerItemDocument:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        document:
+          type: string
+          format: uri
+          readOnly: true
+        file_name:
+          type: string
+          readOnly: true
+        category:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemDocumentCategoryEnum'
+          readOnly: true
+        start_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          description: Start date of document validity
+        end_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          description: End/expiry date of document validity
+        is_active:
+          type: boolean
+          readOnly: true
+        status:
+          type: string
+          readOnly: true
+        is_archived:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - category
+      - created_at
+      - document
+      - end_date
+      - file_name
+      - is_active
+      - is_archived
+      - start_date
+      - status
+      - uuid
+    SupplierItemCreate:
+      type: object
+      properties:
+        item_name:
+          type: string
+          maxLength: 255
+        sku:
+          type: string
+          nullable: true
+          maxLength: 255
+        item_description:
+          type: string
+          nullable: true
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        supplier_company_uuid:
+          type: string
+          format: uuid
+        category_uuid:
+          type: string
+          format: uuid
+          nullable: true
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        contained_allergens:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContainedAllergensEnum'
+        has_allergen_declaration:
+          type: boolean
+          description: A signed allergen declaration is available on file for this material.
+        diet_compliance:
+          type: array
+          items:
+            $ref: '#/components/schemas/DietComplianceEnum'
+        has_dietary_certificate:
+          type: boolean
+          description: A dietary certificate is available on file for this material.
+      required:
+      - item_name
+      - supplier_company_uuid
+    BrandBuyerItemCreate:
+      type: object
+      properties:
+        item_name:
+          type: string
+          maxLength: 255
+        sku:
+          type: string
+          nullable: true
+          maxLength: 255
+        item_description:
+          type: string
+          nullable: true
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        category_uuid:
+          type: string
+          format: uuid
+          nullable: true
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        allergen_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllergenRequirementsEnum'
+        require_allergen_declaration:
+          type: boolean
+          description: A signed allergen declaration is required to source this material.
+        diet_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/DietRequirementsEnum'
+        require_dietary_certificate:
+          type: boolean
+          description: A dietary certificate is required to validate the diet requirements.
+      required:
+      - item_name
+    SupplierItemList:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        item_name:
+          type: string
+          readOnly: true
+        sku:
+          type: string
+          readOnly: true
+          nullable: true
+        item_description:
+          type: string
+          readOnly: true
+          nullable: true
+        logo_url:
+          type: string
+          format: uri
+          readOnly: true
+        supplier_company_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        supplier_company_name:
+          type: string
+          readOnly: true
+        merchant_of_record_company_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        category_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          readOnly: true
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          readOnly: true
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        contained_allergens:
+          readOnly: true
+          nullable: true
+          description: 'Allergens present in this material.
+
+
+            * `celery` - Celery
+
+            * `cereals_containing_gluten` - Cereals Containing Gluten
+
+            * `crustaceans` - Crustaceans
+
+            * `eggs` - Eggs
+
+            * `fish` - Fish
+
+            * `lupin` - Lupin
+
+            * `milk` - Milk
+
+            * `molluscs` - Molluscs
+
+            * `mustard` - Mustard
+
+            * `nuts` - Nuts
+
+            * `peanuts` - Peanuts
+
+            * `sesame_seeds` - Sesame Seeds
+
+            * `soya` - Soya
+
+            * `sulphur_dioxide` - Sulphur Dioxide'
+          oneOf:
+          - $ref: '#/components/schemas/ContainedAllergensEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        has_allergen_declaration:
+          type: boolean
+          readOnly: true
+          description: A signed allergen declaration is available on file for this material.
+        diet_compliance:
+          readOnly: true
+          nullable: true
+          description: 'Dietary regimes this material complies with.
+
+
+            * `kosher` - Kosher
+
+            * `halal` - Halal
+
+            * `organic` - Organic
+
+            * `vegan` - Vegan
+
+            * `vegetarian` - Vegetarian'
+          oneOf:
+          - $ref: '#/components/schemas/DietComplianceEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        has_dietary_certificate:
+          type: boolean
+          readOnly: true
+          description: A dietary certificate is available on file for this material.
+        is_active:
+          type: boolean
+          readOnly: true
+        document_count:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - category_uuid
+      - contained_allergens
+      - created_at
+      - diet_compliance
+      - document_count
+      - has_allergen_declaration
+      - has_dietary_certificate
+      - is_active
+      - item_description
+      - item_name
+      - kind
+      - logo_url
+      - merchant_of_record_company_uuid
+      - sku
+      - supplier_company_name
+      - supplier_company_uuid
+      - unit_of_measurement
+      - uuid
+    UnitOfMeasurementEnum:
+      enum:
+      - fl oz
+      - g
+      - mg
+      - gals
+      - kg
+      - L
+      - tons
+      - oz
+      - lbs
+      - pcs
+      - pt
+      - ml
+      - boxes
+      - pallets
+      - tsp
+      - tbsp
+      - units
+      - cases
+      - trays
+      type: string
+      description: '* `fl oz` - Fluid Ounces
+
+        * `g` - Grams
+
+        * `mg` - milligrams
+
+        * `gals` - Gallons
+
+        * `kg` - Kilograms
+
+        * `L` - Liters
+
+        * `tons` - Metric Tons
+
+        * `oz` - Ounces
+
+        * `lbs` - Pounds
+
+        * `pcs` - Pieces
+
+        * `pt` - Pints
+
+        * `ml` - Milliliter
+
+        * `boxes` - Boxes
+
+        * `pallets` - Pallets
+
+        * `tsp` - Teaspoons
+
+        * `tbsp` - Tablespoons
+
+        * `units` - Units
+
+        * `cases` - Cases
+
+        * `trays` - Trays'
+    PatchedBuyerItemDetail:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        item_name:
+          type: string
+          maxLength: 255
+        sku:
+          type: string
+          nullable: true
+          maxLength: 255
+        item_description:
+          type: string
+          nullable: true
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        buyer_company_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        buyer_company_name:
+          type: string
+          readOnly: true
+        category_uuid:
+          type: string
+          format: uuid
+          nullable: true
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        allergen_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllergenRequirementsEnum'
+        require_allergen_declaration:
+          type: boolean
+          description: A signed allergen declaration is required to source this material.
+        diet_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/DietRequirementsEnum'
+        require_dietary_certificate:
+          type: boolean
+          description: A dietary certificate is required to validate the diet requirements.
+        is_active:
+          type: boolean
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerItemDocument'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+    DietRequirementsEnum:
+      enum:
+      - kosher
+      - halal
+      - organic
+      - vegan
+      - vegetarian
+      type: string
+      description: '* `kosher` - Kosher
+
+        * `halal` - Halal
+
+        * `organic` - Organic
+
+        * `vegan` - Vegan
+
+        * `vegetarian` - Vegetarian'
+    PaginatedSupplierItemDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplierItemDocument'
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

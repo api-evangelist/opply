@@ -1,0 +1,1730 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Rapyd API
+  version: 0.0.0
+tags:
+- name: Rapyd
+paths:
+  /api/v1/rapyd/check_kyb/:
+    get:
+      operationId: api_v1_rapyd_check_kyb_retrieve
+      tags:
+      - Rapyd
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KYBVerificationStatusResponse'
+          description: ''
+  /api/v1/rapyd/check_pay_in_advance_availability/:
+    post:
+      operationId: api_v1_rapyd_check_pay_in_advance_availability_create
+      tags:
+      - Rapyd
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentAvailability'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PaymentAvailability'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PaymentAvailability'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: Boolean value
+  /api/v1/rapyd/get_checkout_id/:
+    post:
+      operationId: api_v1_rapyd_get_checkout_id_create
+      tags:
+      - Rapyd
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RapydCheckout'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RapydCheckout'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RapydCheckout'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RapydCheckoutData'
+          description: ''
+  /api/v1/rapyd/get_checkout_id_supplier_terms_pay_by_card/:
+    post:
+      operationId: api_v1_rapyd_get_checkout_id_supplier_terms_pay_by_card_create
+      tags:
+      - Rapyd
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RapydCheckout'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RapydCheckout'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RapydCheckout'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RapydSupplierTermsCard'
+          description: ''
+  /api/v1/rapyd/kyb/step1/:
+    post:
+      operationId: api_v1_rapyd_kyb_step1_create
+      summary: step1 KYB questionnaire (onboarding)
+      tags:
+      - Rapyd
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KYBStep1'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/KYBStep1'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/KYBStep1'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KYBStep1Response'
+          description: ''
+  /api/v1/rapyd/payout/callback/:
+    post:
+      operationId: api_v1_rapyd_payout_callback_create
+      tags:
+      - Rapyd
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayoutCallback'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PayoutCallback'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PayoutCallback'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+        '404':
+          description: no company with such merchant_reference_id
+        '403':
+          description: payout method was already chosen
+        '429':
+          description: too many requests
+  /api/v1/rapyd/payout/get_redirect_id/:
+    post:
+      operationId: api_v1_rapyd_payout_get_redirect_id_create
+      tags:
+      - Rapyd
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/rapyd/payout/set_company_type/:
+    post:
+      operationId: api_v1_rapyd_payout_set_company_type_create
+      tags:
+      - Rapyd
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayoutCompanyType'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PayoutCompanyType'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PayoutCompanyType'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutCompanyType'
+          description: ''
+  /api/v1/rapyd/payout/status/:
+    get:
+      operationId: api_v1_rapyd_payout_status_retrieve
+      tags:
+      - Rapyd
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KYBVerificationStatusResponse'
+          description: ''
+  /api/v1/rapyd/save_customer_card/:
+    post:
+      operationId: api_v1_rapyd_save_customer_card_create
+      description: should be called after Payment by Card on FE and before update_order_status_after_payment
+      summary: Should be called after Payment by Card on FE and before update_order_status_after_payment
+      tags:
+      - Rapyd
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RapydSavePayment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RapydSavePayment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RapydSavePayment'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/rapyd/update_order_status_after_payment/:
+    post:
+      operationId: api_v1_rapyd_update_order_status_after_payment_create
+      tags:
+      - Rapyd
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RapydPostCheckout'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RapydPostCheckout'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RapydPostCheckout'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/rapyd/webhooks/secret_path/:
+    post:
+      operationId: api_v1_rapyd_webhooks_secret_path_create
+      description: 'webhook body has such structure:
+
+        {
+
+        id: ''wh_81a54cf977b0b6b3ee57d870e2d6ec4a'',
+
+        type: ''CUSTOMER_PAYMENT_METHOD_CREATED'',
+
+        data: {some data structure depending on webhook type},
+
+        trigger_operation_id: ''0fd3bdc9-de75-4768-bc12-b807582b069c'',
+
+        status: ''NEW'',
+
+        created_at: 1575812351
+
+        }'
+      tags:
+      - Rapyd
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+components:
+  schemas:
+    PayoutCallback:
+      type: object
+      properties:
+        beneficiary_id:
+          type: string
+        payout_method_type:
+          type: string
+        merchant_reference_id:
+          type: string
+      required:
+      - beneficiary_id
+      - merchant_reference_id
+      - payout_method_type
+    PayoutCompanyType:
+      type: object
+      properties:
+        company_type:
+          $ref: '#/components/schemas/PayoutCompanyTypeCompanyTypeEnum'
+      required:
+      - company_type
+    PayoutCompanyTypeCompanyTypeEnum:
+      enum:
+      - Sole Proprietor
+      - Private Limited Company
+      type: string
+      description: '* `Sole Proprietor` - Sole Proprietor
+
+        * `Private Limited Company` - Private Limited Company'
+    BankAccount:
+      type: object
+      properties:
+        beneficiary_name:
+          type: string
+        address:
+          type: string
+        sort_code:
+          type: string
+          nullable: true
+        account_no:
+          type: string
+          nullable: true
+        bic:
+          type: string
+          nullable: true
+        iban:
+          type: string
+          nullable: true
+        aba_routing_number:
+          type: string
+          nullable: true
+        account_type:
+          type: string
+          nullable: true
+      required:
+      - address
+      - beneficiary_name
+    OrderPrices:
+      type: object
+      properties:
+        commission_payout_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        shipping_cost_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        sum_to_pay:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        sum_payout:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        quotes:
+          type: array
+          items:
+            $ref: '#/components/schemas/PricesRetrieve'
+        currency:
+          $ref: '#/components/schemas/AllCurrencies'
+        commission_payout:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        payment_commission:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_commission:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_commission_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_fx_fee:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        commission_payout_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        buyer_total_price_sum_to_pay_without_fx:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_with_commission_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        discount_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        sum_to_pay_no_discount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_price_with_commission_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_price_no_vat_with_shipping:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_no_vat_with_shipping:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_price_no_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_no_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        shipping_cost_no_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        vat_sum:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_price_with_vat_with_shipping:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+      required:
+      - buyer_total_price_sum_to_pay_without_fx
+      - commission_payout
+      - commission_payout_vat
+      - commission_payout_with_vat
+      - currency
+      - payment_commission
+      - quotes
+      - shipping_cost_with_vat
+      - sum_payout
+      - sum_to_pay
+      - total_price
+      - total_price_commission
+      - total_price_commission_vat
+      - total_price_fx_fee
+      - total_price_with_commission_with_vat
+    RapydSavePayment:
+      type: object
+      properties:
+        fingerprint_token:
+          type: string
+        customer_token:
+          type: string
+        payment_id:
+          type: string
+        order_id:
+          type: string
+      required:
+      - order_id
+      - payment_id
+    KYBVerificationStatusResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/KYBVerificationStatusResponseStatusEnum'
+        current_step:
+          type: integer
+          maximum: 4
+          minimum: 1
+        redirect_url:
+          type: string
+          format: uri
+          nullable: true
+      required:
+      - current_step
+      - status
+    PaymentScenarioEnum:
+      enum:
+      - in_advance
+      - on_dispatch
+      type: string
+      description: '* `in_advance` - In Advance
+
+        * `on_dispatch` - On Dispatch'
+    PricesRetrieve:
+      type: object
+      properties:
+        currency:
+          type: string
+        name:
+          type: string
+        quote_uuid:
+          type: string
+          format: uuid
+        sum_to_pay:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_commission_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        sum_payout:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_shipping_cost:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_price_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_with_vat_with_shipping_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_price_with_commission_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_price_no_vat_with_shipping:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_no_vat_with_shipping:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_price_no_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_no_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        shipping_cost_no_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        vat_sum:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_price_with_vat_with_shipping:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        payout_per_unit:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        sum_payout_no_shipping:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        payout_per_unit_no_shipping:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        vat_sum_no_commission:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        additional_buyer_to_opply_fees_no_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        additional_buyer_to_opply_fees_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        additional_fees_vat_rate:
+          type: array
+          items:
+            type: string
+            format: decimal
+            pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        vat_sum_for_supplier:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        vat_sum_no_commission_for_supplier:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+      required:
+      - additional_buyer_to_opply_fees_no_vat
+      - additional_buyer_to_opply_fees_with_vat
+      - additional_fees_vat_rate
+      - payout_per_unit
+      - payout_per_unit_no_shipping
+      - shipping_cost_no_vat
+      - sum_payout
+      - sum_payout_no_shipping
+      - sum_to_pay
+      - total_price
+      - total_price_commission_with_vat
+      - total_price_no_vat
+      - total_price_no_vat_with_shipping
+      - total_price_with_vat
+      - total_price_with_vat_with_shipping_with_vat
+      - total_shipping_cost
+      - unit_price
+      - unit_price_no_vat
+      - unit_price_no_vat_with_shipping
+      - unit_price_with_commission_with_vat
+      - unit_price_with_vat
+      - unit_price_with_vat_with_shipping
+      - vat_sum
+      - vat_sum_for_supplier
+      - vat_sum_no_commission
+      - vat_sum_no_commission_for_supplier
+    AllCurrencies:
+      enum:
+      - BND
+      - QAR
+      - BUK
+      - LVR
+      - ZRN
+      - SRD
+      - STD
+      - BGL
+      - BOB
+      - CUC
+      - DEM
+      - SOS
+      - BOL
+      - BRZ
+      - BWP
+      - MKN
+      - MLF
+      - SLE
+      - GHC
+      - USS
+      - SCR
+      - SUR
+      - KPW
+      - AOR
+      - PHP
+      - INR
+      - CYP
+      - CLP
+      - ARP
+      - BRE
+      - USD
+      - XPD
+      - BRR
+      - ARM
+      - ANG
+      - BOV
+      - PEI
+      - MCF
+      - TTD
+      - MZN
+      - FIM
+      - BZD
+      - FRF
+      - CNX
+      - XDR
+      - XSU
+      - GHS
+      - BRB
+      - NGN
+      - UYP
+      - RSD
+      - XPF
+      - KGS
+      - BRL
+      - JMD
+      - BGN
+      - KHR
+      - XBC
+      - RUR
+      - LRD
+      - ZWG
+      - SZL
+      - YUM
+      - DOP
+      - CHW
+      - ADP
+      - BIF
+      - BGM
+      - ISJ
+      - BAD
+      - BYB
+      - GQE
+      - UAH
+      - SBD
+      - GTQ
+      - PLZ
+      - BBD
+      - SKK
+      - DZD
+      - LTT
+      - VUV
+      - UZS
+      - GWE
+      - ESB
+      - MNT
+      - ZAL
+      - MXV
+      - TPE
+      - SGD
+      - SVC
+      - STN
+      - CLE
+      - KWD
+      - LVL
+      - AFA
+      - BRN
+      - BTN
+      - DKK
+      - MRO
+      - MRU
+      - NIO
+      - XAU
+      - ESP
+      - ERN
+      - AOK
+      - HNL
+      - BDT
+      - LTL
+      - CUP
+      - TZS
+      - UYW
+      - LSL
+      - XAG
+      - MMK
+      - AUD
+      - RUB
+      - MXN
+      - CHF
+      - RON
+      - EGP
+      - COP
+      - MUR
+      - BRC
+      - HRK
+      - USN
+      - VND
+      - TND
+      - HKD
+      - XEU
+      - VNN
+      - BYR
+      - MDL
+      - IQD
+      - SLL
+      - MAD
+      - FKP
+      - SDP
+      - MKD
+      - PKR
+      - XFU
+      - ISK
+      - MYR
+      - DJF
+      - BEC
+      - XXX
+      - TMM
+      - SEK
+      - ARS
+      - OMR
+      - JPY
+      - VES
+      - GWP
+      - ILR
+      - NOK
+      - COU
+      - PYG
+      - FJD
+      - LUF
+      - XUA
+      - GMD
+      - UYI
+      - KRO
+      - WST
+      - PTE
+      - MVR
+      - NZD
+      - AOA
+      - AZN
+      - CSK
+      - ECV
+      - YDD
+      - PEN
+      - RHD
+      - ZAR
+      - BGO
+      - XFO
+      - BMD
+      - ARL
+      - UAK
+      - SDG
+      - ZMW
+      - AMD
+      - XBA
+      - XRE
+      - CDF
+      - THB
+      - TRL
+      - HTG
+      - ROL
+      - SIT
+      - CRC
+      - SSP
+      - BEF
+      - ITL
+      - PLN
+      - GYD
+      - BAM
+      - YUD
+      - XAF
+      - BAN
+      - LAK
+      - BSD
+      - EUR
+      - LKR
+      - BYN
+      - BOP
+      - KRH
+      - UGX
+      - DDM
+      - NIC
+      - SHP
+      - SRG
+      - CHE
+      - AED
+      - GEL
+      - PGK
+      - LYD
+      - ZWL
+      - UYU
+      - TWD
+      - MTL
+      - YUR
+      - IEP
+      - MXP
+      - XPT
+      - KRW
+      - ZMK
+      - HRD
+      - MWK
+      - ZWR
+      - MVP
+      - VED
+      - CNH
+      - CVE
+      - RWF
+      - ILS
+      - KZT
+      - MZE
+      - XBD
+      - JOD
+      - LBP
+      - CSD
+      - AZM
+      - MDC
+      - ECS
+      - CNY
+      - GNS
+      - HUF
+      - KES
+      - ESA
+      - TOP
+      - MOP
+      - CZK
+      - SAR
+      - ARA
+      - NPR
+      - KMF
+      - SYP
+      - XBB
+      - SDD
+      - YUN
+      - GRD
+      - UGS
+      - AON
+      - ETB
+      - ILP
+      - MGF
+      - MTP
+      - XCG
+      - KYD
+      - MZM
+      - AWG
+      - TMT
+      - IDR
+      - CLF
+      - LUL
+      - BEL
+      - GBP
+      - VEB
+      - MAF
+      - VEF
+      - TRY
+      - ZWD
+      - GNF
+      - EEK
+      - XTS
+      - ALL
+      - AFN
+      - BHD
+      - PAB
+      - XOF
+      - TJR
+      - NAD
+      - NLG
+      - GEK
+      - MGA
+      - ATS
+      - IRR
+      - ZRZ
+      - XCD
+      - GIP
+      - ALK
+      - CAD
+      - PES
+      - TJS
+      - LUC
+      - YER
+      type: string
+      description: '* `BND` - BND
+
+        * `QAR` - QAR
+
+        * `BUK` - BUK
+
+        * `LVR` - LVR
+
+        * `ZRN` - ZRN
+
+        * `SRD` - SRD
+
+        * `STD` - STD
+
+        * `BGL` - BGL
+
+        * `BOB` - BOB
+
+        * `CUC` - CUC
+
+        * `DEM` - DEM
+
+        * `SOS` - SOS
+
+        * `BOL` - BOL
+
+        * `BRZ` - BRZ
+
+        * `BWP` - BWP
+
+        * `MKN` - MKN
+
+        * `MLF` - MLF
+
+        * `SLE` - SLE
+
+        * `GHC` - GHC
+
+        * `USS` - USS
+
+        * `SCR` - SCR
+
+        * `SUR` - SUR
+
+        * `KPW` - KPW
+
+        * `AOR` - AOR
+
+        * `PHP` - PHP
+
+        * `INR` - INR
+
+        * `CYP` - CYP
+
+        * `CLP` - CLP
+
+        * `ARP` - ARP
+
+        * `BRE` - BRE
+
+        * `USD` - USD
+
+        * `XPD` - XPD
+
+        * `BRR` - BRR
+
+        * `ARM` - ARM
+
+        * `ANG` - ANG
+
+        * `BOV` - BOV
+
+        * `PEI` - PEI
+
+        * `MCF` - MCF
+
+        * `TTD` - TTD
+
+        * `MZN` - MZN
+
+        * `FIM` - FIM
+
+        * `BZD` - BZD
+
+        * `FRF` - FRF
+
+        * `CNX` - CNX
+
+        * `XDR` - XDR
+
+        * `XSU` - XSU
+
+        * `GHS` - GHS
+
+        * `BRB` - BRB
+
+        * `NGN` - NGN
+
+        * `UYP` - UYP
+
+        * `RSD` - RSD
+
+        * `XPF` - XPF
+
+        * `KGS` - KGS
+
+        * `BRL` - BRL
+
+        * `JMD` - JMD
+
+        * `BGN` - BGN
+
+        * `KHR` - KHR
+
+        * `XBC` - XBC
+
+        * `RUR` - RUR
+
+        * `LRD` - LRD
+
+        * `ZWG` - ZWG
+
+        * `SZL` - SZL
+
+        * `YUM` - YUM
+
+        * `DOP` - DOP
+
+        * `CHW` - CHW
+
+        * `ADP` - ADP
+
+        * `BIF` - BIF
+
+        * `BGM` - BGM
+
+        * `ISJ` - ISJ
+
+        * `BAD` - BAD
+
+        * `BYB` - BYB
+
+        * `GQE` - GQE
+
+        * `UAH` - UAH
+
+        * `SBD` - SBD
+
+        * `GTQ` - GTQ
+
+        * `PLZ` - PLZ
+
+        * `BBD` - BBD
+
+        * `SKK` - SKK
+
+        * `DZD` - DZD
+
+        * `LTT` - LTT
+
+        * `VUV` - VUV
+
+        * `UZS` - UZS
+
+        * `GWE` - GWE
+
+        * `ESB` - ESB
+
+        * `MNT` - MNT
+
+        * `ZAL` - ZAL
+
+        * `MXV` - MXV
+
+        * `TPE` - TPE
+
+        * `SGD` - SGD
+
+        * `SVC` - SVC
+
+        * `STN` - STN
+
+        * `CLE` - CLE
+
+        * `KWD` - KWD
+
+        * `LVL` - LVL
+
+        * `AFA` - AFA
+
+        * `BRN` - BRN
+
+        * `BTN` - BTN
+
+        * `DKK` - DKK
+
+        * `MRO` - MRO
+
+        * `MRU` - MRU
+
+        * `NIO` - NIO
+
+        * `XAU` - XAU
+
+        * `ESP` - ESP
+
+        * `ERN` - ERN
+
+        * `AOK` - AOK
+
+        * `HNL` - HNL
+
+        * `BDT` - BDT
+
+        * `LTL` - LTL
+
+        * `CUP` - CUP
+
+        * `TZS` - TZS
+
+        * `UYW` - UYW
+
+        * `LSL` - LSL
+
+        * `XAG` - XAG
+
+        * `MMK` - MMK
+
+        * `AUD` - AUD
+
+        * `RUB` - RUB
+
+        * `MXN` - MXN
+
+        * `CHF` - CHF
+
+        * `RON` - RON
+
+        * `EGP` - EGP
+
+        * `COP` - COP
+
+        * `MUR` - MUR
+
+        * `BRC` - BRC
+
+        * `HRK` - HRK
+
+        * `USN` - USN
+
+        * `VND` - VND
+
+        * `TND` - TND
+
+        * `HKD` - HKD
+
+        * `XEU` - XEU
+
+        * `VNN` - VNN
+
+        * `BYR` - BYR
+
+        * `MDL` - MDL
+
+        * `IQD` - IQD
+
+        * `SLL` - SLL
+
+        * `MAD` - MAD
+
+        * `FKP` - FKP
+
+        * `SDP` - SDP
+
+        * `MKD` - MKD
+
+        * `PKR` - PKR
+
+        * `XFU` - XFU
+
+        * `ISK` - ISK
+
+        * `MYR` - MYR
+
+        * `DJF` - DJF
+
+        * `BEC` - BEC
+
+        * `XXX` - XXX
+
+        * `TMM` - TMM
+
+        * `SEK` - SEK
+
+        * `ARS` - ARS
+
+        * `OMR` - OMR
+
+        * `JPY` - JPY
+
+        * `VES` - VES
+
+        * `GWP` - GWP
+
+        * `ILR` - ILR
+
+        * `NOK` - NOK
+
+        * `COU` - COU
+
+        * `PYG` - PYG
+
+        * `FJD` - FJD
+
+        * `LUF` - LUF
+
+        * `XUA` - XUA
+
+        * `GMD` - GMD
+
+        * `UYI` - UYI
+
+        * `KRO` - KRO
+
+        * `WST` - WST
+
+        * `PTE` - PTE
+
+        * `MVR` - MVR
+
+        * `NZD` - NZD
+
+        * `AOA` - AOA
+
+        * `AZN` - AZN
+
+        * `CSK` - CSK
+
+        * `ECV` - ECV
+
+        * `YDD` - YDD
+
+        * `PEN` - PEN
+
+        * `RHD` - RHD
+
+        * `ZAR` - ZAR
+
+        * `BGO` - BGO
+
+        * `XFO` - XFO
+
+        * `BMD` - BMD
+
+        * `ARL` - ARL
+
+        * `UAK` - UAK
+
+        * `SDG` - SDG
+
+        * `ZMW` - ZMW
+
+        * `AMD` - AMD
+
+        * `XBA` - XBA
+
+        * `XRE` - XRE
+
+        * `CDF` - CDF
+
+        * `THB` - THB
+
+        * `TRL` - TRL
+
+        * `HTG` - HTG
+
+        * `ROL` - ROL
+
+        * `SIT` - SIT
+
+        * `CRC` - CRC
+
+        * `SSP` - SSP
+
+        * `BEF` - BEF
+
+        * `ITL` - ITL
+
+        * `PLN` - PLN
+
+        * `GYD` - GYD
+
+        * `BAM` - BAM
+
+        * `YUD` - YUD
+
+        * `XAF` - XAF
+
+        * `BAN` - BAN
+
+        * `LAK` - LAK
+
+        * `BSD` - BSD
+
+        * `EUR` - EUR
+
+        * `LKR` - LKR
+
+        * `BYN` - BYN
+
+        * `BOP` - BOP
+
+        * `KRH` - KRH
+
+        * `UGX` - UGX
+
+        * `DDM` - DDM
+
+        * `NIC` - NIC
+
+        * `SHP` - SHP
+
+        * `SRG` - SRG
+
+        * `CHE` - CHE
+
+        * `AED` - AED
+
+        * `GEL` - GEL
+
+        * `PGK` - PGK
+
+        * `LYD` - LYD
+
+        * `ZWL` - ZWL
+
+        * `UYU` - UYU
+
+        * `TWD` - TWD
+
+        * `MTL` - MTL
+
+        * `YUR` - YUR
+
+        * `IEP` - IEP
+
+        * `MXP` - MXP
+
+        * `XPT` - XPT
+
+        * `KRW` - KRW
+
+        * `ZMK` - ZMK
+
+        * `HRD` - HRD
+
+        * `MWK` - MWK
+
+        * `ZWR` - ZWR
+
+        * `MVP` - MVP
+
+        * `VED` - VED
+
+        * `CNH` - CNH
+
+        * `CVE` - CVE
+
+        * `RWF` - RWF
+
+        * `ILS` - ILS
+
+        * `KZT` - KZT
+
+        * `MZE` - MZE
+
+        * `XBD` - XBD
+
+        * `JOD` - JOD
+
+        * `LBP` - LBP
+
+        * `CSD` - CSD
+
+        * `AZM` - AZM
+
+        * `MDC` - MDC
+
+        * `ECS` - ECS
+
+        * `CNY` - CNY
+
+        * `GNS` - GNS
+
+        * `HUF` - HUF
+
+        * `KES` - KES
+
+        * `ESA` - ESA
+
+        * `TOP` - TOP
+
+        * `MOP` - MOP
+
+        * `CZK` - CZK
+
+        * `SAR` - SAR
+
+        * `ARA` - ARA
+
+        * `NPR` - NPR
+
+        * `KMF` - KMF
+
+        * `SYP` - SYP
+
+        * `XBB` - XBB
+
+        * `SDD` - SDD
+
+        * `YUN` - YUN
+
+        * `GRD` - GRD
+
+        * `UGS` - UGS
+
+        * `AON` - AON
+
+        * `ETB` - ETB
+
+        * `ILP` - ILP
+
+        * `MGF` - MGF
+
+        * `MTP` - MTP
+
+        * `XCG` - XCG
+
+        * `KYD` - KYD
+
+        * `MZM` - MZM
+
+        * `AWG` - AWG
+
+        * `TMT` - TMT
+
+        * `IDR` - IDR
+
+        * `CLF` - CLF
+
+        * `LUL` - LUL
+
+        * `BEL` - BEL
+
+        * `GBP` - GBP
+
+        * `VEB` - VEB
+
+        * `MAF` - MAF
+
+        * `VEF` - VEF
+
+        * `TRY` - TRY
+
+        * `ZWD` - ZWD
+
+        * `GNF` - GNF
+
+        * `EEK` - EEK
+
+        * `XTS` - XTS
+
+        * `ALL` - ALL
+
+        * `AFN` - AFN
+
+        * `BHD` - BHD
+
+        * `PAB` - PAB
+
+        * `XOF` - XOF
+
+        * `TJR` - TJR
+
+        * `NAD` - NAD
+
+        * `NLG` - NLG
+
+        * `GEK` - GEK
+
+        * `MGA` - MGA
+
+        * `ATS` - ATS
+
+        * `IRR` - IRR
+
+        * `ZRZ` - ZRZ
+
+        * `XCD` - XCD
+
+        * `GIP` - GIP
+
+        * `ALK` - ALK
+
+        * `CAD` - CAD
+
+        * `PES` - PES
+
+        * `TJS` - TJS
+
+        * `LUC` - LUC
+
+        * `YER` - YER'
+    KYBVerificationStatusResponseStatusEnum:
+      enum:
+      - Not started
+      - Started
+      - In Review
+      - Completed
+      type: string
+      description: '* `Not started` - Not started
+
+        * `Started` - Started
+
+        * `In Review` - In Review
+
+        * `Completed` - Completed'
+    PaymentAvailability:
+      type: object
+      properties:
+        order_id:
+          type: string
+          format: uuid
+      required:
+      - order_id
+    RapydPostCheckout:
+      type: object
+      properties:
+        order_id:
+          type: string
+          format: uuid
+        selected_currency:
+          $ref: '#/components/schemas/SupportedCurrencies'
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethod'
+        payment_scenario:
+          $ref: '#/components/schemas/PaymentScenarioEnum'
+      required:
+      - order_id
+      - payment_method
+      - payment_scenario
+    RapydSupplierTermsCard:
+      type: object
+      properties:
+        redirect_url:
+          type: string
+          format: uri
+      required:
+      - redirect_url
+    PaymentMethod:
+      enum:
+      - card
+      - bank_transfer
+      - PAY30
+      - PAY30EOFM
+      type: string
+      description: '* `card` - Card
+
+        * `bank_transfer` - Bank Transfer
+
+        * `PAY30` - Kriya 30
+
+        * `PAY30EOFM` - Kriya Next Month'
+    SupportedCurrencies:
+      enum:
+      - EUR
+      - GBP
+      - USD
+      - CAD
+      type: string
+      description: '* `EUR` - EUR
+
+        * `GBP` - GBP
+
+        * `USD` - USD
+
+        * `CAD` - CAD'
+    BankTransfer:
+      type: object
+      properties:
+        merchant_reference_id:
+          type: string
+        reference_number:
+          type: string
+        bank_account:
+          allOf:
+          - $ref: '#/components/schemas/BankAccount'
+          nullable: true
+      required:
+      - merchant_reference_id
+      - reference_number
+    RapydCheckout:
+      type: object
+      properties:
+        order_id:
+          type: string
+          format: uuid
+        selected_currency:
+          $ref: '#/components/schemas/SupportedCurrencies'
+      required:
+      - order_id
+    KYBStep1Response:
+      type: object
+      properties:
+        redirect_url:
+          type: string
+          format: uri
+      required:
+      - redirect_url
+    VirtualBankTransfer:
+      type: object
+      properties:
+        bank_account:
+          type: string
+          readOnly: true
+        merchant_reference_id:
+          type: string
+          readOnly: true
+        reference_number:
+          type: string
+          readOnly: true
+      required:
+      - bank_account
+      - merchant_reference_id
+      - reference_number
+    RapydCheckoutData:
+      type: object
+      properties:
+        checkout_id:
+          type: string
+        redirect_url:
+          type: string
+          format: uri
+        complete_checkout_url:
+          type: string
+          format: uri
+        prices:
+          $ref: '#/components/schemas/OrderPrices'
+        virtual_bank_account:
+          $ref: '#/components/schemas/VirtualBankTransfer'
+        bank_transfer_details:
+          allOf:
+          - $ref: '#/components/schemas/BankTransfer'
+          nullable: true
+      required:
+      - checkout_id
+      - complete_checkout_url
+      - prices
+      - redirect_url
+      - virtual_bank_account
+    KYBStep1:
+      type: object
+      properties:
+        phone_number:
+          type: string
+        phone_country_code:
+          type: string
+      required:
+      - phone_country_code
+      - phone_number
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

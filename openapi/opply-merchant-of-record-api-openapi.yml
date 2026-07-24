@@ -1,0 +1,320 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Merchant of Record API
+  version: 0.0.0
+tags:
+- name: Merchant of Record
+paths:
+  /api/v1/companies/accessible/me/:
+    get:
+      operationId: api_v1_companies_accessible_me_retrieve
+      description: 'Returns the set of companies the authenticated user can target in API calls.
+
+
+        - Staff users: marker response indicating "all" — no list is returned.
+
+        - Merchant of Record users: their managed companies plus their own.
+
+        - Brand (buyer) and Supplier users: their own company only.
+
+
+        Used by the MCP `list_accessible_companies` tool. Also useful for any client
+
+        that needs to render a company-picker scoped to the user''s permissions.'
+      summary: List companies the current user can act on
+      tags:
+      - Merchant of Record
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/companies/merchant-of-record-users/:
+    get:
+      operationId: api_v1_companies_merchant_of_record_users_list
+      description: 'List every employee of the Merchant of Record company that the requesting user belongs to.
+
+
+        Use `?is_staff=true` to narrow the result to users with the staff flag (rendered as "admins" in the MoR frontend). Use `?is_active=true|false` to filter by the active flag. Use `?search=<term>` for a case-insensitive partial match against `email`, `first_name` or `last_name`. Filters compose with each other and with pagination. Results are paginated and ordered alphabetically by `first_name`, then `last_name`. Non-staff callers can only see active users; staff callers see everyone and can use `?is_active`.'
+      summary: List MoR users
+      parameters:
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+      - in: query
+        name: is_staff
+        schema:
+          type: boolean
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Merchant of Record
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMerchantOfRecordUserListList'
+          description: ''
+    post:
+      operationId: api_v1_companies_merchant_of_record_users_create
+      description: 'Create a new user as an employee of the requesting user''s MoR company. The user is created with `is_active=True` and `is_staff=True`, given an unusable password, and emailed a ''set password'' link (`send_password_create`) once the create transaction commits.
+
+
+        The email is matched case-insensitively against existing users; duplicates return a 400 with an `email` field error.'
+      summary: Create a MoR user
+      tags:
+      - Merchant of Record
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantOfRecordUserCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MerchantOfRecordUserCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MerchantOfRecordUserCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantOfRecordUserCreate'
+          description: ''
+  /api/v1/companies/merchant-of-record-users/{uuid}/:
+    patch:
+      operationId: api_v1_companies_merchant_of_record_users_partial_update
+      description: 'Update an existing employee of the requesting user''s MoR company. Writable fields are `first_name`, `last_name`, `is_staff` and `is_active` — pass any subset (e.g. just `{"is_staff": false}` to toggle the admin flag). `email`, `uuid` and `date_joined` are read-only and silently ignored if sent.'
+      summary: Update a MoR user
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Merchant of Record
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMerchantOfRecordUserUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMerchantOfRecordUserUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMerchantOfRecordUserUpdate'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantOfRecordUserUpdate'
+          description: ''
+components:
+  schemas:
+    MerchantOfRecordUserUpdate:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        is_staff:
+          type: boolean
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - date_joined
+      - email
+      - uuid
+    PatchedMerchantOfRecordUserUpdate:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        is_staff:
+          type: boolean
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+    PaginatedMerchantOfRecordUserListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MerchantOfRecordUserList'
+    MerchantOfRecordUserCreate:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - date_joined
+      - email
+      - first_name
+      - is_active
+      - is_staff
+      - last_name
+      - uuid
+    MerchantOfRecordUserList:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - date_joined
+      - email
+      - first_name
+      - is_active
+      - is_staff
+      - last_name
+      - uuid
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

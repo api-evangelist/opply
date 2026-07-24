@@ -1,0 +1,1045 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Sourcing API
+  version: 0.0.0
+tags:
+- name: Sourcing
+paths:
+  /api/v1/sourcing/order-line-item-sources/:
+    get:
+      operationId: api_v1_sourcing_order_line_item_sources_list
+      description: 'ViewSet for MoR users to manage links between order line items
+
+        and traded catalogue entries.'
+      summary: Merchant of Record order line item source endpoints
+      parameters:
+      - in: query
+        name: order
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: order_line_item
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: traded_item
+        schema:
+          type: string
+          format: uuid
+      tags:
+      - Sourcing
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOrderLineItemSourceDetailList'
+          description: ''
+    post:
+      operationId: api_v1_sourcing_order_line_item_sources_create
+      description: 'ViewSet for MoR users to manage links between order line items
+
+        and traded catalogue entries.'
+      summary: Merchant of Record order line item source endpoints
+      tags:
+      - Sourcing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderLineItemSourceCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderLineItemSourceCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderLineItemSourceCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderLineItemSourceCreate'
+          description: ''
+  /api/v1/sourcing/order-line-item-sources/{uuid}/:
+    get:
+      operationId: api_v1_sourcing_order_line_item_sources_retrieve
+      description: 'ViewSet for MoR users to manage links between order line items
+
+        and traded catalogue entries.'
+      summary: Merchant of Record order line item source endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Sourcing
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderLineItemSourceDetail'
+          description: ''
+    put:
+      operationId: api_v1_sourcing_order_line_item_sources_update
+      description: 'ViewSet for MoR users to manage links between order line items
+
+        and traded catalogue entries.'
+      summary: Merchant of Record order line item source endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Sourcing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderLineItemSourceDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderLineItemSourceDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderLineItemSourceDetail'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderLineItemSourceDetail'
+          description: ''
+    patch:
+      operationId: api_v1_sourcing_order_line_item_sources_partial_update
+      description: 'ViewSet for MoR users to manage links between order line items
+
+        and traded catalogue entries.'
+      summary: Merchant of Record order line item source endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Sourcing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderLineItemSourceDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderLineItemSourceDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderLineItemSourceDetail'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderLineItemSourceDetail'
+          description: ''
+    delete:
+      operationId: api_v1_sourcing_order_line_item_sources_destroy
+      description: 'ViewSet for MoR users to manage links between order line items
+
+        and traded catalogue entries.'
+      summary: Merchant of Record order line item source endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Sourcing
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/sourcing/traded-items/:
+    get:
+      operationId: api_v1_sourcing_traded_items_list
+      description: 'ViewSet for MoR users to manage traded items.
+
+
+        Flat resource at /api/v1/sourcing/traded-items/.
+
+        Filter by supplier_company or buyer_company via query params.'
+      summary: Merchant of Record traded item endpoints
+      parameters:
+      - in: query
+        name: buyer_company
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: category
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: supplier_company
+        schema:
+          type: string
+          format: uuid
+      tags:
+      - Sourcing
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTradedItemListList'
+          description: ''
+    post:
+      operationId: api_v1_sourcing_traded_items_create
+      description: 'ViewSet for MoR users to manage traded items.
+
+
+        Flat resource at /api/v1/sourcing/traded-items/.
+
+        Filter by supplier_company or buyer_company via query params.'
+      summary: Merchant of Record traded item endpoints
+      tags:
+      - Sourcing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TradedItemCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TradedItemCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TradedItemCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradedItemCreate'
+          description: ''
+  /api/v1/sourcing/traded-items/{uuid}/:
+    get:
+      operationId: api_v1_sourcing_traded_items_retrieve
+      description: 'ViewSet for MoR users to manage traded items.
+
+
+        Flat resource at /api/v1/sourcing/traded-items/.
+
+        Filter by supplier_company or buyer_company via query params.'
+      summary: Merchant of Record traded item endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Sourcing
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradedItemDetail'
+          description: ''
+    put:
+      operationId: api_v1_sourcing_traded_items_update
+      description: 'ViewSet for MoR users to manage traded items.
+
+
+        Flat resource at /api/v1/sourcing/traded-items/.
+
+        Filter by supplier_company or buyer_company via query params.'
+      summary: Merchant of Record traded item endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Sourcing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TradedItemDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TradedItemDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TradedItemDetail'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradedItemDetail'
+          description: ''
+    patch:
+      operationId: api_v1_sourcing_traded_items_partial_update
+      description: 'ViewSet for MoR users to manage traded items.
+
+
+        Flat resource at /api/v1/sourcing/traded-items/.
+
+        Filter by supplier_company or buyer_company via query params.'
+      summary: Merchant of Record traded item endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Sourcing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTradedItemDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTradedItemDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTradedItemDetail'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradedItemDetail'
+          description: ''
+    delete:
+      operationId: api_v1_sourcing_traded_items_destroy
+      description: 'ViewSet for MoR users to manage traded items.
+
+
+        Flat resource at /api/v1/sourcing/traded-items/.
+
+        Filter by supplier_company or buyer_company via query params.'
+      summary: Merchant of Record traded item endpoints
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Sourcing
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/sourcing/traded-items/{uuid}/documents/:
+    get:
+      operationId: api_v1_sourcing_traded_items_documents_list
+      description: 'ViewSet for MoR users to manage traded items.
+
+
+        Flat resource at /api/v1/sourcing/traded-items/.
+
+        Filter by supplier_company or buyer_company via query params.'
+      summary: List documents for a traded item
+      parameters:
+      - in: query
+        name: buyer_company
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: category
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: supplier_company
+        schema:
+          type: string
+          format: uuid
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Sourcing
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTradedItemDocumentList'
+          description: ''
+    post:
+      operationId: api_v1_sourcing_traded_items_documents_create
+      description: 'ViewSet for MoR users to manage traded items.
+
+
+        Flat resource at /api/v1/sourcing/traded-items/.
+
+        Filter by supplier_company or buyer_company via query params.'
+      summary: Upload a document for a traded item
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Sourcing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TradedItemDocumentUpload'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TradedItemDocumentUpload'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TradedItemDocumentUpload'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradedItemDocument'
+          description: ''
+        '400':
+          description: Validation error
+        '404':
+          description: Product not found
+  /api/v1/sourcing/traded-items/{uuid}/documents/{document_uuid}/:
+    delete:
+      operationId: api_v1_sourcing_traded_items_documents_destroy
+      description: 'ViewSet for MoR users to manage traded items.
+
+
+        Flat resource at /api/v1/sourcing/traded-items/.
+
+        Filter by supplier_company or buyer_company via query params.'
+      summary: Delete a document for a traded item
+      parameters:
+      - in: path
+        name: document_uuid
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Sourcing
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: Document deleted successfully
+        '404':
+          description: Product or document not found
+components:
+  schemas:
+    TradedItemDocument:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        document:
+          type: string
+          format: uri
+          readOnly: true
+        file_name:
+          type: string
+          readOnly: true
+        category:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemDocumentCategoryEnum'
+          readOnly: true
+        start_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          description: Start date of document validity
+        end_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          description: End/expiry date of document validity
+        is_active:
+          type: boolean
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/CatalogDocumentStatusEnum'
+          readOnly: true
+        is_archived:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - category
+      - created_at
+      - document
+      - end_date
+      - file_name
+      - is_active
+      - is_archived
+      - start_date
+      - status
+      - uuid
+    CatalogItemDocumentCategoryEnum:
+      enum:
+      - spec_sheet
+      - certificate_of_analysis
+      - british_retail_consortium
+      - international_organisation_for_standardisation
+      - foundation_food_safety_system_certification
+      - international_featured_standards
+      - safe_quality_food
+      type: string
+      description: '* `spec_sheet` - Spec Sheet
+
+        * `certificate_of_analysis` - Certificate of Analysis
+
+        * `british_retail_consortium` - British Retail Consortium
+
+        * `international_organisation_for_standardisation` - International Organisation for Standardisation
+
+        * `foundation_food_safety_system_certification` - Foundation Food Safety System Certification
+
+        * `international_featured_standards` - International Featured Standards
+
+        * `safe_quality_food` - Safe Quality Food'
+    OrderLineItemSourceDetail:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        order_line_item_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        traded_item_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        traded_item_name:
+          type: string
+          readOnly: true
+          nullable: true
+        linked_by_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - linked_by_uuid
+      - modified_at
+      - order_line_item_uuid
+      - traded_item_name
+      - traded_item_uuid
+      - uuid
+    TradedItemList:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        item_name:
+          type: string
+          readOnly: true
+        sku:
+          type: string
+          readOnly: true
+          nullable: true
+        item_description:
+          type: string
+          readOnly: true
+          nullable: true
+        supplier_company_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        supplier_company_name:
+          type: string
+          readOnly: true
+        buyer_company_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        buyer_company_name:
+          type: string
+          readOnly: true
+          nullable: true
+        category_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        is_active:
+          type: boolean
+          readOnly: true
+        document_count:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - buyer_company_name
+      - buyer_company_uuid
+      - category_uuid
+      - created_at
+      - document_count
+      - is_active
+      - item_description
+      - item_name
+      - sku
+      - supplier_company_name
+      - supplier_company_uuid
+      - uuid
+    TradedItemDocumentUpload:
+      type: object
+      properties:
+        file_name:
+          type: string
+          writeOnly: true
+        category:
+          $ref: '#/components/schemas/CatalogItemDocumentCategoryEnum'
+        start_date:
+          type: string
+          format: date
+          nullable: true
+        end_date:
+          type: string
+          format: date
+          nullable: true
+      required:
+      - category
+      - file_name
+    TradedItemDetail:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        item_name:
+          type: string
+        sku:
+          type: string
+          nullable: true
+          maxLength: 255
+        item_description:
+          type: string
+          nullable: true
+        supplier_company_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        supplier_company_name:
+          type: string
+          readOnly: true
+        buyer_company_uuid:
+          type: string
+          format: uuid
+          nullable: true
+        buyer_company_name:
+          type: string
+          readOnly: true
+          nullable: true
+        category_uuid:
+          type: string
+          format: uuid
+          nullable: true
+        is_active:
+          type: boolean
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/TradedItemDocument'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - buyer_company_name
+      - created_at
+      - documents
+      - item_name
+      - modified_at
+      - supplier_company_name
+      - supplier_company_uuid
+      - uuid
+    PaginatedTradedItemDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TradedItemDocument'
+    PatchedTradedItemDetail:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        item_name:
+          type: string
+        sku:
+          type: string
+          nullable: true
+          maxLength: 255
+        item_description:
+          type: string
+          nullable: true
+        supplier_company_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        supplier_company_name:
+          type: string
+          readOnly: true
+        buyer_company_uuid:
+          type: string
+          format: uuid
+          nullable: true
+        buyer_company_name:
+          type: string
+          readOnly: true
+          nullable: true
+        category_uuid:
+          type: string
+          format: uuid
+          nullable: true
+        is_active:
+          type: boolean
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/TradedItemDocument'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedOrderLineItemSourceDetail:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        order_line_item_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        traded_item_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        traded_item_name:
+          type: string
+          readOnly: true
+          nullable: true
+        linked_by_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PaginatedOrderLineItemSourceDetailList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderLineItemSourceDetail'
+    OrderLineItemSourceCreate:
+      type: object
+      properties:
+        order_line_item_uuid:
+          type: string
+          format: uuid
+        traded_item_uuid:
+          type: string
+          format: uuid
+      required:
+      - order_line_item_uuid
+      - traded_item_uuid
+    CatalogDocumentStatusEnum:
+      enum:
+      - document_valid
+      - document_expired
+      - document_expiring_soon
+      - document_renewed
+      type: string
+      description: '* `document_valid` - Valid
+
+        * `document_expired` - Expired
+
+        * `document_expiring_soon` - Expiring Soon
+
+        * `document_renewed` - Renewed'
+    PaginatedTradedItemListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TradedItemList'
+    TradedItemCreate:
+      type: object
+      properties:
+        item_name:
+          type: string
+        sku:
+          type: string
+          nullable: true
+          maxLength: 255
+        item_description:
+          type: string
+          nullable: true
+        supplier_company_uuid:
+          type: string
+          format: uuid
+        buyer_company_uuid:
+          type: string
+          format: uuid
+          nullable: true
+        category_uuid:
+          type: string
+          format: uuid
+          nullable: true
+      required:
+      - item_name
+      - supplier_company_uuid
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

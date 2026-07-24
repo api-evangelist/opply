@@ -1,0 +1,652 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Order Management Contracts API
+  version: 0.0.0
+tags:
+- name: Order Management Contracts
+paths:
+  /api/v1/order-management-contracts/buyer/current/:
+    get:
+      operationId: api_v1_order_management_contracts_buyer_current_retrieve
+      description: 'Returns the latest OMC where today falls within [start_date, end_date]. If the buyer has no active OMC, the response is `{state: ''empty'', data: null}`.'
+      summary: Get the buyer's currently active Order Management Contract
+      tags:
+      - Order Management Contracts
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerCurrentOrderManagementContract'
+          description: ''
+        '401':
+          description: Authentication credentials were not provided or are invalid
+  /api/v1/order-management-contracts/merchant-of-record/:
+    get:
+      operationId: api_v1_order_management_contracts_merchant_of_record_list
+      description: Returns a paginated list of all order management contracts where the current user's company is the merchant of record.
+      summary: List all order management contracts for the merchant of record company
+      parameters:
+      - in: query
+        name: activeContractsOnly
+        schema:
+          type: boolean
+        description: Filter to show only active contracts (where today < end_date)
+      - in: query
+        name: buyer
+        schema:
+          type: string
+          format: uuid
+        description: Filter by buyer company UUID
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search across contract number and buyer name (case-insensitive partial match).
+      tags:
+      - Order Management Contracts
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOrderManagementContractListList'
+          description: ''
+        '401':
+          description: Authentication credentials were not provided or are invalid
+        '403':
+          description: User is not authorized to view these contracts
+    post:
+      operationId: api_v1_order_management_contracts_merchant_of_record_create
+      description: Creates a new order management contract as merchant of record.
+      summary: Create a new order management contract
+      tags:
+      - Order Management Contracts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderManagementContractCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderManagementContractCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderManagementContractCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderManagementContractDetail'
+          description: ''
+        '400':
+          description: Validation error
+  /api/v1/order-management-contracts/merchant-of-record/{uuid}/:
+    get:
+      operationId: api_v1_order_management_contracts_merchant_of_record_retrieve
+      description: Returns detailed information about a specific order management contract, including related orders and agreements.
+      summary: Retrieve a specific order management contract
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Order Management Contracts
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderManagementContractDetail'
+          description: ''
+        '401':
+          description: Authentication credentials were not provided or are invalid
+        '403':
+          description: User is not authorized to view this contract
+        '404':
+          description: Contract not found
+    put:
+      operationId: api_v1_order_management_contracts_merchant_of_record_update
+      description: Updates an existing order management contract.
+      summary: Update an order management contract
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Order Management Contracts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderManagementContractUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderManagementContractUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderManagementContractUpdate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderManagementContractDetail'
+          description: ''
+        '400':
+          description: Validation error
+        '403':
+          description: User is not authorized to update this contract
+        '404':
+          description: Contract not found
+    patch:
+      operationId: api_v1_order_management_contracts_merchant_of_record_partial_update
+      description: Partially updates an existing order management contract.
+      summary: Partially update an order management contract
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Order Management Contracts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderManagementContractUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderManagementContractUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderManagementContractUpdate'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderManagementContractDetail'
+          description: ''
+        '400':
+          description: Validation error
+        '403':
+          description: User is not authorized to update this contract
+        '404':
+          description: Contract not found
+    delete:
+      operationId: api_v1_order_management_contracts_merchant_of_record_destroy
+      description: 'ViewSet for managing order management contracts from the merchant of record perspective.
+
+
+        This ViewSet provides endpoints for merchant of record companies to:
+
+        - List and retrieve their order management contracts
+
+        - Create new contracts
+
+        - Update existing contracts
+
+
+        All operations are restricted to contracts where the current user''s company
+
+        is the merchant of record.'
+      summary: Merchant of Record endpoints for Order Management Contracts
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Order Management Contracts
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    BuyerCurrentOrderManagementContractStateEnum:
+      enum:
+      - active
+      - empty
+      type: string
+      description: '* `active` - Active
+
+        * `empty` - Empty'
+    BuyerCurrentOrderManagementContract:
+      type: object
+      description: 'Wraps the active OMC with a `state` discriminator so the FE can render
+
+        an empty card when the buyer has no current contract.'
+      properties:
+        state:
+          $ref: '#/components/schemas/BuyerCurrentOrderManagementContractStateEnum'
+        data:
+          allOf:
+          - $ref: '#/components/schemas/BuyerOrderManagementContractActiveData'
+          nullable: true
+      required:
+      - data
+      - state
+    OrderManagementContractCreate:
+      type: object
+      properties:
+        buyer:
+          type: string
+          format: uuid
+        currency:
+          $ref: '#/components/schemas/AvailableCurrenciesEnum'
+        start_date:
+          type: string
+          format: date
+        signed_date:
+          type: string
+          format: date
+        period_in_months:
+          type: integer
+          minimum: 1
+        total_contract_value:
+          type: integer
+          minimum: 0
+        service_fee_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+        service_fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderManagementContractServiceFeeCreate'
+      required:
+      - buyer
+      - period_in_months
+      - signed_date
+      - start_date
+      - total_contract_value
+    OrderManagementContractUpdate:
+      type: object
+      properties:
+        currency:
+          $ref: '#/components/schemas/AvailableCurrenciesEnum'
+        start_date:
+          type: string
+          format: date
+        signed_date:
+          type: string
+          format: date
+        period_in_months:
+          type: integer
+          minimum: 1
+        total_contract_value:
+          type: integer
+          minimum: 0
+        service_fee_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+        service_fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderManagementContractServiceFeeCreate'
+      required:
+      - signed_date
+      - start_date
+    BuyerOrderManagementContractActiveData:
+      type: object
+      description: "Active Order Management Contract data shaped for the contracts page card.\n\nAll money is emitted as integer cents. The FE mapper divides by 100 to\nrender major units for display.\n\n`OrderManagementContract.total_contract_value` is stored in **micro-units**\non the model (1 GBP = 1,000,000) — the same convention as every per-unit\nprice in `BuyerPriceCalculatorService`. We convert it to cents in\n`get_total_in_cents` so the API contract is uniformly cents and the FE\ncan apply its single `/100` major-unit conversion without knowing about\nmicro-units. Utilised already comes out of the price calculator as cents.\n\nThe card surfaces two parallel notions of elapsed time:\n\n* `months_elapsed` / `months_total` — drive the friendly\n  \"X of N months\" label only. Whole calendar months since `start_date`.\n* `days_elapsed` / `contract_duration_days` — drive the \"X% vs pace\"\n  indicator. Day-granularity, aligned with the same calculation\n  Metabase uses for internal reporting so account managers and buyers\n  see the same number. Start day counts as day 1 (inclusive math),\n  clamped to `[0, contract_duration_days]`."
+      properties:
+        total_in_cents:
+          type: integer
+          description: 'Convert the model''s micro-unit storage to cents for the API contract.
+
+
+            `total_contract_value` is stored in micro-units (1 GBP = 1,000,000).
+
+            Dividing by 10,000 yields cents, matching `utilised_in_cents` and the
+
+            rest of the monetary surface.'
+          readOnly: true
+        utilised_in_cents:
+          type: integer
+          readOnly: true
+        months_elapsed:
+          type: integer
+          readOnly: true
+        months_total:
+          type: integer
+        days_elapsed:
+          type: integer
+          readOnly: true
+        contract_duration_days:
+          type: integer
+          readOnly: true
+        signed:
+          type: string
+          readOnly: true
+        renews:
+          type: string
+          readOnly: true
+        avg_monthly_in_cents:
+          type: integer
+          readOnly: true
+        currency:
+          type: string
+      required:
+      - avg_monthly_in_cents
+      - contract_duration_days
+      - currency
+      - days_elapsed
+      - months_elapsed
+      - months_total
+      - renews
+      - signed
+      - total_in_cents
+      - utilised_in_cents
+    CompanyNameAndId:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+      required:
+      - id
+      - name
+      - uuid
+    PaginatedOrderManagementContractListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderManagementContractList'
+    AvailableCurrenciesEnum:
+      enum:
+      - EUR
+      - GBP
+      - USD
+      type: string
+      description: '* `EUR` - EUR
+
+        * `GBP` - GBP
+
+        * `USD` - USD'
+    OrderManagementContractDetail:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        contract_number:
+          type: string
+          readOnly: true
+        buyer:
+          allOf:
+          - $ref: '#/components/schemas/CompanyNameAndId'
+          readOnly: true
+        merchant_of_record_company:
+          allOf:
+          - $ref: '#/components/schemas/CompanyNameAndId'
+          readOnly: true
+        currency:
+          $ref: '#/components/schemas/AvailableCurrenciesEnum'
+        start_date:
+          type: string
+          format: date
+        signed_date:
+          type: string
+          format: date
+        period_in_months:
+          type: integer
+          maximum: 2147483647
+          minimum: 1
+        total_contract_value:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          description: Total contract value in micro-units (1 GBP = 1,000,000)
+        service_fee_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+        service_fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderManagementContractServiceFee'
+          readOnly: true
+        end_date:
+          type: string
+          format: date
+          readOnly: true
+        orders:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        agreements:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - agreements
+      - buyer
+      - contract_number
+      - created_at
+      - end_date
+      - merchant_of_record_company
+      - modified_at
+      - orders
+      - period_in_months
+      - service_fees
+      - signed_date
+      - start_date
+      - total_contract_value
+      - uuid
+    OrderManagementContractServiceFeeCreate:
+      type: object
+      description: Write serializer for service fees - no uuid needed on create/update
+      properties:
+        service_fee_type:
+          $ref: '#/components/schemas/ServiceFeeTypeEnum'
+        service_fee_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+      required:
+      - service_fee_percentage
+      - service_fee_type
+    OrderManagementContractServiceFee:
+      type: object
+      description: Read serializer for service fees - includes uuid for identification
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        service_fee_type:
+          $ref: '#/components/schemas/ServiceFeeTypeEnum'
+        service_fee_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+      required:
+      - uuid
+    OrderManagementContractList:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        contract_number:
+          type: string
+          readOnly: true
+        buyer:
+          allOf:
+          - $ref: '#/components/schemas/CompanyNameAndId'
+          readOnly: true
+        currency:
+          $ref: '#/components/schemas/AvailableCurrenciesEnum'
+        start_date:
+          type: string
+          format: date
+        signed_date:
+          type: string
+          format: date
+        period_in_months:
+          type: integer
+          maximum: 2147483647
+          minimum: 1
+        total_contract_value:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          description: Total contract value in micro-units (1 GBP = 1,000,000)
+        service_fee_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+        service_fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderManagementContractServiceFee'
+          readOnly: true
+        end_date:
+          type: string
+          format: date
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - buyer
+      - contract_number
+      - created_at
+      - end_date
+      - modified_at
+      - period_in_months
+      - service_fees
+      - signed_date
+      - start_date
+      - total_contract_value
+      - uuid
+    PatchedOrderManagementContractUpdate:
+      type: object
+      properties:
+        currency:
+          $ref: '#/components/schemas/AvailableCurrenciesEnum'
+        start_date:
+          type: string
+          format: date
+        signed_date:
+          type: string
+          format: date
+        period_in_months:
+          type: integer
+          minimum: 1
+        total_contract_value:
+          type: integer
+          minimum: 0
+        service_fee_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+        service_fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderManagementContractServiceFeeCreate'
+    ServiceFeeTypeEnum:
+      enum:
+      - order_management_only
+      - order_management_with_payment_support
+      type: string
+      description: '* `order_management_only` - Order Management Only
+
+        * `order_management_with_payment_support` - Order Management with Payment Support'
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

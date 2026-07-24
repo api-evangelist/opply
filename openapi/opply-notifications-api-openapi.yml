@@ -1,0 +1,934 @@
+openapi: 3.0.3
+info:
+  title: Opply Activity Feed Notifications API
+  version: 0.0.0
+tags:
+- name: Notifications
+paths:
+  /api/v1/notifications/emails/brand/:
+    get:
+      operationId: api_v1_notifications_emails_brand_list
+      summary: Unsubscribe groups endpoints
+      tags:
+      - Notifications
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmailNotifications'
+          description: ''
+  /api/v1/notifications/emails/brand/all/:
+    post:
+      operationId: api_v1_notifications_emails_brand_all_create
+      summary: Unsubscribe groups endpoints
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AllEmailNotifications'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AllEmailNotifications'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AllEmailNotifications'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailNotifications'
+          description: ''
+  /api/v1/notifications/emails/brand/on-off-unsubscribe-groups/:
+    put:
+      operationId: api_v1_notifications_emails_brand_on_off_unsubscribe_groups_update
+      summary: Activate or deactivate unsubscribe groups for users
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailNotifications'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EmailNotifications'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EmailNotifications'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailNotifications'
+          description: ''
+  /api/v1/notifications/emails/supplier/:
+    get:
+      operationId: api_v1_notifications_emails_supplier_list
+      summary: Unsubscribe groups endpoints
+      tags:
+      - Notifications
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmailNotifications'
+          description: ''
+  /api/v1/notifications/emails/supplier/all/:
+    post:
+      operationId: api_v1_notifications_emails_supplier_all_create
+      summary: Unsubscribe groups endpoints
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AllEmailNotifications'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AllEmailNotifications'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AllEmailNotifications'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailNotifications'
+          description: ''
+  /api/v1/notifications/emails/supplier/on-off-unsubscribe-groups/:
+    put:
+      operationId: api_v1_notifications_emails_supplier_on_off_unsubscribe_groups_update
+      summary: Activate or deactivate unsubscribe groups for users
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailNotifications'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EmailNotifications'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EmailNotifications'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailNotifications'
+          description: ''
+  /api/v1/notifications/notifications/:
+    get:
+      operationId: api_v1_notifications_notifications_list
+      description: 'This endpoint provides a list of notifications that should appear
+
+        when pressing the bell icon at the top right of the dashboard.
+
+        It is paginated with Djangos standard pagination, but with
+
+        the extra field unread_count, which is a count of unread notifications'
+      summary: Retrieve a list of notifications
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - Notifications
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationList'
+          description: ''
+  /api/v1/notifications/notifications/{uuid}/action-mark-clear/:
+    post:
+      operationId: api_v1_notifications_notifications_action_mark_clear_create
+      description: 'Mark a notification type action as read by the user. UUID is a notification
+
+        UUID. This endpoint is useful when the action doesn''t have a related object.'
+      summary: Mark a notification action as clear by the user
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Notifications
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/notifications/notifications/{uuid}/action-mark-read/:
+    post:
+      operationId: api_v1_notifications_notifications_action_mark_read_create
+      summary: Mark a notification action as read by the user
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Notifications
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/notifications/notifications/{uuid}/mark-read/:
+    post:
+      operationId: api_v1_notifications_notifications_mark_read_create
+      description: 'Mark a notification as read by the user. UUID is a notification
+
+        UUID which you can GET from /api/v1/notifications/notifications'
+      summary: Mark a general notification as read by the user
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Notifications
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/notifications/notifications/action-mark-related-cleared/:
+    post:
+      operationId: api_v1_notifications_notifications_action_mark_related_cleared_create
+      description: 'When cleaning a action the FE should pass the related object of that action and its clear trigger,
+
+        then this endpoint will mark as cleared the notifications of type action with that clean trigger
+
+        related to that object'
+      summary: Mark action notification with the given related_object_uuid as cleared
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarkRelatedCleared'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MarkRelatedCleared'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MarkRelatedCleared'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/notifications/notifications/mark-related-read/:
+    post:
+      operationId: api_v1_notifications_notifications_mark_related_read_create
+      description: 'Mark all notifications related to the given object as read, for example
+
+        you might provide related_object_type "quote" with related_object_uuid "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+
+        to mark all notifications related to that quote as read.'
+      summary: Mark all notifications with the given related_object_uuid as read
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarkRelatedRead'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MarkRelatedRead'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MarkRelatedRead'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+        '404':
+          description: No response body
+components:
+  schemas:
+    ActionTypeEnum:
+      enum:
+      - order
+      - request
+      - contracts
+      - onboarding
+      - samples
+      - quotes
+      type: string
+      description: '* `order` - Order
+
+        * `request` - Request
+
+        * `contracts` - Contracts
+
+        * `onboarding` - Onboarding
+
+        * `samples` - Samples
+
+        * `quotes` - Quotes'
+    TitleEnum:
+      enum:
+      - Kriya KYB Reminder
+      - New Quote
+      - New Quote Reminder
+      - New Request
+      - New Request Reminder
+      - New Samples Request
+      - Samples Request Reminder
+      - Samples Dispatched
+      - Samples Received Reminder
+      - Samples Approved
+      - Samples Not Approved
+      - Buyer Started Negotiation
+      - Supplier Negotiation Response
+      - Quote updated
+      - New Order
+      - Order Dispatched
+      - Payment Due
+      - Quote Proceeded
+      - Create Contract Reminder
+      - Proceed with Contract
+      - 'Reminder: Proceed with Contract'
+      - Confirm Contract
+      - Contract Created
+      - New Purchase Request
+      - New Purchase Request Reminder
+      - Response to Purchase Request
+      - Purchase Request Cancelled
+      - Quote Expiring
+      - Request Expiring
+      - New Message
+      - New User
+      - Contract Renewal Declined
+      - Supplier Accepts Contract Renewal
+      - Sign New Contract Purchase Agreement
+      - Contract Renewal Requested
+      - Contract Renewal Terms accepted
+      - Supplier Negotiates Contract Renewal
+      - Re-order
+      - Request for Re-order Declined
+      - Supplier change payment terms
+      type: string
+      description: '* `Kriya KYB Reminder` - Kriya Kyb Reminder
+
+        * `New Quote` - New Quote
+
+        * `New Quote Reminder` - New Quote Reminder
+
+        * `New Request` - New Request
+
+        * `New Request Reminder` - New Request Reminder
+
+        * `New Samples Request` - New Samples Request
+
+        * `Samples Request Reminder` - Samples Request Reminder
+
+        * `Samples Dispatched` - Samples Dispatched
+
+        * `Samples Received Reminder` - Samples Received Reminder
+
+        * `Samples Approved` - Samples Approved
+
+        * `Samples Not Approved` - Samples Not Approved
+
+        * `Buyer Started Negotiation` - Buyer Started Negotiation
+
+        * `Supplier Negotiation Response` - Supplier Negotiation Response
+
+        * `Quote updated` - Quote Updated
+
+        * `New Order` - New Order
+
+        * `Order Dispatched` - Order Dispatched
+
+        * `Payment Due` - Payment Due
+
+        * `Quote Proceeded` - Quote Proceeded
+
+        * `Create Contract Reminder` - Create Contract Reminder
+
+        * `Proceed with Contract` - Proceed With Contract
+
+        * `Reminder: Proceed with Contract` - Reminder Proceed With Contract
+
+        * `Confirm Contract` - Confirm Contract
+
+        * `Contract Created` - Contract Created
+
+        * `New Purchase Request` - New Purchase Request
+
+        * `New Purchase Request Reminder` - New Purchase Request Reminder
+
+        * `Response to Purchase Request` - Response To Purchase Request
+
+        * `Purchase Request Cancelled` - Purchase Request Cancelled
+
+        * `Quote Expiring` - Quote Expiring
+
+        * `Request Expiring` - Request Expiring
+
+        * `New Message` - New Message
+
+        * `New User` - New User
+
+        * `Contract Renewal Declined` - Contract Renewal Declined
+
+        * `Supplier Accepts Contract Renewal` - Contract Renewal Accepted
+
+        * `Sign New Contract Purchase Agreement` - Contract Renewal Accepted With Agreement
+
+        * `Contract Renewal Requested` - Contract Renewal Requested
+
+        * `Contract Renewal Terms accepted` - Contract Renewal Terms Accepted
+
+        * `Supplier Negotiates Contract Renewal` - Supplier Negotiates Contract Renewal
+
+        * `Re-order` - Reorder
+
+        * `Request for Re-order Declined` - Reorder Declined
+
+        * `Supplier change payment terms` - Supplier Updated Payment Terms'
+    BlankEnum:
+      enum:
+      - ''
+    MarkRelatedRead:
+      type: object
+      properties:
+        related_object_uuid:
+          type: string
+          format: uuid
+        related_object_type:
+          type: string
+      required:
+      - related_object_type
+      - related_object_uuid
+    MarkRelatedCleared:
+      type: object
+      properties:
+        related_object_uuid:
+          type: string
+          format: uuid
+        related_object_type:
+          type: string
+        action_clear_trigger:
+          $ref: '#/components/schemas/ActionClearTriggerEnum'
+      required:
+      - action_clear_trigger
+      - related_object_type
+      - related_object_uuid
+    PaginatedNotificationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+        unread_count:
+          type: integer
+          example: 123
+    EmailNotifications:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          nullable: true
+          maxLength: 255
+        type:
+          $ref: '#/components/schemas/EmailNotificationsTypeEnum'
+        description:
+          type: string
+          nullable: true
+          maxLength: 255
+        is_activated_for_user:
+          type: boolean
+      required:
+      - is_activated_for_user
+      - type
+      - uuid
+    ShortUser:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name_short:
+          type: string
+          readOnly: true
+      required:
+      - last_name_short
+      - uuid
+    ActionClearTriggerEnum:
+      enum:
+      - Mark samples as dispatched
+      - Reject samples request
+      - Buyer marks samples as delivered
+      - Order is marked as dispatched or Buyer marks order as delivered
+      - Order has been delivered
+      - Purchase Order is Accepted or Declined
+      - Clear Time to Order Action
+      - Payment has been received
+      - Signed Agreement Uploaded
+      - Purchase Order is placed
+      - Update quote or reject negotiation
+      - One or more ingredients are created
+      - One of more products are created
+      - Samples are marked as received
+      - Marked as delivered
+      - Quote for request or decline request
+      - Product list is uploaded
+      - Respond to Request
+      - Respond to negotiations
+      - Contract is created
+      - Buyer has created a request
+      - Order or decline quote
+      - Open contract details page
+      - Accept contract renewal
+      - Decline contract renewal
+      - Negotiate contract renewal
+      - Place first request
+      - Feedback has been given for a sample
+      - 5 or more ingredients are created
+      - 2 or more products are created
+      type: string
+      description: '* `Mark samples as dispatched` - Mark Samples Dispatched
+
+        * `Reject samples request` - Reject Samples Request
+
+        * `Buyer marks samples as delivered` - Buyer Marks Samples Delivered
+
+        * `Order is marked as dispatched or Buyer marks order as delivered` - Order Marked As Dispatched Or Buyer Marks Order Delivered
+
+        * `Order has been delivered` - Order Delivered
+
+        * `Purchase Order is Accepted or Declined` - Purchase Order Accepted Or Declined
+
+        * `Clear Time to Order Action` - Clear Time To Order Action
+
+        * `Payment has been received` - Payment Received
+
+        * `Signed Agreement Uploaded` - Signed Agreement Uploaded
+
+        * `Purchase Order is placed` - Purchase Order Placed
+
+        * `Update quote or reject negotiation` - Update Quote Or Reject Negotiation
+
+        * `One or more ingredients are created` - Ingredients Created
+
+        * `One of more products are created` - Products Created
+
+        * `Samples are marked as received` - Samples Marked As Received
+
+        * `Marked as delivered` - Marked As Delivered
+
+        * `Quote for request or decline request` - Quote For Request Or Decline
+
+        * `Product list is uploaded` - Product List Uploaded
+
+        * `Respond to Request` - Respond To Request
+
+        * `Respond to negotiations` - Respond To Negotiations
+
+        * `Contract is created` - Contract Created
+
+        * `Buyer has created a request` - Buyer Created Request
+
+        * `Order or decline quote` - Order Or Decline Quote
+
+        * `Open contract details page` - Open Contract Details Page
+
+        * `Accept contract renewal` - Accept Contract Renewal
+
+        * `Decline contract renewal` - Decline Contract Renewal
+
+        * `Negotiate contract renewal` - Negotiate Contract Renewal
+
+        * `Place first request` - Place First Request
+
+        * `Feedback has been given for a sample` - Feedback Given For Sample
+
+        * `5 or more ingredients are created` - Upload Ingredient List
+
+        * `2 or more products are created` - Upload Product List'
+    EmailNotificationsTypeEnum:
+      enum:
+      - b_s_new_message
+      - b_s_daily_message_summary
+      - b_payment_confirmation
+      - b_payment_due
+      - b_payment_reminder
+      - s_payout_complete
+      - b_purchase_request_accepted
+      - s_new_purchase_request
+      - b_dispatch_notification
+      - b_new_quote_received
+      - s_quote_accepted
+      - s_new_request
+      - b_order_confirmations
+      - s_dispatch_reminders
+      - s_samples_requested
+      - b_quote_available_to_order
+      - b_purchase_request_declined
+      - s_quote_negotiations_started
+      - b_quote_negotiation_responses
+      - b_products_list_uploaded
+      - b_ingredients_list_uploaded
+      - s_reminder_to_quote
+      - b_quote_expiry_reminder
+      - b_samples_dispatched
+      - s_supplier_remind_to_quote
+      - b_review_quotes
+      - s_samples_delivered
+      - b_samples_feedback
+      - s_reorder_request_created
+      - b_reorder_request_accepted
+      - b_reorder_request_declined
+      - s_order_delivered
+      - s_purchase_order_cancelled
+      - s_payout_confirmation
+      - b_contract_confirmed
+      - s_contract_confirmed
+      - s_create_contract
+      - b_upload_signed_agreement
+      - s_purchase_order_edited
+      - s_quote_declined
+      - s_requested_updated_quote
+      - b_quote_updated
+      - b_order_updated
+      - b_order_pending_payment
+      - b_order_dispatched
+      - b_s_daily_task_digest
+      - b_spot_buy_request_created
+      - b_order_created
+      - b_service_fee_invoice
+      - b_grouped_statement_due_reminder
+      - b_grouped_statement_due_today
+      - b_grouped_statement_overdue
+      type: string
+      description: '* `b_s_new_message` - b_s_new_message
+
+        * `b_s_daily_message_summary` - b_s_daily_message_summary
+
+        * `b_payment_confirmation` - b_payment_confirmation
+
+        * `b_payment_due` - b_payment_due
+
+        * `b_payment_reminder` - b_payment_reminder
+
+        * `s_payout_complete` - s_payout_complete
+
+        * `b_purchase_request_accepted` - b_purchase_request_accepted
+
+        * `s_new_purchase_request` - s_new_purchase_request
+
+        * `b_dispatch_notification` - b_dispatch_notification
+
+        * `b_new_quote_received` - b_new_quote_received
+
+        * `s_quote_accepted` - s_quote_accepted
+
+        * `s_new_request` - s_new_request
+
+        * `b_order_confirmations` - b_order_confirmations
+
+        * `s_dispatch_reminders` - s_dispatch_reminders
+
+        * `s_samples_requested` - s_samples_requested
+
+        * `b_quote_available_to_order` - b_quote_available_to_order
+
+        * `b_purchase_request_declined` - b_purchase_request_declined
+
+        * `s_quote_negotiations_started` - s_quote_negotiations_started
+
+        * `b_quote_negotiation_responses` - b_quote_negotiation_responses
+
+        * `b_products_list_uploaded` - b_products_list_uploaded
+
+        * `b_ingredients_list_uploaded` - b_ingredients_list_uploaded
+
+        * `s_reminder_to_quote` - s_reminder_to_quote
+
+        * `b_quote_expiry_reminder` - b_quote_expiry_reminder
+
+        * `b_samples_dispatched` - b_samples_dispatched
+
+        * `s_supplier_remind_to_quote` - s_supplier_remind_to_quote
+
+        * `b_review_quotes` - b_review_quotes
+
+        * `s_samples_delivered` - s_samples_delivered
+
+        * `b_samples_feedback` - b_samples_feedback
+
+        * `s_reorder_request_created` - s_reorder_request_created
+
+        * `b_reorder_request_accepted` - b_reorder_request_accepted
+
+        * `b_reorder_request_declined` - b_reorder_request_declined
+
+        * `s_order_delivered` - s_order_delivered
+
+        * `s_purchase_order_cancelled` - s_purchase_order_cancelled
+
+        * `s_payout_confirmation` - s_payout_confirmation
+
+        * `b_contract_confirmed` - b_contract_confirmed
+
+        * `s_contract_confirmed` - s_contract_confirmed
+
+        * `s_create_contract` - s_create_contract
+
+        * `b_upload_signed_agreement` - b_upload_signed_agreement
+
+        * `s_purchase_order_edited` - s_purchase_order_edited
+
+        * `s_quote_declined` - s_quote_declined
+
+        * `s_requested_updated_quote` - s_requested_updated_quote
+
+        * `b_quote_updated` - b_quote_updated
+
+        * `b_order_updated` - b_order_updated
+
+        * `b_order_pending_payment` - b_order_pending_payment
+
+        * `b_order_dispatched` - b_order_dispatched
+
+        * `b_s_daily_task_digest` - b_s_daily_task_digest
+
+        * `b_spot_buy_request_created` - b_spot_buy_request_created
+
+        * `b_order_created` - b_order_created
+
+        * `b_service_fee_invoice` - b_service_fee_invoice
+
+        * `b_grouped_statement_due_reminder` - b_grouped_statement_due_reminder
+
+        * `b_grouped_statement_due_today` - b_grouped_statement_due_today
+
+        * `b_grouped_statement_overdue` - b_grouped_statement_overdue'
+    UsedForEnum:
+      enum:
+      - general_notifications
+      - actions
+      type: string
+      description: '* `general_notifications` - General Notifications
+
+        * `actions` - Actions'
+    NotificationTypeEnum:
+      enum:
+      - trigger-based
+      - time-based
+      - user-specific
+      - global
+      type: string
+      description: '* `trigger-based` - Triggerbased
+
+        * `time-based` - Timebased
+
+        * `user-specific` - Userspecific
+
+        * `global` - Global'
+    Notification:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          $ref: '#/components/schemas/TitleEnum'
+        description:
+          type: string
+        content:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        read_at:
+          type: string
+          format: date-time
+          nullable: true
+        type:
+          $ref: '#/components/schemas/NotificationTypeEnum'
+        category:
+          $ref: '#/components/schemas/NotificationCategoryEnum'
+        priority:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        duration:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+          maxLength: 255
+        receiver:
+          allOf:
+          - $ref: '#/components/schemas/ShortUser'
+          readOnly: true
+        sender:
+          allOf:
+          - $ref: '#/components/schemas/ShortUser'
+          readOnly: true
+        related_object_type:
+          type: string
+          readOnly: true
+        related_object_uuid:
+          type: string
+          readOnly: true
+        is_read:
+          type: string
+          readOnly: true
+        used_for:
+          $ref: '#/components/schemas/UsedForEnum'
+        action_type:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/ActionTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        action_clear_trigger:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/ActionClearTriggerEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+      required:
+      - category
+      - content
+      - created_at
+      - description
+      - is_read
+      - receiver
+      - related_object_type
+      - related_object_uuid
+      - sender
+      - title
+      - type
+      - uuid
+    AllEmailNotifications:
+      type: object
+      properties:
+        all_emails:
+          type: boolean
+      required:
+      - all_emails
+    NotificationCategoryEnum:
+      enum:
+      - tasks
+      - task_mentions
+      - updates
+      - system
+      type: string
+      description: '* `tasks` - Tasks
+
+        * `task_mentions` - Task Mentions
+
+        * `updates` - Updates
+
+        * `system` - System'
+    NullEnum:
+      enum:
+      - null
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
