@@ -1,0 +1,31 @@
+generated: '2026-07-20'
+method: searched
+host: https://api.opply.com
+source: live probe of /.well-known/* on api.opply.com and opply.com
+documents:
+- path: /.well-known/openid-configuration
+  status: 200
+  file: opply-openid-configuration.json
+  note: OpenID Provider metadata (issuer, jwks_uri, RS256)
+- path: /.well-known/oauth-authorization-server
+  status: 200
+  file: opply-oauth-authorization-server.json
+  note: RFC 8414 OAuth 2.0 Authorization Server Metadata (authorization_code + refresh_token, PKCE S256, dynamic client registration)
+- path: /.well-known/oauth-protected-resource
+  status: 200
+  file: opply-oauth-protected-resource.json
+  note: RFC 9728 Protected Resource Metadata for the main Opply MCP (/api/v1/mcp/)
+- path: /.well-known/oauth-protected-resource/api/v1/mcp/zendesk
+  status: 200
+  file: opply-oauth-protected-resource-zendesk.json
+  note: RFC 9728 Protected Resource Metadata for the Zendesk-scoped MCP endpoint
+- path: /.well-known/jwks.json
+  status: 200
+  file: opply-jwks.json
+  note: JSON Web Key Set (RSA, RS256)
+- path: /.well-known/security.txt
+  status: 404
+- path: /.well-known/api-catalog
+  status: 404
+- path: /.well-known/ai-plugin.json
+  status: 404

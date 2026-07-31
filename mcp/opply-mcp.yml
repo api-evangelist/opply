@@ -1,0 +1,66 @@
+generated: '2026-07-20'
+method: searched
+status: published
+source: https://api.opply.com/.well-known/oauth-protected-resource
+server:
+  name: opply
+  transport: http
+  url: https://api.opply.com/api/v1/mcp/
+  authorization_servers:
+  - https://api.opply.com
+  auth: OAuth 2.1 (RFC 9728 protected resource; bearer token in Authorization header)
+  discovery: /api/v1/mcp/tools/ (authenticated)
+notes: >-
+  Opply publishes a hosted, OAuth-protected MCP server. The root endpoint
+  (/api/v1/mcp/) and per-integration endpoints (e.g. /api/v1/mcp/zendesk/,
+  /api/v1/mcp/unleashed/) each advertise their own RFC 9728 protected-resource
+  metadata and consent scopes. Tool invocation, tool listing, access-request
+  review, per-user access, and an audit log are exposed under /api/v1/mcp/*.
+  The live tool catalog requires an authenticated call to /api/v1/mcp/tools/
+  and is not enumerable anonymously; the endpoints below are the discoverable
+  MCP control surface from the public OpenAPI.
+endpoints:
+- path: /api/v1/mcp/
+  description: Main Opply MCP resource endpoint (OAuth-protected)
+- path: /api/v1/mcp/tools/
+  description: List available MCP tools (authenticated)
+- path: /api/v1/mcp/zendesk/
+  description: Zendesk-scoped MCP endpoint (scopes zendesk:read / zendesk:write)
+- path: /api/v1/mcp/unleashed/
+  description: Unleashed-scoped MCP endpoint (scope unleashed:read)
+- path: /api/v1/mcp/access-requests/
+  description: MCP access-request management
+- path: /api/v1/mcp/user-access/
+  description: Per-user MCP access grants
+- path: /api/v1/mcp/audit-log/
+  description: MCP invocation audit log
+scopes_supported:
+- all:read
+- all:write
+- orders:read
+- orders:write
+- companies:read
+- companies:write
+- crm:read
+- crm:write
+- catalog:read
+- catalog:write
+- activities:read
+- activities:write
+- tasks:read
+- tasks:write
+- payments:read
+- payments:write
+- agreements:read
+- agreements:write
+- onboarding:read
+- onboarding:write
+- agents:read
+- agents:write
+- files:read
+- insights:read
+- recommendations:read
+- recommendations:write
+- unleashed:read
+- zendesk:read
+- zendesk:write

@@ -1,0 +1,53 @@
+generated: '2026-07-20'
+method: searched
+source: >-
+  openapi/opply-openapi-original.yml + api.opply.com/.well-known/* metadata
+summary: >-
+  Opply's API follows Django REST Framework conventions: token/bearer/cookie
+  auth, page-number pagination with ordering and search, per-field validation
+  error envelopes, and URL-path versioning. No client-facing idempotency-key
+  contract is documented.
+authentication:
+  styles:
+  - Authorization header token ("Token <key>")
+  - OAuth 2.1 bearer access token (Authorization header)
+  - session cookie (sessionid) for first-party web app
+  see: authentication/opply-authentication.yml
+pagination:
+  style: page-number
+  params: [page, page_size]
+  also: [ordering, search]
+  cursor_paginated:
+  - Company-scoped activity feed (cursor-paginated, newest first)
+  note: >-
+    Most list endpoints use page-number pagination (?page=&page_size=). Selected
+    feed endpoints use cursor pagination. `ordering` and `search` query params are
+    broadly supported.
+filtering:
+  common_params: [ordering, search, status, state, category, is_active, supplier, buyer]
+idempotency:
+  supported: false
+  note: >-
+    No client-facing Idempotency-Key header or parameter is documented. The only
+    "idempotency" reference in the spec concerns internal marketplace-terms
+    acknowledgement stamping, not a request-replay contract.
+versioning:
+  style: uri-path
+  detail: /api/{version}/ (v1 dominant, some v2)
+  see: lifecycle/opply-lifecycle.yml
+error_envelope:
+  style: drf
+  shapes:
+  - '{"detail": "<message>"} for auth/permission/not-found errors'
+  - 'field-keyed validation objects {"<field>": ["<message>"...]} for 400 validation errors'
+  format: not-rfc9457
+  see: errors/opply-problem-types.yml
+rate_limiting:
+  signaled: true
+  status: 429 Too Many Requests
+  headers: not-documented
+webhooks_inbound:
+  note: >-
+    Opply consumes signed inbound webhooks from third parties (Plaid, Rapyd, Two,
+    Svix-signed). There is no consumer-facing outbound event/webhook subscription
+    surface, and no AsyncAPI document is published.

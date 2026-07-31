@@ -1,0 +1,27 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Opply API
+  version: 1.0.0
+extends: openapi/opply-openapi-original.yml
+actions:
+- target: $.info
+  update:
+    title: Opply API
+    x-apievangelist-provider: opply
+    x-apievangelist-baseurl: https://api.opply.com
+    x-apievangelist-notes: >-
+      Harvested from https://api.opply.com/api/schema. The upstream spec ships
+      with an empty title and 0.0.0 version; this overlay supplies provider
+      identity, base URL, and OAuth 2.1 / MCP context captured from the
+      /.well-known/* metadata.
+- target: $.servers
+  update:
+  - url: https://api.opply.com
+    description: Production
+- target: $.info
+  update:
+    x-apievangelist-auth: >-
+      Token header ("Authorization: Token <key>"), OAuth 2.1 authorization_code
+      + PKCE (see scopes/opply-scopes.yml), and session cookie. Hosted MCP server
+      at /api/v1/mcp/ (see mcp/opply-mcp.yml).
+    x-apievangelist-agent-ready: true

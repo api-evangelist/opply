@@ -1,0 +1,167 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/opply-openapi-original.yml
+format: drf-detail
+note: Derived from OpenAPI 4xx/5xx response descriptions. Opply does not use RFC 9457 application/problem+json;
+  errors are DRF-style {detail} or field-keyed validation objects.
+problems:
+- status: 400
+  title: Bad request / validation error
+  occurrences: 108
+  variants:
+  - description: Validation error
+    count: 27
+    example_operation: api_v1_agreements_merchant_of_record_create
+  - description: Cannot transition order to this state
+    count: 11
+    example_operation: api_v1_app_orders_brand_mark_as_picked_up_create
+  - description: Invalid input data
+    count: 8
+    example_operation: api_v1_buyer_onboarding_merchant_of_record_buyers_steps_update_partial_update
+  - description: No response body
+    count: 4
+    example_operation: api_v1_companies_companies_house_search_retrieve
+  - description: An active company is required to access agent sessions.
+    count: 3
+    example_operation: api_v1_agents_opply_assistant_sessions_me_retrieve
+  - description: Invalid request data
+    count: 3
+    example_operation: api_v1_agreements_brand_place_order_create
+- status: 401
+  title: Authentication required
+  occurrences: 17
+  variants:
+  - description: Authentication credentials were not provided or are invalid
+    count: 8
+    example_operation: api_v1_agreements_brand_list
+  - description: Authentication credentials were not provided
+    count: 7
+    example_operation: api_v1_app_orders_merchant_of_record_list
+  - description: Invalid or missing Svix signature
+    count: 1
+    example_operation: api_v1_app_orders_merchant_of_record_update_two_status_create
+  - description: Agent JWT present but invalid or expired.
+    count: 1
+    example_operation: api_v1_integrations_agent_token_create
+- status: 403
+  title: Forbidden
+  occurrences: 62
+  variants:
+  - description: User is not a Merchant of Record
+    count: 15
+    example_operation: api_v1_buyer_onboarding_merchant_of_record_buyers_list
+  - description: Caller is not a company admin.
+    count: 6
+    example_operation: api_v1_integrations_plaid_disconnect_create
+  - description: No access to this buyer
+    count: 3
+    example_operation: api_v1_app_orders_merchant_of_record_buyers_allocated_credit_retrieve
+  - description: Run is not owned by the caller installation.
+    count: 2
+    example_operation: api_v1_agents_agent_task_runs_claim_create
+  - description: User is not authorized to view these agreements
+    count: 2
+    example_operation: api_v1_agreements_brand_list
+  - description: User is not authorized to view this agreement
+    count: 2
+    example_operation: api_v1_agreements_brand_retrieve
+- status: 404
+  title: Not found
+  occurrences: 100
+  variants:
+  - description: Buyer onboarding not found
+    count: 15
+    example_operation: api_v1_buyer_onboarding_merchant_of_record_buyers_retrieve
+  - description: Not found
+    count: 11
+    example_operation: api_v1_companies_merchant_of_record_suppliers_contacts_update
+  - description: Buyer not found
+    count: 7
+    example_operation: api_v1_app_orders_merchant_of_record_buyer_balance_list
+  - description: Attachment not found.
+    count: 6
+    example_operation: api_v1_files_attachments_retrieve
+  - description: Document not found
+    count: 4
+    example_operation: api_v1_agreements_merchant_of_record_line_item_documents_destroy
+  - description: Agreement not found
+    count: 3
+    example_operation: api_v1_agreements_brand_retrieve
+- status: 405
+  title: Method not allowed
+  occurrences: 3
+  variants:
+  - description: Connector is admin-managed (DB-backed); OAuth lifecycle is disabled.
+    count: 3
+    example_operation: api_v1_integrations_destroy
+- status: 409
+  title: Conflict
+  occurrences: 10
+  variants:
+  - description: Not downloadable yet (scan not clean/skipped) or no thumbnail.
+    count: 2
+    example_operation: api_v1_files_attachments_url_retrieve
+  - description: Lost claim race — run is not in dispatching.
+    count: 1
+    example_operation: api_v1_agents_agent_task_runs_claim_create
+  - description: Run is not in running state — claim must precede complete.
+    count: 1
+    example_operation: api_v1_agents_agent_task_runs_complete_create
+  - description: Run is no longer in running state — agent should abort its loop.
+    count: 1
+    example_operation: api_v1_agents_agent_task_runs_heartbeat_create
+  - description: Order already pushed to Two
+    count: 1
+    example_operation: api_v1_app_orders_merchant_of_record_push_to_two_create
+  - description: Invalid state transition (e.g. adjustment is not AVAILABLE)
+    count: 1
+    example_operation: api_v1_app_orders_merchant_of_record_order_adjustments_apply_create
+- status: 429
+  title: Rate limited
+  occurrences: 2
+  variants:
+  - description: Rate limited
+    count: 1
+    example_operation: api_v1_app_orders_merchant_of_record_update_two_status_create
+  - description: too many requests
+    count: 1
+    example_operation: api_v1_rapyd_payout_callback_create
+- status: 500
+  title: Internal server error
+  occurrences: 3
+  variants:
+  - description: An error occurred while marking the Stripe invoice as paid.
+    count: 2
+    example_operation: api_v1_app_orders_admin_mark_order_as_paid_create
+  - description: Processing error
+    count: 1
+    example_operation: api_v1_app_orders_merchant_of_record_update_two_status_create
+- status: 502
+  title: Upstream error
+  occurrences: 7
+  variants:
+  - description: Upstream identity broker error.
+    count: 2
+    example_operation: api_v1_integrations_destroy
+  - description: Session clearing is temporarily unavailable. Please try again.
+    count: 1
+    example_operation: api_v1_agents_opply_assistant_sessions_me_destroy
+  - description: Connector credential resolver failed.
+    count: 1
+    example_operation: api_v1_integrations_verify_create
+  - description: Plaid rejected the exchange, or the secret could not be stored.
+    count: 1
+    example_operation: api_v1_integrations_plaid_exchange_create
+  - description: Plaid rejected the link-token request.
+    count: 1
+    example_operation: api_v1_integrations_plaid_link_token_create
+  - description: Unleashed is unreachable, or the secret could not be stored.
+    count: 1
+    example_operation: api_v1_integrations_unleashed_connect_create
+- status: 503
+  title: Service unavailable
+  occurrences: 1
+  variants:
+  - description: No response body
+    count: 1
+    example_operation: api_v1_companies_companies_house_search_retrieve

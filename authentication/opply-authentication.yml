@@ -1,0 +1,48 @@
+generated: '2026-07-20'
+method: searched
+source: openapi/opply-openapi-original.yml
+docs: https://api.opply.com/.well-known/oauth-authorization-server
+summary:
+  types:
+  - apiKey
+  - oauth2
+  api_key_in:
+  - cookie
+  - header
+  oauth2_flows:
+  - authorizationCode
+schemes:
+- name: tokenAuth
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: >-
+    Token-based authentication with the required prefix "Token"
+    (e.g. `Authorization: Token <key>`).
+  sources:
+  - openapi/opply-openapi-original.yml
+- name: cookieAuth
+  type: apiKey
+  in: cookie
+  parameter: sessionid
+  description: Django session cookie for first-party web app calls.
+  sources:
+  - openapi/opply-openapi-original.yml
+- name: OAuth2
+  type: oauth2
+  description: >-
+    OAuth 2.1 authorization server advertised via RFC 8414 metadata. Supports
+    the authorization_code grant with PKCE (S256) and refresh_token, dynamic
+    client registration (RFC 7591), and RFC 9728 protected-resource metadata for
+    the MCP surface. Bearer access tokens are supplied in the Authorization
+    header. token_endpoint_auth_methods: client_secret_post, client_secret_basic,
+    none.
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://api.opply.com/api/v1/oauth/authorize/
+    tokenUrl: https://api.opply.com/api/v1/oauth/token/
+    revocationUrl: https://api.opply.com/api/v1/oauth/revoke_token/
+    registrationUrl: https://api.opply.com/api/v1/oauth/register/
+    scope_count: 29
+  sources:
+  - https://api.opply.com/.well-known/oauth-authorization-server

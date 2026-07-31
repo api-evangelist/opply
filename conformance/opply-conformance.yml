@@ -1,0 +1,37 @@
+generated: '2026-07-20'
+method: searched
+source: >-
+  api.opply.com /.well-known/* metadata + openapi/opply-openapi-original.yml
+standards:
+- id: oauth2
+  conforms: true
+  evidence: OAuth 2.0 authorization server metadata at /.well-known/oauth-authorization-server (authorization_code + refresh_token grants)
+- id: oidc
+  conforms: true
+  evidence: OpenID Provider metadata at /.well-known/openid-configuration (issuer, jwks_uri, RS256 id tokens)
+- id: rfc8414-oauth-as-metadata
+  conforms: true
+  evidence: /.well-known/oauth-authorization-server returns RFC 8414 metadata
+- id: rfc9728-protected-resource-metadata
+  conforms: true
+  evidence: /.well-known/oauth-protected-resource advertises the MCP resource + scopes
+- id: rfc7591-dynamic-client-registration
+  conforms: true
+  evidence: registration_endpoint /api/v1/oauth/token registration advertised (/api/v1/oauth/register/)
+- id: pkce
+  conforms: true
+  evidence: code_challenge_methods_supported includes S256
+- id: mcp-model-context-protocol
+  conforms: true
+  evidence: hosted MCP server at /api/v1/mcp/ with per-endpoint OAuth consent scopes
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: error responses do not use application/problem+json (DRF-style {detail} / validation envelopes)
+- id: fhir-r4
+  conforms: false
+- id: fapi
+  conforms: false
+- id: scim
+  conforms: false
+- id: odata
+  conforms: false
