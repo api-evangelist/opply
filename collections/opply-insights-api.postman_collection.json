@@ -1,0 +1,299 @@
+{
+  "item": [
+    {
+      "id": "5007ffac-4297-45f4-a8fb-3cc1c360d9bb",
+      "name": "Insights",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a41f3875-fd7e-4c72-aacf-b9e8a7834b4e",
+          "name": "List insights for the current buyer",
+          "request": {
+            "name": "List insights for the current buyer",
+            "description": {
+              "content": "Buyer-scoped insights feed.\n\nReturns cursor-paginated insights, newest first. The queryset surfaces both\ninsights bound to the authenticated user's company AND cross-portfolio\ninsights with ``company IS NULL`` (e.g. industry trends, investor signals).\n``retrieve`` (by ``uuid``) backs the insights-recommender's ``get_insight`` MCP\ntool; it stays scoped by the same ``get_queryset``.\n\nFilter params: ``insight_type``, ``source``, ``sector``.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "insights",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "The pagination cursor value."
+                },
+                {
+                  "disabled": false,
+                  "key": "insight_type",
+                  "value": "<string>",
+                  "description": "Filter by insight_type — free-text on the column, but the typical values are `pricing`, `peer`, `npd`, `reorder`, `investor`."
+                },
+                {
+                  "disabled": false,
+                  "key": "sector",
+                  "value": "<string>",
+                  "description": "Filter by brain sector — mirrors ``FeedItemEventType`` values (`suppliers`, `ingredients`, `operations`, `compliance`, `commercial`, `financials`, `market`)."
+                },
+                {
+                  "disabled": false,
+                  "key": "source",
+                  "value": "<string>",
+                  "description": "Filter by producer identifier (e.g. `opply.enrichment`, `opply.news`)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "94d671ff-7f42-4f09-9114-25c5f54460c3",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "insights",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "insight_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sector",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"created\": \"1949-05-04T13:09:27.705Z\",\n      \"description\": \"string\",\n      \"insight_type\": \"string\",\n      \"occurred_at\": \"2022-10-13T08:28:12.022Z\",\n      \"sector\": \"string\",\n      \"source\": \"string\",\n      \"title\": \"string\",\n      \"uuid\": \"46aeb5e8-0ed3-6e27-92a7-ed58746c25f9\",\n      \"kicker\": \"string\",\n      \"meta\": \"string\",\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"payload\": {},\n      \"news_id\": \"string\",\n      \"url\": \"http://qLxfF.uxurazNbABGLBJMvGQk5V41N7cmEAT+zFZ\",\n      \"body_excerpt\": \"string\",\n      \"published_at\": \"1972-02-23T16:40:31.628Z\"\n    },\n    {\n      \"created\": \"1955-02-28T11:35:14.564Z\",\n      \"description\": \"string\",\n      \"insight_type\": \"string\",\n      \"occurred_at\": \"1972-03-30T05:56:20.064Z\",\n      \"sector\": \"string\",\n      \"source\": \"string\",\n      \"title\": \"string\",\n      \"uuid\": \"d4f2e6e6-f5bc-b5fc-2ef2-d6b8e43a1461\",\n      \"kicker\": \"string\",\n      \"meta\": \"string\",\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"payload\": {},\n      \"news_id\": \"string\",\n      \"url\": \"https://bTRNmUeoHMjFPR.jsMtB,xGl8oq6TGyuNvJyDdKUGV.a6,tpTy9QcXjImuFo0e4\",\n      \"body_excerpt\": \"string\",\n      \"published_at\": \"1975-04-29T03:21:34.204Z\"\n    }\n  ],\n  \"next\": \"http://iDbYBf.vubETqL0+nIcKom,7qy,rGB4gpQDBCqkCji9ml2J23\",\n  \"previous\": \"http://api.example.org/accounts/?cursor=cj0xJnA9NDg3\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ee28bc59-5437-40bc-adc0-0aaf6c7acb39",
+          "name": "api v1 insights debug seed create",
+          "request": {
+            "name": "api v1 insights debug seed create",
+            "description": {
+              "content": "``POST /api/v1/insights/debug/seed/`` — staff-only.\n\nBody ``{company_uuid?}``. Idempotently seeds the sample insight(s) for that\nbuyer (defaulting to the caller's own company) and returns their uuids.\nTargeting a company other than your own requires staff access.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "insights",
+                "debug",
+                "seed",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "company_uuid",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c93419e4-2374-4800-97c5-f829ce5cfa51",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "insights",
+                    "debug",
+                    "seed",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "company_uuid",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"insight_uuids\": [\n    \"a76a84e9-e987-cfcf-01f6-8a2920a61c06\",\n    \"0a4f65e7-7ff8-f090-80a6-929fc88f7d42\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "2afdc3f7-608a-4a49-8de6-d24030793883",
+    "name": "Opply Activity Feed Insights API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

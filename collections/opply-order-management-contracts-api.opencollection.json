@@ -1,0 +1,209 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Order Management Contracts API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Order Management Contracts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the buyer's currently active Order Management Contract",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/order-management-contracts/buyer/current/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the latest OMC where today falls within [start_date, end_date]. If the buyer has no active OMC, the response is `{state: 'empty', data: null}`."
+        },
+        {
+          "info": {
+            "name": "List all order management contracts for the merchant of record company",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/order-management-contracts/merchant-of-record/",
+            "params": [
+              {
+                "name": "activeContractsOnly",
+                "value": "",
+                "type": "query",
+                "description": "Filter to show only active contracts (where today < end_date)"
+              },
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query",
+                "description": "Filter by buyer company UUID"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search across contract number and buyer name (case-insensitive partial match)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of all order management contracts where the current user's company is the merchant of record."
+        },
+        {
+          "info": {
+            "name": "Create a new order management contract",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/order-management-contracts/merchant-of-record/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new order management contract as merchant of record."
+        },
+        {
+          "info": {
+            "name": "Retrieve a specific order management contract",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/order-management-contracts/merchant-of-record/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns detailed information about a specific order management contract, including related orders and agreements."
+        },
+        {
+          "info": {
+            "name": "Update an order management contract",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/order-management-contracts/merchant-of-record/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates an existing order management contract."
+        },
+        {
+          "info": {
+            "name": "Partially update an order management contract",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/order-management-contracts/merchant-of-record/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Partially updates an existing order management contract."
+        },
+        {
+          "info": {
+            "name": "Merchant of Record endpoints for Order Management Contracts",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/order-management-contracts/merchant-of-record/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing order management contracts from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their order management contracts\n- Create new contracts\n- Update existing contracts\n\nAll operations are restricted to contracts where the current user's company\nis the merchant of record."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

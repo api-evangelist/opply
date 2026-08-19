@@ -1,0 +1,147 @@
+{
+  "item": [
+    {
+      "id": "aee45b0e-d7d4-4d2e-85e6-0cf000d247fa",
+      "name": "Integrations",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0e55b2df-e192-498f-8d15-1ce0b333147d",
+          "name": "Deterministic Xero supplier-spend breakdown for the current buyer.",
+          "request": {
+            "name": "Deterministic Xero supplier-spend breakdown for the current buyer.",
+            "description": {
+              "content": "Deterministic supplier-spend metrics over the buyer's ingested Xero bills.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "integrations",
+                "xero",
+                "supplier-spend",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "window_months",
+                  "value": "<integer>",
+                  "description": "Look-back window in months (default 12, clamped to 1..36)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7a6c99cd-a0e2-45ec-a221-63d582579461",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "integrations",
+                    "xero",
+                    "supplier-spend",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "window_months",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"base_currency\": \"string\",\n    \"bill_count\": 4691,\n    \"categories\": [\n      {\n        \"account_code\": \"string\",\n        \"spend\": \"string\",\n        \"supplier_count\": 9131,\n        \"supplier_names\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      {\n        \"account_code\": \"string\",\n        \"spend\": \"string\",\n        \"supplier_count\": 5293,\n        \"supplier_names\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    ],\n    \"skipped_bills\": 4437,\n    \"supplier_count\": 5701,\n    \"suppliers\": [\n      {\n        \"bill_count\": 398,\n        \"contact_id\": \"string\",\n        \"credit_note_ratio\": 8645.645124453771,\n        \"credit_note_total\": \"string\",\n        \"name\": \"string\",\n        \"spend\": \"string\",\n        \"spend_share\": 8654.811101454063\n      },\n      {\n        \"bill_count\": 8243,\n        \"contact_id\": \"string\",\n        \"credit_note_ratio\": 16.60955869895675,\n        \"credit_note_total\": \"string\",\n        \"name\": \"string\",\n        \"spend\": \"string\",\n        \"spend_share\": 1642.2235667484797\n      }\n    ],\n    \"total_spend\": \"string\",\n    \"window_months\": 9918\n  },\n  {\n    \"base_currency\": \"string\",\n    \"bill_count\": 3877,\n    \"categories\": [\n      {\n        \"account_code\": \"string\",\n        \"spend\": \"string\",\n        \"supplier_count\": 7009,\n        \"supplier_names\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      {\n        \"account_code\": \"string\",\n        \"spend\": \"string\",\n        \"supplier_count\": 6415,\n        \"supplier_names\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    ],\n    \"skipped_bills\": 8559,\n    \"supplier_count\": 1527,\n    \"suppliers\": [\n      {\n        \"bill_count\": 8158,\n        \"contact_id\": \"string\",\n        \"credit_note_ratio\": 2651.6310388388342,\n        \"credit_note_total\": \"string\",\n        \"name\": \"string\",\n        \"spend\": \"string\",\n        \"spend_share\": 222.7325726409557\n      },\n      {\n        \"bill_count\": 9762,\n        \"contact_id\": \"string\",\n        \"credit_note_ratio\": 6897.341759134091,\n        \"credit_note_total\": \"string\",\n        \"name\": \"string\",\n        \"spend\": \"string\",\n        \"spend_share\": 6184.729356071348\n      }\n    ],\n    \"total_spend\": \"string\",\n    \"window_months\": 167\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "df02e29d-6faf-4b8f-a6f6-f757c73c3f43",
+    "name": "Opply Activity Feed Integrations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

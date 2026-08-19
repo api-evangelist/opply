@@ -1,0 +1,4769 @@
+{
+  "item": [
+    {
+      "id": "1decf16c-01a5-4268-b138-67cc22c577b2",
+      "name": "Inquiries",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "31207b74-b9b8-4d26-be8e-4edd1a01a238",
+          "name": "['Delete documents of unpublished inquiry.']",
+          "request": {
+            "name": "['Delete documents of unpublished inquiry.']",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                ":inquiry_uuid",
+                "documents",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "inquiry_uuid",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "423327a2-9677-49d1-ac1b-ca3e3bf5491d",
+              "name": "No response body",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    ":inquiry_uuid",
+                    "documents",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "inquiry_uuid",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bf71fe55-fc75-4c1c-903c-ee64d84c8734",
+          "name": "List of all inquiries for a brand",
+          "request": {
+            "name": "List of all inquiries for a brand",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "brand",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Supports searching using a string/substring of product_name"
+                },
+                {
+                  "disabled": false,
+                  "key": "ordering",
+                  "value": "<string>",
+                  "description": "Supports sorting by name state due_date created. Use - to filter backwards"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "Supported status: awaiting_quotes quotes_available ordered expired proceeded contract_confirmed supplier_decline_to_quote cancelled."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "99cbb038-c94e-4a3f-801d-0af9c59faca2",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "brand",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ordering",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"current_unit_price\": \"-04685753\",\n      \"decline_reason\": \"string\",\n      \"declined\": \"string\",\n      \"description\": \"string\",\n      \"due_date\": \"1997-11-02\",\n      \"existing_supplier_uuid\": \"7dbda6ed-753e-9ec6-b96e-fa4012185aa1\",\n      \"existing_suppliers\": [\n        \"30320023-e6bd-0485-cb42-529a52cd5b22\",\n        \"f445db36-b106-3087-f797-ea65c38ce58b\"\n      ],\n      \"id\": 6863,\n      \"is_new\": true,\n      \"name\": \"string\",\n      \"orders_uuid\": [\n        \"dc83dfe5-771d-fa5f-8656-af93fb1737a1\",\n        \"307c9764-5bb6-d8bd-2f6b-ff5a7e43d24a\"\n      ],\n      \"original_quote_uuid\": \"f70b45f7-b419-9e47-8131-5e5f2c2e01d2\",\n      \"quantity\": \"-\",\n      \"supplier_countries\": [\n        \"UG\",\n        \"JE\"\n      ],\n      \"target_unit_price\": \"-054597\",\n      \"total_forecast_quantity\": \"string\",\n      \"uuid\": \"93276158-2afd-fd5f-411e-4289bda1a2ed\",\n      \"state\": \"quotes_available\",\n      \"category\": \"non_recurring\",\n      \"currency\": \"GBP\",\n      \"unit_of_measurement\": \"units\",\n      \"allergen_requirements\": [\n        \"lupin\",\n        \"mustard\"\n      ],\n      \"allergen_declaration\": false,\n      \"dietary_certificate\": false,\n      \"diet_requirements\": [\n        \"kosher\",\n        \"vegan\"\n      ],\n      \"forecast\": \"quarterly\",\n      \"delivery_address\": 2392,\n      \"current_supplier\": \"string\",\n      \"published\": \"1987-03-14T23:29:18.362Z\",\n      \"logo_url\": \"https://bmbXoDNBAxRtn.flnOLZKt6thTI29DMFQI6COfLGs4USe\",\n      \"article\": \"8627d0aa-6a34-e18a-06f7-4ef594ca8ac7\",\n      \"supply_priorities\": [\n        {\n          \"priority_name\": \"service\",\n          \"priority_value\": 2\n        },\n        {\n          \"priority_name\": \"quality\",\n          \"priority_value\": 2\n        }\n      ],\n      \"first_order_delivery_date\": \"2019-11-23\",\n      \"opply_brand_commission\": \"-5541502.54\",\n      \"opply_supplier_commission\": \"-39.38\",\n      \"is_recurring\": false,\n      \"frequency\": \"monthly\",\n      \"desired_contract_length\": 2126,\n      \"is_delivery_date_flexible\": false,\n      \"parent_uuid\": \"e46b3d47-f243-45a3-d589-148e410a3502\",\n      \"ingredient\": 1559,\n      \"reason_for_request\": \"string\",\n      \"desired_packaging_format\": \"string\",\n      \"desired_packaging_format_is_flexible\": true,\n      \"ai_generated\": false,\n      \"documents_to_copy\": [\n        \"9f5fc64a-deee-5431-ddc7-9be9d35d3169\",\n        \"3d94d772-f45a-cb70-ae53-9a81769149a6\"\n      ]\n    },\n    {\n      \"current_unit_price\": \"-671.23\",\n      \"decline_reason\": \"string\",\n      \"declined\": \"string\",\n      \"description\": \"string\",\n      \"due_date\": \"2010-04-12\",\n      \"existing_supplier_uuid\": \"e3ebb908-a8b8-0cf9-ba24-d35e3b3ef813\",\n      \"existing_suppliers\": [\n        \"675c6eb6-923c-c0ed-4e7b-e70a5dc1a4ec\",\n        \"1e37d94f-9d2e-a05e-78fb-4a6f9f0179df\"\n      ],\n      \"id\": 6915,\n      \"is_new\": false,\n      \"name\": \"string\",\n      \"orders_uuid\": [\n        \"58230429-2890-dd63-cd37-ab5cd1f5ed0c\",\n        \"643e215f-a66d-1ae5-c0f0-bc9adf520d53\"\n      ],\n      \"original_quote_uuid\": \"a9a1841b-aa1b-612b-c8cb-58c546b61f68\",\n      \"quantity\": \"22259730.3\",\n      \"supplier_countries\": [\n        \"BJ\",\n        \"GY\"\n      ],\n      \"target_unit_price\": \"875\",\n      \"total_forecast_quantity\": \"string\",\n      \"uuid\": \"b849f6eb-826c-e88a-820b-b99c142526dd\",\n      \"state\": \"supplier_decline_to_quote\",\n      \"category\": \"ingredient\",\n      \"currency\": \"USD\",\n      \"unit_of_measurement\": \"trays\",\n      \"allergen_requirements\": [\n        \"molluscs\",\n        \"lupin\"\n      ],\n      \"allergen_declaration\": true,\n      \"dietary_certificate\": true,\n      \"diet_requirements\": [\n        \"halal\",\n        \"organic\"\n      ],\n      \"forecast\": \"quarterly\",\n      \"delivery_address\": 7151,\n      \"current_supplier\": \"string\",\n      \"published\": \"2003-06-07T23:38:40.038Z\",\n      \"logo_url\": \"https://RbVpTlUbAdkQdirDOLCHoGMYmGOPj.diFJ,VKMtKsCFludUmgLJnNC1f.8WItPYPJ7Z\",\n      \"article\": \"c78b800a-f711-bdce-7195-b74a4ee6c54d\",\n      \"supply_priorities\": [\n        {\n          \"priority_name\": \"service\",\n          \"priority_value\": 1\n        },\n        {\n          \"priority_name\": \"price\",\n          \"priority_value\": 1\n        }\n      ],\n      \"first_order_delivery_date\": \"1988-07-18\",\n      \"opply_brand_commission\": \"9222.0\",\n      \"opply_supplier_commission\": \"6.\",\n      \"is_recurring\": false,\n      \"frequency\": \"annually\",\n      \"desired_contract_length\": 1256,\n      \"is_delivery_date_flexible\": true,\n      \"parent_uuid\": \"9ef33bf3-4595-f431-80a2-dc14190690ac\",\n      \"ingredient\": 6741,\n      \"reason_for_request\": \"string\",\n      \"desired_packaging_format\": \"string\",\n      \"desired_packaging_format_is_flexible\": false,\n      \"ai_generated\": true,\n      \"documents_to_copy\": [\n        \"918385d7-f620-5e2f-f2e8-53c2b865c609\",\n        \"802d7c4b-3261-dc62-de0c-79ace4e7fdd6\"\n      ]\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5ea59aff-37a0-4216-a84d-bc1e5da70600",
+          "name": "Inquiry creation endpoint.",
+          "request": {
+            "name": "Inquiry creation endpoint.",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "brand",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "current_unit_price",
+                  "value": "<decimal>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "description",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "due_date",
+                  "value": "<date>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "quantity",
+                  "value": "<decimal>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "supplier_countries",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "supplier_countries",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "target_unit_price",
+                  "value": "<decimal>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "category",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "currency",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "unit_of_measurement",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "allergen_requirements",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "allergen_requirements",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "allergen_declaration",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dietary_certificate",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "diet_requirements",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "diet_requirements",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "forecast",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "delivery_address",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "current_supplier",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "published",
+                  "value": "<dateTime>",
+                  "description": "Datetime when the inquiry becomes published. Leave empty to keep it unpublished."
+                },
+                {
+                  "disabled": false,
+                  "key": "logo_url",
+                  "value": "<uri>"
+                },
+                {
+                  "disabled": false,
+                  "key": "article",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "supply_priorities",
+                  "value": "{\"priority_name\":\"<string>\",\"priority_value\":\"<integer>\"}"
+                },
+                {
+                  "disabled": false,
+                  "key": "supply_priorities",
+                  "value": "{\"priority_name\":\"<string>\",\"priority_value\":\"<integer>\"}"
+                },
+                {
+                  "disabled": false,
+                  "key": "first_order_delivery_date",
+                  "value": "<date>"
+                },
+                {
+                  "disabled": false,
+                  "key": "opply_brand_commission",
+                  "value": "<decimal>"
+                },
+                {
+                  "disabled": false,
+                  "key": "opply_supplier_commission",
+                  "value": "<decimal>"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_recurring",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "frequency",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "desired_contract_length",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_delivery_date_flexible",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "parent_uuid",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "ingredient",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "reason_for_request",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "desired_packaging_format",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "desired_packaging_format_is_flexible",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "ai_generated",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "documents_to_copy",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "documents_to_copy",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7e7934af-2519-45c6-94b5-78503fc3e36b",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "brand",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "current_unit_price",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "description",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "due_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "quantity",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "supplier_countries",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "supplier_countries",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "target_unit_price",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "category",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "unit_of_measurement",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "allergen_requirements",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "allergen_requirements",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "allergen_declaration",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "dietary_certificate",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "diet_requirements",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "diet_requirements",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "forecast",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "delivery_address",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "current_supplier",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Datetime when the inquiry becomes published. Leave empty to keep it unpublished.",
+                        "type": "text/plain"
+                      },
+                      "key": "published",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "logo_url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "article",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "supply_priorities",
+                      "value": "{\"priority_name\":\"<string>\",\"priority_value\":\"<integer>\"}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "supply_priorities",
+                      "value": "{\"priority_name\":\"<string>\",\"priority_value\":\"<integer>\"}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "first_order_delivery_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "opply_brand_commission",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "opply_supplier_commission",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "is_recurring",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "frequency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "desired_contract_length",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "is_delivery_date_flexible",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "parent_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "ingredient",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "reason_for_request",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "desired_packaging_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "desired_packaging_format_is_flexible",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "ai_generated",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "documents_to_copy",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "documents_to_copy",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"current_unit_price\": \"<decimal>\",\n  \"description\": \"<string>\",\n  \"due_date\": \"<date>\",\n  \"name\": \"<string>\",\n  \"quantity\": \"<decimal>\",\n  \"supplier_countries\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"target_unit_price\": \"<decimal>\",\n  \"id\": 2959,\n  \"uuid\": \"8d0740b8-0a96-f087-c899-8d693fb1f7c7\",\n  \"state\": \"<string>\",\n  \"category\": \"<string>\",\n  \"currency\": \"<string>\",\n  \"unit_of_measurement\": \"<string>\",\n  \"allergen_requirements\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allergen_declaration\": \"<boolean>\",\n  \"dietary_certificate\": \"<boolean>\",\n  \"diet_requirements\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"forecast\": \"<string>\",\n  \"delivery_address\": \"<integer>\",\n  \"current_supplier\": \"<string>\",\n  \"published\": \"<dateTime>\",\n  \"logo_url\": \"<uri>\",\n  \"is_new\": true,\n  \"article\": \"<uuid>\",\n  \"existing_suppliers\": [\n    \"2d320f8d-81aa-063b-d0db-d6ace44b2a93\",\n    \"8eb1d8cf-561c-380b-74ce-5678f8518737\"\n  ],\n  \"supply_priorities\": [\n    {\n      \"priority_name\": \"<string>\",\n      \"priority_value\": \"<integer>\"\n    },\n    {\n      \"priority_name\": \"<string>\",\n      \"priority_value\": \"<integer>\"\n    }\n  ],\n  \"first_order_delivery_date\": \"<date>\",\n  \"opply_brand_commission\": \"<decimal>\",\n  \"opply_supplier_commission\": \"<decimal>\",\n  \"is_recurring\": false,\n  \"frequency\": \"<string>\",\n  \"desired_contract_length\": \"<integer>\",\n  \"is_delivery_date_flexible\": \"<boolean>\",\n  \"parent_uuid\": \"<uuid>\",\n  \"ingredient\": \"<integer>\",\n  \"reason_for_request\": \"<string>\",\n  \"desired_packaging_format\": \"<string>\",\n  \"desired_packaging_format_is_flexible\": \"<boolean>\",\n  \"ai_generated\": \"<boolean>\",\n  \"documents_to_copy\": [\n    \"<uuid>\",\n    \"<uuid>\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "790f3410-0ac6-4c59-8a74-fceeecca7eef",
+          "name": "Retrieve details of a request for a brand",
+          "request": {
+            "name": "Retrieve details of a request for a brand",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "brand",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4f808a41-60f6-4dcd-8009-34ba52b79022",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "brand",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"company\": {\n    \"country\": \"string\",\n    \"currency\": \"string\",\n    \"id\": 7239,\n    \"kyb_status\": \"string\",\n    \"mongo_id\": \"string\",\n    \"name\": \"string\",\n    \"referral_code\": \"string\",\n    \"state\": \"string\",\n    \"uuid\": \"071e2ce1-64db-be47-b5f2-51a54b10179f\",\n    \"website\": \"string\",\n    \"logo\": \"http://jsLUKXEPdql.iaWqAm3BzAg0SEPG3L-b2Jm1CDDgwl3m098MEdH0xhvL3sLwHcFm\",\n    \"industry\": \"string\",\n    \"phone_number\": \"string\",\n    \"company_type\": \"brand\",\n    \"product_type\": [\n      \"e\",\n      \"h\",\n      \"o\",\n      \"r\",\n      \"t\"\n    ],\n    \"activity_type\": [\n      \"e\",\n      \"h\",\n      \"o\",\n      \"r\",\n      \"t\"\n    ],\n    \"registration_number\": \"string\",\n    \"registration_name\": \"string\",\n    \"phone_country_code\": \"+1246\",\n    \"company_addresses\": [\n      {\n        \"created\": \"1958-05-22T05:13:16.211Z\",\n        \"id\": 3859,\n        \"modified\": \"1969-11-27T18:41:35.544Z\",\n        \"name\": \"string\",\n        \"uuid\": \"fedc12e9-6b9a-7517-d1f5-f3ea2026b1fd\",\n        \"address_type\": \"billing_address\",\n        \"contact_full_name\": \"string\",\n        \"contact_phone\": \"string\",\n        \"building\": \"string\",\n        \"street_1\": \"string\",\n        \"street_2\": \"string\",\n        \"town\": \"string\",\n        \"region\": \"string\",\n        \"postcode\": \"string\",\n        \"country\": \"<string>\",\n        \"place_id\": \"string\",\n        \"latitude\": \"-0\",\n        \"longitude\": \"-.9050\",\n        \"vat_number\": \"string\",\n        \"vat_country_code\": \"<string>\",\n        \"vat_exempt\": false,\n        \"phone_country_code\": \"+241\",\n        \"delivery_instructions\": \"string\",\n        \"collection_instructions\": \"string\",\n        \"country_type\": \"GB\",\n        \"eori_number\": \"string\",\n        \"ein_number\": \"string\",\n        \"notes\": \"string\",\n        \"delivery_location_type\": \"string\",\n        \"delivery_location_type_other\": \"string\",\n        \"warehouse_receiving_hours\": \"string\"\n      },\n      {\n        \"created\": \"1979-08-06T03:46:40.127Z\",\n        \"id\": 8552,\n        \"modified\": \"1972-08-21T11:07:12.899Z\",\n        \"name\": \"string\",\n        \"uuid\": \"85229c72-b3e7-24c4-8d6e-40e79047a188\",\n        \"address_type\": \"delivery_address\",\n        \"contact_full_name\": \"string\",\n        \"contact_phone\": \"string\",\n        \"building\": \"string\",\n        \"street_1\": \"string\",\n        \"street_2\": \"string\",\n        \"town\": \"string\",\n        \"region\": \"string\",\n        \"postcode\": \"string\",\n        \"country\": \"<string>\",\n        \"place_id\": \"string\",\n        \"latitude\": \"054\",\n        \"longitude\": \"\",\n        \"vat_number\": \"string\",\n        \"vat_country_code\": \"<string>\",\n        \"vat_exempt\": false,\n        \"phone_country_code\": \"+995\",\n        \"delivery_instructions\": \"string\",\n        \"collection_instructions\": \"string\",\n        \"country_type\": \"Other\",\n        \"eori_number\": \"string\",\n        \"ein_number\": \"string\",\n        \"notes\": \"string\",\n        \"delivery_location_type\": \"string\",\n        \"delivery_location_type_other\": \"string\",\n        \"warehouse_receiving_hours\": \"string\"\n      }\n    ],\n    \"payout_method_type\": \"string\",\n    \"bank_account_country\": \"<string>\",\n    \"duns\": \"string\"\n  },\n  \"company_address\": {\n    \"company_id\": 2145,\n    \"building\": \"string\",\n    \"street_1\": \"string\",\n    \"street_2\": \"string\",\n    \"town\": \"string\",\n    \"region\": \"string\",\n    \"postcode\": \"string\",\n    \"country\": \"<string>\",\n    \"place_id\": \"string\",\n    \"latitude\": \"-38.9770622\",\n    \"longitude\": \"-9146\"\n  },\n  \"current_unit_price\": \"-9469.38\",\n  \"decline_reason\": \"string\",\n  \"declined\": \"string\",\n  \"delivery_address\": {\n    \"created\": \"1965-10-14T02:43:11.922Z\",\n    \"id\": 2119,\n    \"modified\": \"1994-01-29T13:34:03.556Z\",\n    \"name\": \"string\",\n    \"uuid\": \"2ef372c8-fc5a-6b40-1ad2-142588ba64c4\",\n    \"address_type\": \"billing_address\",\n    \"contact_full_name\": \"string\",\n    \"contact_phone\": \"string\",\n    \"building\": \"string\",\n    \"street_1\": \"string\",\n    \"street_2\": \"string\",\n    \"town\": \"string\",\n    \"region\": \"string\",\n    \"postcode\": \"string\",\n    \"country\": \"<string>\",\n    \"place_id\": \"string\",\n    \"latitude\": \"262\",\n    \"longitude\": \"-3.\",\n    \"vat_number\": \"string\",\n    \"vat_country_code\": \"<string>\",\n    \"vat_exempt\": true,\n    \"phone_country_code\": \"+248\",\n    \"delivery_instructions\": \"string\",\n    \"collection_instructions\": \"string\",\n    \"country_type\": \"GB\",\n    \"eori_number\": \"string\",\n    \"ein_number\": \"string\",\n    \"notes\": \"string\",\n    \"delivery_location_type\": \"string\",\n    \"delivery_location_type_other\": \"string\",\n    \"warehouse_receiving_hours\": \"string\"\n  },\n  \"description\": \"string\",\n  \"due_date\": \"1956-08-07\",\n  \"existing_supplier_name\": \"string\",\n  \"existing_supplier_uuid\": \"65103128-0198-1f29-374a-730a58f0e871\",\n  \"existing_suppliers\": [\n    \"1eab8efe-f767-8c98-3101-46abb38cb7bb\",\n    \"c9514921-c9de-caac-e3e4-dbaf18abf00f\"\n  ],\n  \"id\": 2118,\n  \"is_new\": false,\n  \"name\": \"string\",\n  \"number_of_quotes\": \"string\",\n  \"orders_uuid\": [\n    \"c049f689-a818-254d-9169-f8245a19788c\",\n    \"0256c4da-a300-65e4-38e1-d6872b9854a9\"\n  ],\n  \"original_quote_uuid\": \"3c3c66ed-6be7-80dd-c11d-6df8d171b5d6\",\n  \"possible_suppliers\": \"string\",\n  \"progress\": \"string\",\n  \"quantity\": \"-72594692.\",\n  \"supplier_countries\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"supplier_matching\": \"string\",\n  \"suppliers_found\": \"string\",\n  \"target_unit_price\": \"661.\",\n  \"total_forecast_quantity\": \"string\",\n  \"total_forecast_spend\": \"string\",\n  \"uuid\": \"decb1360-fecc-7536-64f6-883b26ac6a9f\",\n  \"state\": \"<string>\",\n  \"category\": \"<string>\",\n  \"currency\": \"<string>\",\n  \"unit_of_measurement\": \"<string>\",\n  \"allergen_requirements\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allergen_declaration\": false,\n  \"dietary_certificate\": false,\n  \"diet_requirements\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"forecast\": \"<string>\",\n  \"current_supplier\": \"string\",\n  \"published\": \"1957-02-10T21:30:39.401Z\",\n  \"logo_url\": \"http://DXwckQgneRrGbydvjeNHOjtHXIwNIwp.hsZW-6uxf8GMVIbfJIrNncjr6L6RpoA9VbRtF6eEfebGLTN\",\n  \"article\": \"e7af4bab-27c9-44d1-5eb8-a9e822f559a1\",\n  \"supply_priorities\": [\n    {\n      \"priority_name\": \"<string>\",\n      \"priority_value\": \"<integer>\"\n    },\n    {\n      \"priority_name\": \"<string>\",\n      \"priority_value\": \"<integer>\"\n    }\n  ],\n  \"first_order_delivery_date\": \"1976-03-02\",\n  \"opply_brand_commission\": \"-7898303.01\",\n  \"opply_supplier_commission\": \"-15\",\n  \"is_recurring\": false,\n  \"frequency\": \"<string>\",\n  \"desired_contract_length\": 8864,\n  \"is_delivery_date_flexible\": true,\n  \"parent_uuid\": \"d106f8b3-f9c8-e650-c165-cf99d78414b9\",\n  \"ingredient\": 3066,\n  \"reason_for_request\": \"string\",\n  \"desired_packaging_format\": \"string\",\n  \"desired_packaging_format_is_flexible\": false,\n  \"ai_generated\": false,\n  \"documents_to_copy\": [\n    \"2060ee77-f48d-7eb7-d7af-8e94bb5d9689\",\n    \"1d8b4a39-18e4-4c4b-ec49-5c6c173fea96\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b686ad32-7c86-4c52-8410-8c02201e7251",
+          "name": "Endpoint to fully update a brand's inquiry.",
+          "request": {
+            "name": "Endpoint to fully update a brand's inquiry.",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "brand",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "current_unit_price",
+                  "value": "<decimal>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "description",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "due_date",
+                  "value": "<date>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "supplier_countries",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "supplier_countries",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "target_unit_price",
+                  "value": "<decimal>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "category",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "currency",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "quantity",
+                  "value": "<decimal>"
+                },
+                {
+                  "disabled": false,
+                  "key": "unit_of_measurement",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "allergen_requirements",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "allergen_requirements",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "allergen_declaration",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dietary_certificate",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "diet_requirements",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "diet_requirements",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "forecast",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "delivery_address",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "current_supplier",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "published",
+                  "value": "<dateTime>",
+                  "description": "Datetime when the inquiry becomes published. Leave empty to keep it unpublished."
+                },
+                {
+                  "disabled": false,
+                  "key": "logo_url",
+                  "value": "<uri>"
+                },
+                {
+                  "disabled": false,
+                  "key": "article",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "supply_priorities",
+                  "value": "{\"priority_name\":\"<string>\",\"priority_value\":\"<integer>\"}"
+                },
+                {
+                  "disabled": false,
+                  "key": "supply_priorities",
+                  "value": "{\"priority_name\":\"<string>\",\"priority_value\":\"<integer>\"}"
+                },
+                {
+                  "disabled": false,
+                  "key": "first_order_delivery_date",
+                  "value": "<date>"
+                },
+                {
+                  "disabled": false,
+                  "key": "opply_brand_commission",
+                  "value": "<decimal>"
+                },
+                {
+                  "disabled": false,
+                  "key": "opply_supplier_commission",
+                  "value": "<decimal>"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_recurring",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "frequency",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "desired_contract_length",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_delivery_date_flexible",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "parent_uuid",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "ingredient",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "reason_for_request",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "desired_packaging_format",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "desired_packaging_format_is_flexible",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "ai_generated",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "documents_to_copy",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "documents_to_copy",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5f84aa0e-1513-4c2a-8461-6f8b56c0dfc7",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "brand",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "current_unit_price",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "description",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "due_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "supplier_countries",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "supplier_countries",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "target_unit_price",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "category",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "quantity",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "unit_of_measurement",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "allergen_requirements",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "allergen_requirements",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "allergen_declaration",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "dietary_certificate",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "diet_requirements",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "diet_requirements",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "forecast",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "delivery_address",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "current_supplier",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Datetime when the inquiry becomes published. Leave empty to keep it unpublished.",
+                        "type": "text/plain"
+                      },
+                      "key": "published",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "logo_url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "article",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "supply_priorities",
+                      "value": "{\"priority_name\":\"<string>\",\"priority_value\":\"<integer>\"}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "supply_priorities",
+                      "value": "{\"priority_name\":\"<string>\",\"priority_value\":\"<integer>\"}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "first_order_delivery_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "opply_brand_commission",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "opply_supplier_commission",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "is_recurring",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "frequency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "desired_contract_length",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "is_delivery_date_flexible",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "parent_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "ingredient",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "reason_for_request",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "desired_packaging_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "desired_packaging_format_is_flexible",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "ai_generated",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "documents_to_copy",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "documents_to_copy",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"current_unit_price\": \"<decimal>\",\n  \"description\": \"<string>\",\n  \"due_date\": \"<date>\",\n  \"state\": \"<string>\",\n  \"supplier_countries\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"target_unit_price\": \"<decimal>\",\n  \"id\": 3334,\n  \"uuid\": \"f44767e4-1e82-890b-6d58-081a81be3a25\",\n  \"category\": \"<string>\",\n  \"name\": \"<string>\",\n  \"currency\": \"<string>\",\n  \"quantity\": \"<decimal>\",\n  \"unit_of_measurement\": \"<string>\",\n  \"allergen_requirements\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allergen_declaration\": \"<boolean>\",\n  \"dietary_certificate\": \"<boolean>\",\n  \"diet_requirements\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"forecast\": \"<string>\",\n  \"delivery_address\": \"<integer>\",\n  \"current_supplier\": \"<string>\",\n  \"published\": \"<dateTime>\",\n  \"logo_url\": \"<uri>\",\n  \"is_new\": true,\n  \"article\": \"<uuid>\",\n  \"existing_suppliers\": [\n    \"ec9b39af-8aaf-2db5-8c15-7069fa572b44\",\n    \"8c22d734-b06d-86dd-6b7a-f7db880d2f69\"\n  ],\n  \"supply_priorities\": [\n    {\n      \"priority_name\": \"<string>\",\n      \"priority_value\": \"<integer>\"\n    },\n    {\n      \"priority_name\": \"<string>\",\n      \"priority_value\": \"<integer>\"\n    }\n  ],\n  \"first_order_delivery_date\": \"<date>\",\n  \"opply_brand_commission\": \"<decimal>\",\n  \"opply_supplier_commission\": \"<decimal>\",\n  \"is_recurring\": false,\n  \"frequency\": \"<string>\",\n  \"desired_contract_length\": \"<integer>\",\n  \"is_delivery_date_flexible\": \"<boolean>\",\n  \"parent_uuid\": \"<uuid>\",\n  \"ingredient\": \"<integer>\",\n  \"reason_for_request\": \"<string>\",\n  \"desired_packaging_format\": \"<string>\",\n  \"desired_packaging_format_is_flexible\": \"<boolean>\",\n  \"ai_generated\": \"<boolean>\",\n  \"documents_to_copy\": [\n    \"<uuid>\",\n    \"<uuid>\"\n  ],\n  \"existing_supplier_name\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "95e7e45d-03f0-47f4-a0a4-8fd9bfb5e3a0",
+          "name": "Endpoint to partially update a brand's inquiry.",
+          "request": {
+            "name": "Endpoint to partially update a brand's inquiry.",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "brand",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "category",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "current_unit_price",
+                  "value": "<decimal>"
+                },
+                {
+                  "disabled": false,
+                  "key": "target_unit_price",
+                  "value": "<decimal>"
+                },
+                {
+                  "disabled": false,
+                  "key": "currency",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "description",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "quantity",
+                  "value": "<decimal>"
+                },
+                {
+                  "disabled": false,
+                  "key": "unit_of_measurement",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "allergen_requirements",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "allergen_requirements",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "allergen_declaration",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dietary_certificate",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "diet_requirements",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "diet_requirements",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "forecast",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "due_date",
+                  "value": "<date>"
+                },
+                {
+                  "disabled": false,
+                  "key": "delivery_address",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "supplier_countries",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "supplier_countries",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "current_supplier",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "published",
+                  "value": "<dateTime>",
+                  "description": "Datetime when the inquiry becomes published. Leave empty to keep it unpublished."
+                },
+                {
+                  "disabled": false,
+                  "key": "logo_url",
+                  "value": "<uri>"
+                },
+                {
+                  "disabled": false,
+                  "key": "article",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "supply_priorities",
+                  "value": "{\"priority_name\":\"<string>\",\"priority_value\":\"<integer>\"}"
+                },
+                {
+                  "disabled": false,
+                  "key": "supply_priorities",
+                  "value": "{\"priority_name\":\"<string>\",\"priority_value\":\"<integer>\"}"
+                },
+                {
+                  "disabled": false,
+                  "key": "first_order_delivery_date",
+                  "value": "<date>"
+                },
+                {
+                  "disabled": false,
+                  "key": "opply_brand_commission",
+                  "value": "<decimal>"
+                },
+                {
+                  "disabled": false,
+                  "key": "opply_supplier_commission",
+                  "value": "<decimal>"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_recurring",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "frequency",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "desired_contract_length",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_delivery_date_flexible",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "parent_uuid",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "ingredient",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "reason_for_request",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "desired_packaging_format",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "desired_packaging_format_is_flexible",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "ai_generated",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "documents_to_copy",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "documents_to_copy",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "22d5e9ce-3006-4738-a12b-ac765a63713b",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "brand",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "category",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "current_unit_price",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "target_unit_price",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "description",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "quantity",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "unit_of_measurement",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "allergen_requirements",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "allergen_requirements",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "allergen_declaration",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "dietary_certificate",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "diet_requirements",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "diet_requirements",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "forecast",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "due_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "delivery_address",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "supplier_countries",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "supplier_countries",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "current_supplier",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Datetime when the inquiry becomes published. Leave empty to keep it unpublished.",
+                        "type": "text/plain"
+                      },
+                      "key": "published",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "logo_url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "article",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "supply_priorities",
+                      "value": "{\"priority_name\":\"<string>\",\"priority_value\":\"<integer>\"}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "supply_priorities",
+                      "value": "{\"priority_name\":\"<string>\",\"priority_value\":\"<integer>\"}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "first_order_delivery_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "opply_brand_commission",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "opply_supplier_commission",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "is_recurring",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "frequency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "desired_contract_length",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "is_delivery_date_flexible",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "parent_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "ingredient",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "reason_for_request",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "desired_packaging_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "desired_packaging_format_is_flexible",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "ai_generated",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "documents_to_copy",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "documents_to_copy",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"current_unit_price\": \"<decimal>\",\n  \"description\": \"<string>\",\n  \"due_date\": \"<date>\",\n  \"name\": \"<string>\",\n  \"quantity\": \"<decimal>\",\n  \"supplier_countries\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"target_unit_price\": \"<decimal>\",\n  \"id\": 7060,\n  \"uuid\": \"361ee733-5c8b-6e92-6c2a-fe54cf2f7ecc\",\n  \"state\": \"<string>\",\n  \"category\": \"<string>\",\n  \"currency\": \"<string>\",\n  \"unit_of_measurement\": \"<string>\",\n  \"allergen_requirements\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allergen_declaration\": \"<boolean>\",\n  \"dietary_certificate\": \"<boolean>\",\n  \"diet_requirements\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"forecast\": \"<string>\",\n  \"delivery_address\": \"<integer>\",\n  \"current_supplier\": \"<string>\",\n  \"published\": \"<dateTime>\",\n  \"logo_url\": \"<uri>\",\n  \"is_new\": true,\n  \"article\": \"<uuid>\",\n  \"existing_suppliers\": [\n    \"62729c96-ff67-d89e-265c-7f567e3f5f7e\",\n    \"f8aa034b-2118-313d-2b15-39f9c9df3637\"\n  ],\n  \"supply_priorities\": [\n    {\n      \"priority_name\": \"<string>\",\n      \"priority_value\": \"<integer>\"\n    },\n    {\n      \"priority_name\": \"<string>\",\n      \"priority_value\": \"<integer>\"\n    }\n  ],\n  \"first_order_delivery_date\": \"<date>\",\n  \"opply_brand_commission\": \"<decimal>\",\n  \"opply_supplier_commission\": \"<decimal>\",\n  \"is_recurring\": false,\n  \"frequency\": \"<string>\",\n  \"desired_contract_length\": \"<integer>\",\n  \"is_delivery_date_flexible\": \"<boolean>\",\n  \"parent_uuid\": \"<uuid>\",\n  \"ingredient\": \"<integer>\",\n  \"reason_for_request\": \"<string>\",\n  \"desired_packaging_format\": \"<string>\",\n  \"desired_packaging_format_is_flexible\": \"<boolean>\",\n  \"ai_generated\": \"<boolean>\",\n  \"documents_to_copy\": [\n    \"<uuid>\",\n    \"<uuid>\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e7a4afba-9b59-48d2-9610-472d7879681e",
+          "name": "api v1 inquiries brand destroy",
+          "request": {
+            "name": "api v1 inquiries brand destroy",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "brand",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ae9fea80-7630-4834-a5cb-3e67e70211fc",
+              "name": "No response body",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "brand",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "018d0319-2845-417b-9718-4a2bfb9f7fff",
+          "name": "Endpoint to retrieve all quotes list for request details page. Marks all quotes as viewed on request details page.",
+          "request": {
+            "name": "Endpoint to retrieve all quotes list for request details page. Marks all quotes as viewed on request details page.",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "brand",
+                ":uuid",
+                "all-quotes",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f069a4c2-1ae4-420c-98bb-10318e3f1c18",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "brand",
+                    ":uuid",
+                    "all-quotes",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"currency\": \"USD\",\n    \"expires_in\": \"string\",\n    \"has_specs\": false,\n    \"lead_time\": 1103502288,\n    \"packaging\": \"string\",\n    \"price_percentage_lower\": \"string\",\n    \"product_name\": \"string\",\n    \"quantity\": \"\",\n    \"total_forecast_volume\": \"string\",\n    \"unit_price_no_vat_with_shipping\": \"string\",\n    \"unread_messages_count\": 6528.436812128895,\n    \"uuid\": \"25d9e7cb-4b1b-d4fa-9b4a-1b7a101f3e11\",\n    \"unit_price\": \"-516023.424284040\",\n    \"category\": \"purchase_request_quote\",\n    \"unit_of_measurement\": \"<string>\",\n    \"expiry_date\": \"1957-03-24\",\n    \"status\": \"pending_payment\",\n    \"samples_status\": \"requested\",\n    \"samples_delivery_address\": 6087,\n    \"samples_feedback\": [\n      \"not_suitable_for_recipe\",\n      \"quality_not_as_expected\"\n    ],\n    \"samples_feedback_comment\": \"string\"\n  },\n  {\n    \"currency\": \"EUR\",\n    \"expires_in\": \"string\",\n    \"has_specs\": true,\n    \"lead_time\": 1128454972,\n    \"packaging\": \"string\",\n    \"price_percentage_lower\": \"string\",\n    \"product_name\": \"string\",\n    \"quantity\": \"919.2\",\n    \"total_forecast_volume\": \"string\",\n    \"unit_price_no_vat_with_shipping\": \"string\",\n    \"unread_messages_count\": 5292.774358641755,\n    \"uuid\": \"e61c9d6d-0f7d-540c-92dd-0f6a7e05f4f7\",\n    \"unit_price\": \"-037845615\",\n    \"category\": \"recurring\",\n    \"unit_of_measurement\": \"<string>\",\n    \"expiry_date\": \"1992-10-04\",\n    \"status\": \"contract_proceeded\",\n    \"samples_status\": \"rejected\",\n    \"samples_delivery_address\": 3870,\n    \"samples_feedback\": [\n      \"ingredient_quality\",\n      \"ingredient_quality\"\n    ],\n    \"samples_feedback_comment\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "41c8cda2-44ef-419b-bffe-fd3907e2d6a1",
+          "name": "api v1 inquiries brand channels list",
+          "request": {
+            "name": "api v1 inquiries brand channels list",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "brand",
+                ":uuid",
+                "channels",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ordering",
+                  "value": "<string>",
+                  "description": "Which field to use when ordering the results."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "05e22e35-0212-44ed-9544-d9c57c2137ae",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "brand",
+                    ":uuid",
+                    "channels",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ordering",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"buyer_name\": \"string\",\n      \"supplier_name\": \"string\",\n      \"uuid\": \"19b7f760-3a1d-2620-6def-26dafb002f9d\"\n    },\n    {\n      \"buyer_name\": \"string\",\n      \"supplier_name\": \"string\",\n      \"uuid\": \"0b15b7e9-5273-a5f9-af03-bd15d32842c0\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e4985ecf-2745-41b2-90d4-f413e887582c",
+          "name": "Create a purchase request for a contract",
+          "request": {
+            "name": "Create a purchase request for a contract",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "brand",
+                ":uuid",
+                "create-purchase-request",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "delivery_address",
+                  "value": "<integer>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "delivery_date",
+                  "value": "<date>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "quantity",
+                  "value": "<decimal>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "quote_uuid",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "ingredient_uuid",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "16d3d666-e425-4dd1-8240-731d69373ca0",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "brand",
+                    ":uuid",
+                    "create-purchase-request",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "delivery_address",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "delivery_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "quantity",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "quote_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "ingredient_uuid",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"due_date\": \"2006-06-06\",\n  \"quantity\": \"-7254.7\",\n  \"related_contract\": 2724,\n  \"uuid\": \"f36703ba-30d7-5344-6a57-c9e29bbac9fd\",\n  \"quote_uuid\": \"56159a24-4175-6497-1be8-0d779bfb4e14\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5d312918-f3dc-4ede-8f28-f823b4a1fb9e",
+          "name": "api v1 inquiries brand documents list",
+          "request": {
+            "name": "api v1 inquiries brand documents list",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "brand",
+                ":uuid",
+                "documents",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "active_inquiries",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "autocomplete_filter",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "category",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "ordering",
+                  "value": "<string>",
+                  "description": "Which field to use when ordering the results."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "* `awaiting_quotes` - Awaiting Quotes\n* `quotes_available` - Quotes Available\n* `ordered` - Ordered\n* `expired` - Expired\n* `proceeded` - Proceeded\n* `contract_confirmed` - Contract Confirmed\n* `supplier_decline_to_quote` - Supplier Decline To Quote\n* `cancelled` - Cancelled"
+                },
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "* `awaiting_quotes` - Awaiting Quotes\n* `quotes_available` - Quotes Available\n* `ordered` - Ordered\n* `expired` - Expired\n* `proceeded` - Proceeded\n* `contract_confirmed` - Contract Confirmed\n* `supplier_decline_to_quote` - Supplier Decline To Quote\n* `cancelled` - Cancelled"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a43d7cf6-31a4-4da0-be89-41059eb2c2e3",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "brand",
+                    ":uuid",
+                    "documents",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "active_inquiries",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "autocomplete_filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "category",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ordering",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"document\": \"http://ZEoQawFHZBhbQJ.opxOxVQ41djWA,aoTVmq+N.OWM\",\n      \"uuid\": \"bcd2735a-b12f-3792-d7a2-33e98945c1ad\",\n      \"description\": \"string\"\n    },\n    {\n      \"document\": \"https://Gods.gnznyyTIHMv9M3STu3tN1T,785hA,K5\",\n      \"uuid\": \"9b0868b2-4b66-0cac-c5ea-87a4dfe068b4\",\n      \"description\": \"string\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "47e7de03-c8e6-4c04-a911-887385a0390d",
+          "name": "Force inquiry expiry. FOR QA USE ONLY!",
+          "request": {
+            "name": "Force inquiry expiry. FOR QA USE ONLY!",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "brand",
+                ":uuid",
+                "expire",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": []
+            }
+          },
+          "response": [
+            {
+              "id": "c7b4a569-c5f1-4346-8434-e5b7e95064dc",
+              "name": "No response body",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "brand",
+                    ":uuid",
+                    "expire",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2afdca96-d856-4ea5-849b-3eef2cd05d28",
+          "name": "Endpoint to retrieve featured quotes list for request details page.",
+          "request": {
+            "name": "Endpoint to retrieve featured quotes list for request details page.",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "brand",
+                ":uuid",
+                "featured-quotes",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f5f22e8a-b9b4-4c2b-a5f7-074963c5adf2",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "brand",
+                    ":uuid",
+                    "featured-quotes",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"currency\": \"GBP\",\n    \"expires_in\": \"string\",\n    \"has_specs\": false,\n    \"lead_time\": 1030031588,\n    \"packaging\": \"string\",\n    \"price_percentage_lower\": \"string\",\n    \"product_name\": \"string\",\n    \"quantity\": \"-767891673.5\",\n    \"total_forecast_volume\": \"string\",\n    \"unit_price_no_vat_with_shipping\": \"string\",\n    \"unread_messages_count\": 4462.9689789045915,\n    \"uuid\": \"07e11627-b847-c579-42b8-1ea27f850e7c\",\n    \"unit_price\": \"-1\",\n    \"category\": \"purchase_request_quote\",\n    \"unit_of_measurement\": \"<string>\",\n    \"expiry_date\": \"1947-09-25\",\n    \"status\": \"ordered\",\n    \"samples_status\": \"available\",\n    \"samples_delivery_address\": 2038,\n    \"samples_feedback\": [\n      \"quality_not_as_expected\",\n      \"dont_provided_samples\"\n    ],\n    \"samples_feedback_comment\": \"string\"\n  },\n  {\n    \"currency\": \"GBP\",\n    \"expires_in\": \"string\",\n    \"has_specs\": false,\n    \"lead_time\": 1594893673,\n    \"packaging\": \"string\",\n    \"price_percentage_lower\": \"string\",\n    \"product_name\": \"string\",\n    \"quantity\": \"6.\",\n    \"total_forecast_volume\": \"string\",\n    \"unit_price_no_vat_with_shipping\": \"string\",\n    \"unread_messages_count\": 1744.3226457307958,\n    \"uuid\": \"22ee9faa-003f-2cc3-fa1d-2b18defc1392\",\n    \"unit_price\": \"-9467655\",\n    \"category\": \"recurring\",\n    \"unit_of_measurement\": \"<string>\",\n    \"expiry_date\": \"2020-02-03\",\n    \"status\": \"proceeded\",\n    \"samples_status\": \"available\",\n    \"samples_delivery_address\": 749,\n    \"samples_feedback\": [\n      \"dont_provided_samples\",\n      \"ingredient_out_of_stock\"\n    ],\n    \"samples_feedback_comment\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1960fc4c-e207-49c5-9b2c-480cd5f6d054",
+          "name": "api v1 inquiries brand publish create",
+          "request": {
+            "name": "api v1 inquiries brand publish create",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "brand",
+                ":uuid",
+                "publish",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "8620223c-9625-4cab-9d3a-297fbe7b838b",
+              "name": "No response body",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "brand",
+                    ":uuid",
+                    "publish",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "285b1d6b-ffad-401e-8102-93121729a69f",
+          "name": "api v1 inquiries brand upload create",
+          "request": {
+            "name": "api v1 inquiries brand upload create",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "brand",
+                ":uuid",
+                "upload",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "document",
+                  "value": "<uri>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "description",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0a813463-14a1-4af7-9e3e-79896cd4c338",
+              "name": "No response body",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "brand",
+                    ":uuid",
+                    "upload",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "document",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "description",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e1fcab05-b6a7-4953-aad6-04f1d9daa28a",
+          "name": "Endpoint to retrieve requests list for Brand's dashboard.",
+          "request": {
+            "name": "Endpoint to retrieve requests list for Brand's dashboard.",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "brand",
+                "dashboard-inquiries",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "bf4ff7d5-419c-496c-8816-88cbede3b03d",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "brand",
+                    "dashboard-inquiries",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"is_new\": true,\n      \"lowest_unit_price\": 3013.9335638840193,\n      \"name\": \"string\",\n      \"new_quotes_count\": 4214.562960512719,\n      \"original_quote_uuid\": \"9eb31c8f-bf96-0fc9-3f39-3c534325e0fe\",\n      \"savings_percentage\": 3301.1973089614976,\n      \"total_quotes_count\": 4563.851984844028,\n      \"uuid\": \"598d4042-2c55-1305-f5f5-05eec58989d2\",\n      \"logo_url\": \"http://QcXvzKcRGXHNaarUEzX.pigDppASxtRWJVO0spP52wUH,djwHqp,tG6S6Ad6S5ntYvrEw\",\n      \"currency\": \"<string>\",\n      \"unit_of_measurement\": \"<string>\",\n      \"ai_generated\": true\n    },\n    {\n      \"is_new\": true,\n      \"lowest_unit_price\": 1146.6357743938315,\n      \"name\": \"string\",\n      \"new_quotes_count\": 650.5287104983138,\n      \"original_quote_uuid\": \"d7698759-e220-bc12-7589-a6e368f7b578\",\n      \"savings_percentage\": 2548.351649310182,\n      \"total_quotes_count\": 4205.218857399459,\n      \"uuid\": \"f9ace84f-46d3-c6d4-f693-fa2ddf950f72\",\n      \"logo_url\": \"http://AbwLabvGjxTPyAALWkXUeQuVAFhW.aedpYsEUeSdIVt5S0.chU0CFJouTISeNPwXVHmkwH1ziBFoaAF93KSWj\",\n      \"currency\": \"<string>\",\n      \"unit_of_measurement\": \"<string>\",\n      \"ai_generated\": false\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b5a96dd2-7df7-43ac-a472-cc267e6e12b6",
+          "name": "api v1 inquiries internal list",
+          "request": {
+            "name": "api v1 inquiries internal list",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "internal",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "28c219d1-b64f-4a60-9a31-3dbc7130f5d8",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "internal",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"current_unit_price\": \"<decimal>\",\n      \"description\": \"<string>\",\n      \"due_date\": \"<date>\",\n      \"name\": \"<string>\",\n      \"quantity\": \"<decimal>\",\n      \"supplier_countries\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"target_unit_price\": \"<decimal>\",\n      \"id\": 3325,\n      \"uuid\": \"f8460b83-67b6-1a45-fbd9-be86563c1e4c\",\n      \"state\": \"<string>\",\n      \"category\": \"<string>\",\n      \"currency\": \"<string>\",\n      \"unit_of_measurement\": \"<string>\",\n      \"allergen_requirements\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"allergen_declaration\": \"<boolean>\",\n      \"dietary_certificate\": \"<boolean>\",\n      \"diet_requirements\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"forecast\": \"<string>\",\n      \"delivery_address\": \"<integer>\",\n      \"current_supplier\": \"<string>\",\n      \"published\": \"<dateTime>\",\n      \"logo_url\": \"<uri>\",\n      \"is_new\": false,\n      \"article\": \"<uuid>\",\n      \"existing_suppliers\": [\n        \"dc0fa9c2-da10-8daa-9147-56d1c1e45086\",\n        \"6a275637-94de-5eb3-e28c-35a832172a82\"\n      ],\n      \"supply_priorities\": [\n        {\n          \"priority_name\": \"<string>\",\n          \"priority_value\": \"<integer>\"\n        },\n        {\n          \"priority_name\": \"<string>\",\n          \"priority_value\": \"<integer>\"\n        }\n      ],\n      \"first_order_delivery_date\": \"<date>\",\n      \"opply_brand_commission\": \"<decimal>\",\n      \"opply_supplier_commission\": \"<decimal>\",\n      \"is_recurring\": false,\n      \"frequency\": \"<string>\",\n      \"desired_contract_length\": \"<integer>\",\n      \"is_delivery_date_flexible\": \"<boolean>\",\n      \"parent_uuid\": \"<uuid>\",\n      \"ingredient\": \"<integer>\",\n      \"reason_for_request\": \"<string>\",\n      \"desired_packaging_format\": \"<string>\",\n      \"desired_packaging_format_is_flexible\": \"<boolean>\",\n      \"ai_generated\": \"<boolean>\",\n      \"documents_to_copy\": [\n        \"<uuid>\",\n        \"<uuid>\"\n      ]\n    },\n    {\n      \"current_unit_price\": \"<decimal>\",\n      \"description\": \"<string>\",\n      \"due_date\": \"<date>\",\n      \"name\": \"<string>\",\n      \"quantity\": \"<decimal>\",\n      \"supplier_countries\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"target_unit_price\": \"<decimal>\",\n      \"id\": 2814,\n      \"uuid\": \"a7aaa596-dc81-88c1-9631-96d8020bfcab\",\n      \"state\": \"<string>\",\n      \"category\": \"<string>\",\n      \"currency\": \"<string>\",\n      \"unit_of_measurement\": \"<string>\",\n      \"allergen_requirements\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"allergen_declaration\": \"<boolean>\",\n      \"dietary_certificate\": \"<boolean>\",\n      \"diet_requirements\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"forecast\": \"<string>\",\n      \"delivery_address\": \"<integer>\",\n      \"current_supplier\": \"<string>\",\n      \"published\": \"<dateTime>\",\n      \"logo_url\": \"<uri>\",\n      \"is_new\": false,\n      \"article\": \"<uuid>\",\n      \"existing_suppliers\": [\n        \"3cc67558-74e6-d6a5-9eea-499c1d3f1650\",\n        \"36bfb321-b2b2-32bd-629b-7fea16bd9b60\"\n      ],\n      \"supply_priorities\": [\n        {\n          \"priority_name\": \"<string>\",\n          \"priority_value\": \"<integer>\"\n        },\n        {\n          \"priority_name\": \"<string>\",\n          \"priority_value\": \"<integer>\"\n        }\n      ],\n      \"first_order_delivery_date\": \"<date>\",\n      \"opply_brand_commission\": \"<decimal>\",\n      \"opply_supplier_commission\": \"<decimal>\",\n      \"is_recurring\": false,\n      \"frequency\": \"<string>\",\n      \"desired_contract_length\": \"<integer>\",\n      \"is_delivery_date_flexible\": \"<boolean>\",\n      \"parent_uuid\": \"<uuid>\",\n      \"ingredient\": \"<integer>\",\n      \"reason_for_request\": \"<string>\",\n      \"desired_packaging_format\": \"<string>\",\n      \"desired_packaging_format_is_flexible\": \"<boolean>\",\n      \"ai_generated\": \"<boolean>\",\n      \"documents_to_copy\": [\n        \"<uuid>\",\n        \"<uuid>\"\n      ]\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0e1e719f-2af6-4966-bf1f-1bc74f44b1a9",
+          "name": "api v1 inquiries internal retrieve",
+          "request": {
+            "name": "api v1 inquiries internal retrieve",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "internal",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "45adf181-bdd7-4d1e-9aa8-88fc144cf451",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "internal",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"current_unit_price\": \"<decimal>\",\n  \"description\": \"<string>\",\n  \"due_date\": \"<date>\",\n  \"name\": \"<string>\",\n  \"quantity\": \"<decimal>\",\n  \"supplier_countries\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"target_unit_price\": \"<decimal>\",\n  \"id\": 7060,\n  \"uuid\": \"361ee733-5c8b-6e92-6c2a-fe54cf2f7ecc\",\n  \"state\": \"<string>\",\n  \"category\": \"<string>\",\n  \"currency\": \"<string>\",\n  \"unit_of_measurement\": \"<string>\",\n  \"allergen_requirements\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allergen_declaration\": \"<boolean>\",\n  \"dietary_certificate\": \"<boolean>\",\n  \"diet_requirements\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"forecast\": \"<string>\",\n  \"delivery_address\": \"<integer>\",\n  \"current_supplier\": \"<string>\",\n  \"published\": \"<dateTime>\",\n  \"logo_url\": \"<uri>\",\n  \"is_new\": true,\n  \"article\": \"<uuid>\",\n  \"existing_suppliers\": [\n    \"62729c96-ff67-d89e-265c-7f567e3f5f7e\",\n    \"f8aa034b-2118-313d-2b15-39f9c9df3637\"\n  ],\n  \"supply_priorities\": [\n    {\n      \"priority_name\": \"<string>\",\n      \"priority_value\": \"<integer>\"\n    },\n    {\n      \"priority_name\": \"<string>\",\n      \"priority_value\": \"<integer>\"\n    }\n  ],\n  \"first_order_delivery_date\": \"<date>\",\n  \"opply_brand_commission\": \"<decimal>\",\n  \"opply_supplier_commission\": \"<decimal>\",\n  \"is_recurring\": false,\n  \"frequency\": \"<string>\",\n  \"desired_contract_length\": \"<integer>\",\n  \"is_delivery_date_flexible\": \"<boolean>\",\n  \"parent_uuid\": \"<uuid>\",\n  \"ingredient\": \"<integer>\",\n  \"reason_for_request\": \"<string>\",\n  \"desired_packaging_format\": \"<string>\",\n  \"desired_packaging_format_is_flexible\": \"<boolean>\",\n  \"ai_generated\": \"<boolean>\",\n  \"documents_to_copy\": [\n    \"<uuid>\",\n    \"<uuid>\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "12436489-2cdf-44f4-b087-9714b9f2b612",
+          "name": "List of all inquiries for a supplier",
+          "request": {
+            "name": "List of all inquiries for a supplier",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "supplier",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "category",
+                  "value": "<string>",
+                  "description": "Supported categories: non_recurring recurring purchase_request ingredient ingredient_copy."
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Supports searching using a string/substring of product_name"
+                },
+                {
+                  "disabled": false,
+                  "key": "ordering",
+                  "value": "<string>",
+                  "description": "Supports sorting by name state due_date. Use - to filter backwards"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "supplier_state",
+                  "value": "<string>",
+                  "description": "Supported status: awaiting_quotes quotes_available ordered expired proceeded contract_confirmed supplier_decline_to_quote cancelled."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f211e28c-4b3d-4124-a70f-b1246ad5d713",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "supplier",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "category",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ordering",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "supplier_state",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"declined\": \"string\",\n      \"delivery_address\": {\n        \"town\": \"string\",\n        \"country\": \"<string>\",\n        \"postcode\": \"string\"\n      },\n      \"due_date\": \"1961-05-29\",\n      \"id\": 8052,\n      \"is_new\": true,\n      \"name\": \"string\",\n      \"original_quote_uuid\": \"ffe62fda-c97e-681b-d2f2-4074dc017f44\",\n      \"quantity\": \"-600\",\n      \"supplier_state\": \"awaiting_quote\",\n      \"total_forecast_quantity\": \"string\",\n      \"uuid\": \"33f9b846-3a4e-6ac1-e5a3-5921bd93d188\",\n      \"state\": \"<string>\",\n      \"currency\": \"<string>\",\n      \"unit_of_measurement\": \"<string>\",\n      \"published\": \"1961-08-26T00:29:05.946Z\",\n      \"logo_url\": \"http://GgyJtAwvBcPpan.mbhwVb3y2YmaxxaK2dmr3cfuRw30QD5+C1itWsx7MbO18.yjCZtC1NqoeH2HHuZ\",\n      \"first_order_delivery_date\": \"2021-08-20\",\n      \"is_recurring\": false,\n      \"is_delivery_date_flexible\": false,\n      \"category\": \"<string>\"\n    },\n    {\n      \"declined\": \"string\",\n      \"delivery_address\": {\n        \"town\": \"string\",\n        \"country\": \"<string>\",\n        \"postcode\": \"string\"\n      },\n      \"due_date\": \"1971-06-17\",\n      \"id\": 7682,\n      \"is_new\": false,\n      \"name\": \"string\",\n      \"original_quote_uuid\": \"59c49d15-ff3c-2b15-5879-1c4e8db66bdd\",\n      \"quantity\": \"40913.\",\n      \"supplier_state\": \"quote_provided\",\n      \"total_forecast_quantity\": \"string\",\n      \"uuid\": \"e8f7db88-8f49-1598-894e-09b4865263c0\",\n      \"state\": \"<string>\",\n      \"currency\": \"<string>\",\n      \"unit_of_measurement\": \"<string>\",\n      \"published\": \"2022-05-26T10:25:30.395Z\",\n      \"logo_url\": \"http://DunNGzlcOqsVtTaNfyCYNUl.pqpy+5R+.n2XqxfcPM3uxLJsKLdO-oYRt80D.QWIntzP1S,9diIV36Q.wLt+DADkni8\",\n      \"first_order_delivery_date\": \"2002-10-03\",\n      \"is_recurring\": false,\n      \"is_delivery_date_flexible\": true,\n      \"category\": \"<string>\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5c5937f7-e632-405b-8f07-dd54a1b527bd",
+          "name": "Retrieve details of a request for a supplier",
+          "request": {
+            "name": "Retrieve details of a request for a supplier",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "supplier",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3550043e-5b96-4219-a6af-02e191e3614d",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "supplier",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"buyer_contact_name\": \"string\",\n  \"buyer_full_name\": \"string\",\n  \"commission_payout_vat_rate\": \"string\",\n  \"company\": {\n    \"country\": \"string\",\n    \"currency\": \"string\",\n    \"id\": 9383,\n    \"kyb_status\": \"string\",\n    \"mongo_id\": \"string\",\n    \"name\": \"string\",\n    \"referral_code\": \"string\",\n    \"state\": \"string\",\n    \"uuid\": \"5897321c-0e4b-1a3e-23e8-e7fe15855e3d\",\n    \"website\": \"string\",\n    \"logo\": \"http://IfHedcnJdTmznTOlmsR.wubcKXP-OfhsHTLi,emYNqmu\",\n    \"industry\": \"string\",\n    \"phone_number\": \"string\",\n    \"company_type\": \"brand\",\n    \"product_type\": [\n      \"e\",\n      \"h\",\n      \"o\",\n      \"r\",\n      \"t\"\n    ],\n    \"activity_type\": [\n      \"e\",\n      \"h\",\n      \"o\",\n      \"r\",\n      \"t\"\n    ],\n    \"registration_number\": \"string\",\n    \"registration_name\": \"string\",\n    \"phone_country_code\": \"+255\",\n    \"company_addresses\": [\n      {\n        \"created\": \"1978-04-11T02:33:38.739Z\",\n        \"id\": 3802,\n        \"modified\": \"1956-12-03T12:06:15.778Z\",\n        \"name\": \"string\",\n        \"uuid\": \"bbd89eda-2802-69a2-ef4f-70389f92b38c\",\n        \"address_type\": \"company_address\",\n        \"contact_full_name\": \"string\",\n        \"contact_phone\": \"string\",\n        \"building\": \"string\",\n        \"street_1\": \"string\",\n        \"street_2\": \"string\",\n        \"town\": \"string\",\n        \"region\": \"string\",\n        \"postcode\": \"string\",\n        \"country\": \"<string>\",\n        \"place_id\": \"string\",\n        \"latitude\": \"-4\",\n        \"longitude\": \"22.15760141263\",\n        \"vat_number\": \"string\",\n        \"vat_country_code\": \"<string>\",\n        \"vat_exempt\": false,\n        \"phone_country_code\": \"+250\",\n        \"delivery_instructions\": \"string\",\n        \"collection_instructions\": \"string\",\n        \"country_type\": \"GB\",\n        \"eori_number\": \"string\",\n        \"ein_number\": \"string\",\n        \"notes\": \"string\",\n        \"delivery_location_type\": \"string\",\n        \"delivery_location_type_other\": \"string\",\n        \"warehouse_receiving_hours\": \"string\"\n      },\n      {\n        \"created\": \"1973-06-14T08:13:10.620Z\",\n        \"id\": 593,\n        \"modified\": \"2013-05-15T10:34:14.031Z\",\n        \"name\": \"string\",\n        \"uuid\": \"78f94c7c-c68e-466f-2672-c9c01dbedb62\",\n        \"address_type\": \"company_address\",\n        \"contact_full_name\": \"string\",\n        \"contact_phone\": \"string\",\n        \"building\": \"string\",\n        \"street_1\": \"string\",\n        \"street_2\": \"string\",\n        \"town\": \"string\",\n        \"region\": \"string\",\n        \"postcode\": \"string\",\n        \"country\": \"<string>\",\n        \"place_id\": \"string\",\n        \"latitude\": \"733\",\n        \"longitude\": \"516\",\n        \"vat_number\": \"string\",\n        \"vat_country_code\": \"<string>\",\n        \"vat_exempt\": false,\n        \"phone_country_code\": \"+679\",\n        \"delivery_instructions\": \"string\",\n        \"collection_instructions\": \"string\",\n        \"country_type\": \"Other\",\n        \"eori_number\": \"string\",\n        \"ein_number\": \"string\",\n        \"notes\": \"string\",\n        \"delivery_location_type\": \"string\",\n        \"delivery_location_type_other\": \"string\",\n        \"warehouse_receiving_hours\": \"string\"\n      }\n    ],\n    \"payout_method_type\": \"string\",\n    \"bank_account_country\": \"<string>\",\n    \"duns\": \"string\"\n  },\n  \"company_address\": {\n    \"company_id\": 2817,\n    \"building\": \"string\",\n    \"street_1\": \"string\",\n    \"street_2\": \"string\",\n    \"town\": \"string\",\n    \"region\": \"string\",\n    \"postcode\": \"string\",\n    \"country\": \"<string>\",\n    \"place_id\": \"string\",\n    \"latitude\": \"241\",\n    \"longitude\": \"-\"\n  },\n  \"current_unit_price\": \"403\",\n  \"decline_reason\": \"string\",\n  \"declined\": \"string\",\n  \"delivery_address\": {\n    \"town\": \"string\",\n    \"country\": \"<string>\",\n    \"postcode\": \"string\"\n  },\n  \"description\": \"string\",\n  \"due_date\": \"1974-10-27\",\n  \"existing_supplier_name\": \"string\",\n  \"existing_supplier_uuid\": \"3214b748-3ea3-4a93-db80-e547578a71bd\",\n  \"existing_suppliers\": [\n    \"653f8d10-211f-c5ce-bed2-d7d4d403004a\",\n    \"d44c5ae8-64d1-6aa0-4d65-40c38b0ab4c5\"\n  ],\n  \"id\": 4217,\n  \"is_new\": true,\n  \"name\": \"string\",\n  \"number_of_quotes\": \"string\",\n  \"orders_uuid\": [\n    \"e1196679-717a-fc8c-44df-8a149698c908\",\n    \"1dfc9456-3e17-01bc-9ee2-aa9d09336fae\"\n  ],\n  \"original_quote_uuid\": \"e650e566-d89c-052b-c6ad-c631b46eac51\",\n  \"possible_suppliers\": \"string\",\n  \"progress\": \"string\",\n  \"quantity\": \"22416\",\n  \"supplier_countries\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"supplier_matching\": \"string\",\n  \"supplier_state\": \"ordered\",\n  \"suppliers_found\": \"string\",\n  \"target_unit_price\": \"-1345\",\n  \"total_forecast_quantity\": \"string\",\n  \"total_forecast_spend\": \"string\",\n  \"uuid\": \"12e569d5-d2f5-d86f-2569-97f466777435\",\n  \"state\": \"<string>\",\n  \"category\": \"<string>\",\n  \"currency\": \"<string>\",\n  \"unit_of_measurement\": \"<string>\",\n  \"allergen_requirements\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allergen_declaration\": false,\n  \"dietary_certificate\": false,\n  \"diet_requirements\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"forecast\": \"<string>\",\n  \"current_supplier\": \"string\",\n  \"published\": \"2001-03-12T20:38:57.651Z\",\n  \"logo_url\": \"http://BCtdQ.feGlyQuTeBMPzAp0p1IMi53D6+Tye78EoeTDN0+p1JtzA69SC+lw0VpS8kaTlGhZCwIahlBdUx5\",\n  \"article\": \"93372ce3-eb13-b94f-0a0b-22246cfd71b9\",\n  \"supply_priorities\": [\n    {\n      \"priority_name\": \"<string>\",\n      \"priority_value\": \"<integer>\"\n    },\n    {\n      \"priority_name\": \"<string>\",\n      \"priority_value\": \"<integer>\"\n    }\n  ],\n  \"first_order_delivery_date\": \"1979-09-26\",\n  \"opply_brand_commission\": \"-\",\n  \"opply_supplier_commission\": \"2.\",\n  \"is_recurring\": false,\n  \"frequency\": \"<string>\",\n  \"desired_contract_length\": 7549,\n  \"is_delivery_date_flexible\": false,\n  \"parent_uuid\": \"0c6ceee0-f37c-e852-e79f-8ce37047d2cd\",\n  \"ingredient\": 2038,\n  \"reason_for_request\": \"string\",\n  \"desired_packaging_format\": \"string\",\n  \"desired_packaging_format_is_flexible\": false,\n  \"ai_generated\": true,\n  \"documents_to_copy\": [\n    \"5a9c50a3-a00d-afc8-0f62-925873ed03a7\",\n    \"6b3f9d1c-8cb8-1a74-ef2a-55a812e03d22\"\n  ],\n  \"published_quote_uuid\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ffad157a-606e-4943-8b5f-3c84f3a8c57e",
+          "name": "api v1 inquiries supplier channel retrieve",
+          "request": {
+            "name": "api v1 inquiries supplier channel retrieve",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "supplier",
+                ":uuid",
+                "channel",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "48b46d79-fc23-4300-913e-16c6280c8fea",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "supplier",
+                    ":uuid",
+                    "channel",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"buyer_name\": \"string\",\n  \"supplier_name\": \"string\",\n  \"uuid\": \"6884c599-fb4e-cbef-ddef-ac665208945f\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b8a84f0a-7fb2-42e0-9dd6-b33573e6db33",
+          "name": "Supplier decline to provide a quote for this inquiry",
+          "request": {
+            "name": "Supplier decline to provide a quote for this inquiry",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "supplier",
+                ":uuid",
+                "decline",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "decline_reason",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "decline_reason",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "decline_reason_extended",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "19fc5cbc-a461-4c91-989d-6eda96ec241f",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "supplier",
+                    ":uuid",
+                    "decline",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "decline_reason",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "decline_reason",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "decline_reason_extended",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"decline_reason\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"decline_reason_extended\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "400ea9a0-c8be-4ce0-ad0b-ba3cda2aec3a",
+          "name": "Endpoint to retrieve awaiting quotes requests list for Supplier's dashboard.",
+          "request": {
+            "name": "Endpoint to retrieve awaiting quotes requests list for Supplier's dashboard.",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "supplier",
+                "dashboard-inquiries",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9f697960-bf45-414c-8d42-491a98c47c5f",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "supplier",
+                    "dashboard-inquiries",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"due_date\": \"2022-10-23\",\n      \"is_new\": true,\n      \"name\": \"string\",\n      \"original_quote_uuid\": \"c4e2c588-21e1-9c64-982b-1a8d675ea32e\",\n      \"quantity\": \"-.\",\n      \"total_forecast_quantity\": \"string\",\n      \"uuid\": \"62e8cd5a-fa8e-67e9-1ac8-7858199cd17e\",\n      \"logo_url\": \"http://GvmFSjhPfGENAeCYQgV.pqflQSmk59XU,s6v7Bucmf2g0\",\n      \"currency\": \"<string>\",\n      \"unit_of_measurement\": \"<string>\",\n      \"category\": \"<string>\",\n      \"first_order_delivery_date\": \"2000-12-23\"\n    },\n    {\n      \"due_date\": \"1972-10-28\",\n      \"is_new\": false,\n      \"name\": \"string\",\n      \"original_quote_uuid\": \"2c46f1b6-5004-3ece-9311-0753b4189403\",\n      \"quantity\": \"252919\",\n      \"total_forecast_quantity\": \"string\",\n      \"uuid\": \"44602ae4-409f-2b62-8d31-34ae004e5f9e\",\n      \"logo_url\": \"https://iAmbu.ajyuDc-d8FGi.tuqbcezMysYUSpEwedn+,uZ1lEO\",\n      \"currency\": \"<string>\",\n      \"unit_of_measurement\": \"<string>\",\n      \"category\": \"<string>\",\n      \"first_order_delivery_date\": \"1960-01-27\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d66bf3cc-9f52-4b27-a464-77728f5b6a51",
+          "name": "api v1 inquiries update purchase request update",
+          "request": {
+            "name": "api v1 inquiries update purchase request update",
+            "description": {
+              "content": "Update a purchase request after it has been created.\nhttps://app.clickup.com/t/863ghjhjj",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "update_purchase_request",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "due_date",
+                  "value": "<date>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "quantity",
+                  "value": "<decimal>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "delivery_address",
+                  "value": "<integer>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5606427c-cd19-46eb-bfd6-6e1a382a6152",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "update_purchase_request",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "due_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "quantity",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "delivery_address",
+                      "value": "<integer>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"due_date\": \"<date>\",\n  \"quantity\": \"<decimal>\",\n  \"delivery_address\": \"<integer>\",\n  \"purchase_quote_uuid\": \"54ef2550-37b0-6eb2-b515-53364e79bd66\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fa9daf3f-4792-4197-b54b-692db5699265",
+          "name": "api v1 inquiries update purchase request partial update",
+          "request": {
+            "name": "api v1 inquiries update purchase request partial update",
+            "description": {
+              "content": "Update a purchase request after it has been created.\nhttps://app.clickup.com/t/863ghjhjj",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "inquiries",
+                "update_purchase_request",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "quantity",
+                  "value": "<decimal>"
+                },
+                {
+                  "disabled": false,
+                  "key": "due_date",
+                  "value": "<date>"
+                },
+                {
+                  "disabled": false,
+                  "key": "delivery_address",
+                  "value": "<integer>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "230fb1de-6863-42fc-87a9-4d6e589eb113",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "inquiries",
+                    "update_purchase_request",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "quantity",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "due_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "delivery_address",
+                      "value": "<integer>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"due_date\": \"<date>\",\n  \"quantity\": \"<decimal>\",\n  \"delivery_address\": \"<integer>\",\n  \"purchase_quote_uuid\": \"54ef2550-37b0-6eb2-b515-53364e79bd66\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c40b539d-fc3a-41c1-b153-5817a6659a2f",
+    "name": "Opply Activity Feed Inquiries API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

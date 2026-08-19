@@ -1,0 +1,545 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Agreements API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Agreements",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all agreements for the buyer's company",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agreements/brand/",
+            "params": [
+              {
+                "name": "agreement_number",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive exact match on the agreement number. Used by the buyer chat ContractNumberChip to resolve UUID-by-number."
+              },
+              {
+                "name": "exclude_legacy",
+                "value": "",
+                "type": "query",
+                "description": "When true, exclude agreements migrated from the legacy quotes system (rows where legacy_agreement is set)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "product",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive substring match against any line item's product name. E.g. `?product=sugar` returns contracts with a line item whose name contains \"sugar\"."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by lifecycle status derived from contract dates: `active` (within dates), `renewal` (within dates and ending within 90 days), `expired` (end date in the past), `draft` (start date in the future)."
+              },
+              {
+                "name": "supplier_company_uuid",
+                "value": "",
+                "type": "query",
+                "description": "Filter to a specific supplier by their company UUID."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of all agreements where the current user's company is the buyer"
+        },
+        {
+          "info": {
+            "name": "Retrieve a specific agreement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agreements/brand/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns detailed information about a specific agreement"
+        },
+        {
+          "info": {
+            "name": "Place an order from an agreement",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agreements/brand/:uuid/place-order/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new order based on the agreement with specified delivery details and line items."
+        },
+        {
+          "info": {
+            "name": "Aggregate agreement totals across the filtered set in full precision",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agreements/brand/aggregate/",
+            "params": [
+              {
+                "name": "agreement_number",
+                "value": "",
+                "type": "query",
+                "description": "Exact (case-insensitive) contract number match."
+              },
+              {
+                "name": "agreement_uuids",
+                "value": "",
+                "type": "query",
+                "description": "Optional explicit set of agreement UUIDs to aggregate. Pass as a repeated query param (`?agreement_uuids=<uuid>&agreement_uuids=<uuid>`). When present and non-empty, filters are ignored. Every UUID must resolve inside the caller's scope — otherwise the call is rejected with `403 forbidden` to avoid leaking which UUIDs the caller can see."
+              },
+              {
+                "name": "exclude_legacy",
+                "value": "",
+                "type": "query",
+                "description": "When true, omit legacy-migrated agreements."
+              },
+              {
+                "name": "field",
+                "value": "",
+                "type": "query",
+                "description": "Numeric field to aggregate. Currently only `total_in_buyer_currency` is supported. Defaults to that value."
+              },
+              {
+                "name": "operation",
+                "value": "",
+                "type": "query",
+                "description": "Aggregation operation. One of: sum, avg, min, max."
+              },
+              {
+                "name": "product",
+                "value": "",
+                "type": "query",
+                "description": "Substring match on any line item's product name."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Lifecycle bucket from contract dates."
+              },
+              {
+                "name": "supplier_company_uuid",
+                "value": "",
+                "type": "query",
+                "description": "Supplier company UUID."
+              },
+              {
+                "name": "supplier_name",
+                "value": "",
+                "type": "query",
+                "description": "Substring match on supplier company name."
+              },
+              {
+                "name": "supplier_uuid",
+                "value": "",
+                "type": "query",
+                "description": "Supplier company UUID (relational key alias)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a per-currency aggregate (sum / avg / min / max) of `total_in_buyer_currency` over the filtered agreements, computed in full-precision Decimal micro-units and rounded to integer cents once per currency. The per-agreement value matches what the list endpoint surfaces today — line-item totals computed at each agreement's per-order quantity (`AgreementLineItem.quantity` = `total_quantity_agreed / estimated_number_of_orders`) plus shipping and tax. Use this for cross-agreement sum/total/aver"
+        },
+        {
+          "info": {
+            "name": "List all agreements for the merchant of record company",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agreements/merchant-of-record/",
+            "params": [
+              {
+                "name": "active",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "date_after",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "date_before",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "product",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "* `active` - Active\n* `renewal` - Renewal\n* `expired` - Expired\n* `draft` - Draft"
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of all agreements where the current user's company is the merchant of record. Supports search by agreement_number, buyer_company name, or supplier_company name; buyer/supplier/date_after/date_before/active filters; and ordering by contract_start_date or contract_end_date."
+        },
+        {
+          "info": {
+            "name": "Create a new agreement",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agreements/merchant-of-record/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new agreement as merchant of record. The buyer currency is always set to GBP."
+        },
+        {
+          "info": {
+            "name": "Retrieve a specific agreement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agreements/merchant-of-record/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns detailed information about a specific agreement"
+        },
+        {
+          "info": {
+            "name": "Merchant of Record endpoints for Agreements",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/agreements/merchant-of-record/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Merchant of Record endpoints for Agreements"
+        },
+        {
+          "info": {
+            "name": "Merchant of Record endpoints for Agreements",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/agreements/merchant-of-record/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Merchant of Record endpoints for Agreements"
+        },
+        {
+          "info": {
+            "name": "Merchant of Record endpoints for Agreements",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/agreements/merchant-of-record/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Merchant of Record endpoints for Agreements"
+        },
+        {
+          "info": {
+            "name": "Upload a document for an agreement line item",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agreements/merchant-of-record/:uuid/line-item/:line_item_uuid/documents/",
+            "params": [
+              {
+                "name": "line_item_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Uploads a document (spec sheet or signed agreement) for a specific line item"
+        },
+        {
+          "info": {
+            "name": "Delete a document for an agreement line item",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/agreements/merchant-of-record/:uuid/line-item/:line_item_uuid/documents/:document_uuid/",
+            "params": [
+              {
+                "name": "document_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "line_item_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes a document (spec sheet or signed agreement) for a specific line item"
+        },
+        {
+          "info": {
+            "name": "List orders placed against this agreement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agreements/merchant-of-record/:uuid/orders/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the orders linked to this agreement (tenant-scoped to the MoR), newest first — powers the contract detail's Linked Orders table."
+        },
+        {
+          "info": {
+            "name": "Place an order from a contract (agreement)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agreements/merchant-of-record/:uuid/place-order/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new order from the contract on behalf of the buyer. Mirrors the buyer self-service flow: quantities + delivery date/address are supplied; prices, currencies, terms, shipping/fees and product details are derived from the contract. The buyer contact the order is placed for is given via `ordered_by_uuid`."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

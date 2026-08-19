@@ -1,0 +1,75 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Masquerade API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Masquerade",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List users for a company managed by MoR",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/merchant-of-record/masquerade/companies/:company_uuid/users/",
+            "params": [
+              {
+                "name": "company_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a list of users that can be masqueraded for a specific company."
+        },
+        {
+          "info": {
+            "name": "Get temporary token for masquerade mode",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/merchant-of-record/masquerade/get-temporary-token/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a temporary token for a user from a company managed by the MoR. Use this token with the existing /api/v1/users/admin_panel/get_token/ endpoint to exchange for a real token."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

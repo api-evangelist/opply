@@ -1,0 +1,94 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Buyer Financial Documents API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Buyer Financial Documents",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Buyer financial documents (P&L, balance sheet, management accounts)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/brand/financial-documents/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List, upload and delete financial documents that buyers attach to support\ncredit-limit reviews.\n\nTenant isolation: queryset is always filtered to ``request.user_company``."
+        },
+        {
+          "info": {
+            "name": "Upload a financial document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/brand/financial-documents/",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List, upload and delete financial documents that buyers attach to support\ncredit-limit reviews.\n\nTenant isolation: queryset is always filtered to ``request.user_company``."
+        },
+        {
+          "info": {
+            "name": "Delete a financial document",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/companies/brand/financial-documents/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List, upload and delete financial documents that buyers attach to support\ncredit-limit reviews.\n\nTenant isolation: queryset is always filtered to ``request.user_company``."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

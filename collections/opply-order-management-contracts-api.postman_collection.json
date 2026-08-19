@@ -1,0 +1,2220 @@
+{
+  "item": [
+    {
+      "id": "2ea44f56-5ba8-42eb-9aa6-ace049180ef6",
+      "name": "Order Management Contracts",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c2c14a36-74c4-42e4-aae8-6dcc14faa277",
+          "name": "Get the buyer's currently active Order Management Contract",
+          "request": {
+            "name": "Get the buyer's currently active Order Management Contract",
+            "description": {
+              "content": "Returns the latest OMC where today falls within [start_date, end_date]. If the buyer has no active OMC, the response is `{state: 'empty', data: null}`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "order-management-contracts",
+                "buyer",
+                "current",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "663338af-5b5e-4fbe-ab3a-325256e98231",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "buyer",
+                    "current",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"avg_monthly_in_cents\": 8808,\n    \"contract_duration_days\": 1880,\n    \"currency\": \"string\",\n    \"days_elapsed\": 1305,\n    \"months_elapsed\": 8461,\n    \"months_total\": 8216,\n    \"renews\": \"string\",\n    \"signed\": \"string\",\n    \"total_in_cents\": 3990,\n    \"utilised_in_cents\": 220\n  },\n  \"state\": \"active\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9958e519-10fe-48f5-a7c7-8a7e2b0e4816",
+              "name": "Authentication credentials were not provided or are invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "buyer",
+                    "current",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b17ae0c0-7178-41eb-9e2a-bf3283528775",
+          "name": "List all order management contracts for the merchant of record company",
+          "request": {
+            "name": "List all order management contracts for the merchant of record company",
+            "description": {
+              "content": "Returns a paginated list of all order management contracts where the current user's company is the merchant of record.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "order-management-contracts",
+                "merchant-of-record",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "activeContractsOnly",
+                  "value": "<boolean>",
+                  "description": "Filter to show only active contracts (where today < end_date)"
+                },
+                {
+                  "disabled": false,
+                  "key": "buyer",
+                  "value": "<uuid>",
+                  "description": "Filter by buyer company UUID"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Search across contract number and buyer name (case-insensitive partial match)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "329b78dc-689c-4922-9c89-d0dceca57687",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "activeContractsOnly",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "buyer",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"buyer\": {\n        \"id\": 7770,\n        \"name\": \"string\",\n        \"uuid\": \"771e9c71-09f3-fa4f-f82a-b1edc400661f\"\n      },\n      \"contract_number\": \"string\",\n      \"created_at\": \"1967-03-17T16:37:59.725Z\",\n      \"end_date\": \"2001-10-30\",\n      \"modified_at\": \"1988-01-13T11:25:29.427Z\",\n      \"period_in_months\": 1251616976,\n      \"service_fees\": [\n        {\n          \"uuid\": \"a322921f-27b2-0944-69a9-d4e0e48b8908\",\n          \"service_fee_type\": \"order_management_with_payment_support\",\n          \"service_fee_percentage\": \"-7\"\n        },\n        {\n          \"uuid\": \"afcf0936-708a-c8c7-c8b9-ae29b116a17d\",\n          \"service_fee_type\": \"order_management_with_payment_support\",\n          \"service_fee_percentage\": \"-.63\"\n        }\n      ],\n      \"signed_date\": \"2022-05-01\",\n      \"start_date\": \"1948-10-11\",\n      \"total_contract_value\": 1847634217149413400,\n      \"uuid\": \"fc57810f-487d-4ad6-3899-5abb60b71bf4\",\n      \"currency\": \"GBP\",\n      \"service_fee_percentage\": \"-.782\"\n    },\n    {\n      \"buyer\": {\n        \"id\": 8610,\n        \"name\": \"string\",\n        \"uuid\": \"c62738e6-d60e-6da1-c7c9-6911bf1189b0\"\n      },\n      \"contract_number\": \"string\",\n      \"created_at\": \"1987-12-27T05:11:06.027Z\",\n      \"end_date\": \"1966-07-21\",\n      \"modified_at\": \"1947-09-20T14:58:22.508Z\",\n      \"period_in_months\": 1942351907,\n      \"service_fees\": [\n        {\n          \"uuid\": \"fd2112fd-ad5f-b48b-a150-b15c6e7fd1ba\",\n          \"service_fee_type\": \"order_management_only\",\n          \"service_fee_percentage\": \"4\"\n        },\n        {\n          \"uuid\": \"9d50065f-c7aa-770d-a151-390f483498cb\",\n          \"service_fee_type\": \"order_management_with_payment_support\",\n          \"service_fee_percentage\": \"-4\"\n        }\n      ],\n      \"signed_date\": \"1988-09-25\",\n      \"start_date\": \"2003-11-15\",\n      \"total_contract_value\": 4019544214155181000,\n      \"uuid\": \"b752aae8-b807-6453-1624-98d5cfd720b7\",\n      \"currency\": \"EUR\",\n      \"service_fee_percentage\": \"-6.9986\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d9c2c5c3-4d6d-42ed-aa4a-3ca8e0554f58",
+              "name": "Authentication credentials were not provided or are invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "activeContractsOnly",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "buyer",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6df353ca-9f79-47cd-a768-1630ca718e21",
+              "name": "User is not authorized to view these contracts",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "activeContractsOnly",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "buyer",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8da0c302-bb30-4f51-96f6-cbf811339a16",
+          "name": "Create a new order management contract",
+          "request": {
+            "name": "Create a new order management contract",
+            "description": {
+              "content": "Creates a new order management contract as merchant of record.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "order-management-contracts",
+                "merchant-of-record",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "buyer",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "period_in_months",
+                  "value": "<integer>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "signed_date",
+                  "value": "<date>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "start_date",
+                  "value": "<date>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "total_contract_value",
+                  "value": "<integer>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "currency",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "service_fee_percentage",
+                  "value": "<decimal>"
+                },
+                {
+                  "disabled": false,
+                  "key": "service_fees",
+                  "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                },
+                {
+                  "disabled": false,
+                  "key": "service_fees",
+                  "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "8c75ba37-b00b-4c91-b067-d94feee33221",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "buyer",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "period_in_months",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "signed_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "total_contract_value",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fee_percentage",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"agreements\": {\n    \"key_0\": {}\n  },\n  \"buyer\": {\n    \"id\": 9938,\n    \"name\": \"string\",\n    \"uuid\": \"0bc37004-0bcc-f2f8-666f-a49cdc1623ed\"\n  },\n  \"contract_number\": \"string\",\n  \"created_at\": \"1983-06-17T18:00:46.280Z\",\n  \"end_date\": \"2006-08-15\",\n  \"merchant_of_record_company\": {\n    \"id\": 5157,\n    \"name\": \"string\",\n    \"uuid\": \"30df0c92-09a1-638d-c817-9af716a31bfe\"\n  },\n  \"modified_at\": \"2000-04-08T20:25:14.701Z\",\n  \"orders\": {\n    \"key_0\": {}\n  },\n  \"period_in_months\": 1461632576,\n  \"service_fees\": [\n    {\n      \"uuid\": \"8150cc1a-c0d3-69d6-8823-f8ab059e2896\",\n      \"service_fee_type\": \"<string>\",\n      \"service_fee_percentage\": \"\"\n    },\n    {\n      \"uuid\": \"e23c5a4a-a8ae-e16a-3678-eea317e8390b\",\n      \"service_fee_type\": \"<string>\",\n      \"service_fee_percentage\": \"-.2632\"\n    }\n  ],\n  \"signed_date\": \"2001-02-17\",\n  \"start_date\": \"1984-02-27\",\n  \"total_contract_value\": 7204170334372109000,\n  \"uuid\": \"6ca6011c-2c21-6f74-c934-257812a036e7\",\n  \"currency\": \"<string>\",\n  \"service_fee_percentage\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0feef7b4-70ef-435d-a5bb-9552b5406db8",
+              "name": "Validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "buyer",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "period_in_months",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "signed_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "total_contract_value",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fee_percentage",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7fd430b8-0b5e-460b-b9e3-e0196df216d5",
+          "name": "Retrieve a specific order management contract",
+          "request": {
+            "name": "Retrieve a specific order management contract",
+            "description": {
+              "content": "Returns detailed information about a specific order management contract, including related orders and agreements.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "order-management-contracts",
+                "merchant-of-record",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "8d520940-d739-4110-87f6-35e855a9ac51",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"agreements\": {\n    \"key_0\": {},\n    \"key_1\": {},\n    \"key_2\": {}\n  },\n  \"buyer\": {\n    \"id\": 7090,\n    \"name\": \"string\",\n    \"uuid\": \"833c13c5-585a-5843-d28c-ddc0b2757734\"\n  },\n  \"contract_number\": \"string\",\n  \"created_at\": \"2025-11-24T19:32:24.293Z\",\n  \"end_date\": \"1961-09-05\",\n  \"merchant_of_record_company\": {\n    \"id\": 1658,\n    \"name\": \"string\",\n    \"uuid\": \"84293249-589e-cc1d-f88d-367e609a3fe6\"\n  },\n  \"modified_at\": \"1988-04-21T04:00:52.082Z\",\n  \"orders\": {\n    \"key_0\": {}\n  },\n  \"period_in_months\": 1733036965,\n  \"service_fees\": [\n    {\n      \"uuid\": \"45d54567-76a1-8f93-7bd6-0ba3b8cadf98\",\n      \"service_fee_type\": \"<string>\",\n      \"service_fee_percentage\": \"-9.810\"\n    },\n    {\n      \"uuid\": \"101c549f-7076-95ef-b3f9-9ec34e7b7346\",\n      \"service_fee_type\": \"<string>\",\n      \"service_fee_percentage\": \"4\"\n    }\n  ],\n  \"signed_date\": \"1987-06-26\",\n  \"start_date\": \"2019-01-19\",\n  \"total_contract_value\": 4498132777755905000,\n  \"uuid\": \"a811d228-c6c7-8635-5487-7e4ff31ec646\",\n  \"currency\": \"<string>\",\n  \"service_fee_percentage\": \"-\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f964059e-38f7-4c3e-b4fa-b59d64542d90",
+              "name": "Authentication credentials were not provided or are invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3c3e556b-1db2-4b2f-8877-1da9c3d1b793",
+              "name": "User is not authorized to view this contract",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9da65380-ab24-45b5-8053-a7aa63b99cd0",
+              "name": "Contract not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a2536333-10ee-45bd-ba80-7abfc62e3998",
+          "name": "Update an order management contract",
+          "request": {
+            "name": "Update an order management contract",
+            "description": {
+              "content": "Updates an existing order management contract.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "order-management-contracts",
+                "merchant-of-record",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "signed_date",
+                  "value": "<date>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "start_date",
+                  "value": "<date>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "currency",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "period_in_months",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "total_contract_value",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "service_fee_percentage",
+                  "value": "<decimal>"
+                },
+                {
+                  "disabled": false,
+                  "key": "service_fees",
+                  "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                },
+                {
+                  "disabled": false,
+                  "key": "service_fees",
+                  "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6467e7e5-b9a3-40e9-a860-93b208af59af",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "signed_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "period_in_months",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "total_contract_value",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fee_percentage",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"agreements\": {\n    \"key_0\": {},\n    \"key_1\": {},\n    \"key_2\": {}\n  },\n  \"buyer\": {\n    \"id\": 7090,\n    \"name\": \"string\",\n    \"uuid\": \"833c13c5-585a-5843-d28c-ddc0b2757734\"\n  },\n  \"contract_number\": \"string\",\n  \"created_at\": \"2025-11-24T19:32:24.293Z\",\n  \"end_date\": \"1961-09-05\",\n  \"merchant_of_record_company\": {\n    \"id\": 1658,\n    \"name\": \"string\",\n    \"uuid\": \"84293249-589e-cc1d-f88d-367e609a3fe6\"\n  },\n  \"modified_at\": \"1988-04-21T04:00:52.082Z\",\n  \"orders\": {\n    \"key_0\": {}\n  },\n  \"period_in_months\": 1733036965,\n  \"service_fees\": [\n    {\n      \"uuid\": \"45d54567-76a1-8f93-7bd6-0ba3b8cadf98\",\n      \"service_fee_type\": \"<string>\",\n      \"service_fee_percentage\": \"-9.810\"\n    },\n    {\n      \"uuid\": \"101c549f-7076-95ef-b3f9-9ec34e7b7346\",\n      \"service_fee_type\": \"<string>\",\n      \"service_fee_percentage\": \"4\"\n    }\n  ],\n  \"signed_date\": \"1987-06-26\",\n  \"start_date\": \"2019-01-19\",\n  \"total_contract_value\": 4498132777755905000,\n  \"uuid\": \"a811d228-c6c7-8635-5487-7e4ff31ec646\",\n  \"currency\": \"<string>\",\n  \"service_fee_percentage\": \"-\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d1f550af-bb9b-4d90-b73a-f815544ef238",
+              "name": "Validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "signed_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "period_in_months",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "total_contract_value",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fee_percentage",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1b1992a5-d6e1-4c87-bc9c-553c86f14652",
+              "name": "User is not authorized to update this contract",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "signed_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "period_in_months",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "total_contract_value",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fee_percentage",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3b9d4a6b-976b-4dd2-84a4-59fe12c5f1af",
+              "name": "Contract not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "signed_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "period_in_months",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "total_contract_value",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fee_percentage",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b66c829c-a791-4aca-86fb-61d95a673528",
+          "name": "Partially update an order management contract",
+          "request": {
+            "name": "Partially update an order management contract",
+            "description": {
+              "content": "Partially updates an existing order management contract.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "order-management-contracts",
+                "merchant-of-record",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "currency",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "start_date",
+                  "value": "<date>"
+                },
+                {
+                  "disabled": false,
+                  "key": "signed_date",
+                  "value": "<date>"
+                },
+                {
+                  "disabled": false,
+                  "key": "period_in_months",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "total_contract_value",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "service_fee_percentage",
+                  "value": "<decimal>"
+                },
+                {
+                  "disabled": false,
+                  "key": "service_fees",
+                  "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                },
+                {
+                  "disabled": false,
+                  "key": "service_fees",
+                  "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "03a938ba-ed92-4fee-987f-960a3306670f",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "signed_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "period_in_months",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "total_contract_value",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fee_percentage",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"agreements\": {\n    \"key_0\": {},\n    \"key_1\": {},\n    \"key_2\": {}\n  },\n  \"buyer\": {\n    \"id\": 7090,\n    \"name\": \"string\",\n    \"uuid\": \"833c13c5-585a-5843-d28c-ddc0b2757734\"\n  },\n  \"contract_number\": \"string\",\n  \"created_at\": \"2025-11-24T19:32:24.293Z\",\n  \"end_date\": \"1961-09-05\",\n  \"merchant_of_record_company\": {\n    \"id\": 1658,\n    \"name\": \"string\",\n    \"uuid\": \"84293249-589e-cc1d-f88d-367e609a3fe6\"\n  },\n  \"modified_at\": \"1988-04-21T04:00:52.082Z\",\n  \"orders\": {\n    \"key_0\": {}\n  },\n  \"period_in_months\": 1733036965,\n  \"service_fees\": [\n    {\n      \"uuid\": \"45d54567-76a1-8f93-7bd6-0ba3b8cadf98\",\n      \"service_fee_type\": \"<string>\",\n      \"service_fee_percentage\": \"-9.810\"\n    },\n    {\n      \"uuid\": \"101c549f-7076-95ef-b3f9-9ec34e7b7346\",\n      \"service_fee_type\": \"<string>\",\n      \"service_fee_percentage\": \"4\"\n    }\n  ],\n  \"signed_date\": \"1987-06-26\",\n  \"start_date\": \"2019-01-19\",\n  \"total_contract_value\": 4498132777755905000,\n  \"uuid\": \"a811d228-c6c7-8635-5487-7e4ff31ec646\",\n  \"currency\": \"<string>\",\n  \"service_fee_percentage\": \"-\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69e8eb6c-8304-4776-a8a2-c07c19d88902",
+              "name": "Validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "signed_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "period_in_months",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "total_contract_value",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fee_percentage",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1bbe9e77-e57c-4312-bcaf-4033b9d16460",
+              "name": "User is not authorized to update this contract",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "signed_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "period_in_months",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "total_contract_value",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fee_percentage",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "01c15396-caab-45ce-86aa-c53236321f68",
+              "name": "Contract not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "signed_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "period_in_months",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "total_contract_value",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fee_percentage",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "service_fees",
+                      "value": "{\"service_fee_percentage\":\"<decimal>\",\"service_fee_type\":\"<string>\"}"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3dd77f8b-9ade-49a5-b8c0-da8a3f7a3770",
+          "name": "Merchant of Record endpoints for Order Management Contracts",
+          "request": {
+            "name": "Merchant of Record endpoints for Order Management Contracts",
+            "description": {
+              "content": "ViewSet for managing order management contracts from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their order management contracts\n- Create new contracts\n- Update existing contracts\n\nAll operations are restricted to contracts where the current user's company\nis the merchant of record.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "order-management-contracts",
+                "merchant-of-record",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ea9d4c4a-1d5c-4112-8115-6806e8de12a2",
+              "name": "No response body",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "order-management-contracts",
+                    "merchant-of-record",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "a3a2772c-c36f-4a61-857b-887cdc996f15",
+    "name": "Opply Activity Feed Order Management Contracts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

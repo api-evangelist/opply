@@ -1,0 +1,452 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Buyer self-onboarding API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Buyer self-onboarding",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update the buyer Business Profile section.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/companies/me/business-profile/update/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Write-only buyer onboarding endpoints scoped to `request.user_company`.\nBusiness profile + IBAN updates land here."
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_me_delivery_locations_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/me/delivery-locations/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Short-circuit a buyer-confirmed dedup: when the buyer picked \"Use my\nsaved address\" on a \"might be X\" delivery card, link the external id to\nthat existing address and return it — no new row, and no need for the\nfull required-address validation (we're not creating one)."
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_me_delivery_locations_match_preview_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/me/delivery-locations/match-preview/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Preview which discovered delivery addresses the buyer already has\nsaved, so the import review can show \"already saved / might be your saved\naddress\" hints. Results are aligned by index to the request order."
+        },
+        {
+          "info": {
+            "name": "Update the buyer's IBAN (Banking & payments section).",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/companies/me/onboarding-banking/update/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Write-only buyer onboarding endpoints scoped to `request.user_company`.\nBusiness profile + IBAN updates land here."
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_me_onboarding_compliance_documents_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/me/onboarding-compliance-documents/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``POST /companies/me/onboarding-compliance-documents/`` — commit a\nstaged compliance document (e.g. a sales tax exemption certificate).\n\nCopies the scrubbed source file out of the onboarding bucket into a\n``companies.BuyerDocument`` with the matching ``DocumentType``, applies\nany buyer edits from the review screen, and (for sales tax exemptions)\nbest-effort flips ``AccountDetail.tax_exemption_certificate``.\nIdempotent: re-committing the same staged row returns the existing\ndocument."
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_me_onboarding_extractions_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/me/onboarding-extractions/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``/companies/me/onboarding-extractions/`` — the staging table the\nFE persists the agent's proposal to so Step 2 survives a reload.\n\nRe-staging for the same batch destructively overwrites the\nprevious proposal (OneToOne to batch). The FE never re-runs\nextraction silently — every overwrite happens after a new\n``opplyExtractionComplete`` event."
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_me_onboarding_extractions_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/me/onboarding-extractions/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``/companies/me/onboarding-extractions/`` — the staging table the\nFE persists the agent's proposal to so Step 2 survives a reload.\n\nRe-staging for the same batch destructively overwrites the\nprevious proposal (OneToOne to batch). The FE never re-runs\nextraction silently — every overwrite happens after a new\n``opplyExtractionComplete`` event."
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_me_onboarding_extractions_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/me/onboarding-extractions/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``/companies/me/onboarding-extractions/`` — the staging table the\nFE persists the agent's proposal to so Step 2 survives a reload.\n\nRe-staging for the same batch destructively overwrites the\nprevious proposal (OneToOne to batch). The FE never re-runs\nextraction silently — every overwrite happens after a new\n``opplyExtractionComplete`` event."
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_me_onboarding_ingredients_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/me/onboarding-ingredients/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create `catalog.BuyerItem` rows for the buyer's company. The\npost-onboarding Materials page reads from the same model\n(`/api/v1/catalog/items/`) so anything created here shows up\nimmediately. `kind` discriminates ingredients from packaging."
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_me_onboarding_ingredients_match_preview_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/me/onboarding-ingredients/match-preview/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Preview which discovered materials already exist in the buyer's\ncatalogue, so the import review can show \"already in your materials\"\n(exact — merges at commit) / \"might be your existing X\" (fuzzy) hints.\nScoped to the buyer's own `BuyerItem` rows."
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_me_onboarding_invoice_batches_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/me/onboarding-invoice-batches/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``/companies/me/onboarding-invoice-batches/`` — create or read a\nbatch the buyer uploads invoices into."
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_me_onboarding_invoice_batches_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/me/onboarding-invoice-batches/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``/companies/me/onboarding-invoice-batches/`` — create or read a\nbatch the buyer uploads invoices into."
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_me_onboarding_invoices_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/me/onboarding-invoices/",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``/companies/me/onboarding-invoices/`` — multipart upload, read,\nand soft-delete for a single invoice file.\n\nThe bytes themselves are written to a private S3 bucket via\n``invoice_storage.upload_to_private_bucket``; the row stores only\nthe object key. ``content`` returns a 15-minute signed URL when\nthe agent (or the buyer's FE) needs to read the file."
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_me_onboarding_invoices_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/me/onboarding-invoices/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``/companies/me/onboarding-invoices/`` — multipart upload, read,\nand soft-delete for a single invoice file.\n\nThe bytes themselves are written to a private S3 bucket via\n``invoice_storage.upload_to_private_bucket``; the row stores only\nthe object key. ``content`` returns a 15-minute signed URL when\nthe agent (or the buyer's FE) needs to read the file."
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_me_onboarding_invoices_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/companies/me/onboarding-invoices/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``/companies/me/onboarding-invoices/`` — multipart upload, read,\nand soft-delete for a single invoice file.\n\nThe bytes themselves are written to a private S3 bucket via\n``invoice_storage.upload_to_private_bucket``; the row stores only\nthe object key. ``content`` returns a 15-minute signed URL when\nthe agent (or the buyer's FE) needs to read the file."
+        },
+        {
+          "info": {
+            "name": "Return a short-TTL signed URL the agent uses to read the invoice bytes.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/me/onboarding-invoices/:uuid/content/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``/companies/me/onboarding-invoices/`` — multipart upload, read,\nand soft-delete for a single invoice file.\n\nThe bytes themselves are written to a private S3 bucket via\n``invoice_storage.upload_to_private_bucket``; the row stores only\nthe object key. ``content`` returns a 15-minute signed URL when\nthe agent (or the buyer's FE) needs to read the file."
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_me_onboarding_suppliers_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/me/onboarding-suppliers/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create + list `Supplier` rows attached to the buyer's `BuyerOnboarding`.\n\nThe agent commits one row per extracted supplier. The list action backs\nthe post-onboarding \"Suppliers in progress\" tab, which surfaces rows the\nbuyer submitted that the MoR has not yet reviewed (`pending_review`)."
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_me_onboarding_suppliers_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/me/onboarding-suppliers/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create + list `Supplier` rows attached to the buyer's `BuyerOnboarding`.\n\nThe agent commits one row per extracted supplier. The list action backs\nthe post-onboarding \"Suppliers in progress\" tab, which surfaces rows the\nbuyer submitted that the MoR has not yet reviewed (`pending_review`)."
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_me_onboarding_suppliers_match_preview_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/me/onboarding-suppliers/match-preview/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Preview which discovered suppliers the buyer ALREADY has — onboarded,\nmid-onboarding, or a pending submission — so the import review can show\n\"you already have this / it's already being set up\" hints before commit.\n\nScoped to the buyer's own suppliers only — a graph match the buyer\ndoesn't have at all is the MoR's concern (surfaced at commit via the\nsubmission's `suggested_supplier_company`), never shown to the buyer."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

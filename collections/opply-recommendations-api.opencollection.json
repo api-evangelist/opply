@@ -1,0 +1,296 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Recommendations API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Recommendations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List recommendations for the current buyer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/recommendations/",
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "The pagination cursor value."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter by lifecycle state (`active`, `snoozed`, `dismissed`, `superseded`, `acted`, `stale`). Defaults to `active`."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time "
+        },
+        {
+          "info": {
+            "name": "Fetch a single recommendation by UUID (any lifecycle state)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/recommendations/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time "
+        },
+        {
+          "info": {
+            "name": "api_v1_recommendations_act_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/recommendations/:uuid/act/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time "
+        },
+        {
+          "info": {
+            "name": "api_v1_recommendations_dismiss_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/recommendations/:uuid/dismiss/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time "
+        },
+        {
+          "info": {
+            "name": "api_v1_recommendations_mark_stale_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/recommendations/:uuid/mark-stale/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time "
+        },
+        {
+          "info": {
+            "name": "api_v1_recommendations_restore_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/recommendations/:uuid/restore/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time "
+        },
+        {
+          "info": {
+            "name": "api_v1_recommendations_snooze_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/recommendations/:uuid/snooze/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time "
+        },
+        {
+          "info": {
+            "name": "api_v1_recommendations_supersede_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/recommendations/:uuid/supersede/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time "
+        },
+        {
+          "info": {
+            "name": "Recent recipient actions (for the agent's cooldown check)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/recommendations/recent-actions/",
+            "params": [
+              {
+                "name": "days",
+                "value": "",
+                "type": "query",
+                "description": "Look-back window in days (default 30)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time "
+        },
+        {
+          "info": {
+            "name": "api_v1_recommendations_seed_recommendation_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/recommendations/seed-recommendation/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``POST /api/v1/recommendations/seed-recommendation/`` — staff-only.\n\nBody ``{company_uuid?}``. Creates a ready-made ``supplier_concentration``\nrecommendation directly — **no agent run** — for that buyer (defaulting to\nthe caller's own company). Use when the recommender agent declines to create\none and you just want a fresh nudge in the feed to exercise the CTA. Returns\nthe recommendation uuid. Targeting another company requires staff access."
+        },
+        {
+          "info": {
+            "name": "api_v1_recommendations_trigger_recommendations_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/recommendations/trigger-recommendations/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``POST /api/v1/recommendations/trigger-recommendations/`` — staff-only.\n\nBody ``{company_uuid?}``. Creates the recommender-run Task for that buyer\n(defaulting to the caller's own company); the existing dispatch path then\nruns the agent. Returns the Task + AgentTaskRun uuids so the debug UI can\nlink to them. Targeting a company other than your own requires staff access."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

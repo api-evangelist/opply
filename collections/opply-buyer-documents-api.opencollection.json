@@ -1,0 +1,369 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Buyer Documents API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Buyer Documents",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List buyer documents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/buyer-documents/",
+            "params": [
+              {
+                "name": "is_archived",
+                "value": "",
+                "type": "query",
+                "description": "Filter by computed `is_archived` (active vs archived sub-tab)."
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by computed lifecycle status."
+              },
+              {
+                "name": "type_uuid__in",
+                "value": "",
+                "type": "query",
+                "description": "Filter by comma-separated document type UUIDs."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns all certification documents for the current buyer company."
+        },
+        {
+          "info": {
+            "name": "Upload buyer document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/buyer-documents/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Upload a new certification document (BRCGS, organic cert, ISO 9001, etc.)."
+        },
+        {
+          "info": {
+            "name": "Retrieve buyer document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/buyer-documents/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns details for a specific buyer certification document."
+        },
+        {
+          "info": {
+            "name": "Update buyer document",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/companies/buyer-documents/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update all fields of an existing buyer document."
+        },
+        {
+          "info": {
+            "name": "Partial update buyer document",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/companies/buyer-documents/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update specific fields of an existing buyer document."
+        },
+        {
+          "info": {
+            "name": "Delete buyer document",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/companies/buyer-documents/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Permanently delete a buyer document."
+        },
+        {
+          "info": {
+            "name": "List document types present on the buyer's documents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/buyer-documents/types-facet/",
+            "params": [
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the distinct `DocumentType`s that have at least one BuyerDocument for the current brand. Used by the FE filter dropdown so it only offers types the user can actually narrow to."
+        },
+        {
+          "info": {
+            "name": "List supplier documents for buyer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/buyer-supplier-documents/",
+            "params": [
+              {
+                "name": "is_archived",
+                "value": "",
+                "type": "query",
+                "description": "Filter by computed `is_archived` (active vs archived sub-tab)."
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "site_uuid__in",
+                "value": "",
+                "type": "query",
+                "description": "Filter by comma-separated supplier site UUIDs."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by computed lifecycle status."
+              },
+              {
+                "name": "supplier_uuid",
+                "value": "",
+                "type": "query",
+                "description": "Filter by supplier company UUID."
+              },
+              {
+                "name": "supplier_uuid__in",
+                "value": "",
+                "type": "query",
+                "description": "Filter by comma-separated supplier company UUIDs."
+              },
+              {
+                "name": "type_uuid__in",
+                "value": "",
+                "type": "query",
+                "description": "Filter by comma-separated document type UUIDs."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns all supplier certification documents visible to the current buyer. Includes documents from all suppliers the buyer has a referral relationship with. Supplier-wide documents (no buyer assigned) and buyer-specific documents are included."
+        },
+        {
+          "info": {
+            "name": "Retrieve supplier document (buyer view)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/buyer-supplier-documents/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns details for a specific supplier document."
+        },
+        {
+          "info": {
+            "name": "List document types present on supplier documents visible to the buyer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/buyer-supplier-documents/types-facet/",
+            "params": [
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the distinct `DocumentType`s that have at least one SupplierDocument visible to the current brand (via REGISTERED referral). Used by the FE filter dropdown so it only offers types the user can actually narrow to."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

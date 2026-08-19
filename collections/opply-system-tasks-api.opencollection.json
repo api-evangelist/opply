@@ -1,0 +1,148 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed System Tasks API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "System Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List system-task definitions with rollup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/system-tasks/definitions/",
+            "params": [
+              {
+                "name": "company_uuid",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``GET`` — list system-task definitions with rollup counts, scoped to the caller."
+        },
+        {
+          "info": {
+            "name": "Pause or resume all tenant series for a system-task definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/system-tasks/definitions/:key/state/",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``POST`` — pause / resume **every** installed tenant's series for one\ndefinition (the definition-level master switch on the MoR page).\n\nDefinitions are config-in-code (no persisted per-definition flag), so the\n\"enabled\" state is derived from the tenant recurrences and toggled in bulk\nhere. Same authorisation + system-task scoping as the per-tenant action.\nResuming recomputes each series' ``next_run_at`` from now and silently skips\nany exhausted series (whole batch never 400s on one dead series)."
+        },
+        {
+          "info": {
+            "name": "Pause or resume a tenant's system-task series",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/system-tasks/recurrences/:recurrence_uuid/state/",
+            "params": [
+              {
+                "name": "recurrence_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``POST`` — pause / resume one tenant's system-task series.\n\nA MoR operates *other tenants'* system-task recurrences, whose template\n``task.company`` is the buyer — not the MoR — so the tenant-scoped\n``TaskRecurrenceViewSet.disable/enable`` (``task__company=user_company``)\ncan't reach them (404). This mirrors that behaviour but authorises through\nthe same cross-tenant ``_scope_companies`` gate the rest of the page uses,\nand only ever addresses **system-task** recurrences (``system_task_key``\nset)"
+        },
+        {
+          "info": {
+            "name": "Run a system-task fan-out and return a result summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/system-tasks/sync/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``POST`` — on-demand fan-out trigger. Runs the sync inline and returns a\nresult summary so the button can report what happened (e.g. \"0 new, 2 already\nup to date\") rather than a blind fire-and-forget.\n\nMoR/staff only (tenants never trigger fan-out). Body: ``{key?, company_uuid?}``.\nRuns synchronously because the summary is the whole point of the button; the\nsync is idempotent and cheap after the first run (existence checks). The beat\n/ deploy / onboarding-signal paths stay async via the Celery t"
+        },
+        {
+          "info": {
+            "name": "List per-tenant series (schedule + gate + occurrences) for a system-task definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/system-tasks/tasks/",
+            "params": [
+              {
+                "name": "company_uuid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``GET ?key=`` — per-tenant *series* rows for one definition, scoped to the caller.\n\nTenant-centric (not occurrence-centric): each installed tenant is one row —\nits schedule (from the template ``TaskRecurrence``), pre-run gate state, latest\nrun, and its occurrence history. This keeps a scheduled job legible even when\nit has no occurrences yet (future first slot) or keeps getting skipped by the\ngate (hourly job, no new work) — the common case for a gated cron job."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

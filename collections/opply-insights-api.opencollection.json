@@ -1,0 +1,82 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Insights API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Insights",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List insights for the current buyer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/insights/",
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "The pagination cursor value."
+              },
+              {
+                "name": "insight_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by insight_type — free-text on the column, but the typical values are `pricing`, `peer`, `npd`, `reorder`, `investor`."
+              },
+              {
+                "name": "sector",
+                "value": "",
+                "type": "query",
+                "description": "Filter by brain sector — mirrors ``FeedItemEventType`` values (`suppliers`, `ingredients`, `operations`, `compliance`, `commercial`, `financials`, `market`)."
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query",
+                "description": "Filter by producer identifier (e.g. `opply.enrichment`, `opply.news`)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-scoped insights feed.\n\nReturns cursor-paginated insights, newest first. The queryset surfaces both\ninsights bound to the authenticated user's company AND cross-portfolio\ninsights with ``company IS NULL`` (e.g. industry trends, investor signals).\n``retrieve`` (by ``uuid``) backs the insights-recommender's ``get_insight`` MCP\ntool; it stays scoped by the same ``get_queryset``.\n\nFilter params: ``insight_type``, ``source``, ``sector``."
+        },
+        {
+          "info": {
+            "name": "api_v1_insights_debug_seed_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/insights/debug/seed/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``POST /api/v1/insights/debug/seed/`` — staff-only.\n\nBody ``{company_uuid?}``. Idempotently seeds the sample insight(s) for that\nbuyer (defaulting to the caller's own company) and returns their uuids.\nTargeting a company other than your own requires staff access."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

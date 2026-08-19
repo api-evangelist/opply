@@ -1,0 +1,955 @@
+{
+  "item": [
+    {
+      "id": "7e102a63-c14e-405e-aaa1-f0effcfa063f",
+      "name": "Notes",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9ef5ca47-dbd3-41cf-88ad-f5128c0d4f27",
+          "name": "List notes",
+          "request": {
+            "name": "List notes",
+            "description": {
+              "content": "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same task (e.g. the buyer on a MoR-routed task). Usable by\n  buyers, MoR, and taskable agents (agents are hard-scoped to their\n  installation company, so company-private visibility scopes them for free).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "notes",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "task_uuid",
+                  "value": "<uuid>",
+                  "description": "UUID of a task whose company-private notes to list. Mutually exclusive with target_type/target_uuid."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5fa141ea-c19b-4d14-97d2-d040b25aa79e",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "notes",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_uuid",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"attachments\": [\n        {\n          \"disposition\": \"suspicious\",\n          \"filename\": \"string\",\n          \"mime\": \"string\",\n          \"uuid\": \"bbfff9e0-0dac-3831-0c71-f65c395699a4\"\n        },\n        {\n          \"disposition\": \"suspicious\",\n          \"filename\": \"string\",\n          \"mime\": \"string\",\n          \"uuid\": \"0c3c31fd-7d50-9b1c-0b37-1a2a02abab24\"\n        }\n      ],\n      \"body\": \"string\",\n      \"company_uuid\": \"6fe58098-fc2b-0980-4180-73769ef62708\",\n      \"created\": \"1994-03-22T00:41:56.185Z\",\n      \"created_by\": {\n        \"email\": \"FOVj5cMe@VfhqqnGlU.emu\",\n        \"is_agent\": true,\n        \"is_mor_router\": true,\n        \"name\": \"string\",\n        \"uuid\": \"f29eb304-8598-503f-952f-126f28750eeb\"\n      },\n      \"modified\": \"1957-01-17T11:34:43.940Z\",\n      \"target\": {\n        \"name\": \"string\",\n        \"type\": \"string\",\n        \"uuid\": \"14a3f2ac-ba9e-6535-4266-b16879b6312c\"\n      },\n      \"uuid\": \"a2ababda-353d-9929-7eb1-b16bd922684f\",\n      \"is_pinned\": true\n    },\n    {\n      \"attachments\": [\n        {\n          \"disposition\": \"sent\",\n          \"filename\": \"string\",\n          \"mime\": \"string\",\n          \"uuid\": \"129fbf24-a758-caee-1d29-1039cd653910\"\n        },\n        {\n          \"disposition\": \"sent\",\n          \"filename\": \"string\",\n          \"mime\": \"string\",\n          \"uuid\": \"2ff389c0-f519-d739-6ded-f48ae92170e7\"\n        }\n      ],\n      \"body\": \"string\",\n      \"company_uuid\": \"c23004d0-607c-720d-a514-bbe37a2359c1\",\n      \"created\": \"1965-05-11T03:11:00.406Z\",\n      \"created_by\": {\n        \"email\": \"Blrf27l1Ccs@fGispoHQKziLDgSI.ugv\",\n        \"is_agent\": true,\n        \"is_mor_router\": false,\n        \"name\": \"string\",\n        \"uuid\": \"6f06ca8b-33a5-f1bb-5d1d-befa844fe7cd\"\n      },\n      \"modified\": \"1964-01-12T17:17:26.853Z\",\n      \"target\": {\n        \"name\": \"string\",\n        \"type\": \"string\",\n        \"uuid\": \"818c6253-00ba-2646-bf12-f836076974c5\"\n      },\n      \"uuid\": \"f8f12455-785b-df58-bcf7-2def2e696219\",\n      \"is_pinned\": true\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c96293c9-0334-4dec-aa2d-10aede9a9e2f",
+          "name": "Create a note",
+          "request": {
+            "name": "Create a note",
+            "description": {
+              "content": "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same task (e.g. the buyer on a MoR-routed task). Usable by\n  buyers, MoR, and taskable agents (agents are hard-scoped to their\n  installation company, so company-private visibility scopes them for free).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "notes",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "body",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "task_uuid",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "target_type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "target_uuid",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_pinned",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "attachment_uuids",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "attachment_uuids",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e37315b2-e74d-44ea-893b-1d2f18fd759e",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "notes",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "body",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "task_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "target_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "target_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "is_pinned",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "attachment_uuids",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "attachment_uuids",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"attachments\": [\n    {\n      \"disposition\": \"sent\",\n      \"filename\": \"string\",\n      \"mime\": \"string\",\n      \"uuid\": \"ce271ecd-9e38-e831-f7aa-139bd78bb3a3\"\n    },\n    {\n      \"disposition\": \"suspicious\",\n      \"filename\": \"string\",\n      \"mime\": \"string\",\n      \"uuid\": \"0ab6c0a3-cfec-6d4d-addd-06afff0ecb2f\"\n    }\n  ],\n  \"body\": \"string\",\n  \"company_uuid\": \"c07ad1aa-4db4-a2b2-352d-3660829510d8\",\n  \"created\": \"1984-08-19T09:06:26.701Z\",\n  \"created_by\": {\n    \"email\": \"PWG@GweYHcWPaiXhOmTGSFNhfOZuldW.otxq\",\n    \"is_agent\": false,\n    \"is_mor_router\": true,\n    \"name\": \"string\",\n    \"uuid\": \"a5b1a6e3-b5d6-ba64-f1ac-3c139cee9752\"\n  },\n  \"modified\": \"1956-10-06T03:41:39.864Z\",\n  \"target\": {\n    \"name\": \"string\",\n    \"type\": \"string\",\n    \"uuid\": \"83d0329c-50b9-769c-d96f-01cecaccf9a6\"\n  },\n  \"uuid\": \"2acf6f43-3faa-1035-4082-1015b4b1683a\",\n  \"is_pinned\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a01d56ac-a965-4f54-8bcf-5d06599f4569",
+          "name": "Get a note",
+          "request": {
+            "name": "Get a note",
+            "description": {
+              "content": "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same task (e.g. the buyer on a MoR-routed task). Usable by\n  buyers, MoR, and taskable agents (agents are hard-scoped to their\n  installation company, so company-private visibility scopes them for free).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "notes",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c9d3fcc2-e0ea-4413-8e7b-e73124154034",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "notes",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"attachments\": [\n    {\n      \"disposition\": \"sent\",\n      \"filename\": \"string\",\n      \"mime\": \"string\",\n      \"uuid\": \"ce271ecd-9e38-e831-f7aa-139bd78bb3a3\"\n    },\n    {\n      \"disposition\": \"suspicious\",\n      \"filename\": \"string\",\n      \"mime\": \"string\",\n      \"uuid\": \"0ab6c0a3-cfec-6d4d-addd-06afff0ecb2f\"\n    }\n  ],\n  \"body\": \"string\",\n  \"company_uuid\": \"c07ad1aa-4db4-a2b2-352d-3660829510d8\",\n  \"created\": \"1984-08-19T09:06:26.701Z\",\n  \"created_by\": {\n    \"email\": \"PWG@GweYHcWPaiXhOmTGSFNhfOZuldW.otxq\",\n    \"is_agent\": false,\n    \"is_mor_router\": true,\n    \"name\": \"string\",\n    \"uuid\": \"a5b1a6e3-b5d6-ba64-f1ac-3c139cee9752\"\n  },\n  \"modified\": \"1956-10-06T03:41:39.864Z\",\n  \"target\": {\n    \"name\": \"string\",\n    \"type\": \"string\",\n    \"uuid\": \"83d0329c-50b9-769c-d96f-01cecaccf9a6\"\n  },\n  \"uuid\": \"2acf6f43-3faa-1035-4082-1015b4b1683a\",\n  \"is_pinned\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fdde8b9d-a8ab-4de3-a888-485def676fcc",
+          "name": "Update a note",
+          "request": {
+            "name": "Update a note",
+            "description": {
+              "content": "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same task (e.g. the buyer on a MoR-routed task). Usable by\n  buyers, MoR, and taskable agents (agents are hard-scoped to their\n  installation company, so company-private visibility scopes them for free).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "notes",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "body",
+                  "value": "<string>",
+                  "description": "(Required) Note content"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_pinned",
+                  "value": "<boolean>",
+                  "description": "Whether this note should be pinned to the top"
+                },
+                {
+                  "disabled": false,
+                  "key": "target_type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "target_uuid",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "task_uuid",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6cb568de-eedd-4f9f-9c15-c7eb8e6fa390",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "notes",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Note content",
+                        "type": "text/plain"
+                      },
+                      "key": "body",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Whether this note should be pinned to the top",
+                        "type": "text/plain"
+                      },
+                      "key": "is_pinned",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "target_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "target_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "task_uuid",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"body\": \"<string>\",\n  \"uuid\": \"ec6c6ded-5dd2-27f4-ea11-7e984f645dca\",\n  \"is_pinned\": \"<boolean>\",\n  \"created_by\": {\n    \"email\": \"Z8ZWwBiPWto7@wgnQvnZCSVAkklOFsC.hj\",\n    \"is_agent\": false,\n    \"is_mor_router\": true,\n    \"name\": \"string\",\n    \"uuid\": \"7563822a-4537-7cdc-347d-30bae937ea30\"\n  },\n  \"company_uuid\": \"ed657f01-404a-927c-46d4-f1431a6c5022\",\n  \"target\": {\n    \"name\": \"string\",\n    \"type\": \"string\",\n    \"uuid\": \"a765af68-b818-f5b5-1bc2-f2f6d4da3aa1\"\n  },\n  \"attachments\": [\n    {\n      \"disposition\": \"skipped_timeout\",\n      \"filename\": \"string\",\n      \"mime\": \"string\",\n      \"uuid\": \"f3d09b09-f90d-787f-3961-8e8cea3392c1\"\n    },\n    {\n      \"disposition\": \"skipped_timeout\",\n      \"filename\": \"string\",\n      \"mime\": \"string\",\n      \"uuid\": \"a968de49-5de3-3419-ba93-078eba2a12c8\"\n    }\n  ],\n  \"created\": \"1970-04-16T14:32:27.268Z\",\n  \"modified\": \"2020-05-27T06:32:57.838Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8e7752e4-5776-4802-b640-47222272900e",
+          "name": "Partially update a note",
+          "request": {
+            "name": "Partially update a note",
+            "description": {
+              "content": "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same task (e.g. the buyer on a MoR-routed task). Usable by\n  buyers, MoR, and taskable agents (agents are hard-scoped to their\n  installation company, so company-private visibility scopes them for free).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "notes",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "body",
+                  "value": "<string>",
+                  "description": "Note content"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_pinned",
+                  "value": "<boolean>",
+                  "description": "Whether this note should be pinned to the top"
+                },
+                {
+                  "disabled": false,
+                  "key": "target_type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "target_uuid",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "task_uuid",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "aae82de0-8559-4022-b773-8c6da8383473",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "notes",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Note content",
+                        "type": "text/plain"
+                      },
+                      "key": "body",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Whether this note should be pinned to the top",
+                        "type": "text/plain"
+                      },
+                      "key": "is_pinned",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "target_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "target_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "task_uuid",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"body\": \"<string>\",\n  \"uuid\": \"ec6c6ded-5dd2-27f4-ea11-7e984f645dca\",\n  \"is_pinned\": \"<boolean>\",\n  \"created_by\": {\n    \"email\": \"Z8ZWwBiPWto7@wgnQvnZCSVAkklOFsC.hj\",\n    \"is_agent\": false,\n    \"is_mor_router\": true,\n    \"name\": \"string\",\n    \"uuid\": \"7563822a-4537-7cdc-347d-30bae937ea30\"\n  },\n  \"company_uuid\": \"ed657f01-404a-927c-46d4-f1431a6c5022\",\n  \"target\": {\n    \"name\": \"string\",\n    \"type\": \"string\",\n    \"uuid\": \"a765af68-b818-f5b5-1bc2-f2f6d4da3aa1\"\n  },\n  \"attachments\": [\n    {\n      \"disposition\": \"skipped_timeout\",\n      \"filename\": \"string\",\n      \"mime\": \"string\",\n      \"uuid\": \"f3d09b09-f90d-787f-3961-8e8cea3392c1\"\n    },\n    {\n      \"disposition\": \"skipped_timeout\",\n      \"filename\": \"string\",\n      \"mime\": \"string\",\n      \"uuid\": \"a968de49-5de3-3419-ba93-078eba2a12c8\"\n    }\n  ],\n  \"created\": \"1970-04-16T14:32:27.268Z\",\n  \"modified\": \"2020-05-27T06:32:57.838Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "410f3287-6ab7-4a4e-85af-c5926beb16ad",
+          "name": "Delete a note",
+          "request": {
+            "name": "Delete a note",
+            "description": {
+              "content": "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same task (e.g. the buyer on a MoR-routed task). Usable by\n  buyers, MoR, and taskable agents (agents are hard-scoped to their\n  installation company, so company-private visibility scopes them for free).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "notes",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "33d4a45d-f49d-48c4-94ca-8f0f5419da5f",
+              "name": "No response body",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "notes",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "30e5c6a9-bbd1-4f5a-ad87-adb87e05c0eb",
+    "name": "Opply Activity Feed Notes API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

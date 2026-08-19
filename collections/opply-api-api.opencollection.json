@@ -1,0 +1,4653 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed api API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "api",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "api_schema_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/schema/",
+            "params": [
+              {
+                "name": "format",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "OpenApi3 schema for this API. Format can be selected via content negotiation.\n\n- YAML: application/vnd.oai.openapi\n- JSON: application/vnd.oai.openapi+json"
+        },
+        {
+          "info": {
+            "name": "api_v1_agents_agent_task_runs_claim_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agents/agent-task-runs/:run_uuid/claim/",
+            "params": [
+              {
+                "name": "run_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Atomic ``dispatching → running`` transition. The agent-side dedup point.\n\nCalled by the task-runner harness immediately on workflow entry. The\nfirst invocation wins (status flips, 200 returned); any duplicate\ndispatch for the same ``run_uuid`` loses the status guard and gets\n409. Resolves the historical \"delivery state unknown\" ambiguity\nwhen the dispatcher's POST to AgentCore times out and Celery\nautoretries — both invocations may execute, but only one claims."
+        },
+        {
+          "info": {
+            "name": "api_v1_agents_agent_task_runs_complete_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agents/agent-task-runs/:run_uuid/complete/",
+            "params": [
+              {
+                "name": "run_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Agent-only callback to mark an ``AgentTaskRun`` terminal."
+        },
+        {
+          "info": {
+            "name": "api_v1_agents_agent_task_runs_heartbeat_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agents/agent-task-runs/:run_uuid/heartbeat/",
+            "params": [
+              {
+                "name": "run_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Refresh ``last_heartbeat_at`` on a running run.\n\nAgent calls this every ~30s while executing. Single UPDATE — no\nSELECT, no transaction — at this cadence the cost matters. A 409\nresponse is the agent's signal to abort its loop: the run has been\nre-dispatched as a fresh row, watchdog-timed-out, cancelled, or\nmoved out of running for some other reason."
+        },
+        {
+          "info": {
+            "name": "api_v1_agents_buyer_onboarding_invocations_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agents/buyer-onboarding/invocations/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Streaming proxy for ``POST /api/v1/agents/buyer-onboarding/invocations/``.\n\nBody:\n  - ``prompt``: required str.\n  - ``session_id``: optional; defaults to a fresh ``opply-<uuid4hex>``.\n  - ``batch_uuid``: optional. When present, the proxy validates that\n    the batch belongs to ``request.user_company``, loads its invoices,\n    mints short-TTL presigned URLs, and forwards them as\n    ``invoices: [{uuid, filename, mime, signed_url, page_count}]`` in\n    the upstream payload. Cross-tenant attempts 4"
+        },
+        {
+          "info": {
+            "name": "api_v1_agents_feedback_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agents/feedback/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create / upsert one feedback row per (user, agent_name, invocation_id)."
+        },
+        {
+          "info": {
+            "name": "api_v1_agents_opply_assistant_invocations_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agents/opply-assistant/invocations/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Streaming proxy for ``POST /api/v1/agents/opply-assistant/invocations/``.\n\nopply-assistant — orchestrator hosting the buyer-assistant worker. The\nrequest's ``channel`` field selects the AgentCore version channel\n(``next`` → the candidate endpoint). See ``_AssistantInvocationsBaseView``\nfor the shared chat-proxy contract (auth, throttling, response format,\nrequest body shape)."
+        },
+        {
+          "info": {
+            "name": "api_v1_agents_opply_assistant_sessions_me_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agents/opply-assistant/sessions/me/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``GET`` / ``DELETE`` the opply-assistant session pointer for the current user.\n\nSee ``_AssistantSessionMeBaseView`` for the shared contract."
+        },
+        {
+          "info": {
+            "name": "api_v1_agents_opply_assistant_sessions_me_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/agents/opply-assistant/sessions/me/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``GET`` / ``DELETE`` the opply-assistant session pointer for the current user.\n\nSee ``_AssistantSessionMeBaseView`` for the shared contract."
+        },
+        {
+          "info": {
+            "name": "api_v1_agents_opply_assistant_sessions_me_events_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agents/opply-assistant/sessions/me/events/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``GET`` the opply-assistant conversation transcript for the active session.\n\nSee ``_AssistantSessionEventsBaseView`` for the shared contract."
+        },
+        {
+          "info": {
+            "name": "api_v1_agents_unleashed_invoice_assistant_invocations_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agents/unleashed-invoice-assistant/invocations/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Streaming proxy for ``POST /api/v1/agents/unleashed-invoice-assistant/invocations/``.\n\nBody:\n  - ``session_id``: optional; defaults to a fresh ``opply-<uuid4hex>``.\n  - ``prompt``: optional; ignored by the agent but forwarded for parity.\n\nResponse: ``text/event-stream`` of ``AgentStreamEvent`` frames. The agent\nemits the ``opplyExtraction*`` variants itself."
+        },
+        {
+          "info": {
+            "name": "api_v1_agents_xero_invoice_assistant_invocations_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agents/xero-invoice-assistant/invocations/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Streaming proxy for ``POST /api/v1/agents/xero-invoice-assistant/invocations/``.\n\nBody:\n  - ``session_id``: optional; defaults to a fresh ``opply-<uuid4hex>``.\n  - ``prompt``: optional; ignored by the agent but forwarded for parity.\n\nResponse: ``text/event-stream`` of ``AgentStreamEvent`` frames. The agent\nemits the ``opplyExtraction*`` variants itself."
+        },
+        {
+          "info": {
+            "name": "api_v1_agreements_lead_generation_jobs_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agreements/lead-generation-jobs/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "GET and POST API endpoint for LeadGenerationJob - isolated feature"
+        },
+        {
+          "info": {
+            "name": "api_v1_agreements_lead_generation_jobs_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agreements/lead-generation-jobs/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "GET and POST API endpoint for LeadGenerationJob - isolated feature"
+        },
+        {
+          "info": {
+            "name": "api_v1_app_orders_alerts_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/alerts/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "GET API endpoint for Alerts - isolated feature"
+        },
+        {
+          "info": {
+            "name": "api_v1_app_orders_brand_order_adjustments_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/order-adjustments/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-side read access to OrderAdjustment.\n\nBuyers can list and fetch credit/debit notes that belong to their own\ncompany. VOID rows are hidden — they're audit history with no buyer-facing\nvalue. Writes (create / apply / finalise / void) are MoR-only (sc-2888).\nThe buyer-facing serializer also strips `supplier_document_url` so the\nsupplier's internal credit/debit note PDF never reaches the buyer."
+        },
+        {
+          "info": {
+            "name": "api_v1_app_orders_brand_order_adjustments_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/order-adjustments/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-side read access to OrderAdjustment.\n\nBuyers can list and fetch credit/debit notes that belong to their own\ncompany. VOID rows are hidden — they're audit history with no buyer-facing\nvalue. Writes (create / apply / finalise / void) are MoR-only (sc-2888).\nThe buyer-facing serializer also strips `supplier_document_url` so the\nsupplier's internal credit/debit note PDF never reaches the buyer."
+        },
+        {
+          "info": {
+            "name": "api_v1_app_orders_forecasts_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/forecasts/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "GET API endpoint for Forecast - isolated feature"
+        },
+        {
+          "info": {
+            "name": "api_v1_app_orders_merchant_of_record_order_adjustments_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/order-adjustments/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "MoR-facing endpoints for buyer credit/debit notes (OrderAdjustment).\n\nLifecycle: AVAILABLE → APPLIED, AVAILABLE → PENDING_APPLICATION → APPLIED,\nor any → VOID. Provider integration (Stripe / Two) is dispatched by the\n`credit_note_service`; this viewset only orchestrates HTTP I/O and translates\nservice-layer exceptions to 4xx responses."
+        },
+        {
+          "info": {
+            "name": "Create a new OrderAdjustment in AVAILABLE state (multipart upload)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/order-adjustments/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "MoR-facing endpoints for buyer credit/debit notes (OrderAdjustment).\n\nLifecycle: AVAILABLE → APPLIED, AVAILABLE → PENDING_APPLICATION → APPLIED,\nor any → VOID. Provider integration (Stripe / Two) is dispatched by the\n`credit_note_service`; this viewset only orchestrates HTTP I/O and translates\nservice-layer exceptions to 4xx responses."
+        },
+        {
+          "info": {
+            "name": "api_v1_app_orders_merchant_of_record_order_adjustments_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/order-adjustments/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "MoR-facing endpoints for buyer credit/debit notes (OrderAdjustment).\n\nLifecycle: AVAILABLE → APPLIED, AVAILABLE → PENDING_APPLICATION → APPLIED,\nor any → VOID. Provider integration (Stripe / Two) is dispatched by the\n`credit_note_service`; this viewset only orchestrates HTTP I/O and translates\nservice-layer exceptions to 4xx responses."
+        },
+        {
+          "info": {
+            "name": "Apply an AVAILABLE adjustment to a target order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/order-adjustments/:uuid/apply/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "MoR-facing endpoints for buyer credit/debit notes (OrderAdjustment).\n\nLifecycle: AVAILABLE → APPLIED, AVAILABLE → PENDING_APPLICATION → APPLIED,\nor any → VOID. Provider integration (Stripe / Two) is dispatched by the\n`credit_note_service`; this viewset only orchestrates HTTP I/O and translates\nservice-layer exceptions to 4xx responses."
+        },
+        {
+          "info": {
+            "name": "Finalise a PENDING_APPLICATION adjustment now that the target invoice exists",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/order-adjustments/:uuid/finalise/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "MoR-facing endpoints for buyer credit/debit notes (OrderAdjustment).\n\nLifecycle: AVAILABLE → APPLIED, AVAILABLE → PENDING_APPLICATION → APPLIED,\nor any → VOID. Provider integration (Stripe / Two) is dispatched by the\n`credit_note_service`; this viewset only orchestrates HTTP I/O and translates\nservice-layer exceptions to 4xx responses."
+        },
+        {
+          "info": {
+            "name": "Download the supplier-uploaded credit/debit note file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/order-adjustments/:uuid/supplier-document/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "MoR-facing endpoints for buyer credit/debit notes (OrderAdjustment).\n\nLifecycle: AVAILABLE → APPLIED, AVAILABLE → PENDING_APPLICATION → APPLIED,\nor any → VOID. Provider integration (Stripe / Two) is dispatched by the\n`credit_note_service`; this viewset only orchestrates HTTP I/O and translates\nservice-layer exceptions to 4xx responses."
+        },
+        {
+          "info": {
+            "name": "Void an adjustment (idempotent on already-VOID rows)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/order-adjustments/:uuid/void/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "MoR-facing endpoints for buyer credit/debit notes (OrderAdjustment).\n\nLifecycle: AVAILABLE → APPLIED, AVAILABLE → PENDING_APPLICATION → APPLIED,\nor any → VOID. Provider integration (Stripe / Two) is dispatched by the\n`credit_note_service`; this viewset only orchestrates HTTP I/O and translates\nservice-layer exceptions to 4xx responses."
+        },
+        {
+          "info": {
+            "name": "api_v1_app_orders_trends_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/trends/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "GET API endpoint for Trends - isolated feature"
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_document_types_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/document-types/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_document_types_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/document-types/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_mor_onboarding_suppliers_notes_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/mor/onboarding-suppliers/:uuid/notes/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_mor_onboarding_suppliers_notes_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/mor/onboarding-suppliers/:uuid/notes/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_mor_onboarding_suppliers_notes_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/mor/onboarding-suppliers/:uuid/notes/:note_uuid/",
+            "params": [
+              {
+                "name": "note_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_mor_onboarding_suppliers_notes_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/companies/mor/onboarding-suppliers/:uuid/notes/:note_uuid/",
+            "params": [
+              {
+                "name": "note_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_mor_onboarding_suppliers_notes_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/companies/mor/onboarding-suppliers/:uuid/notes/:note_uuid/",
+            "params": [
+              {
+                "name": "note_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_mor_suppliers_notes_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/mor/suppliers/:uuid/notes/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_mor_suppliers_notes_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/mor/suppliers/:uuid/notes/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_mor_suppliers_notes_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/mor/suppliers/:uuid/notes/:note_uuid/",
+            "params": [
+              {
+                "name": "note_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_mor_suppliers_notes_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/companies/mor/suppliers/:uuid/notes/:note_uuid/",
+            "params": [
+              {
+                "name": "note_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_mor_suppliers_notes_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/companies/mor/suppliers/:uuid/notes/:note_uuid/",
+            "params": [
+              {
+                "name": "note_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_supplier_document_types_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/supplier-document-types/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_supplier_document_types_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/supplier-document-types/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_suppliers_supplier_documents_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/suppliers/:supplier_uuid/supplier-documents/",
+            "params": [
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "supplier_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_suppliers_supplier_documents_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/suppliers/:supplier_uuid/supplier-documents/",
+            "params": [
+              {
+                "name": "supplier_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_suppliers_supplier_documents_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/suppliers/:supplier_uuid/supplier-documents/:uuid/",
+            "params": [
+              {
+                "name": "supplier_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_suppliers_supplier_documents_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/companies/suppliers/:supplier_uuid/supplier-documents/:uuid/",
+            "params": [
+              {
+                "name": "supplier_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_suppliers_supplier_documents_partial_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/companies/suppliers/:supplier_uuid/supplier-documents/:uuid/",
+            "params": [
+              {
+                "name": "supplier_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_suppliers_supplier_documents_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/companies/suppliers/:supplier_uuid/supplier-documents/:uuid/",
+            "params": [
+              {
+                "name": "supplier_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "Get available sites for document upload",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/suppliers/:supplier_uuid/supplier-documents/available-sites/",
+            "params": [
+              {
+                "name": "supplier_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns merged list of existing SupplierSite names and dispatch address names (SC-2293)."
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_suppliers_supplier_documents_available_types_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/suppliers/:supplier_uuid/supplier-documents/available-types/",
+            "params": [
+              {
+                "name": "supplier_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_companies_suppliers_supplier_documents_sites_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/suppliers/:supplier_uuid/supplier-documents/sites/",
+            "params": [
+              {
+                "name": "supplier_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_cortex_jobs_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/cortex/jobs/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ]
+          },
+          "docs": "Endpoints:\n  - POST /jobs/                 -> create job (return UUID only)\n  - PATCH /jobs/<uuid>/         -> update agent_name, description, or status\n  - GET   /jobs/executing/      -> list all jobs where status == EXECUTING"
+        },
+        {
+          "info": {
+            "name": "api_v1_cortex_jobs_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/cortex/jobs/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Endpoints:\n  - POST /jobs/                 -> create job (return UUID only)\n  - PATCH /jobs/<uuid>/         -> update agent_name, description, or status\n  - GET   /jobs/executing/      -> list all jobs where status == EXECUTING"
+        },
+        {
+          "info": {
+            "name": "api_v1_cortex_jobs_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/cortex/jobs/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Endpoints:\n  - POST /jobs/                 -> create job (return UUID only)\n  - PATCH /jobs/<uuid>/         -> update agent_name, description, or status\n  - GET   /jobs/executing/      -> list all jobs where status == EXECUTING"
+        },
+        {
+          "info": {
+            "name": "api_v1_cortex_jobs_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/cortex/jobs/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Endpoints:\n  - POST /jobs/                 -> create job (return UUID only)\n  - PATCH /jobs/<uuid>/         -> update agent_name, description, or status\n  - GET   /jobs/executing/      -> list all jobs where status == EXECUTING"
+        },
+        {
+          "info": {
+            "name": "api_v1_cortex_jobs_partial_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/cortex/jobs/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Endpoints:\n  - POST /jobs/                 -> create job (return UUID only)\n  - PATCH /jobs/<uuid>/         -> update agent_name, description, or status\n  - GET   /jobs/executing/      -> list all jobs where status == EXECUTING"
+        },
+        {
+          "info": {
+            "name": "api_v1_cortex_jobs_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/cortex/jobs/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Endpoints:\n  - POST /jobs/                 -> create job (return UUID only)\n  - PATCH /jobs/<uuid>/         -> update agent_name, description, or status\n  - GET   /jobs/executing/      -> list all jobs where status == EXECUTING"
+        },
+        {
+          "info": {
+            "name": "api_v1_cortex_jobs_executing_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/cortex/jobs/executing/"
+          },
+          "docs": "Endpoints:\n  - POST /jobs/                 -> create job (return UUID only)\n  - PATCH /jobs/<uuid>/         -> update agent_name, description, or status\n  - GET   /jobs/executing/      -> list all jobs where status == EXECUTING"
+        },
+        {
+          "info": {
+            "name": "api_v1_cortex_workflows_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/cortex/workflows/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ]
+          },
+          "docs": "Endpoints:\n  - POST /workflows/ -> create workflow (return UUID only)\n  - GET  /workflows/ -> list workflows, each with associated jobs"
+        },
+        {
+          "info": {
+            "name": "api_v1_cortex_workflows_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/cortex/workflows/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Endpoints:\n  - POST /workflows/ -> create workflow (return UUID only)\n  - GET  /workflows/ -> list workflows, each with associated jobs"
+        },
+        {
+          "info": {
+            "name": "api_v1_cortex_workflows_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/cortex/workflows/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Endpoints:\n  - POST /workflows/ -> create workflow (return UUID only)\n  - GET  /workflows/ -> list workflows, each with associated jobs"
+        },
+        {
+          "info": {
+            "name": "api_v1_cortex_workflows_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/cortex/workflows/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Endpoints:\n  - POST /workflows/ -> create workflow (return UUID only)\n  - GET  /workflows/ -> list workflows, each with associated jobs"
+        },
+        {
+          "info": {
+            "name": "api_v1_cortex_workflows_partial_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/cortex/workflows/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Endpoints:\n  - POST /workflows/ -> create workflow (return UUID only)\n  - GET  /workflows/ -> list workflows, each with associated jobs"
+        },
+        {
+          "info": {
+            "name": "api_v1_cortex_workflows_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/cortex/workflows/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Endpoints:\n  - POST /workflows/ -> create workflow (return UUID only)\n  - GET  /workflows/ -> list workflows, each with associated jobs"
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_companies_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/companies/",
+            "params": [
+              {
+                "name": "address_raw",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "city",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "country",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "description",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dns_check_success",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "domain",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "employees_max",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "employees_min",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "has_hubspot_deal",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "has_hubspot_lead",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "has_score",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "hubspot_deal_stage",
+                "value": "",
+                "type": "query",
+                "description": "* `no_deal` - No Deal\n* `in_progress` - In Progress\n* `won` - Won\n* `lost` - Lost"
+              },
+              {
+                "name": "hubspot_status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "hubspot_synced",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "industries",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "keywords",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "linkedin_url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "naics_codes",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "phone",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "primary_industry",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "revenue_max",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "revenue_min",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "score_max",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "score_min",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "score_snapshot_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "sic_codes",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sources",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "year_founded_max",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "year_founded_min",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing CRM companies, including bulk import with field data."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_companies_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/crm/companies/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing CRM companies, including bulk import with field data."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_companies_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/crm/companies/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing CRM companies, including bulk import with field data."
+        },
+        {
+          "info": {
+            "name": "Get ICP scoring breakdown for a company",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/companies/:uuid/scoring-debug/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Return ICP scoring breakdown for a company.\n\nFetches the last completed icp_scoring enrichment result and\nre-computes the score with a per-signal breakdown."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_companies_bulk_import_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/crm/companies/bulk-import/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Bulk import CRM companies, optionally with flat field data."
+        },
+        {
+          "info": {
+            "name": "Enrichment callback from the enrichment subsystem",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/crm/companies/enrichment-run/:uuid/callback/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Called by the enrichment subsystem after it has finished processing a batch and written results to the enrichment_results table. Triggers score computation and progress tracking. Requires a Bearer token in the Authorization header."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_companies_field_values_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/companies/field-values/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Return distinct values for a given CrmCompanyData column, used to populate filter dropdowns."
+        },
+        {
+          "info": {
+            "name": "Create leads in HubSpot for selected companies",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/crm/companies/hubspot-create-leads/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create leads in HubSpot for the given companies.\n\nAccepts company UUIDs, pipeline, and owner in a single call.\nCreates a HubSpotSyncRun and dispatches a Celery task.\nReturns 202 with run_uuid for status polling."
+        },
+        {
+          "info": {
+            "name": "Get HubSpot Create Leads run status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/companies/hubspot-create-leads/:run_uuid/status/",
+            "params": [
+              {
+                "name": "run_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Poll the status and progress of a Create Leads run."
+        },
+        {
+          "info": {
+            "name": "List available HubSpot owners",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/companies/hubspot-owners/",
+            "params": [
+              {
+                "name": "address_raw",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "city",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "country",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "description",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dns_check_success",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "domain",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "employees_max",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "employees_min",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "has_hubspot_deal",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "has_hubspot_lead",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "has_score",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "hubspot_deal_stage",
+                "value": "",
+                "type": "query",
+                "description": "* `no_deal` - No Deal\n* `in_progress` - In Progress\n* `won` - Won\n* `lost` - Lost"
+              },
+              {
+                "name": "hubspot_status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "hubspot_synced",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "industries",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "keywords",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "linkedin_url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "naics_codes",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "phone",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "primary_industry",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "revenue_max",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "revenue_min",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "score_max",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "score_min",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "score_snapshot_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "sic_codes",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sources",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "year_founded_max",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "year_founded_min",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Return HubSpot owners (users with seats) for the Create Leads dropdown."
+        },
+        {
+          "info": {
+            "name": "List available HubSpot lead pipelines",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/companies/hubspot-pipelines/",
+            "params": [
+              {
+                "name": "address_raw",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "city",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "country",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "description",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dns_check_success",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "domain",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "employees_max",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "employees_min",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "has_hubspot_deal",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "has_hubspot_lead",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "has_score",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "hubspot_deal_stage",
+                "value": "",
+                "type": "query",
+                "description": "* `no_deal` - No Deal\n* `in_progress` - In Progress\n* `won` - Won\n* `lost` - Lost"
+              },
+              {
+                "name": "hubspot_status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "hubspot_synced",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "industries",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "keywords",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "linkedin_url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "naics_codes",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "phone",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "primary_industry",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "revenue_max",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "revenue_min",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "score_max",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "score_min",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "score_snapshot_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "sic_codes",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sources",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "year_founded_max",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "year_founded_min",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Return available HubSpot lead pipelines for the Create Leads dropdown."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_companies_import_file_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/crm/companies/import-file/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Upload a JSON file and import companies asynchronously using the matching strategy.\n\nAccepts multipart form data with:\n  - file: the JSON file\n  - schema: one of the CrmImportSchema values — determines which import strategy to use\n  - source: one of the CrmCompanySource values — stored on each imported company record\n\nReturns a task_id that can be used to poll import-file/status/{task_id}/."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_companies_import_file_status_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/companies/import-file/status/:task_id/",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Poll the status of a CRM file import task."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_contacts_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/contacts/",
+            "params": [
+              {
+                "name": "company",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "company_name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "first_name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "full_name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "job_title",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "last_name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "linkedin_url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "location",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing CRM contacts, including bulk import via CSV file upload."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_contacts_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/crm/contacts/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing CRM contacts, including bulk import via CSV file upload."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_contacts_enrich_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/crm/contacts/:uuid/enrich/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enrich a contact with phone numbers and emails from an external provider.\n\nAuthenticated via service account token (X-Service-Token header).\nUpserts phone and email fields in the contact fields table."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_contacts_request_enrichment_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/crm/contacts/:uuid/request-enrichment/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Forward a contact enrichment request to Clay.\n\nCalled by the frontend when a user clicks Enrich on a contact card.\nValidates the payload then fires the Clay webhook asynchronously (fire-and-forget).\nReturns 202 Accepted immediately — Clay will call back via the enrich endpoint\nwhen it has results."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_contacts_bulk_import_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/crm/contacts/bulk-import/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Bulk import CRM contacts from a CSV file upload.\n\nAccepts multipart/form-data with a 'file' field containing the CSV.\nContacts are matched to existing CRM companies via the domain column.\nRows with unrecognised domains are skipped.\nProcessing is asynchronous — returns 202 Accepted immediately."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_custom_columns_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/custom-columns/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "CRUD for CRM custom column definitions.\n\nAll MoR users in the same company can list and use columns.\nOnly the column creator can update or delete it."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_custom_columns_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/crm/custom-columns/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "CRUD for CRM custom column definitions.\n\nAll MoR users in the same company can list and use columns.\nOnly the column creator can update or delete it."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_custom_columns_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/custom-columns/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "CRUD for CRM custom column definitions.\n\nAll MoR users in the same company can list and use columns.\nOnly the column creator can update or delete it."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_custom_columns_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/crm/custom-columns/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "CRUD for CRM custom column definitions.\n\nAll MoR users in the same company can list and use columns.\nOnly the column creator can update or delete it."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_custom_columns_partial_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/crm/custom-columns/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "CRUD for CRM custom column definitions.\n\nAll MoR users in the same company can list and use columns.\nOnly the column creator can update or delete it."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_custom_columns_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/crm/custom-columns/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "CRUD for CRM custom column definitions.\n\nAll MoR users in the same company can list and use columns.\nOnly the column creator can update or delete it."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_enrichment_runs_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/enrichment-runs/",
+            "params": [
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Read-only history of enrichment runs scoped to the requesting user's company."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_enrichment_runs_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/enrichment-runs/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Read-only history of enrichment runs scoped to the requesting user's company."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_hubspot_sync_runs_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/hubspot-sync-runs/",
+            "params": [
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Read-only history of HubSpot sync runs scoped to the requesting user's company.\n\nIncludes both view-scoped runs (auto-trigger and manual `hubspot-sync` action on\nsaved views) and view-null runs (Create Leads via `CrmCompanyViewSet`).\n\n- View-scoped runs are visible to the company that owns the saved view.\n- View-null (Create Leads) runs are visible to the company of the user who\n  triggered them."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_hubspot_sync_runs_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/hubspot-sync-runs/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Read-only history of HubSpot sync runs scoped to the requesting user's company.\n\nIncludes both view-scoped runs (auto-trigger and manual `hubspot-sync` action on\nsaved views) and view-null runs (Create Leads via `CrmCompanyViewSet`).\n\n- View-scoped runs are visible to the company that owns the saved view.\n- View-null (Create Leads) runs are visible to the company of the user who\n  triggered them."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_import_runs_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/import-runs/",
+            "params": [
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Read-only history of CRM import runs scoped to the requesting user's company."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_import_runs_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/import-runs/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Read-only history of CRM import runs scoped to the requesting user's company."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_saved_views_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/saved-views/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "CRUD for CRM saved views.\n\nAll MoR users in the same company can list, load, update, and delete views.\n\nSaving a view auto-triggers a HubSpot View Sync: POST creates always trigger,\nPATCH/PUT trigger only when `config` changes. Renames and column-only edits do\nnot trigger. Frontends should poll `latest_hubspot_sync_run` (embedded on the\nserializer) to render progress."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_saved_views_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/crm/saved-views/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "CRUD for CRM saved views.\n\nAll MoR users in the same company can list, load, update, and delete views.\n\nSaving a view auto-triggers a HubSpot View Sync: POST creates always trigger,\nPATCH/PUT trigger only when `config` changes. Renames and column-only edits do\nnot trigger. Frontends should poll `latest_hubspot_sync_run` (embedded on the\nserializer) to render progress."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_saved_views_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/saved-views/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "CRUD for CRM saved views.\n\nAll MoR users in the same company can list, load, update, and delete views.\n\nSaving a view auto-triggers a HubSpot View Sync: POST creates always trigger,\nPATCH/PUT trigger only when `config` changes. Renames and column-only edits do\nnot trigger. Frontends should poll `latest_hubspot_sync_run` (embedded on the\nserializer) to render progress."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_saved_views_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/crm/saved-views/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "CRUD for CRM saved views.\n\nAll MoR users in the same company can list, load, update, and delete views.\n\nSaving a view auto-triggers a HubSpot View Sync: POST creates always trigger,\nPATCH/PUT trigger only when `config` changes. Renames and column-only edits do\nnot trigger. Frontends should poll `latest_hubspot_sync_run` (embedded on the\nserializer) to render progress."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_saved_views_partial_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/crm/saved-views/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "CRUD for CRM saved views.\n\nAll MoR users in the same company can list, load, update, and delete views.\n\nSaving a view auto-triggers a HubSpot View Sync: POST creates always trigger,\nPATCH/PUT trigger only when `config` changes. Renames and column-only edits do\nnot trigger. Frontends should poll `latest_hubspot_sync_run` (embedded on the\nserializer) to render progress."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_saved_views_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/crm/saved-views/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "CRUD for CRM saved views.\n\nAll MoR users in the same company can list, load, update, and delete views.\n\nSaving a view auto-triggers a HubSpot View Sync: POST creates always trigger,\nPATCH/PUT trigger only when `config` changes. Renames and column-only edits do\nnot trigger. Frontends should poll `latest_hubspot_sync_run` (embedded on the\nserializer) to render progress."
+        },
+        {
+          "info": {
+            "name": "Trigger enrichment on a saved view",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/crm/saved-views/:uuid/enrich/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Trigger async enrichment of CRM companies in this saved view.\n\nCreates an EnrichmentRun and dispatches a Celery task.\nReturns 202 with the run_uuid for status polling."
+        },
+        {
+          "info": {
+            "name": "Get enrichment run status and progress",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/saved-views/:uuid/enrich/:run_uuid/status/",
+            "params": [
+              {
+                "name": "run_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Poll the status and progress of an enrichment run."
+        },
+        {
+          "info": {
+            "name": "Re-trigger HubSpot View Sync for a saved view",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/crm/saved-views/:uuid/hubspot-sync/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Manually re-trigger the read-only HubSpot View Sync.\n\nSaving a view already auto-dispatches a sync; this endpoint is for re-running\nit (e.g. after a failure, or to clear stale state when an earlier sync was\nskipped because one was already in progress). Returns 202 with the run_uuid\nfor status polling, or 409 if a sync is already pending or in progress."
+        },
+        {
+          "info": {
+            "name": "Get HubSpot View Sync run status and progress",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/saved-views/:uuid/hubspot-sync/:run_uuid/status/",
+            "params": [
+              {
+                "name": "run_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Poll the status and progress of a View Sync run."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_settings_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/crm/settings/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Singleton CRM settings for the authenticated user's company.\n\nGET   /api/v1/crm/settings/ — returns settings, auto-creating with defaults if absent.\nPATCH /api/v1/crm/settings/ — updates one or more settings fields.\nPUT   /api/v1/crm/settings/ — full replacement of all settings fields."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_settings_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/crm/settings/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Singleton CRM settings for the authenticated user's company.\n\nGET   /api/v1/crm/settings/ — returns settings, auto-creating with defaults if absent.\nPATCH /api/v1/crm/settings/ — updates one or more settings fields.\nPUT   /api/v1/crm/settings/ — full replacement of all settings fields."
+        },
+        {
+          "info": {
+            "name": "api_v1_crm_settings_partial_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/crm/settings/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Singleton CRM settings for the authenticated user's company.\n\nGET   /api/v1/crm/settings/ — returns settings, auto-creating with defaults if absent.\nPATCH /api/v1/crm/settings/ — updates one or more settings fields.\nPUT   /api/v1/crm/settings/ — full replacement of all settings fields."
+        },
+        {
+          "info": {
+            "name": "api_v1_insights_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/insights/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-scoped insights feed.\n\nReturns cursor-paginated insights, newest first. The queryset surfaces both\ninsights bound to the authenticated user's company AND cross-portfolio\ninsights with ``company IS NULL`` (e.g. industry trends, investor signals).\n``retrieve`` (by ``uuid``) backs the insights-recommender's ``get_insight`` MCP\ntool; it stays scoped by the same ``get_queryset``.\n\nFilter params: ``insight_type``, ``source``, ``sector``."
+        },
+        {
+          "info": {
+            "name": "api_v1_integrations_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Surface for third-party connector listing, connect-initiation, and revoke.\n\nTokens are brokered by AgentCore Identity; this viewset only manages the\nConnectorConnection mirror table and the audit trail."
+        },
+        {
+          "info": {
+            "name": "api_v1_integrations_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/:provider/",
+            "params": [
+              {
+                "name": "provider",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Surface for third-party connector listing, connect-initiation, and revoke.\n\nTokens are brokered by AgentCore Identity; this viewset only manages the\nConnectorConnection mirror table and the audit trail."
+        },
+        {
+          "info": {
+            "name": "api_v1_integrations_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/integrations/:provider/",
+            "params": [
+              {
+                "name": "provider",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Surface for third-party connector listing, connect-initiation, and revoke.\n\nTokens are brokered by AgentCore Identity; this viewset only manages the\nConnectorConnection mirror table and the audit trail."
+        },
+        {
+          "info": {
+            "name": "api_v1_integrations_agent_token_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/integrations/:provider/agent-token/",
+            "params": [
+              {
+                "name": "provider",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Resolve a third-party access token for an agent runtime.\n\nAuthenticated via the inbound agent JWT (audience\n``opply-agents``). The subject (user vs company) is derived\nfrom ``ConnectorDefinition.kind`` — callers never specify it.\n\nThe caller MAY send ``company_uuid`` in the JSON body; if so,\nwe use that company after verifying the JWT user is an employee\nof it. If absent, we fall back to ``user.get_company()`` — the\nsingle-company case Opply assumes today. The check keeps the\nendpoint safe the d"
+        },
+        {
+          "info": {
+            "name": "integrations_callback",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/:provider/callback/",
+            "params": [
+              {
+                "name": "provider",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "query",
+                "description": "The `sessionUri` returned by AgentCore Identity on initiate, sent back as a query param after consent."
+              }
+            ]
+          },
+          "docs": "OAuth callback. AgentCore Identity redirects the user's browser here after they complete consent on the third-party provider; we finalize the ConnectorConnection by calling verify and bounce the browser back to the FE settings page with a `result=` query string."
+        },
+        {
+          "info": {
+            "name": "api_v1_integrations_connect_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/integrations/:provider/connect/",
+            "params": [
+              {
+                "name": "provider",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Surface for third-party connector listing, connect-initiation, and revoke.\n\nTokens are brokered by AgentCore Identity; this viewset only manages the\nConnectorConnection mirror table and the audit trail."
+        },
+        {
+          "info": {
+            "name": "api_v1_integrations_verify_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/integrations/:provider/verify/",
+            "params": [
+              {
+                "name": "provider",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Probe whether this connector's stored token is still usable for the\ncaller's company, self-healing the row in both directions: a stale\n``CONNECTED`` row is downgraded to ``NEEDS_RECONNECT`` when the broker\ncan no longer resolve a token, and a ``NEEDS_RECONNECT`` row is lifted\nback to ``CONNECTED`` when the broker resolves a live token again.\n\nThe FE calls this before kicking off a connector-driven flow (e.g. the\nonboarding Xero import) so a dead/expired token surfaces a \"reconnect\"\nCTA up front "
+        },
+        {
+          "info": {
+            "name": "api_v1_integrations_plaid_disconnect_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/integrations/plaid/disconnect/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Disconnect Plaid entirely — revoke every Item and the parent connection.\n\nBacks the single per-provider \"Disconnect\" CTA on the connector card\n(the generic ``DELETE /integrations/plaid/`` returns 405 for resolver-backed\nconnectors). Per-Item revoke lives at ``plaid/items/<uuid>/``."
+        },
+        {
+          "info": {
+            "name": "api_v1_integrations_plaid_exchange_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/integrations/plaid/exchange/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Shared admin gate for the per-tenant Plaid lifecycle endpoints."
+        },
+        {
+          "info": {
+            "name": "api_v1_integrations_plaid_items_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/integrations/plaid/items/:item_uuid/",
+            "params": [
+              {
+                "name": "item_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Shared admin gate for the per-tenant Plaid lifecycle endpoints."
+        },
+        {
+          "info": {
+            "name": "api_v1_integrations_plaid_link_token_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/integrations/plaid/link-token/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Shared admin gate for the per-tenant Plaid lifecycle endpoints."
+        },
+        {
+          "info": {
+            "name": "api_v1_integrations_plaid_webhook_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/integrations/plaid/webhook/"
+          },
+          "docs": "Unauthenticated Plaid webhook sink. Identity comes from the verified JWT,\nnever from ``request.user`` (Plaid carries no session)."
+        },
+        {
+          "info": {
+            "name": "api_v1_integrations_unleashed_connect_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/integrations/unleashed/connect/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Shared admin gate for the per-tenant Unleashed lifecycle endpoints."
+        },
+        {
+          "info": {
+            "name": "api_v1_integrations_unleashed_disconnect_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/integrations/unleashed/disconnect/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Disconnect Unleashed — delete the stored credentials and revoke the connection.\n\nBacks the single per-provider \"Disconnect\" CTA on the connector card (the\ngeneric ``DELETE /integrations/unleashed/`` returns 405 for resolver-backed\nconnectors)."
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/mcp"
+          },
+          "docs": "MCP HTTP transport endpoint.\n\nMounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,\n``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the\n``server`` attribute set via ``as_view(server=...)`` selects which registry\nthe route scopes tools to.\n\nPOST   — JSON-RPC request (initialize / tools/list / tools/call)\nDELETE — terminate session\n\nGET is intentionally not implemented (SSE streaming is not supported in PR 2)."
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/mcp"
+          },
+          "docs": "MCP HTTP transport endpoint.\n\nMounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,\n``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the\n``server`` attribute set via ``as_view(server=...)`` selects which registry\nthe route scopes tools to.\n\nPOST   — JSON-RPC request (initialize / tools/list / tools/call)\nDELETE — terminate session\n\nGET is intentionally not implemented (SSE streaming is not supported in PR 2)."
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_create_2",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/mcp/"
+          },
+          "docs": "MCP HTTP transport endpoint.\n\nMounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,\n``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the\n``server`` attribute set via ``as_view(server=...)`` selects which registry\nthe route scopes tools to.\n\nPOST   — JSON-RPC request (initialize / tools/list / tools/call)\nDELETE — terminate session\n\nGET is intentionally not implemented (SSE streaming is not supported in PR 2)."
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_destroy_2",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/mcp/"
+          },
+          "docs": "MCP HTTP transport endpoint.\n\nMounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,\n``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the\n``server`` attribute set via ``as_view(server=...)`` selects which registry\nthe route scopes tools to.\n\nPOST   — JSON-RPC request (initialize / tools/list / tools/call)\nDELETE — terminate session\n\nGET is intentionally not implemented (SSE streaming is not supported in PR 2)."
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_access_requests_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/mcp/access-requests/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Access request workflow.\n\nAdmin:\n  GET /api/v1/mcp/access-requests/          → pending requests for the company\n  PATCH /api/v1/mcp/access-requests/{uuid}/ → approve or deny\n\nMember:\n  POST /api/v1/mcp/access-requests/          → submit a request\n  GET /api/v1/mcp/access-requests/           → own requests"
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_access_requests_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/mcp/access-requests/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Access request workflow.\n\nAdmin:\n  GET /api/v1/mcp/access-requests/          → pending requests for the company\n  PATCH /api/v1/mcp/access-requests/{uuid}/ → approve or deny\n\nMember:\n  POST /api/v1/mcp/access-requests/          → submit a request\n  GET /api/v1/mcp/access-requests/           → own requests"
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_access_requests_review_partial_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/mcp/access-requests/:uuid/review/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Admin approves or denies an access request."
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_audit_log_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/mcp/audit-log/",
+            "params": [
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Read-only audit log.\n\nAdmin: all entries for the company, filterable.\nMember: own entries only.\n\nGET /api/v1/mcp/audit-log/?tool_name=&status=&date_from=&date_to="
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_tools_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/mcp/tools/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "GET /api/v1/mcp/tools/ — list available MCP tools.\n\nReturns tools filtered by the caller's token scopes (if OAuth Bearer),\nor all tools for Token-auth users (admin/staff)."
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_unleashed_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/mcp/unleashed"
+          },
+          "docs": "MCP HTTP transport endpoint.\n\nMounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,\n``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the\n``server`` attribute set via ``as_view(server=...)`` selects which registry\nthe route scopes tools to.\n\nPOST   — JSON-RPC request (initialize / tools/list / tools/call)\nDELETE — terminate session\n\nGET is intentionally not implemented (SSE streaming is not supported in PR 2)."
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_unleashed_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/mcp/unleashed"
+          },
+          "docs": "MCP HTTP transport endpoint.\n\nMounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,\n``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the\n``server`` attribute set via ``as_view(server=...)`` selects which registry\nthe route scopes tools to.\n\nPOST   — JSON-RPC request (initialize / tools/list / tools/call)\nDELETE — terminate session\n\nGET is intentionally not implemented (SSE streaming is not supported in PR 2)."
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_unleashed_create_2",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/mcp/unleashed/"
+          },
+          "docs": "MCP HTTP transport endpoint.\n\nMounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,\n``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the\n``server`` attribute set via ``as_view(server=...)`` selects which registry\nthe route scopes tools to.\n\nPOST   — JSON-RPC request (initialize / tools/list / tools/call)\nDELETE — terminate session\n\nGET is intentionally not implemented (SSE streaming is not supported in PR 2)."
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_unleashed_destroy_2",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/mcp/unleashed/"
+          },
+          "docs": "MCP HTTP transport endpoint.\n\nMounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,\n``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the\n``server`` attribute set via ``as_view(server=...)`` selects which registry\nthe route scopes tools to.\n\nPOST   — JSON-RPC request (initialize / tools/list / tools/call)\nDELETE — terminate session\n\nGET is intentionally not implemented (SSE streaming is not supported in PR 2)."
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_user_access_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/mcp/user-access/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Admin-only management of per-user MCP access records.\n\nGET /api/v1/mcp/user-access/         → list all access records for the company\nPOST /api/v1/mcp/user-access/        → grant access to a user\nPATCH /api/v1/mcp/user-access/{uuid}/ → update scopes/enabled\nDELETE /api/v1/mcp/user-access/{uuid}/ → revoke access\n\nGET /api/v1/mcp/user-access/me/      → any authenticated user's own record"
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_user_access_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/mcp/user-access/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Admin-only management of per-user MCP access records.\n\nGET /api/v1/mcp/user-access/         → list all access records for the company\nPOST /api/v1/mcp/user-access/        → grant access to a user\nPATCH /api/v1/mcp/user-access/{uuid}/ → update scopes/enabled\nDELETE /api/v1/mcp/user-access/{uuid}/ → revoke access\n\nGET /api/v1/mcp/user-access/me/      → any authenticated user's own record"
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_user_access_partial_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/mcp/user-access/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Admin-only management of per-user MCP access records.\n\nGET /api/v1/mcp/user-access/         → list all access records for the company\nPOST /api/v1/mcp/user-access/        → grant access to a user\nPATCH /api/v1/mcp/user-access/{uuid}/ → update scopes/enabled\nDELETE /api/v1/mcp/user-access/{uuid}/ → revoke access\n\nGET /api/v1/mcp/user-access/me/      → any authenticated user's own record"
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_user_access_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/mcp/user-access/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Admin-only management of per-user MCP access records.\n\nGET /api/v1/mcp/user-access/         → list all access records for the company\nPOST /api/v1/mcp/user-access/        → grant access to a user\nPATCH /api/v1/mcp/user-access/{uuid}/ → update scopes/enabled\nDELETE /api/v1/mcp/user-access/{uuid}/ → revoke access\n\nGET /api/v1/mcp/user-access/me/      → any authenticated user's own record"
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_user_access_me_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/mcp/user-access/me/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Return the current user's own MCP access record."
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_zendesk_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/mcp/zendesk"
+          },
+          "docs": "MCP HTTP transport endpoint.\n\nMounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,\n``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the\n``server`` attribute set via ``as_view(server=...)`` selects which registry\nthe route scopes tools to.\n\nPOST   — JSON-RPC request (initialize / tools/list / tools/call)\nDELETE — terminate session\n\nGET is intentionally not implemented (SSE streaming is not supported in PR 2)."
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_zendesk_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/mcp/zendesk"
+          },
+          "docs": "MCP HTTP transport endpoint.\n\nMounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,\n``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the\n``server`` attribute set via ``as_view(server=...)`` selects which registry\nthe route scopes tools to.\n\nPOST   — JSON-RPC request (initialize / tools/list / tools/call)\nDELETE — terminate session\n\nGET is intentionally not implemented (SSE streaming is not supported in PR 2)."
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_zendesk_create_2",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/mcp/zendesk/"
+          },
+          "docs": "MCP HTTP transport endpoint.\n\nMounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,\n``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the\n``server`` attribute set via ``as_view(server=...)`` selects which registry\nthe route scopes tools to.\n\nPOST   — JSON-RPC request (initialize / tools/list / tools/call)\nDELETE — terminate session\n\nGET is intentionally not implemented (SSE streaming is not supported in PR 2)."
+        },
+        {
+          "info": {
+            "name": "api_v1_mcp_zendesk_destroy_2",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/mcp/zendesk/"
+          },
+          "docs": "MCP HTTP transport endpoint.\n\nMounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,\n``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the\n``server`` attribute set via ``as_view(server=...)`` selects which registry\nthe route scopes tools to.\n\nPOST   — JSON-RPC request (initialize / tools/list / tools/call)\nDELETE — terminate session\n\nGET is intentionally not implemented (SSE streaming is not supported in PR 2)."
+        },
+        {
+          "info": {
+            "name": "api_v1_oauth_applications_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/oauth/applications/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Admin-only management of OAuth2 Applications (django-oauth-toolkit).\n\nGET  /api/v1/oauth/applications/    → list applications owned by the requesting user's company\nPOST /api/v1/oauth/applications/    → register a new application\nDELETE /api/v1/oauth/applications/{pk}/ → revoke (delete) an application"
+        },
+        {
+          "info": {
+            "name": "api_v1_oauth_applications_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/oauth/applications/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Admin-only management of OAuth2 Applications (django-oauth-toolkit).\n\nGET  /api/v1/oauth/applications/    → list applications owned by the requesting user's company\nPOST /api/v1/oauth/applications/    → register a new application\nDELETE /api/v1/oauth/applications/{pk}/ → revoke (delete) an application"
+        },
+        {
+          "info": {
+            "name": "api_v1_oauth_applications_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/oauth/applications/:id/",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "A unique integer value identifying this application."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Admin-only management of OAuth2 Applications (django-oauth-toolkit).\n\nGET  /api/v1/oauth/applications/    → list applications owned by the requesting user's company\nPOST /api/v1/oauth/applications/    → register a new application\nDELETE /api/v1/oauth/applications/{pk}/ → revoke (delete) an application"
+        },
+        {
+          "info": {
+            "name": "api_v1_oauth_register_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/oauth/register/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "RFC 7591 Dynamic Client Registration endpoint.\n\nAccepts client metadata and creates a DOT Application. Only localhost\nredirect URIs are permitted (MCP clients run on the user's machine)."
+        },
+        {
+          "info": {
+            "name": "api_v1_rapyd_cypress_create_beneficiary_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/rapyd/cypress/create_beneficiary",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_rapyd_cypress_force_kyb_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/rapyd/cypress/force_kyb",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_recommendations_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/recommendations/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time "
+        },
+        {
+          "info": {
+            "name": "api_v1_research_feedbacks_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/research/feedbacks/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_research_feedbacks_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/research/feedbacks/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_research_feedbacks_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/research/feedbacks/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_research_feedbacks_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/research/feedbacks/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_research_feedbacks_partial_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/research/feedbacks/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_research_feedbacks_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/research/feedbacks/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "Get category taxonomy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/taxonomy/get-tree/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the full taxonomy as a nested tree"
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_company_overrides_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v2/notifications/company-overrides/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Company-wide overrides set by company admins.\n\nQuerysets are scoped to ``request.user_company`` (set by ``CompanyValidationMiddleware``)\nso an admin in one company can't read or modify another's overrides."
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_company_overrides_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v2/notifications/company-overrides/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Company-wide overrides set by company admins.\n\nQuerysets are scoped to ``request.user_company`` (set by ``CompanyValidationMiddleware``)\nso an admin in one company can't read or modify another's overrides."
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_company_overrides_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v2/notifications/company-overrides/:id/",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "A unique integer value identifying this company notification override."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Company-wide overrides set by company admins.\n\nQuerysets are scoped to ``request.user_company`` (set by ``CompanyValidationMiddleware``)\nso an admin in one company can't read or modify another's overrides."
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_company_overrides_partial_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v2/notifications/company-overrides/:id/",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "A unique integer value identifying this company notification override."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Company-wide overrides set by company admins.\n\nQuerysets are scoped to ``request.user_company`` (set by ``CompanyValidationMiddleware``)\nso an admin in one company can't read or modify another's overrides."
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_company_overrides_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v2/notifications/company-overrides/:id/",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "A unique integer value identifying this company notification override."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Company-wide overrides set by company admins.\n\nQuerysets are scoped to ``request.user_company`` (set by ``CompanyValidationMiddleware``)\nso an admin in one company can't read or modify another's overrides."
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_debug_dispatch_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v2/notifications/debug-dispatch/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``POST /api/v2/notifications/debug-dispatch/``\n\nBody fields:\n  - ``audience_type``: one of ``user`` / ``company`` / ``user_type`` / ``all``.\n  - ``target_user_email`` (USER): the recipient's email. Defaults to the caller.\n  - ``target_company_uuid`` (COMPANY): the company to broadcast to. Defaults\n    to the caller's company.\n  - ``user_type`` (USER_TYPE): brand / supplier / merchant_of_record.\n  - ``kind_code``: NotificationKind to dispatch. Defaults to ``order_created``.\n  - ``title_override``"
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_me_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v2/notifications/me/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "``unread`` hides READ rows (used by the bell popover); ``all`` (the default) returns both READ and unread rows for the full /notifications page. ARCHIVED rows are always excluded."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "In-app inbox for the authenticated user.\n\n``GET /api/v2/notifications/me/`` — paginated list of the user's notifications.\n``GET /api/v2/notifications/me/unread-count/`` — bell-badge count.\n``POST /api/v2/notifications/me/{uuid}/read/`` — mark one as read.\n``POST /api/v2/notifications/me/{uuid}/archive/`` — dismiss one.\n``POST /api/v2/notifications/me/mark-all-read/`` — bulk-read every unread row."
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_me_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v2/notifications/me/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "In-app inbox for the authenticated user.\n\n``GET /api/v2/notifications/me/`` — paginated list of the user's notifications.\n``GET /api/v2/notifications/me/unread-count/`` — bell-badge count.\n``POST /api/v2/notifications/me/{uuid}/read/`` — mark one as read.\n``POST /api/v2/notifications/me/{uuid}/archive/`` — dismiss one.\n``POST /api/v2/notifications/me/mark-all-read/`` — bulk-read every unread row."
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_me_archive_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v2/notifications/me/:uuid/archive/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "In-app inbox for the authenticated user.\n\n``GET /api/v2/notifications/me/`` — paginated list of the user's notifications.\n``GET /api/v2/notifications/me/unread-count/`` — bell-badge count.\n``POST /api/v2/notifications/me/{uuid}/read/`` — mark one as read.\n``POST /api/v2/notifications/me/{uuid}/archive/`` — dismiss one.\n``POST /api/v2/notifications/me/mark-all-read/`` — bulk-read every unread row."
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_me_read_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v2/notifications/me/:uuid/read/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "In-app inbox for the authenticated user.\n\n``GET /api/v2/notifications/me/`` — paginated list of the user's notifications.\n``GET /api/v2/notifications/me/unread-count/`` — bell-badge count.\n``POST /api/v2/notifications/me/{uuid}/read/`` — mark one as read.\n``POST /api/v2/notifications/me/{uuid}/archive/`` — dismiss one.\n``POST /api/v2/notifications/me/mark-all-read/`` — bulk-read every unread row."
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_me_mark_all_read_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v2/notifications/me/mark-all-read/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "In-app inbox for the authenticated user.\n\n``GET /api/v2/notifications/me/`` — paginated list of the user's notifications.\n``GET /api/v2/notifications/me/unread-count/`` — bell-badge count.\n``POST /api/v2/notifications/me/{uuid}/read/`` — mark one as read.\n``POST /api/v2/notifications/me/{uuid}/archive/`` — dismiss one.\n``POST /api/v2/notifications/me/mark-all-read/`` — bulk-read every unread row."
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_me_unread_count_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v2/notifications/me/unread-count/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "In-app inbox for the authenticated user.\n\n``GET /api/v2/notifications/me/`` — paginated list of the user's notifications.\n``GET /api/v2/notifications/me/unread-count/`` — bell-badge count.\n``POST /api/v2/notifications/me/{uuid}/read/`` — mark one as read.\n``POST /api/v2/notifications/me/{uuid}/archive/`` — dismiss one.\n``POST /api/v2/notifications/me/mark-all-read/`` — bulk-read every unread row."
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_preferences_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v2/notifications/preferences/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Per-user opt-outs.\n\nListed and mutated only by the owner. Mandatory kinds are accepted at the\nserializer layer but ignored at dispatch time."
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_preferences_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v2/notifications/preferences/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Per-user opt-outs.\n\nListed and mutated only by the owner. Mandatory kinds are accepted at the\nserializer layer but ignored at dispatch time."
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_preferences_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v2/notifications/preferences/:id/",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Per-user opt-outs.\n\nListed and mutated only by the owner. Mandatory kinds are accepted at the\nserializer layer but ignored at dispatch time."
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_preferences_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v2/notifications/preferences/:id/",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Per-user opt-outs.\n\nListed and mutated only by the owner. Mandatory kinds are accepted at the\nserializer layer but ignored at dispatch time."
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_preferences_partial_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v2/notifications/preferences/:id/",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Per-user opt-outs.\n\nListed and mutated only by the owner. Mandatory kinds are accepted at the\nserializer layer but ignored at dispatch time."
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_preferences_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v2/notifications/preferences/:id/",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Per-user opt-outs.\n\nListed and mutated only by the owner. Mandatory kinds are accepted at the\nserializer layer but ignored at dispatch time."
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_preferences_categories_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v2/notifications/preferences/categories/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "User-facing list of toggleable notification categories.\n\nReturns every non-``SYSTEM`` category that has at least one\n``NotificationKind`` (registered in :data:`ALL_KINDS`) **relevant to\nthe caller's company type** — so the Settings page never renders a\ntoggle the backend can't act on, and never one for notifications the\ncaller can't receive. ``SYSTEM`` is always excluded: those kinds are\nmandatory and render as the FE's \"always-on\" row, not a toggle.\n\nCompany-type scoping is driven by ``Notifica"
+        },
+        {
+          "info": {
+            "name": "api_v2_notifications_preferences_upsert_update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v2/notifications/preferences/upsert/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Idempotent write for a single ``(category, channel)`` preference row.\n\nThe viewset's POST/PATCH pair require the caller to know the row's\nprimary key. The Settings UI doesn't — it just wants \"set EMAIL for\nORDERS to disabled\". This action collapses the lookup+write into one\ncall and keeps the API surface clean on the FE side."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

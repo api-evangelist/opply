@@ -1,0 +1,5314 @@
+{
+  "item": [
+    {
+      "id": "26c4487a-709c-46d0-aeb5-f34472469b02",
+      "name": "Buyer Onboarding",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4b3d0577-0c2c-4aed-ba7a-a3359d2720f4",
+          "name": "List all onboarding buyers",
+          "request": {
+            "name": "List all onboarding buyers",
+            "description": {
+              "content": "Get a paginated list of all buyers onboarding for this Merchant of Record.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "buyers",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "country",
+                  "value": "<string>",
+                  "description": "Filter by country (us or uk)"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Search by buyer name"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b48ac8e7-c936-4668-b0ae-63e7928e4b1a",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"company_name\": \"string\",\n      \"company_uuid\": \"string\",\n      \"completed_steps\": \"string\",\n      \"country\": \"us\",\n      \"created_at\": \"1981-12-01T14:56:17.195Z\",\n      \"email\": \"string\",\n      \"is_submitted\": \"string\",\n      \"modified_at\": \"1990-03-18T19:08:35.505Z\",\n      \"name\": \"string\",\n      \"total_steps\": \"string\",\n      \"uuid\": \"7d8c3c47-3e92-291b-d974-43c8fb1e5cd7\",\n      \"notes\": \"string\",\n      \"submitted_at\": \"1989-11-06T09:26:54.310Z\"\n    },\n    {\n      \"company_name\": \"string\",\n      \"company_uuid\": \"string\",\n      \"completed_steps\": \"string\",\n      \"country\": \"uk\",\n      \"created_at\": \"1991-09-07T11:46:56.013Z\",\n      \"email\": \"string\",\n      \"is_submitted\": \"string\",\n      \"modified_at\": \"1962-09-12T22:39:49.943Z\",\n      \"name\": \"string\",\n      \"total_steps\": \"string\",\n      \"uuid\": \"779cc176-1067-9723-4a98-08fbd54a1781\",\n      \"notes\": \"string\",\n      \"submitted_at\": \"2024-02-29T19:48:20.388Z\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "431c25c9-a123-4103-8374-8c9e34666788",
+              "name": "User is not a Merchant of Record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d1cea0c6-a46a-4a5f-b6d7-d88b76f2c2fe",
+          "name": "Get buyer onboarding details",
+          "request": {
+            "name": "Get buyer onboarding details",
+            "description": {
+              "content": "Get detailed information about a specific buyer onboarding record.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "buyers",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e52dc9b6-bd28-4953-a802-d728fa0a72fd",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"company_name\": \"string\",\n  \"company_uuid\": \"string\",\n  \"completed_steps\": \"string\",\n  \"country\": \"uk\",\n  \"created_at\": \"1993-05-12T19:15:30.690Z\",\n  \"email\": \"string\",\n  \"has_account_details\": \"string\",\n  \"has_delivery_details\": \"string\",\n  \"is_submitted\": \"string\",\n  \"modified_at\": \"1962-10-25T04:44:00.477Z\",\n  \"name\": \"string\",\n  \"submitted_at\": \"1968-11-15T05:08:13.206Z\",\n  \"suppliers_completed\": \"string\",\n  \"suppliers_completed_at\": \"1997-12-29T23:09:07.930Z\",\n  \"suppliers_count\": \"string\",\n  \"suppliers_pending_review_count\": \"string\",\n  \"total_steps\": \"string\",\n  \"uuid\": \"4352ba02-f2c2-7bc6-e2de-95f68e7e9d45\",\n  \"notes\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ead78a20-d04c-4882-aca5-34fed84e5f70",
+              "name": "User is not a Merchant of Record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "baf4db5d-5193-4462-adab-852d691915e0",
+              "name": "Buyer onboarding not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "93064aba-2386-4edf-90a3-34faaea30b96",
+          "name": "Get buyer account details",
+          "request": {
+            "name": "Get buyer account details",
+            "description": {
+              "content": "Get account details for a specific buyer (company information, VAT, registration number, etc.).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "buyers",
+                ":uuid",
+                "account-details",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "21a2e4f1-e63f-4e2e-9a29-2a41bed4c886",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "account-details",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"account_emails\": [\n    {\n      \"created_at\": \"2010-05-15T22:58:57.266Z\",\n      \"email_address\": \"TkAcF@QtoXfFyHsAirTclnAjMJs.fm\",\n      \"label\": \"string\",\n      \"modified_at\": \"1988-11-16T15:53:42.314Z\",\n      \"uuid\": \"7138f4a2-221c-e7b5-0ec9-54b641ab7c8f\"\n    },\n    {\n      \"created_at\": \"1971-05-13T22:15:33.196Z\",\n      \"email_address\": \"dEUGyWEv4Q@CtyTJcmp.zukb\",\n      \"label\": \"string\",\n      \"modified_at\": \"1965-07-04T11:20:49.696Z\",\n      \"uuid\": \"eec3a65b-04a7-8454-e773-89913d391bf3\"\n    }\n  ],\n  \"company_name\": \"string\",\n  \"contact_name\": \"string\",\n  \"contact_phone_number\": \"string\",\n  \"created_at\": \"2026-06-08T09:26:42.793Z\",\n  \"id\": 9085,\n  \"modified_at\": \"2007-11-28T23:44:52.436Z\",\n  \"registered_address\": \"string\",\n  \"vat_number\": \"string\",\n  \"duns\": \"string\",\n  \"company_registration_number\": \"string\",\n  \"contact_email_address\": \"EURHj@hlJfGqHy.jjj\",\n  \"tax_exemption_certificate\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "89bc9042-9d3e-46a7-805b-18c56b0c6e3e",
+              "name": "User is not a Merchant of Record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "account-details",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "34a5bc19-19d8-4578-afea-0d0b89763b66",
+              "name": "Account details not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "account-details",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "43f23b03-58a3-4aeb-a850-43330859dccd",
+          "name": "Get buyer delivery addresses",
+          "request": {
+            "name": "Get buyer delivery addresses",
+            "description": {
+              "content": "Get all delivery addresses for a specific buyer onboarding.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "buyers",
+                ":uuid",
+                "delivery-addresses",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d94f57b9-1858-4c76-a7a6-99d885aa249e",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "delivery-addresses",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"created\": \"1991-03-29T01:16:56.893Z\",\n      \"delivery_location_type_display\": \"string\",\n      \"modified\": \"2020-10-06T03:45:12.947Z\",\n      \"name\": \"string\",\n      \"uuid\": \"8bc38626-e974-d320-1d72-b3758a36e353\",\n      \"address_type\": \"company_address\",\n      \"contact_full_name\": \"string\",\n      \"contact_phone\": \"string\",\n      \"building\": \"string\",\n      \"street_1\": \"string\",\n      \"street_2\": \"string\",\n      \"town\": \"string\",\n      \"region\": \"string\",\n      \"postcode\": \"string\",\n      \"country\": \"OM\",\n      \"place_id\": \"string\",\n      \"latitude\": \"\",\n      \"longitude\": \"-9480.390\",\n      \"vat_number\": \"string\",\n      \"vat_country_code\": \"TT\",\n      \"vat_exempt\": true,\n      \"phone_country_code\": \"+31\",\n      \"delivery_instructions\": \"string\",\n      \"collection_instructions\": \"string\",\n      \"country_type\": \"GB\",\n      \"eori_number\": \"string\",\n      \"ein_number\": \"string\",\n      \"delivery_location_type\": \"factory\",\n      \"delivery_location_type_other\": \"string\",\n      \"warehouse_receiving_hours\": \"string\"\n    },\n    {\n      \"created\": \"1959-03-02T08:41:34.079Z\",\n      \"delivery_location_type_display\": \"string\",\n      \"modified\": \"2002-08-30T22:40:22.216Z\",\n      \"name\": \"string\",\n      \"uuid\": \"a1d2f296-0949-b0f2-9ef1-27dfedcdd1bc\",\n      \"address_type\": \"company_address\",\n      \"contact_full_name\": \"string\",\n      \"contact_phone\": \"string\",\n      \"building\": \"string\",\n      \"street_1\": \"string\",\n      \"street_2\": \"string\",\n      \"town\": \"string\",\n      \"region\": \"string\",\n      \"postcode\": \"string\",\n      \"country\": \"CH\",\n      \"place_id\": \"string\",\n      \"latitude\": \"-\",\n      \"longitude\": \"85\",\n      \"vat_number\": \"string\",\n      \"vat_country_code\": \"ME\",\n      \"vat_exempt\": false,\n      \"phone_country_code\": \"+374\",\n      \"delivery_instructions\": \"string\",\n      \"collection_instructions\": \"string\",\n      \"country_type\": \"GB\",\n      \"eori_number\": \"string\",\n      \"ein_number\": \"string\",\n      \"delivery_location_type\": \"other\",\n      \"delivery_location_type_other\": \"string\",\n      \"warehouse_receiving_hours\": \"string\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a9eb7da7-f1ad-47b7-85e1-f7be951ab738",
+              "name": "User is not a Merchant of Record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "delivery-addresses",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a2fe642e-4f00-4835-b269-3b918e092321",
+              "name": "Buyer onboarding not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "delivery-addresses",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f1629874-a830-4d08-8ce2-6d3b3b71e7b5",
+          "name": "Get buyer delivery details",
+          "request": {
+            "name": "Get buyer delivery details",
+            "description": {
+              "content": "Get delivery details for a specific buyer (address, contact, warehouse information, etc.).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "buyers",
+                ":uuid",
+                "delivery-details",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5d68aa36-fe44-4386-84ca-27f7b90b4752",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "delivery-details",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created_at\": \"2004-11-15T06:40:43.649Z\",\n  \"delivery_location_type\": \"other\",\n  \"delivery_location_type_display\": \"string\",\n  \"id\": 2057,\n  \"modified_at\": \"2013-11-08T14:53:42.609Z\",\n  \"delivery_address\": \"string\",\n  \"delivery_location_type_other\": \"string\",\n  \"delivery_instructions\": \"string\",\n  \"delivery_contact_name\": \"string\",\n  \"delivery_contact_phone_number\": \"string\",\n  \"delivery_contact_email\": \"ZQ8naEzS3Ny@mns.khq\",\n  \"warehouse_receiving_hours\": \"string\",\n  \"storage_capacity\": \"string\",\n  \"access_requirements\": \"delivery_appointment\",\n  \"is_sample_required\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0dee4d5c-1827-4263-98e2-fe1b87840d17",
+              "name": "User is not a Merchant of Record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "delivery-details",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "21c9b80d-e52e-4aff-ab74-23e5d8b21db4",
+              "name": "Delivery details not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "delivery-details",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fe2a5674-b0e3-4e0d-b827-2250e077b128",
+          "name": "Get buyer delivery emails",
+          "request": {
+            "name": "Get buyer delivery emails",
+            "description": {
+              "content": "Get all delivery emails for a specific buyer onboarding.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "buyers",
+                ":uuid",
+                "delivery-emails",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9093f278-a69e-4d1d-bf51-45f229868550",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "delivery-emails",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"created_at\": \"1995-10-10T14:35:04.251Z\",\n      \"email_address\": \"X7bam@MOMIfefulIqadHDbwjuvIfMtB.un\",\n      \"label\": \"string\",\n      \"modified_at\": \"1959-09-15T08:04:04.133Z\",\n      \"uuid\": \"a2bfbf33-4ff3-8298-07cf-41c7c36147cf\"\n    },\n    {\n      \"created_at\": \"1958-03-08T15:58:27.082Z\",\n      \"email_address\": \"NvHEe@ZyynKeLuFxbieGAFZeYXgwpVQWW.he\",\n      \"label\": \"string\",\n      \"modified_at\": \"1979-02-28T15:06:06.386Z\",\n      \"uuid\": \"5c0cf62e-1e3c-7025-8191-2936ff26bce5\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "277f54dc-9027-4e6f-b304-3ad44386a820",
+              "name": "User is not a Merchant of Record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "delivery-emails",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "45b1d15c-7b22-4dab-bf1c-25c23485e5fb",
+              "name": "Buyer onboarding not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "delivery-emails",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "99f6259d-97e4-4d8e-9e98-9f95dc983426",
+          "name": "Get buyer documents",
+          "request": {
+            "name": "Get buyer documents",
+            "description": {
+              "content": "Get all documents for a specific buyer onboarding.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "buyers",
+                ":uuid",
+                "documents",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "82024967-69c5-40b7-abe1-fe79b67abdf8",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "documents",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"created_at\": \"1998-12-16T20:58:22.491Z\",\n      \"document\": \"http://DrXKUqCONMg.jgavvKeb8uirOJpOKvXUEH.IyDXVj\",\n      \"document_url\": \"string\",\n      \"modified_at\": \"2010-03-01T08:20:45.883Z\",\n      \"uuid\": \"d5bac5a5-bb67-755a-bb50-952bd3f0a647\",\n      \"description\": \"string\"\n    },\n    {\n      \"created_at\": \"1973-07-06T14:47:54.559Z\",\n      \"document\": \"https://JmWIjyLapLTvNRbBvkPkKh.reRdpvBTxJ9M9NDXjxXP05EjC2T9\",\n      \"document_url\": \"string\",\n      \"modified_at\": \"2015-09-26T17:21:08.083Z\",\n      \"uuid\": \"a289811b-59cf-60cf-1be4-8677d1c8de15\",\n      \"description\": \"string\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c4eba583-06b6-425f-8f16-c1ac8de6ae34",
+              "name": "User is not a Merchant of Record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "documents",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8e52c2a4-cba7-4bf5-8240-6c58fde1a840",
+              "name": "Buyer onboarding not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "documents",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c5f48da8-fe5b-475e-bae9-0601ae7426d6",
+          "name": "List buyer onboarding steps",
+          "request": {
+            "name": "List buyer onboarding steps",
+            "description": {
+              "content": "Get all onboarding steps for a specific buyer, organized by phase.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "buyers",
+                ":uuid",
+                "steps",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "is_completed",
+                  "value": "<boolean>",
+                  "description": "Filter by completion status (true/false)"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "phase",
+                  "value": "<string>",
+                  "description": "Filter by phase (phase_1, phase_2, phase_3, phase_4)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5ff35ec0-6060-498d-9120-33e1d15e5edf",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "steps",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "is_completed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "phase",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"completed_at\": \"1957-03-03T17:26:33.884Z\",\n      \"completed_by\": 7258,\n      \"completed_by_email\": \"kRbWJop3IUCbtZK@eDaMhohmZBuyxJvJJLKOczECUZ.wxf\",\n      \"created_at\": \"1966-08-02T00:36:32.078Z\",\n      \"id\": 2984,\n      \"modified_at\": \"1967-12-26T06:32:56.876Z\",\n      \"process_description\": \"string\",\n      \"template_phase\": \"string\",\n      \"template_phase_display\": \"string\",\n      \"template_step\": 8227,\n      \"template_step_order\": 4858,\n      \"notes\": \"string\",\n      \"is_completed\": false,\n      \"custom_step_order\": 654745091,\n      \"is_step_visible\": false\n    },\n    {\n      \"completed_at\": \"2014-11-07T05:53:26.791Z\",\n      \"completed_by\": 8003,\n      \"completed_by_email\": \"WBpQSZo7E1n@QeUVhxAEM.hqy\",\n      \"created_at\": \"1978-02-16T17:22:27.944Z\",\n      \"id\": 6071,\n      \"modified_at\": \"2011-10-09T13:20:57.543Z\",\n      \"process_description\": \"string\",\n      \"template_phase\": \"string\",\n      \"template_phase_display\": \"string\",\n      \"template_step\": 5464,\n      \"template_step_order\": 9686,\n      \"notes\": \"string\",\n      \"is_completed\": false,\n      \"custom_step_order\": 1653506966,\n      \"is_step_visible\": true\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ef48e300-d3e2-4cda-af20-12aa3975d82f",
+              "name": "User is not a Merchant of Record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "steps",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "is_completed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "phase",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f9b5d1c6-de41-4575-8a6a-9b69fc8001f6",
+              "name": "Buyer onboarding not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "steps",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "is_completed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "phase",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "59ff67fa-e061-4971-85fe-9d7a2e5578ad",
+          "name": "Get buyer onboarding step",
+          "request": {
+            "name": "Get buyer onboarding step",
+            "description": {
+              "content": "Get details of a specific onboarding step.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "buyers",
+                ":uuid",
+                "steps",
+                ":step_id",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "step_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4932d574-6ebc-45af-84c7-33411fb7bdd7",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "steps",
+                    ":step_id",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "step_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"completed_at\": \"2003-04-21T21:18:53.948Z\",\n  \"completed_by\": 137,\n  \"completed_by_email\": \"xQirnw@kSeOFxhLMCFitYURqAd.pi\",\n  \"created_at\": \"2002-03-26T17:08:31.734Z\",\n  \"id\": 3112,\n  \"modified_at\": \"2023-02-05T20:25:13.066Z\",\n  \"process_description\": \"string\",\n  \"template_phase\": \"string\",\n  \"template_phase_display\": \"string\",\n  \"template_step\": 6086,\n  \"template_step_order\": 630,\n  \"notes\": \"string\",\n  \"is_completed\": true,\n  \"custom_step_order\": 1425696842,\n  \"is_step_visible\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f473470f-3bd1-497e-befa-ef8aefca9cc6",
+              "name": "User is not a Merchant of Record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "steps",
+                    ":step_id",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "step_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "11ce152e-ee80-4caa-9cac-dac1cdb8ec50",
+              "name": "Step not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "steps",
+                    ":step_id",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "step_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ed90c20d-afd2-4169-8c8d-f74d5f121e9b",
+          "name": "Update buyer onboarding step",
+          "request": {
+            "name": "Update buyer onboarding step",
+            "description": {
+              "content": "Update a specific onboarding step. Can update notes, actions, completion status, visibility, and custom order.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "buyers",
+                ":uuid",
+                "steps",
+                ":step_id",
+                "update",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "step_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "template_step",
+                  "value": "<integer>",
+                  "description": "The template this step is based on"
+                },
+                {
+                  "disabled": false,
+                  "key": "notes",
+                  "value": "<string>",
+                  "description": "Buyer-specific notes for this step"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_completed",
+                  "value": "<boolean>",
+                  "description": "Whether this step is completed"
+                },
+                {
+                  "disabled": false,
+                  "key": "custom_step_order",
+                  "value": "<integer>",
+                  "description": "Custom order for this buyer (overrides template step order)"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_step_visible",
+                  "value": "<boolean>",
+                  "description": "Whether this step is visible for this buyer"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4f00264b-80c4-4d6f-91c3-1ce804abc823",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "steps",
+                    ":step_id",
+                    "update",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "step_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The template this step is based on",
+                        "type": "text/plain"
+                      },
+                      "key": "template_step",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Buyer-specific notes for this step",
+                        "type": "text/plain"
+                      },
+                      "key": "notes",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Whether this step is completed",
+                        "type": "text/plain"
+                      },
+                      "key": "is_completed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Custom order for this buyer (overrides template step order)",
+                        "type": "text/plain"
+                      },
+                      "key": "custom_step_order",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Whether this step is visible for this buyer",
+                        "type": "text/plain"
+                      },
+                      "key": "is_step_visible",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"completed_at\": \"2003-04-21T21:18:53.948Z\",\n  \"completed_by\": 137,\n  \"completed_by_email\": \"xQirnw@kSeOFxhLMCFitYURqAd.pi\",\n  \"created_at\": \"2002-03-26T17:08:31.734Z\",\n  \"id\": 3112,\n  \"modified_at\": \"2023-02-05T20:25:13.066Z\",\n  \"process_description\": \"string\",\n  \"template_phase\": \"string\",\n  \"template_phase_display\": \"string\",\n  \"template_step\": 6086,\n  \"template_step_order\": 630,\n  \"notes\": \"string\",\n  \"is_completed\": true,\n  \"custom_step_order\": 1425696842,\n  \"is_step_visible\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "55dcbf63-d496-4477-9ed5-d6ecb329abd8",
+              "name": "Invalid input data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "steps",
+                    ":step_id",
+                    "update",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "step_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The template this step is based on",
+                        "type": "text/plain"
+                      },
+                      "key": "template_step",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Buyer-specific notes for this step",
+                        "type": "text/plain"
+                      },
+                      "key": "notes",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Whether this step is completed",
+                        "type": "text/plain"
+                      },
+                      "key": "is_completed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Custom order for this buyer (overrides template step order)",
+                        "type": "text/plain"
+                      },
+                      "key": "custom_step_order",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Whether this step is visible for this buyer",
+                        "type": "text/plain"
+                      },
+                      "key": "is_step_visible",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a1b6275d-b3ef-4eeb-8529-e5a3f81dc6e1",
+              "name": "User is not a Merchant of Record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "steps",
+                    ":step_id",
+                    "update",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "step_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The template this step is based on",
+                        "type": "text/plain"
+                      },
+                      "key": "template_step",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Buyer-specific notes for this step",
+                        "type": "text/plain"
+                      },
+                      "key": "notes",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Whether this step is completed",
+                        "type": "text/plain"
+                      },
+                      "key": "is_completed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Custom order for this buyer (overrides template step order)",
+                        "type": "text/plain"
+                      },
+                      "key": "custom_step_order",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Whether this step is visible for this buyer",
+                        "type": "text/plain"
+                      },
+                      "key": "is_step_visible",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "286f3c1f-7377-4640-b65a-ca8bfbb28831",
+              "name": "Step not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "steps",
+                    ":step_id",
+                    "update",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "step_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The template this step is based on",
+                        "type": "text/plain"
+                      },
+                      "key": "template_step",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Buyer-specific notes for this step",
+                        "type": "text/plain"
+                      },
+                      "key": "notes",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Whether this step is completed",
+                        "type": "text/plain"
+                      },
+                      "key": "is_completed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Custom order for this buyer (overrides template step order)",
+                        "type": "text/plain"
+                      },
+                      "key": "custom_step_order",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Whether this step is visible for this buyer",
+                        "type": "text/plain"
+                      },
+                      "key": "is_step_visible",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5b33f44e-4480-47b1-828c-7edc5155a9c8",
+          "name": "List buyer suppliers",
+          "request": {
+            "name": "List buyer suppliers",
+            "description": {
+              "content": "Get all suppliers associated with a specific buyer onboarding.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "buyers",
+                ":uuid",
+                "suppliers",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "69abf7b7-8537-4a42-90d7-c8701c588921",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "suppliers",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"created_at\": \"1998-03-30T07:30:18.255Z\",\n      \"id\": 7685,\n      \"modified_at\": \"1979-01-26T23:38:44.558Z\",\n      \"supplier_name\": \"string\",\n      \"supplier_spreadsheet_url\": \"string\",\n      \"average_monthly_spend\": \"65.9\",\n      \"invoice_currency\": \"str\",\n      \"payment_terms\": \"string\",\n      \"priority\": \"medium\",\n      \"supplier_country\": \"string\",\n      \"arranges_delivery\": true,\n      \"lead_time\": \"string\",\n      \"is_organic\": true,\n      \"relationship_notes\": \"string\",\n      \"supplier_spreadsheet\": \"http://GfGQa.rjcwH9RGZ.QIn.vkwamgH\"\n    },\n    {\n      \"created_at\": \"2000-05-07T14:01:23.778Z\",\n      \"id\": 7086,\n      \"modified_at\": \"1972-04-29T10:44:28.193Z\",\n      \"supplier_name\": \"string\",\n      \"supplier_spreadsheet_url\": \"string\",\n      \"average_monthly_spend\": \"-\",\n      \"invoice_currency\": \"str\",\n      \"payment_terms\": \"string\",\n      \"priority\": \"high\",\n      \"supplier_country\": \"string\",\n      \"arranges_delivery\": true,\n      \"lead_time\": \"string\",\n      \"is_organic\": true,\n      \"relationship_notes\": \"string\",\n      \"supplier_spreadsheet\": \"https://JpxYlKep.erGMS77,rgOqS0lT.CF.o\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8a264c3f-56f3-4e0e-9ce9-f31cc5ae580c",
+              "name": "User is not a Merchant of Record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "suppliers",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4dea10c4-6ba1-4975-8810-40c91eef4260",
+              "name": "Buyer onboarding not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "suppliers",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "62a27263-50f1-43c7-b52d-cfeca5d4a8c7",
+          "name": "Update buyer onboarding",
+          "request": {
+            "name": "Update buyer onboarding",
+            "description": {
+              "content": "Update buyer onboarding notes (notes field only).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "buyers",
+                ":uuid",
+                "update",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "country",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "notes",
+                  "value": "<string>",
+                  "description": "Internal notes"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "efadfe3b-bbb7-455a-b1e9-8d40debe45fd",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "update",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Internal notes",
+                        "type": "text/plain"
+                      },
+                      "key": "notes",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"company_name\": \"string\",\n  \"company_uuid\": \"string\",\n  \"completed_steps\": \"string\",\n  \"country\": \"<string>\",\n  \"created_at\": \"1969-01-15T05:58:58.719Z\",\n  \"email\": \"string\",\n  \"has_account_details\": \"string\",\n  \"has_delivery_details\": \"string\",\n  \"is_submitted\": \"string\",\n  \"modified_at\": \"1978-03-19T18:53:15.194Z\",\n  \"name\": \"string\",\n  \"submitted_at\": \"1958-04-10T19:55:38.099Z\",\n  \"suppliers_completed\": \"string\",\n  \"suppliers_completed_at\": \"1948-12-03T21:19:37.478Z\",\n  \"suppliers_count\": \"string\",\n  \"suppliers_pending_review_count\": \"string\",\n  \"total_steps\": \"string\",\n  \"uuid\": \"db8dc083-418f-c3b6-025d-f6c642245005\",\n  \"notes\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0ff6b665-5b72-4135-ac74-63b1e55ce46e",
+              "name": "Invalid input data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "update",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Internal notes",
+                        "type": "text/plain"
+                      },
+                      "key": "notes",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4455fc45-c8c3-48f1-8148-8855af4ebbc5",
+              "name": "User is not a Merchant of Record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "update",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Internal notes",
+                        "type": "text/plain"
+                      },
+                      "key": "notes",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7ed22b94-5f51-4a0d-84ca-192b60e5a359",
+              "name": "Buyer onboarding not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    ":uuid",
+                    "update",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Internal notes",
+                        "type": "text/plain"
+                      },
+                      "key": "notes",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b77fb7af-cadb-4d72-8262-395d8872f5e8",
+          "name": "Generate buyer onboarding link (legacy)",
+          "request": {
+            "name": "Generate buyer onboarding link (legacy)",
+            "description": {
+              "content": "Legacy MoR flow (feature flag `isBuyerInvitationFlowEnabled` off). Creates a BuyerOnboarding record and generates a unique UUID-based link the MoR can hand to the buyer. The link does not require authentication for the buyer to access. The buyer will be automatically assigned onboarding steps based on active templates. No User / Company / Employee is provisioned — that is the new `invite` flow's job.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "buyers",
+                "generate-link",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "country",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "email",
+                  "value": "<email>",
+                  "description": "(Required) Buyer contact email"
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "(Required) Buyer contact name"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "82b45e9a-7834-4b18-9d98-ec1e905f9ed4",
+              "name": "Buyer onboarding link generated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    "generate-link",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Buyer contact email",
+                        "type": "text/plain"
+                      },
+                      "key": "email",
+                      "value": "<email>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Buyer contact name",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"country\": \"<string>\",\n  \"created_at\": \"2007-08-05T10:32:36.304Z\",\n  \"email\": \"sCLCu1z@zKHIdrHSeNZX.bp\",\n  \"link\": \"string\",\n  \"name\": \"string\",\n  \"uuid\": \"c99c7ac2-8361-45e6-7229-77fe5af829e2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eb49e6f0-124d-46ee-a6f4-9f4a42bc2531",
+              "name": "Invalid input data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    "generate-link",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Buyer contact email",
+                        "type": "text/plain"
+                      },
+                      "key": "email",
+                      "value": "<email>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Buyer contact name",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a478977d-76b6-4fe5-a904-3b619abc65e4",
+              "name": "User is not a Merchant of Record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    "generate-link",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Buyer contact email",
+                        "type": "text/plain"
+                      },
+                      "key": "email",
+                      "value": "<email>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Buyer contact name",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "82655716-6395-4dec-8461-c1ac5e7c8f4e",
+          "name": "Invite a buyer to onboard",
+          "request": {
+            "name": "Invite a buyer to onboard",
+            "description": {
+              "content": "Provision a brand-new buyer behind the onboarding gate. The MoR supplies the buyer's contact name, email, country, and company name; the BE creates a User + Company(onboarding_state=in_progress) + Employee link + BuyerOnboarding row, and emails the buyer a set-your-password link. There is no shareable onboarding URL — the buyer enters the app via the standard authenticated flow.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "buyers",
+                "invite",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "country",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "email",
+                  "value": "<email>",
+                  "description": "(Required) Buyer contact email"
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "(Required) Buyer contact name"
+                },
+                {
+                  "disabled": false,
+                  "key": "company_name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "first_name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "last_name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "registration_name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "registration_number",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_connected_to_allianz",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "allianz_company_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_connected_to_two",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "two_us_company_id",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1871e655-fb6c-4cb3-8bce-2128327d6602",
+              "name": "Buyer invited successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    "invite",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Buyer contact email",
+                        "type": "text/plain"
+                      },
+                      "key": "email",
+                      "value": "<email>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Buyer contact name",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "company_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "first_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "last_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "registration_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "registration_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "is_connected_to_allianz",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "allianz_company_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "is_connected_to_two",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "two_us_company_id",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"country\": \"<string>\",\n  \"created_at\": \"1965-09-08T05:22:18.709Z\",\n  \"email\": \"rdpa29nSxxt@pstxWAJnhEOztZiqhIwtyAevhTJnbuGCp.tvjl\",\n  \"name\": \"string\",\n  \"uuid\": \"827571aa-0304-6e6d-3f67-9761307d08cc\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c6a33f40-b072-49b4-9e32-0bfe1436b988",
+              "name": "Invalid input data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    "invite",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Buyer contact email",
+                        "type": "text/plain"
+                      },
+                      "key": "email",
+                      "value": "<email>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Buyer contact name",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "company_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "first_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "last_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "registration_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "registration_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "is_connected_to_allianz",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "allianz_company_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "is_connected_to_two",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "two_us_company_id",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f13e27cf-c948-4f2f-b3fd-3d16164801d4",
+              "name": "User is not a Merchant of Record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "buyers",
+                    "invite",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Buyer contact email",
+                        "type": "text/plain"
+                      },
+                      "key": "email",
+                      "value": "<email>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Buyer contact name",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "company_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "first_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "last_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "registration_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "registration_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "is_connected_to_allianz",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "allianz_company_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "is_connected_to_two",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "two_us_company_id",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "02234e6e-9463-440b-b7fe-5a769bcaadb4",
+          "name": "List buyer-submitted supplier rows pending MoR review.",
+          "request": {
+            "name": "List buyer-submitted supplier rows pending MoR review.",
+            "description": {
+              "content": "Cross-buyer review queue over `buyer_onboarding.Supplier` rows submitted\nby self-serve buyers. Lets MoR operators:\n\n- List pending (or any-status) submissions across all of their buyers.\n- Retrieve a single submission with buyer context.\n- Search candidate existing `Company(SUPPLIER)` rows for matching.\n- Match a submission to an existing supplier company.\n- Promote a submission into the `OnboardingSupplier` pipeline.\n- Reject a submission with a buyer-visible reason.\n\nAll actions are scoped to submissions whose buyer's MoR is the current\nuser's company.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "supplier-submissions",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "buyer_company_uuid",
+                  "value": "<string>",
+                  "description": "Filter to a single buyer's submissions."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "review_status",
+                  "value": "<string>",
+                  "description": "Filter by review status (pending_review, matched, onboarding, rejected)."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Search supplier name / contact email."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "98c0c555-de86-474c-adf0-813927225c35",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "supplier-submissions",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "buyer_company_uuid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "review_status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"arranges_delivery\": true,\n      \"average_monthly_spend\": \".5\",\n      \"buyer_company_name\": \"string\",\n      \"buyer_company_uuid\": \"string\",\n      \"buyer_contact_email\": \"P7C8hg@Q.mvj\",\n      \"buyer_contact_name\": \"string\",\n      \"buyer_onboarding_uuid\": \"6f362a8c-826d-b78b-44bd-2115742da0be\",\n      \"contact_email\": \"OS7IU@WOAaCEla.ugvx\",\n      \"contact_name\": \"string\",\n      \"contact_phone\": \"string\",\n      \"created_at\": \"1994-05-08T11:40:34.087Z\",\n      \"id\": 5836,\n      \"invoice_currency\": \"string\",\n      \"is_organic\": true,\n      \"lead_time\": \"string\",\n      \"matched_supplier_name\": \"string\",\n      \"matched_supplier_uuid\": \"string\",\n      \"notes\": \"string\",\n      \"onboarding_supplier_uuid\": \"string\",\n      \"payment_terms\": \"string\",\n      \"priority\": \"low\",\n      \"products_description\": \"string\",\n      \"registration_number\": \"string\",\n      \"relationship_notes\": \"string\",\n      \"review_notes\": \"string\",\n      \"review_status\": \"pending_review\",\n      \"reviewed_at\": \"1989-05-26T09:37:09.656Z\",\n      \"reviewed_by_email\": \"string\",\n      \"suggested_match_ratio\": 3853.695849410186,\n      \"suggested_supplier_name\": \"string\",\n      \"suggested_supplier_uuid\": \"bfc250f6-e4fc-6a17-3eb8-aade7a32cdad\",\n      \"supplier_address\": \"string\",\n      \"supplier_country\": \"string\",\n      \"supplier_name\": \"string\",\n      \"supplier_state\": \"string\",\n      \"vat_number\": \"string\"\n    },\n    {\n      \"arranges_delivery\": false,\n      \"average_monthly_spend\": \"-087671726.47\",\n      \"buyer_company_name\": \"string\",\n      \"buyer_company_uuid\": \"string\",\n      \"buyer_contact_email\": \"P2BZAkur63e0Bg@UJwGzULMDBMIHBGOEzUzvLhr.st\",\n      \"buyer_contact_name\": \"string\",\n      \"buyer_onboarding_uuid\": \"687d88d3-8f94-1459-1ce9-bb03f43a03d9\",\n      \"contact_email\": \"Kpl@hfgglKViICpmyFoScBA.cay\",\n      \"contact_name\": \"string\",\n      \"contact_phone\": \"string\",\n      \"created_at\": \"2001-05-10T12:11:06.170Z\",\n      \"id\": 1094,\n      \"invoice_currency\": \"string\",\n      \"is_organic\": false,\n      \"lead_time\": \"string\",\n      \"matched_supplier_name\": \"string\",\n      \"matched_supplier_uuid\": \"string\",\n      \"notes\": \"string\",\n      \"onboarding_supplier_uuid\": \"string\",\n      \"payment_terms\": \"string\",\n      \"priority\": \"low\",\n      \"products_description\": \"string\",\n      \"registration_number\": \"string\",\n      \"relationship_notes\": \"string\",\n      \"review_notes\": \"string\",\n      \"review_status\": \"onboarding\",\n      \"reviewed_at\": \"1990-09-16T12:06:16.433Z\",\n      \"reviewed_by_email\": \"string\",\n      \"suggested_match_ratio\": 4358.998496472441,\n      \"suggested_supplier_name\": \"string\",\n      \"suggested_supplier_uuid\": \"27a10716-4c84-8882-60f6-57f6dcb77da0\",\n      \"supplier_address\": \"string\",\n      \"supplier_country\": \"string\",\n      \"supplier_name\": \"string\",\n      \"supplier_state\": \"string\",\n      \"vat_number\": \"string\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "de3cc724-4a33-40bf-8785-86afcb3475e7",
+          "name": "Retrieve a single supplier submission.",
+          "request": {
+            "name": "Retrieve a single supplier submission.",
+            "description": {
+              "content": "Cross-buyer review queue over `buyer_onboarding.Supplier` rows submitted\nby self-serve buyers. Lets MoR operators:\n\n- List pending (or any-status) submissions across all of their buyers.\n- Retrieve a single submission with buyer context.\n- Search candidate existing `Company(SUPPLIER)` rows for matching.\n- Match a submission to an existing supplier company.\n- Promote a submission into the `OnboardingSupplier` pipeline.\n- Reject a submission with a buyer-visible reason.\n\nAll actions are scoped to submissions whose buyer's MoR is the current\nuser's company.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "supplier-submissions",
+                ":id",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "dbf5a3e3-d19a-4ae4-9962-6cdf40c9e061",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "supplier-submissions",
+                    ":id",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"arranges_delivery\": false,\n  \"average_monthly_spend\": \"997952748\",\n  \"buyer_company_name\": \"string\",\n  \"buyer_company_uuid\": \"string\",\n  \"buyer_contact_email\": \"wMqAOk@cD.umvz\",\n  \"buyer_contact_name\": \"string\",\n  \"buyer_onboarding_uuid\": \"e0f17b63-cf32-02c7-55c7-2712daccc289\",\n  \"contact_email\": \"rg0ZMgc@yDklIGozXfTDCRTTdFEnnBg.hqo\",\n  \"contact_name\": \"string\",\n  \"contact_phone\": \"string\",\n  \"created_at\": \"1992-11-14T15:59:48.439Z\",\n  \"id\": 4443,\n  \"invoice_currency\": \"string\",\n  \"is_organic\": true,\n  \"lead_time\": \"string\",\n  \"matched_supplier_name\": \"string\",\n  \"matched_supplier_uuid\": \"string\",\n  \"notes\": \"string\",\n  \"onboarding_supplier_uuid\": \"string\",\n  \"payment_terms\": \"string\",\n  \"priority\": \"medium\",\n  \"products_description\": \"string\",\n  \"registration_number\": \"string\",\n  \"relationship_notes\": \"string\",\n  \"review_notes\": \"string\",\n  \"review_status\": \"rejected\",\n  \"reviewed_at\": \"1961-12-28T04:20:39.394Z\",\n  \"reviewed_by_email\": \"string\",\n  \"suggested_match_ratio\": 1161.5029998708815,\n  \"suggested_supplier_name\": \"string\",\n  \"suggested_supplier_uuid\": \"249478b1-edc1-8db9-a802-d14e5a4953f4\",\n  \"supplier_address\": \"string\",\n  \"supplier_country\": \"string\",\n  \"supplier_name\": \"string\",\n  \"supplier_state\": \"string\",\n  \"vat_number\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f2932665-7f0c-474b-b7ed-7f5fb1bb5032",
+          "name": "Match this submission to an existing supplier company.",
+          "request": {
+            "name": "Match this submission to an existing supplier company.",
+            "description": {
+              "content": "Cross-buyer review queue over `buyer_onboarding.Supplier` rows submitted\nby self-serve buyers. Lets MoR operators:\n\n- List pending (or any-status) submissions across all of their buyers.\n- Retrieve a single submission with buyer context.\n- Search candidate existing `Company(SUPPLIER)` rows for matching.\n- Match a submission to an existing supplier company.\n- Promote a submission into the `OnboardingSupplier` pipeline.\n- Reject a submission with a buyer-visible reason.\n\nAll actions are scoped to submissions whose buyer's MoR is the current\nuser's company.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "supplier-submissions",
+                ":id",
+                "match",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "company_uuid",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "21db5386-512e-4be9-b1a7-00d1110c356a",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "supplier-submissions",
+                    ":id",
+                    "match",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "company_uuid",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"arranges_delivery\": false,\n  \"average_monthly_spend\": \"997952748\",\n  \"buyer_company_name\": \"string\",\n  \"buyer_company_uuid\": \"string\",\n  \"buyer_contact_email\": \"wMqAOk@cD.umvz\",\n  \"buyer_contact_name\": \"string\",\n  \"buyer_onboarding_uuid\": \"e0f17b63-cf32-02c7-55c7-2712daccc289\",\n  \"contact_email\": \"rg0ZMgc@yDklIGozXfTDCRTTdFEnnBg.hqo\",\n  \"contact_name\": \"string\",\n  \"contact_phone\": \"string\",\n  \"created_at\": \"1992-11-14T15:59:48.439Z\",\n  \"id\": 4443,\n  \"invoice_currency\": \"string\",\n  \"is_organic\": true,\n  \"lead_time\": \"string\",\n  \"matched_supplier_name\": \"string\",\n  \"matched_supplier_uuid\": \"string\",\n  \"notes\": \"string\",\n  \"onboarding_supplier_uuid\": \"string\",\n  \"payment_terms\": \"string\",\n  \"priority\": \"medium\",\n  \"products_description\": \"string\",\n  \"registration_number\": \"string\",\n  \"relationship_notes\": \"string\",\n  \"review_notes\": \"string\",\n  \"review_status\": \"rejected\",\n  \"reviewed_at\": \"1961-12-28T04:20:39.394Z\",\n  \"reviewed_by_email\": \"string\",\n  \"suggested_match_ratio\": 1161.5029998708815,\n  \"suggested_supplier_name\": \"string\",\n  \"suggested_supplier_uuid\": \"249478b1-edc1-8db9-a802-d14e5a4953f4\",\n  \"supplier_address\": \"string\",\n  \"supplier_country\": \"string\",\n  \"supplier_name\": \"string\",\n  \"supplier_state\": \"string\",\n  \"vat_number\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a582db83-e81a-4ad9-b644-6f83e8855c83",
+          "name": "Search existing supplier companies as match candidates. Use the returned `uuid` as `company_uuid` on the match action.",
+          "request": {
+            "name": "Search existing supplier companies as match candidates. Use the returned `uuid` as `company_uuid` on the match action.",
+            "description": {
+              "content": "Cross-buyer review queue over `buyer_onboarding.Supplier` rows submitted\nby self-serve buyers. Lets MoR operators:\n\n- List pending (or any-status) submissions across all of their buyers.\n- Retrieve a single submission with buyer context.\n- Search candidate existing `Company(SUPPLIER)` rows for matching.\n- Match a submission to an existing supplier company.\n- Promote a submission into the `OnboardingSupplier` pipeline.\n- Reject a submission with a buyer-visible reason.\n\nAll actions are scoped to submissions whose buyer's MoR is the current\nuser's company.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "supplier-submissions",
+                ":id",
+                "match-candidates",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "Search term (name / registration_name)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f5c0b19d-f1ae-456a-97f8-3b1e26548847",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "supplier-submissions",
+                    ":id",
+                    "match-candidates",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"name\": \"string\",\n      \"registration_name\": \"string\",\n      \"registration_number\": \"string\",\n      \"uuid\": \"afd836db-ffb9-2559-1125-47777656d211\",\n      \"website\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"registration_name\": \"string\",\n      \"registration_number\": \"string\",\n      \"uuid\": \"0931f310-5b2f-6b4a-3a31-dfa86de62876\",\n      \"website\": \"string\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b64bd2bd-1eea-4793-8c7a-9332e59c02ce",
+          "name": "Promote this submission to the OnboardingSupplier pipeline. Creates an OnboardingSupplier row that MoR staff can then progress via the existing /mor/onboarding-suppliers/ surface.",
+          "request": {
+            "name": "Promote this submission to the OnboardingSupplier pipeline. Creates an OnboardingSupplier row that MoR staff can then progress via the existing /mor/onboarding-suppliers/ surface.",
+            "description": {
+              "content": "Cross-buyer review queue over `buyer_onboarding.Supplier` rows submitted\nby self-serve buyers. Lets MoR operators:\n\n- List pending (or any-status) submissions across all of their buyers.\n- Retrieve a single submission with buyer context.\n- Search candidate existing `Company(SUPPLIER)` rows for matching.\n- Match a submission to an existing supplier company.\n- Promote a submission into the `OnboardingSupplier` pipeline.\n- Reject a submission with a buyer-visible reason.\n\nAll actions are scoped to submissions whose buyer's MoR is the current\nuser's company.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "supplier-submissions",
+                ":id",
+                "onboard",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9a531d58-dc5e-45fc-b86d-c497f95c61ba",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "supplier-submissions",
+                    ":id",
+                    "onboard",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"arranges_delivery\": false,\n  \"average_monthly_spend\": \"997952748\",\n  \"buyer_company_name\": \"string\",\n  \"buyer_company_uuid\": \"string\",\n  \"buyer_contact_email\": \"wMqAOk@cD.umvz\",\n  \"buyer_contact_name\": \"string\",\n  \"buyer_onboarding_uuid\": \"e0f17b63-cf32-02c7-55c7-2712daccc289\",\n  \"contact_email\": \"rg0ZMgc@yDklIGozXfTDCRTTdFEnnBg.hqo\",\n  \"contact_name\": \"string\",\n  \"contact_phone\": \"string\",\n  \"created_at\": \"1992-11-14T15:59:48.439Z\",\n  \"id\": 4443,\n  \"invoice_currency\": \"string\",\n  \"is_organic\": true,\n  \"lead_time\": \"string\",\n  \"matched_supplier_name\": \"string\",\n  \"matched_supplier_uuid\": \"string\",\n  \"notes\": \"string\",\n  \"onboarding_supplier_uuid\": \"string\",\n  \"payment_terms\": \"string\",\n  \"priority\": \"medium\",\n  \"products_description\": \"string\",\n  \"registration_number\": \"string\",\n  \"relationship_notes\": \"string\",\n  \"review_notes\": \"string\",\n  \"review_status\": \"rejected\",\n  \"reviewed_at\": \"1961-12-28T04:20:39.394Z\",\n  \"reviewed_by_email\": \"string\",\n  \"suggested_match_ratio\": 1161.5029998708815,\n  \"suggested_supplier_name\": \"string\",\n  \"suggested_supplier_uuid\": \"249478b1-edc1-8db9-a802-d14e5a4953f4\",\n  \"supplier_address\": \"string\",\n  \"supplier_country\": \"string\",\n  \"supplier_name\": \"string\",\n  \"supplier_state\": \"string\",\n  \"vat_number\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b0d424c3-68e2-44fb-b990-f11b19ca87b4",
+          "name": "Reject a supplier submission with an operator-supplied reason.",
+          "request": {
+            "name": "Reject a supplier submission with an operator-supplied reason.",
+            "description": {
+              "content": "Cross-buyer review queue over `buyer_onboarding.Supplier` rows submitted\nby self-serve buyers. Lets MoR operators:\n\n- List pending (or any-status) submissions across all of their buyers.\n- Retrieve a single submission with buyer context.\n- Search candidate existing `Company(SUPPLIER)` rows for matching.\n- Match a submission to an existing supplier company.\n- Promote a submission into the `OnboardingSupplier` pipeline.\n- Reject a submission with a buyer-visible reason.\n\nAll actions are scoped to submissions whose buyer's MoR is the current\nuser's company.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "supplier-submissions",
+                ":id",
+                "reject",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "reason",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "dd0ba856-0b45-40b1-90ee-ed6f428e21d9",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "supplier-submissions",
+                    ":id",
+                    "reject",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "reason",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"arranges_delivery\": false,\n  \"average_monthly_spend\": \"997952748\",\n  \"buyer_company_name\": \"string\",\n  \"buyer_company_uuid\": \"string\",\n  \"buyer_contact_email\": \"wMqAOk@cD.umvz\",\n  \"buyer_contact_name\": \"string\",\n  \"buyer_onboarding_uuid\": \"e0f17b63-cf32-02c7-55c7-2712daccc289\",\n  \"contact_email\": \"rg0ZMgc@yDklIGozXfTDCRTTdFEnnBg.hqo\",\n  \"contact_name\": \"string\",\n  \"contact_phone\": \"string\",\n  \"created_at\": \"1992-11-14T15:59:48.439Z\",\n  \"id\": 4443,\n  \"invoice_currency\": \"string\",\n  \"is_organic\": true,\n  \"lead_time\": \"string\",\n  \"matched_supplier_name\": \"string\",\n  \"matched_supplier_uuid\": \"string\",\n  \"notes\": \"string\",\n  \"onboarding_supplier_uuid\": \"string\",\n  \"payment_terms\": \"string\",\n  \"priority\": \"medium\",\n  \"products_description\": \"string\",\n  \"registration_number\": \"string\",\n  \"relationship_notes\": \"string\",\n  \"review_notes\": \"string\",\n  \"review_status\": \"rejected\",\n  \"reviewed_at\": \"1961-12-28T04:20:39.394Z\",\n  \"reviewed_by_email\": \"string\",\n  \"suggested_match_ratio\": 1161.5029998708815,\n  \"suggested_supplier_name\": \"string\",\n  \"suggested_supplier_uuid\": \"249478b1-edc1-8db9-a802-d14e5a4953f4\",\n  \"supplier_address\": \"string\",\n  \"supplier_country\": \"string\",\n  \"supplier_name\": \"string\",\n  \"supplier_state\": \"string\",\n  \"vat_number\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c92cd138-e187-40bb-bcef-adfa05d5a51f",
+          "name": "Reset a previously reviewed submission back to pending.",
+          "request": {
+            "name": "Reset a previously reviewed submission back to pending.",
+            "description": {
+              "content": "Cross-buyer review queue over `buyer_onboarding.Supplier` rows submitted\nby self-serve buyers. Lets MoR operators:\n\n- List pending (or any-status) submissions across all of their buyers.\n- Retrieve a single submission with buyer context.\n- Search candidate existing `Company(SUPPLIER)` rows for matching.\n- Match a submission to an existing supplier company.\n- Promote a submission into the `OnboardingSupplier` pipeline.\n- Reject a submission with a buyer-visible reason.\n\nAll actions are scoped to submissions whose buyer's MoR is the current\nuser's company.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "buyer-onboarding",
+                "merchant-of-record",
+                "supplier-submissions",
+                ":id",
+                "reset",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "03761f42-ba57-4813-8e9b-09db785053ac",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "buyer-onboarding",
+                    "merchant-of-record",
+                    "supplier-submissions",
+                    ":id",
+                    "reset",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"arranges_delivery\": false,\n  \"average_monthly_spend\": \"997952748\",\n  \"buyer_company_name\": \"string\",\n  \"buyer_company_uuid\": \"string\",\n  \"buyer_contact_email\": \"wMqAOk@cD.umvz\",\n  \"buyer_contact_name\": \"string\",\n  \"buyer_onboarding_uuid\": \"e0f17b63-cf32-02c7-55c7-2712daccc289\",\n  \"contact_email\": \"rg0ZMgc@yDklIGozXfTDCRTTdFEnnBg.hqo\",\n  \"contact_name\": \"string\",\n  \"contact_phone\": \"string\",\n  \"created_at\": \"1992-11-14T15:59:48.439Z\",\n  \"id\": 4443,\n  \"invoice_currency\": \"string\",\n  \"is_organic\": true,\n  \"lead_time\": \"string\",\n  \"matched_supplier_name\": \"string\",\n  \"matched_supplier_uuid\": \"string\",\n  \"notes\": \"string\",\n  \"onboarding_supplier_uuid\": \"string\",\n  \"payment_terms\": \"string\",\n  \"priority\": \"medium\",\n  \"products_description\": \"string\",\n  \"registration_number\": \"string\",\n  \"relationship_notes\": \"string\",\n  \"review_notes\": \"string\",\n  \"review_status\": \"rejected\",\n  \"reviewed_at\": \"1961-12-28T04:20:39.394Z\",\n  \"reviewed_by_email\": \"string\",\n  \"suggested_match_ratio\": 1161.5029998708815,\n  \"suggested_supplier_name\": \"string\",\n  \"suggested_supplier_uuid\": \"249478b1-edc1-8db9-a802-d14e5a4953f4\",\n  \"supplier_address\": \"string\",\n  \"supplier_country\": \"string\",\n  \"supplier_name\": \"string\",\n  \"supplier_state\": \"string\",\n  \"vat_number\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "a768d73d-ff4e-4cbb-8272-d1bd9edafbeb",
+    "name": "Opply Activity Feed Buyer Onboarding API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

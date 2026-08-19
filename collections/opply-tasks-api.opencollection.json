@@ -1,0 +1,708 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Tasks API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List a task's chat messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/chat/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "task_uuid",
+                "value": "",
+                "type": "query",
+                "description": "UUID of the task whose chat to list."
+              },
+              {
+                "name": "thread",
+                "value": "",
+                "type": "query",
+                "description": "Which of the task's chat threads to target: `main` (default — the task conversation) or `plan` (the plan-discussion thread on the Plan tab)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Comments on tasks (channel-neutral ``Message`` rows)."
+        },
+        {
+          "info": {
+            "name": "Post a chat message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/chat/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Comments on tasks (channel-neutral ``Message`` rows)."
+        },
+        {
+          "info": {
+            "name": "Add or remove an emoji reaction on a chat message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/chat/:uuid/react/",
+            "params": [
+              {
+                "name": "emoji",
+                "value": "",
+                "type": "query",
+                "description": "The reaction emoji (fixed palette)."
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "POST adds the caller's reaction (idempotent); DELETE removes it. The emoji (a query param) must be one of the fixed MessageReactionEmoji palette. Returns the message with its updated aggregated reactions."
+        },
+        {
+          "info": {
+            "name": "Add or remove an emoji reaction on a chat message",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/chat/:uuid/react/",
+            "params": [
+              {
+                "name": "emoji",
+                "value": "",
+                "type": "query",
+                "description": "The reaction emoji (fixed palette)."
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "POST adds the caller's reaction (idempotent); DELETE removes it. The emoji (a query param) must be one of the fixed MessageReactionEmoji palette. Returns the message with its updated aggregated reactions."
+        },
+        {
+          "info": {
+            "name": "Mark a task's chat read",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/chat/mark-read/",
+            "params": [
+              {
+                "name": "task_uuid",
+                "value": "",
+                "type": "query",
+                "description": "UUID of the task whose chat to mark read."
+              },
+              {
+                "name": "thread",
+                "value": "",
+                "type": "query",
+                "description": "Which of the task's chat threads to target: `main` (default — the task conversation) or `plan` (the plan-discussion thread on the Plan tab)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Advance the caller's read cursor on a task's chat to now.\n\nAnyone who can see the task (and thus its chat) may mark it read for\nthemselves — read-state is per-user and innocuous. Resolves the task\ncaller-scoped, so an out-of-scope uuid is a 404. ``thread`` picks\nwhich conversation's cursor advances (main default | plan)."
+        },
+        {
+          "info": {
+            "name": "Get a recurring-task series",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/task-recurrences/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Manage an existing recurring-task series (the template's recurrence).\n\nCreation happens implicitly when a task is created with a ``recurrence``\nblock (see ``TaskSerializer``); this surface is for reading the series,\nediting its schedule / default assignee for *future* occurrences, and\npausing / resuming it. Hard-scoped to the caller's company via the\nqueryset — a leaked UUID can't reach another tenant's series."
+        },
+        {
+          "info": {
+            "name": "Partially update a recurring-task series",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/task-recurrences/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Manage an existing recurring-task series (the template's recurrence).\n\nCreation happens implicitly when a task is created with a ``recurrence``\nblock (see ``TaskSerializer``); this surface is for reading the series,\nediting its schedule / default assignee for *future* occurrences, and\npausing / resuming it. Hard-scoped to the caller's company via the\nqueryset — a leaked UUID can't reach another tenant's series."
+        },
+        {
+          "info": {
+            "name": "Pause a recurring-task series (Turn off repeat)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/task-recurrences/:uuid/disable/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Manage an existing recurring-task series (the template's recurrence).\n\nCreation happens implicitly when a task is created with a ``recurrence``\nblock (see ``TaskSerializer``); this surface is for reading the series,\nediting its schedule / default assignee for *future* occurrences, and\npausing / resuming it. Hard-scoped to the caller's company via the\nqueryset — a leaked UUID can't reach another tenant's series."
+        },
+        {
+          "info": {
+            "name": "Resume a recurring-task series",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/task-recurrences/:uuid/enable/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Manage an existing recurring-task series (the template's recurrence).\n\nCreation happens implicitly when a task is created with a ``recurrence``\nblock (see ``TaskSerializer``); this surface is for reading the series,\nediting its schedule / default assignee for *future* occurrences, and\npausing / resuming it. Hard-scoped to the caller's company via the\nqueryset — a leaked UUID can't reach another tenant's series."
+        },
+        {
+          "info": {
+            "name": "List tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tasks/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing tasks.\n\nTasks can be attached to entities (companies) or standalone.\nMoR users can only see tasks for companies they manage."
+        },
+        {
+          "info": {
+            "name": "Create a task",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tasks/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing tasks.\n\nTasks can be attached to entities (companies) or standalone.\nMoR users can only see tasks for companies they manage."
+        },
+        {
+          "info": {
+            "name": "Get a task",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tasks/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing tasks.\n\nTasks can be attached to entities (companies) or standalone.\nMoR users can only see tasks for companies they manage."
+        },
+        {
+          "info": {
+            "name": "Update a task",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/tasks/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing tasks.\n\nTasks can be attached to entities (companies) or standalone.\nMoR users can only see tasks for companies they manage."
+        },
+        {
+          "info": {
+            "name": "Partially update a task",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/tasks/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing tasks.\n\nTasks can be attached to entities (companies) or standalone.\nMoR users can only see tasks for companies they manage."
+        },
+        {
+          "info": {
+            "name": "Delete a task",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/tasks/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing tasks.\n\nTasks can be attached to entities (companies) or standalone.\nMoR users can only see tasks for companies they manage."
+        },
+        {
+          "info": {
+            "name": "List task attachments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tasks/:uuid/attachments/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing tasks.\n\nTasks can be attached to entities (companies) or standalone.\nMoR users can only see tasks for companies they manage."
+        },
+        {
+          "info": {
+            "name": "List task attachments",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tasks/:uuid/attachments/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing tasks.\n\nTasks can be attached to entities (companies) or standalone.\nMoR users can only see tasks for companies they manage."
+        },
+        {
+          "info": {
+            "name": "Delete a task attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/tasks/:uuid/attachments/:attachment_uuid/",
+            "params": [
+              {
+                "name": "attachment_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing tasks.\n\nTasks can be attached to entities (companies) or standalone.\nMoR users can only see tasks for companies they manage."
+        },
+        {
+          "info": {
+            "name": "Approve the pending agent plan (version-pinned)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tasks/:uuid/plan/approve/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing tasks.\n\nTasks can be attached to entities (companies) or standalone.\nMoR users can only see tasks for companies they manage."
+        },
+        {
+          "info": {
+            "name": "Reject the pending agent plan (task returns to humans, agent unassigned)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tasks/:uuid/plan/reject/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing tasks.\n\nTasks can be attached to entities (companies) or standalone.\nMoR users can only see tasks for companies they manage."
+        },
+        {
+          "info": {
+            "name": "Set, update, or clear a task's recurrence",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tasks/:uuid/repeat/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Make an existing task recurring, change its rule, or stop it repeating.\n\n- ``POST`` with a recurrence config: if the task already belongs to a\n  series, update that series' rule; otherwise promote it in place (mint a\n  template, make this task occurrence #1).\n- ``DELETE``: \"Does not repeat\" — stop the series (occurrences survive)."
+        },
+        {
+          "info": {
+            "name": "Set, update, or clear a task's recurrence",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/tasks/:uuid/repeat/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Make an existing task recurring, change its rule, or stop it repeating.\n\n- ``POST`` with a recurrence config: if the task already belongs to a\n  series, update that series' rule; otherwise promote it in place (mint a\n  template, make this task occurrence #1).\n- ``DELETE``: \"Does not repeat\" — stop the series (occurrences survive)."
+        },
+        {
+          "info": {
+            "name": "Route a MoR-routed task to a worker (by role)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tasks/:uuid/route/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Reassign a task routed to 'Opply' to the resolved worker for the given role (account_manager / mor_agent / buyer_agent / return_to_buyer). The backend resolves the concrete user; agent targets are dispatched via a fresh run. Router-agent (or MoR-side current assignee) only."
+        },
+        {
+          "info": {
+            "name": "List the routable targets for a MoR-routed task",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tasks/:uuid/route-targets/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Which account manager / MoR agents / buyer agents this routed task can be routed to. Router-agent (or MoR-side current assignee) only."
+        },
+        {
+          "info": {
+            "name": "List tasks assigned to current user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tasks/me/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List tasks assigned to the current user.\n\nReturns tasks from two sources:\n1. Task records (activities app) - where assignee is current user\n2. OrderActivity records (app_orders) - where task_assignee is current user\n\nBoth are merged into a unified response format."
+        },
+        {
+          "info": {
+            "name": "Search linkable related items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tasks/related-search/",
+            "params": [
+              {
+                "name": "exclude_task",
+                "value": "",
+                "type": "query",
+                "description": "UUID of the task currently being edited, excluded from task results so it can't be related to itself."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search text used to match linkable related items (orders, suppliers, contracts, ingredients, tasks). Results are empty without it."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Unified \"Related to\" search across the caller's orders, suppliers,\ncontracts, ingredients and tasks. Returns a flat list grouped client-side\nby ``type``; empty without a `search` query (except for MoR callers)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

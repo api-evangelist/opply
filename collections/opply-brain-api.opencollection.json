@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Brain API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Brain",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Observe per-sector progress and return sectors to celebrate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/brain/observe-progress/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Single endpoint driving the brain unlock celebration lifecycle.\n\nThe FE POSTs the current per-sector \"above threshold?\" map on\nevery progress change. The BE compares each sector against the\nstored row in ``BrainSectorUnlockSeen`` and returns the list of\nsectors whose modal should now fire:\n\n- **No row exists yet** — first observation of this sector for\n  this user. Create the row with ``resolved`` set to the current\n  ``above_threshold``. If above on first observation we suppress\n  the modal (re"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

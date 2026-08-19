@@ -1,0 +1,635 @@
+{
+  "item": [
+    {
+      "id": "441bf7c3-7904-4621-ba49-4fbe556bf453",
+      "name": "Activity Feed",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c739b27f-9be6-4d9d-b2d4-5c009dcc58cd",
+          "name": "List activity feed items",
+          "request": {
+            "name": "List activity feed items",
+            "description": {
+              "content": "Company-scoped activity feed.\n\nReturns cursor-paginated feed items, newest first, for the authenticated\nuser's company. All employees see all activity — no role-based filtering.\nA single item is also retrievable by UUID (``/activity-feed/{uuid}/``) —\nused by the agent's \"Chat about this\" read tool.\n\nPagination is via the standard DRF cursor (``cursor`` query param).\nFilter params: ``source``, ``event_type``, ``order_uuid``.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "activity-feed",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "The pagination cursor value."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7401b98a-7187-4d0a-ab06-f1f047315046",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "activity-feed",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"actor_email\": \"A6ne@QRQ.bh\",\n      \"actor_first_name\": \"string\",\n      \"actor_last_name\": \"string\",\n      \"body_text\": \"string\",\n      \"created\": \"1985-02-26T19:45:06.822Z\",\n      \"event_type\": \"string\",\n      \"occurred_at\": \"2017-06-22T05:14:00.556Z\",\n      \"order_uuid\": \"348451c8-aba7-5bde-33e9-15382b080084\",\n      \"source\": \"string\",\n      \"status\": \"integrating\",\n      \"summary\": \"string\",\n      \"uuid\": \"270ab3a4-5a04-3a00-a58d-8be2c7b3ef6b\",\n      \"order_number\": \"string\"\n    },\n    {\n      \"actor_email\": \"arB-yMZk0d@dLlwQUfEDwKdncmyRXNSWwb.thf\",\n      \"actor_first_name\": \"string\",\n      \"actor_last_name\": \"string\",\n      \"body_text\": \"string\",\n      \"created\": \"1967-02-10T19:35:14.176Z\",\n      \"event_type\": \"string\",\n      \"occurred_at\": \"1956-05-01T07:48:45.765Z\",\n      \"order_uuid\": \"29db24f2-13a7-f347-7470-0cf66e923043\",\n      \"source\": \"string\",\n      \"status\": \"processed\",\n      \"summary\": \"string\",\n      \"uuid\": \"e4cb3552-64e6-1e41-5b3d-c7fc0591e1bc\",\n      \"order_number\": \"string\"\n    }\n  ],\n  \"next\": \"https://FlKgSiDxwCVpKedZvR.vaW8Z,FPxCrVyeyKqhy53CQZs6-50cxdlxXjcRdlitM0jBxZfmTH2il\",\n  \"previous\": \"http://api.example.org/accounts/?cursor=cj0xJnA9NDg3\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cc58a9e0-6cee-426b-a535-cdde28fcadb9",
+          "name": "Fetch a single activity feed item by UUID",
+          "request": {
+            "name": "Fetch a single activity feed item by UUID",
+            "description": {
+              "content": "Company-scoped activity feed.\n\nReturns cursor-paginated feed items, newest first, for the authenticated\nuser's company. All employees see all activity — no role-based filtering.\nA single item is also retrievable by UUID (``/activity-feed/{uuid}/``) —\nused by the agent's \"Chat about this\" read tool.\n\nPagination is via the standard DRF cursor (``cursor`` query param).\nFilter params: ``source``, ``event_type``, ``order_uuid``.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "activity-feed",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4b0c9bd3-0a4a-40ef-9f30-60c71b905318",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "activity-feed",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"actor_email\": \"Cdbae9g@YmQpAwyWfZzGjdpuQKxzEJpieBKuCYR.osak\",\n  \"actor_first_name\": \"string\",\n  \"actor_last_name\": \"string\",\n  \"body_text\": \"string\",\n  \"created\": \"1984-01-31T03:42:01.723Z\",\n  \"event_type\": \"string\",\n  \"occurred_at\": \"1986-09-17T04:34:21.515Z\",\n  \"order_uuid\": \"dbff52d8-ea19-3c1d-83df-434e05536022\",\n  \"source\": \"string\",\n  \"status\": \"integrating\",\n  \"summary\": \"string\",\n  \"uuid\": \"a7fe23dd-9d09-6109-d1bd-d483c86a15f9\",\n  \"order_number\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "19a06fa5-314f-4e7d-90e3-436e313b50ff",
+          "name": "Advance the current user's read cursor to now",
+          "request": {
+            "name": "Advance the current user's read cursor to now",
+            "description": {
+              "content": "Company-scoped activity feed.\n\nReturns cursor-paginated feed items, newest first, for the authenticated\nuser's company. All employees see all activity — no role-based filtering.\nA single item is also retrievable by UUID (``/activity-feed/{uuid}/``) —\nused by the agent's \"Chat about this\" read tool.\n\nPagination is via the standard DRF cursor (``cursor`` query param).\nFilter params: ``source``, ``event_type``, ``order_uuid``.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "activity-feed",
+                "mark-read",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "actor_email",
+                  "value": "<email>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "actor_first_name",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "actor_last_name",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "body_text",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "created",
+                  "value": "<dateTime>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "occurred_at",
+                  "value": "<dateTime>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "order_uuid",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "source",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "summary",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "uuid",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "order_number",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a5b58649-b95c-4325-9c50-832efab1e720",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "activity-feed",
+                    "mark-read",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "actor_email",
+                      "value": "<email>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "actor_first_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "actor_last_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "body_text",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "created",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "occurred_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "order_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "source",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "summary",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "order_number",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"actor_email\": \"<email>\",\n  \"actor_first_name\": \"<string>\",\n  \"actor_last_name\": \"<string>\",\n  \"body_text\": \"<string>\",\n  \"created\": \"<dateTime>\",\n  \"occurred_at\": \"<dateTime>\",\n  \"order_uuid\": \"<uuid>\",\n  \"source\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"uuid\": \"<uuid>\",\n  \"event_type\": \"string\",\n  \"order_number\": \"<string>\",\n  \"status\": \"processed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a84d6395-6b72-413c-8c88-71d3c74b236d",
+          "name": "Unread item count for current user",
+          "request": {
+            "name": "Unread item count for current user",
+            "description": {
+              "content": "Company-scoped activity feed.\n\nReturns cursor-paginated feed items, newest first, for the authenticated\nuser's company. All employees see all activity — no role-based filtering.\nA single item is also retrievable by UUID (``/activity-feed/{uuid}/``) —\nused by the agent's \"Chat about this\" read tool.\n\nPagination is via the standard DRF cursor (``cursor`` query param).\nFilter params: ``source``, ``event_type``, ``order_uuid``.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "activity-feed",
+                "unread-count",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "cde012e3-1104-4c79-951f-8d0229bd2353",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "activity-feed",
+                    "unread-count",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"actor_email\": \"<email>\",\n  \"actor_first_name\": \"<string>\",\n  \"actor_last_name\": \"<string>\",\n  \"body_text\": \"<string>\",\n  \"created\": \"<dateTime>\",\n  \"occurred_at\": \"<dateTime>\",\n  \"order_uuid\": \"<uuid>\",\n  \"source\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"uuid\": \"<uuid>\",\n  \"event_type\": \"string\",\n  \"order_number\": \"<string>\",\n  \"status\": \"processed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b9fd6403-264b-4993-8767-e9a5d8ea64d8",
+    "name": "Opply Activity Feed API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

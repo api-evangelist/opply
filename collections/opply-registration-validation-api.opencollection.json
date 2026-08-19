@@ -1,0 +1,70 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Registration Validation API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Registration Validation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search Companies House for active companies by name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/companies-house/search/",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return (1-20, default 10)."
+              },
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Search query (minimum 2 characters)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "GET /api/v1/companies/companies-house/search/?q=<name>&limit=10\n\nAutocomplete endpoint backing the registered-company picker in MoR forms.\nReturns up to `limit` ranked, active-only candidates from Companies House.\nReturns 503 on a Companies House outage so the FE can fall back to plain\ntext input rather than blocking the user. Implemented as an APIView (not a\nViewSet `list` action) so drf-spectacular emits the response as an object\nwith a `results` array rather than auto-wrapping the whole body "
+        },
+        {
+          "info": {
+            "name": "Validate company registration details",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/validate-registration/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Validates company registration details against Companies House (for GB) or performs basic validation (for non-GB). Returns normalised registration data on success. This is advisory — save-time enforcement happens in the buyer/supplier serializers via the same shared service."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

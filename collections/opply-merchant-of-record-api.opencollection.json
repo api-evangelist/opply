@@ -1,0 +1,131 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Merchant of Record API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Merchant of Record",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List companies the current user can act on",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/accessible/me/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the set of companies the authenticated user can target in API calls.\n\n- Staff users: marker response indicating \"all\" — no list is returned.\n- Merchant of Record users: their managed companies plus their own.\n- Brand (buyer) and Supplier users: their own company only.\n\nUsed by the MCP `list_accessible_companies` tool. Also useful for any client\nthat needs to render a company-picker scoped to the user's permissions."
+        },
+        {
+          "info": {
+            "name": "List MoR users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/merchant-of-record-users/",
+            "params": [
+              {
+                "name": "is_active",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "is_staff",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List every employee of the Merchant of Record company that the requesting user belongs to.\n\nUse `?is_staff=true` to narrow the result to users with the staff flag (rendered as \"admins\" in the MoR frontend). Use `?is_active=true|false` to filter by the active flag. Use `?search=<term>` for a case-insensitive partial match against `email`, `first_name` or `last_name`. Filters compose with each other and with pagination. Results are paginated and ordered alphabetically by `first_name`, then `last_n"
+        },
+        {
+          "info": {
+            "name": "Create a MoR user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/merchant-of-record-users/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new user as an employee of the requesting user's MoR company. The user is created with `is_active=True` and `is_staff=True`, given an unusable password, and emailed a 'set password' link (`send_password_create`) once the create transaction commits.\n\nThe email is matched case-insensitively against existing users; duplicates return a 400 with an `email` field error."
+        },
+        {
+          "info": {
+            "name": "Update a MoR user",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/companies/merchant-of-record-users/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an existing employee of the requesting user's MoR company. Writable fields are `first_name`, `last_name`, `is_staff` and `is_active` — pass any subset (e.g. just `{\"is_staff\": false}` to toggle the admin flag). `email`, `uuid` and `date_joined` are read-only and silently ignored if sent."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

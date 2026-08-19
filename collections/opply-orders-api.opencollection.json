@@ -1,0 +1,858 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Orders API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List of orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/brand/",
+            "params": [
+              {
+                "name": "category",
+                "value": "",
+                "type": "query",
+                "description": "* `regular` - Regular"
+              },
+              {
+                "name": "is_active",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order_type",
+                "value": "",
+                "type": "query",
+                "description": "* `non_recurring` - Non Recurring\n* `recurring` - Recurring\n* `purchase_request_quote` - Purchase Request Quote"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Supports sorting by created delivery_confirmation_date paid_date shipment_status payment_status latest_delivery_date. Use - to filter backwards"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "payment_status",
+                "value": "",
+                "type": "query",
+                "description": "Supported status: paid payment_upcoming payment_processing payment_due."
+              },
+              {
+                "name": "search_filter",
+                "value": "",
+                "type": "query",
+                "description": "icontains filtering on related inquiry name field."
+              },
+              {
+                "name": "shipment_status",
+                "value": "",
+                "type": "query",
+                "description": "Supported status: pending_dispatch dispatched delivered."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List of orders"
+        },
+        {
+          "info": {
+            "name": "api_v1_orders_brand_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/orders/brand/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "Retrieve details of an orders for a brand",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/brand/:order_uuid/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve details of an orders for a brand"
+        },
+        {
+          "info": {
+            "name": "api_v1_orders_brand_confirm_delivered_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/orders/brand/:order_uuid/confirm-delivered/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "Endpoints for Order Disputes for Brand",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/brand/:order_uuid/disputes/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoints for Order Disputes for Brand"
+        },
+        {
+          "info": {
+            "name": "Endpoints for Order Disputes for Brand",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/orders/brand/:order_uuid/disputes/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoints for Order Disputes for Brand"
+        },
+        {
+          "info": {
+            "name": "Endpoints for Order Disputes for Brand",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/brand/:order_uuid/disputes/:dispute_uuid/",
+            "params": [
+              {
+                "name": "dispute_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoints for Order Disputes for Brand"
+        },
+        {
+          "info": {
+            "name": "Endpoints for Order Disputes for Brand",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/orders/brand/:order_uuid/disputes/:dispute_uuid/",
+            "params": [
+              {
+                "name": "dispute_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoints for Order Disputes for Brand"
+        },
+        {
+          "info": {
+            "name": "Endpoints for Order Disputes for Brand",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/orders/brand/:order_uuid/disputes/:dispute_uuid/",
+            "params": [
+              {
+                "name": "dispute_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoints for Order Disputes for Brand"
+        },
+        {
+          "info": {
+            "name": "Endpoints for Order Disputes for Brand",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/orders/brand/:order_uuid/disputes/:dispute_uuid/",
+            "params": [
+              {
+                "name": "dispute_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoints for Order Disputes for Brand"
+        },
+        {
+          "info": {
+            "name": "api_v1_orders_brand_goods_receipt_pdf_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/brand/:order_uuid/goods-receipt/pdf/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_orders_brand_invoice_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/brand/:order_uuid/invoice/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Note that this endpoint is a tad broken, the currency field doesn't\nreturn a 3 character ISO code (GBP for example) for currency, instead\nit returns the currency symbol, (£ for example)"
+        },
+        {
+          "info": {
+            "name": "api_v1_orders_brand_invoice_pdf_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/brand/:order_uuid/invoice/pdf/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_orders_brand_vat_invoice_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/brand/:order_uuid/vat-invoice/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "Returns commission invoice as pdf_url, combined Admin and commission invoice as pdf_url_merged.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/brand/:order_uuid/vat-invoice/pdf/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns commission invoice as pdf_url, combined Admin and commission invoice as pdf_url_merged."
+        },
+        {
+          "info": {
+            "name": "Returns all prices for basket divided by supplier",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/orders/brand/basket-volumes/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns all prices for basket divided by supplier"
+        },
+        {
+          "info": {
+            "name": "List of orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/supplier/",
+            "params": [
+              {
+                "name": "category",
+                "value": "",
+                "type": "query",
+                "description": "* `regular` - Regular"
+              },
+              {
+                "name": "is_active",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order_type",
+                "value": "",
+                "type": "query",
+                "description": "* `non_recurring` - Non Recurring\n* `recurring` - Recurring\n* `purchase_request_quote` - Purchase Request Quote"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Supports sorting by created delivery_confirmation_date paid_date shipment_status payment_status latest_delivery_date. Use - to filter backwards"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "payment_status",
+                "value": "",
+                "type": "query",
+                "description": "Supported status: paid payment_upcoming payment_processing payment_due."
+              },
+              {
+                "name": "search_filter",
+                "value": "",
+                "type": "query",
+                "description": "icontains filtering on related inquiry name field."
+              },
+              {
+                "name": "shipment_status",
+                "value": "",
+                "type": "query",
+                "description": "Supported status: pending_dispatch dispatched delivered."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List of orders"
+        },
+        {
+          "info": {
+            "name": "Retrieve details of an orders for a supplier",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/supplier/:order_uuid/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve details of an orders for a supplier"
+        },
+        {
+          "info": {
+            "name": "api_v1_orders_supplier_confirm_dispatch_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/orders/supplier/:order_uuid/confirm-dispatch/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_orders_supplier_documents_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/supplier/:order_uuid/documents/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_orders_supplier_documents_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/orders/supplier/:order_uuid/documents/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_orders_supplier_documents_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/supplier/:order_uuid/documents/:uuid/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_orders_supplier_documents_destroy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/orders/supplier/:order_uuid/documents/:uuid/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_orders_supplier_purchase_order_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/supplier/:order_uuid/purchase-order/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_orders_supplier_purchase_order_pdf_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/supplier/:order_uuid/purchase-order/pdf/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "api_v1_orders_supplier_vat_invoice_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/supplier/:order_uuid/vat-invoice/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "Returns commission invoice as pdf_url.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/supplier/:order_uuid/vat-invoice/pdf/",
+            "params": [
+              {
+                "name": "order_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns commission invoice as pdf_url."
+        },
+        {
+          "info": {
+            "name": "Returns pending dispatch orders for Supplier's dashboard.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/orders/supplier/dashboard-orders/",
+            "params": [
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns pending dispatch orders for Supplier's dashboard."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

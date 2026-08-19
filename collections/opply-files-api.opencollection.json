@@ -1,0 +1,321 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Files API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Files",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get file metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/files/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Unified read access to any tenant file.\n\nA single ``/api/v1/files/<uuid>/`` rail backs every file source the user\ncan already reach via the REST API (task attachments, order docs, PO\nPDFs, financial documents, …) — resolution and auth go through the\nregistry at ``apps/files/services/file_registry.py``.\n\nThe MCP ``get_file`` tool is a thin wrapper over this viewset; the\nperimeter lives here."
+        },
+        {
+          "info": {
+            "name": "Download file bytes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/files/:uuid/content/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Unified read access to any tenant file.\n\nA single ``/api/v1/files/<uuid>/`` rail backs every file source the user\ncan already reach via the REST API (task attachments, order docs, PO\nPDFs, financial documents, …) — resolution and auth go through the\nregistry at ``apps/files/services/file_registry.py``.\n\nThe MCP ``get_file`` tool is a thin wrapper over this viewset; the\nperimeter lives here."
+        },
+        {
+          "info": {
+            "name": "Get a short-lived signed download URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/files/:uuid/url/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Unified read access to any tenant file.\n\nA single ``/api/v1/files/<uuid>/`` rail backs every file source the user\ncan already reach via the REST API (task attachments, order docs, PO\nPDFs, financial documents, …) — resolution and auth go through the\nregistry at ``apps/files/services/file_registry.py``.\n\nThe MCP ``get_file`` tool is a thin wrapper over this viewset; the\nperimeter lives here."
+        },
+        {
+          "info": {
+            "name": "[staff] Mint a pending attachment + presigned upload",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/files/attachments/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Staff-only test harness for the generic attachments flow."
+        },
+        {
+          "info": {
+            "name": "[staff] Get an attachment's scan status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/files/attachments/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Staff-only test harness for the generic attachments flow."
+        },
+        {
+          "info": {
+            "name": "[staff] Confirm upload (drives the scan-disabled promotion)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/files/attachments/:uuid/confirm/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Staff-only test harness for the generic attachments flow."
+        },
+        {
+          "info": {
+            "name": "[staff] Get a presigned download URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/files/attachments/:uuid/url/",
+            "params": [
+              {
+                "name": "disposition",
+                "value": "",
+                "type": "query",
+                "description": "Content-Disposition of the signed URL: 'attachment' (default, browser downloads the file) or 'inline' (browser renders it in place, e.g. a PDF preview opened in a new tab)."
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "variant",
+                "value": "",
+                "type": "query",
+                "description": "Which object to sign: 'original' (default, full-size) or 'thumbnail' (downscaled image preview). A 409 is returned for 'thumbnail' when none has been generated — fall back to 'original'."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Staff-only test harness for the generic attachments flow."
+        },
+        {
+          "info": {
+            "name": "Mint a pending message attachment + presigned upload",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/files/message-attachments/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create an unbound, PENDING message attachment scoped to the caller's company and return a presigned POST for the browser to upload the bytes directly to S3."
+        },
+        {
+          "info": {
+            "name": "Get a message attachment's scan status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/files/message-attachments/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Return the malware-scan lifecycle state of one of the caller's own message attachments."
+        },
+        {
+          "info": {
+            "name": "Confirm upload (drives the scan-disabled promotion)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/files/message-attachments/:uuid/confirm/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Signal that the client finished uploading the bytes; backfills the size and, when malware scanning is disabled, promotes the object and marks it SKIPPED."
+        },
+        {
+          "info": {
+            "name": "Get a presigned download URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/files/message-attachments/:uuid/url/",
+            "params": [
+              {
+                "name": "disposition",
+                "value": "",
+                "type": "query",
+                "description": "Content-Disposition of the signed URL: 'attachment' (default, browser downloads the file) or 'inline' (browser renders it in place, e.g. a PDF preview opened in a new tab)."
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "variant",
+                "value": "",
+                "type": "query",
+                "description": "Which object to sign: 'original' (default, full-size) or 'thumbnail' (downscaled image preview). A 409 is returned for 'thumbnail' when none has been generated — fall back to 'original'."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Return a short-lived presigned GET URL for a downloadable (CLEAN/SKIPPED) attachment."
+        },
+        {
+          "info": {
+            "name": "api_v1_files_upload_create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/files/upload/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Handle file upload requests.\nfile_name = Name of the file being uploaded\nmodel_name = Name of the model related to this file. eg. for chats it would be 'Message'\nfield_name = Name of the field on the model where file is stored. eg. for chats it would be 'attachment'"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

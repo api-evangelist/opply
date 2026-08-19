@@ -1,0 +1,676 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Buyer Onboarding API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Buyer Onboarding",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all onboarding buyers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/buyers/",
+            "params": [
+              {
+                "name": "country",
+                "value": "",
+                "type": "query",
+                "description": "Filter by country (us or uk)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search by buyer name"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a paginated list of all buyers onboarding for this Merchant of Record."
+        },
+        {
+          "info": {
+            "name": "Get buyer onboarding details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/buyers/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get detailed information about a specific buyer onboarding record."
+        },
+        {
+          "info": {
+            "name": "Get buyer account details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/buyers/:uuid/account-details/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get account details for a specific buyer (company information, VAT, registration number, etc.)."
+        },
+        {
+          "info": {
+            "name": "Get buyer delivery addresses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/buyers/:uuid/delivery-addresses/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get all delivery addresses for a specific buyer onboarding."
+        },
+        {
+          "info": {
+            "name": "Get buyer delivery details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/buyers/:uuid/delivery-details/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get delivery details for a specific buyer (address, contact, warehouse information, etc.)."
+        },
+        {
+          "info": {
+            "name": "Get buyer delivery emails",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/buyers/:uuid/delivery-emails/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get all delivery emails for a specific buyer onboarding."
+        },
+        {
+          "info": {
+            "name": "Get buyer documents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/buyers/:uuid/documents/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get all documents for a specific buyer onboarding."
+        },
+        {
+          "info": {
+            "name": "List buyer onboarding steps",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/buyers/:uuid/steps/",
+            "params": [
+              {
+                "name": "is_completed",
+                "value": "",
+                "type": "query",
+                "description": "Filter by completion status (true/false)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "phase",
+                "value": "",
+                "type": "query",
+                "description": "Filter by phase (phase_1, phase_2, phase_3, phase_4)"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get all onboarding steps for a specific buyer, organized by phase."
+        },
+        {
+          "info": {
+            "name": "Get buyer onboarding step",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/buyers/:uuid/steps/:step_id/",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get details of a specific onboarding step."
+        },
+        {
+          "info": {
+            "name": "Update buyer onboarding step",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/buyers/:uuid/steps/:step_id/update/",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a specific onboarding step. Can update notes, actions, completion status, visibility, and custom order."
+        },
+        {
+          "info": {
+            "name": "List buyer suppliers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/buyers/:uuid/suppliers/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get all suppliers associated with a specific buyer onboarding."
+        },
+        {
+          "info": {
+            "name": "Update buyer onboarding",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/buyers/:uuid/update/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update buyer onboarding notes (notes field only)."
+        },
+        {
+          "info": {
+            "name": "Generate buyer onboarding link (legacy)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/buyers/generate-link/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Legacy MoR flow (feature flag `isBuyerInvitationFlowEnabled` off). Creates a BuyerOnboarding record and generates a unique UUID-based link the MoR can hand to the buyer. The link does not require authentication for the buyer to access. The buyer will be automatically assigned onboarding steps based on active templates. No User / Company / Employee is provisioned — that is the new `invite` flow's job."
+        },
+        {
+          "info": {
+            "name": "Invite a buyer to onboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/buyers/invite/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Provision a brand-new buyer behind the onboarding gate. The MoR supplies the buyer's contact name, email, country, and company name; the BE creates a User + Company(onboarding_state=in_progress) + Employee link + BuyerOnboarding row, and emails the buyer a set-your-password link. There is no shareable onboarding URL — the buyer enters the app via the standard authenticated flow."
+        },
+        {
+          "info": {
+            "name": "List buyer-submitted supplier rows pending MoR review.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/supplier-submissions/",
+            "params": [
+              {
+                "name": "buyer_company_uuid",
+                "value": "",
+                "type": "query",
+                "description": "Filter to a single buyer's submissions."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "review_status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by review status (pending_review, matched, onboarding, rejected)."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search supplier name / contact email."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Cross-buyer review queue over `buyer_onboarding.Supplier` rows submitted\nby self-serve buyers. Lets MoR operators:\n\n- List pending (or any-status) submissions across all of their buyers.\n- Retrieve a single submission with buyer context.\n- Search candidate existing `Company(SUPPLIER)` rows for matching.\n- Match a submission to an existing supplier company.\n- Promote a submission into the `OnboardingSupplier` pipeline.\n- Reject a submission with a buyer-visible reason.\n\nAll actions are scoped to "
+        },
+        {
+          "info": {
+            "name": "Retrieve a single supplier submission.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/supplier-submissions/:id/",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Cross-buyer review queue over `buyer_onboarding.Supplier` rows submitted\nby self-serve buyers. Lets MoR operators:\n\n- List pending (or any-status) submissions across all of their buyers.\n- Retrieve a single submission with buyer context.\n- Search candidate existing `Company(SUPPLIER)` rows for matching.\n- Match a submission to an existing supplier company.\n- Promote a submission into the `OnboardingSupplier` pipeline.\n- Reject a submission with a buyer-visible reason.\n\nAll actions are scoped to "
+        },
+        {
+          "info": {
+            "name": "Match this submission to an existing supplier company.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/supplier-submissions/:id/match/",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Cross-buyer review queue over `buyer_onboarding.Supplier` rows submitted\nby self-serve buyers. Lets MoR operators:\n\n- List pending (or any-status) submissions across all of their buyers.\n- Retrieve a single submission with buyer context.\n- Search candidate existing `Company(SUPPLIER)` rows for matching.\n- Match a submission to an existing supplier company.\n- Promote a submission into the `OnboardingSupplier` pipeline.\n- Reject a submission with a buyer-visible reason.\n\nAll actions are scoped to "
+        },
+        {
+          "info": {
+            "name": "Search existing supplier companies as match candidates. Use the returned `uuid` as `company_uuid` on the match action.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/supplier-submissions/:id/match-candidates/",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Search term (name / registration_name)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Cross-buyer review queue over `buyer_onboarding.Supplier` rows submitted\nby self-serve buyers. Lets MoR operators:\n\n- List pending (or any-status) submissions across all of their buyers.\n- Retrieve a single submission with buyer context.\n- Search candidate existing `Company(SUPPLIER)` rows for matching.\n- Match a submission to an existing supplier company.\n- Promote a submission into the `OnboardingSupplier` pipeline.\n- Reject a submission with a buyer-visible reason.\n\nAll actions are scoped to "
+        },
+        {
+          "info": {
+            "name": "Promote this submission to the OnboardingSupplier pipeline. Creates an OnboardingSupplier row that MoR staff can then progress via the existing /mor/onboarding-suppliers/ surface.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/supplier-submissions/:id/onboard/",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Cross-buyer review queue over `buyer_onboarding.Supplier` rows submitted\nby self-serve buyers. Lets MoR operators:\n\n- List pending (or any-status) submissions across all of their buyers.\n- Retrieve a single submission with buyer context.\n- Search candidate existing `Company(SUPPLIER)` rows for matching.\n- Match a submission to an existing supplier company.\n- Promote a submission into the `OnboardingSupplier` pipeline.\n- Reject a submission with a buyer-visible reason.\n\nAll actions are scoped to "
+        },
+        {
+          "info": {
+            "name": "Reject a supplier submission with an operator-supplied reason.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/supplier-submissions/:id/reject/",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Cross-buyer review queue over `buyer_onboarding.Supplier` rows submitted\nby self-serve buyers. Lets MoR operators:\n\n- List pending (or any-status) submissions across all of their buyers.\n- Retrieve a single submission with buyer context.\n- Search candidate existing `Company(SUPPLIER)` rows for matching.\n- Match a submission to an existing supplier company.\n- Promote a submission into the `OnboardingSupplier` pipeline.\n- Reject a submission with a buyer-visible reason.\n\nAll actions are scoped to "
+        },
+        {
+          "info": {
+            "name": "Reset a previously reviewed submission back to pending.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/buyer-onboarding/merchant-of-record/supplier-submissions/:id/reset/",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Cross-buyer review queue over `buyer_onboarding.Supplier` rows submitted\nby self-serve buyers. Lets MoR operators:\n\n- List pending (or any-status) submissions across all of their buyers.\n- Retrieve a single submission with buyer context.\n- Search candidate existing `Company(SUPPLIER)` rows for matching.\n- Match a submission to an existing supplier company.\n- Promote a submission into the `OnboardingSupplier` pipeline.\n- Reject a submission with a buyer-visible reason.\n\nAll actions are scoped to "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,4596 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed App Orders API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "App Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "App Orders admin endpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/admin/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "App Orders admin endpoints"
+        },
+        {
+          "info": {
+            "name": "App Orders admin endpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/admin/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "App Orders admin endpoints"
+        },
+        {
+          "info": {
+            "name": "Endpoint to add order event for app order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/admin/:uuid/create-order-event/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint to add order event for app order"
+        },
+        {
+          "info": {
+            "name": "Endpoint to list documents for an app order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/admin/:uuid/documents/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint to list documents for an app order"
+        },
+        {
+          "info": {
+            "name": "Endpoint to delete a specific document",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/app-orders/admin/:uuid/documents/:document_uuid/",
+            "params": [
+              {
+                "name": "document_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint to delete a specific document"
+        },
+        {
+          "info": {
+            "name": "Endpoint to edit order prices for supplier",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/app-orders/admin/:uuid/edit/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint to edit order prices for supplier"
+        },
+        {
+          "info": {
+            "name": "Endpoint to mark order as paid",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/admin/:uuid/mark-order-as-paid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint to mark order as paid"
+        },
+        {
+          "info": {
+            "name": "Endpoint to mark order as paid out to supplier",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/admin/:uuid/mark-order-as-paid-out-to-supplier/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint to mark order as paid out to supplier"
+        },
+        {
+          "info": {
+            "name": "Endpoint to get order events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/admin/:uuid/order-events/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint to get order events"
+        },
+        {
+          "info": {
+            "name": "Endpoint to get order prices for Buyer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/admin/:uuid/pricing/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint to get order prices for Buyer"
+        },
+        {
+          "info": {
+            "name": "Endpoint to upload a document for an app order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/admin/:uuid/upload-document/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint to upload a document for an app order"
+        },
+        {
+          "info": {
+            "name": "List all buyer orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/",
+            "params": [
+              {
+                "name": "delivery_date_from",
+                "value": "",
+                "type": "query",
+                "description": "Filter by estimated delivery date from (inclusive, format: YYYY-MM-DD)"
+              },
+              {
+                "name": "delivery_date_to",
+                "value": "",
+                "type": "query",
+                "description": "Filter by estimated delivery date to (inclusive, format: YYYY-MM-DD)"
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query",
+                "description": "Filter by delivery state (e.g. 'delivered', 'in_transit', 'pending_dispatch'). Used by the Delivery Timeline view to fetch only completed orders for the lazy ✓ delivered section."
+              },
+              {
+                "name": "delivery_status_group",
+                "value": "",
+                "type": "query",
+                "description": "Filter by delivery status group: not_started, arranging_freight, pending_dispatch, ready, in_transit, delivered, payment_needed"
+              },
+              {
+                "name": "exclude_delivery_state",
+                "value": "",
+                "type": "query",
+                "description": "Exclude orders with this delivery state. Used by the Delivery Timeline view to fetch active (non-delivered) orders only."
+              },
+              {
+                "name": "exclude_legacy",
+                "value": "",
+                "type": "query",
+                "description": "When true, exclude orders linked to the legacy orders system (rows where legacy_order is set)."
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query",
+                "description": "Filter by lifecycle state (e.g. 'confirmed', 'forecasted', 'pending_merchant_of_record_approval')"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "payment_status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by payment status (not_started, due, overdue, paid)"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search across PO number, customer reference, supplier name, products, and delivery address fields"
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query",
+                "description": "Filter by supplier company UUID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a paginated list of all orders for the authenticated buyer company."
+        },
+        {
+          "info": {
+            "name": "Brand endpoints for App Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Brand endpoints for App Orders"
+        },
+        {
+          "info": {
+            "name": "Buyer notifies order as paid",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/:uuid/client-notified-as-paid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer notifies that payment has been made.\n\n- **direct**: Marks both pay_in_state and payout_state as PAID.\n- **other providers**: Transitions pay_in_state to AWAITING_RECONCILIATION.\n\nOptionally accepts a `file_name` field to attach a proof of payment document."
+        },
+        {
+          "info": {
+            "name": "Returns the invoice URL or PDF",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/:uuid/invoice-url/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns invoice based on payment provider:\n\n- **Stripe**: Returns JSON `{\"url\": \"https://...\"}`\n- **Two**: Returns PDF file directly with Content-Type: application/pdf\n- **Direct**: Returns JSON `{\"url\": \"https://...\"}` with supplier invoice document URL\n"
+        },
+        {
+          "info": {
+            "name": "Buyer mark an order as delivered",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/:uuid/mark-as-delivered/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-driven transition: confirm an order as delivered."
+        },
+        {
+          "info": {
+            "name": "Mark order as picked up (buyer path)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/:uuid/mark-as-picked-up/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-driven transition: confirm an order as picked up, recording dispatched_at + tracking info."
+        },
+        {
+          "info": {
+            "name": "List order activities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/:uuid/order-activities/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a list of all order activities for the specified order."
+        },
+        {
+          "info": {
+            "name": "Generate and retrieve the purchase order PDF for an App Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/:uuid/purchase-order/pdf/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Generate the buyer-facing purchase-order PDF for this order and return its signed URL."
+        },
+        {
+          "info": {
+            "name": "Repeat an app spot order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/:uuid/repeat-spot-order/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new spot order with the same data as the original order but with fresh states and unique identifiers. This includes duplicating all order documents and line item documents."
+        },
+        {
+          "info": {
+            "name": "Buyer activity statement with running outstanding balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/activity-statement/",
+            "params": [
+              {
+                "name": "date_from",
+                "value": "",
+                "type": "query",
+                "description": "Include orders placed on or after this date (YYYY-MM-DD). Earlier orders fold their outstanding into the opening balance."
+              },
+              {
+                "name": "date_to",
+                "value": "",
+                "type": "query",
+                "description": "Include activity on or before this date (YYYY-MM-DD)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Activity statement for the buyer: their orders grouped by currency, each with the invoiced total, current payment status, and a server-computed cumulative outstanding balance per entry plus opening / closing balances. Outstanding is the same figure the finance / statements pages use, so the closing balance reconciles. Optionally bound the window with `date_from` / `date_to` (YYYY-MM-DD, inclusive); orders placed before `date_from` fold their outstanding into the opening balance. All monetary val"
+        },
+        {
+          "info": {
+            "name": "Aggregate order totals across the filtered set in full precision",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/aggregate/",
+            "params": [
+              {
+                "name": "agreement_uuid",
+                "value": "",
+                "type": "query",
+                "description": "Agreement (contract) UUID."
+              },
+              {
+                "name": "delivery_date_from",
+                "value": "",
+                "type": "query",
+                "description": "Estimated delivery on/after this date (YYYY-MM-DD)."
+              },
+              {
+                "name": "delivery_date_to",
+                "value": "",
+                "type": "query",
+                "description": "Estimated delivery on/before this date (YYYY-MM-DD)."
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query",
+                "description": "Filter by exact delivery state."
+              },
+              {
+                "name": "delivery_status_group",
+                "value": "",
+                "type": "query",
+                "description": "Filter by coarse delivery status group."
+              },
+              {
+                "name": "exclude_delivery_state",
+                "value": "",
+                "type": "query",
+                "description": "Exclude orders with this delivery state."
+              },
+              {
+                "name": "exclude_legacy",
+                "value": "",
+                "type": "query",
+                "description": "When true, exclude legacy-linked orders."
+              },
+              {
+                "name": "field",
+                "value": "",
+                "type": "query",
+                "description": "Numeric field to aggregate. Currently only `total_in_buyer_currency` is supported. Defaults to that value."
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query",
+                "description": "Filter by lifecycle state."
+              },
+              {
+                "name": "operation",
+                "value": "",
+                "type": "query",
+                "description": "Aggregation operation. One of: sum, avg, min, max."
+              },
+              {
+                "name": "order_uuids",
+                "value": "",
+                "type": "query",
+                "description": "Optional explicit set of order UUIDs to aggregate. Pass as a repeated query param (`?order_uuids=<uuid>&order_uuids=<uuid>`). When present and non-empty, filters are ignored. Every UUID must resolve inside the caller's scope — otherwise the call is rejected with `403 forbidden` to avoid leaking which UUIDs the caller can see."
+              },
+              {
+                "name": "payment_status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by payment status (pay_in_state)."
+              },
+              {
+                "name": "placed_date_from",
+                "value": "",
+                "type": "query",
+                "description": "Placed (created) on/after this date (YYYY-MM-DD)."
+              },
+              {
+                "name": "placed_date_to",
+                "value": "",
+                "type": "query",
+                "description": "Placed (created) on/before this date (YYYY-MM-DD)."
+              },
+              {
+                "name": "product",
+                "value": "",
+                "type": "query",
+                "description": "Substring match on any line item's product name."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Ranked free-text search (order no., PO ref, supplier, address)."
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query",
+                "description": "Supplier company UUID (legacy alias of supplier_uuid)."
+              },
+              {
+                "name": "supplier_name",
+                "value": "",
+                "type": "query",
+                "description": "Substring match on supplier company name."
+              },
+              {
+                "name": "supplier_uuid",
+                "value": "",
+                "type": "query",
+                "description": "Supplier company UUID."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a per-currency aggregate (sum / avg / min / max) of `total_in_buyer_currency` over the filtered orders, computed in full-precision Decimal micro-units and rounded to integer cents once per currency. Use this for cross-order sum/total/average questions — the per-order totals returned by `list` are individually rounded and accrue visible rounding error when added in prose (SC-3627). Filters mirror the `list` endpoint exactly. Alternatively pass `order_uuids` (repeated query param) to aggre"
+        },
+        {
+          "info": {
+            "name": "List all order activities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/all-order-activities/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of all order activities from all orders for the buyer company."
+        },
+        {
+          "info": {
+            "name": "Buyer endpoints for Grouped Statements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/grouped-statements/",
+            "params": [
+              {
+                "name": "month",
+                "value": "",
+                "type": "query",
+                "description": "Filter by due date month in YYYY-MM format (e.g. '2026-05')."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Free-text search across the statement identifier, the merchant-of-record company name, and any contributing order number."
+              },
+              {
+                "name": "tab",
+                "value": "",
+                "type": "query",
+                "description": "Filter by tab. 'pending' groups DUE + OVERDUE."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-facing viewset for listing and retrieving grouped statements.\n\nGET  /brand/grouped-statements/         — paginated list with filters\nGET  /brand/grouped-statements/{uuid}/  — detail incl. nested orders and bank details\nPOST /brand/grouped-statements/{uuid}/mark-transfer-sent/  — signal bank transfer sent"
+        },
+        {
+          "info": {
+            "name": "Retrieve a buyer grouped statement with nested orders and bank details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/grouped-statements/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Buyer-facing viewset for listing and retrieving grouped statements.\n\nGET  /brand/grouped-statements/         — paginated list with filters\nGET  /brand/grouped-statements/{uuid}/  — detail incl. nested orders and bank details\nPOST /brand/grouped-statements/{uuid}/mark-transfer-sent/  — signal bank transfer sent"
+        },
+        {
+          "info": {
+            "name": "Download a buyer grouped statement as an Excel (.xlsx) file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/grouped-statements/:uuid/csv/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the statement's contributing orders as an Excel workbook (one row per order plus a Total Amount Due summary row). Opens directly in Excel / Google Sheets with identifiers kept as text and amounts as numbers."
+        },
+        {
+          "info": {
+            "name": "Download all of a buyer grouped statement's invoices as a .zip",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/grouped-statements/:uuid/invoices/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a .zip bundling each contributing order's Two invoice PDF (one `invoice_<order>.pdf` per order). This is invoices only — it contains no statement summary file. Orders whose invoice is not yet available from the payment provider, or that were skipped because the archive hit its size / time bound, are listed in a `missing-invoices.txt` manifest inside the archive (with the reason)."
+        },
+        {
+          "info": {
+            "name": "Mark a bank transfer as sent",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/grouped-statements/:uuid/mark-transfer-sent/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Transitions the statement from DUE or OVERDUE to AWAITING_RECONCILIATION. Only valid when the statement status is DUE or OVERDUE. After a successful call the statement's `status` field will be `awaiting_reconciliation`; use `?tab=awaiting_reconciliation` on the list endpoint to confirm."
+        },
+        {
+          "info": {
+            "name": "Buyer outstanding payments summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/outstanding-payments-summary/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Aggregates outstanding orders and service fee invoices for the buyer into operational buckets: overdue, due in the next 7 days, and total outstanding. All monetary values are in cents."
+        },
+        {
+          "info": {
+            "name": "Buyer payment analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/payment-analytics/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns payment analytics for the buyer company including outstanding payments and bank details. Aggregates data from both orders (all providers) and service fee statements."
+        },
+        {
+          "info": {
+            "name": "List buyer payments by provider",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/payments/",
+            "params": [
+              {
+                "name": "due_date",
+                "value": "",
+                "type": "query",
+                "description": "Filter by due month. Pass the 1st of the month (YYYY-MM-DD, e.g. 2026-03-01)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of orders per page (default 20)"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Number of orders to skip (default 0)"
+              },
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive substring match against order_number (e.g. 'PO-44')."
+              },
+              {
+                "name": "provider",
+                "value": "",
+                "type": "query",
+                "description": "Payment provider to fetch data for (stripe, two, direct)"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by pay_in_state (due, overdue, awaiting_reconciliation, paid)"
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query",
+                "description": "Filter by supplier UUID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns payment orders for the specified provider.\n\n- **stripe**: Returns orders (use /payments/service-fees/ for service fees).\n- **direct**: Returns orders with per-order supplier bank details.\n- **two**: Not yet implemented, returns 204.\n\nBy default, only DUE, OVERDUE, and AWAITING_RECONCILIATION orders are returned. Use the `status` filter to include PAID orders."
+        },
+        {
+          "info": {
+            "name": "Available payment sections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/payments/available-sections/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns which payment tabs and sections to render for the buyer."
+        },
+        {
+          "info": {
+            "name": "Combined Merchant-of-Record payments listing",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/payments/merchant-of-record/",
+            "params": [
+              {
+                "name": "due_date",
+                "value": "",
+                "type": "query",
+                "description": "Filter by due month (YYYY-MM-01)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of merged rows per page (default 20)"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Number of merged rows to skip (default 0)"
+              },
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive substring match against order_number. Order rows match their PO-XXXX number; statement rows match their own SF-XXXX invoice_id. A statement is NOT surfaced because one of its child orders matches — that match appears on the order row itself."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by status (due, overdue, awaiting_reconciliation, paid)"
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query",
+                "description": "Filter by supplier UUID. Applies to order rows only — service-fee statements are billed by Opply (not by a supplier) and are excluded from the response when this filter is set."
+              },
+              {
+                "name": "transaction_type",
+                "value": "",
+                "type": "query",
+                "description": "Restrict the merged list to one row kind. `order` returns only Stripe orders; `service_fee_invoice` returns only service-fee statements. Omit to include both."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns service-fee statements **and** Stripe (MoR) orders in a single response, paginated independently. Used by the buyer app's merged MoR table.\n\nThe legacy `/payments/?provider=stripe` and `/payments/service-fees/` endpoints are unchanged — older consumers keep working.\n\nFilters apply to both halves of the response with the same semantics."
+        },
+        {
+          "info": {
+            "name": "List buyer service fee invoices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/payments/service-fees/",
+            "params": [
+              {
+                "name": "due_date",
+                "value": "",
+                "type": "query",
+                "description": "Filter by due month. Pass the 1st of the month (YYYY-MM-DD)."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of service fees per page (default 3)"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Number of service fees to skip (default 0)"
+              },
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive substring match against the statement's own invoice_id (rendered as order_number=SF-XXXX in the response). Child-order PO-XXXX numbers are NOT searched here — those matches surface on the order rows of the merged Merchant-of-Record listing instead."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by status (due, overdue, awaiting_reconciliation, paid)"
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query",
+                "description": "Filter by supplier UUID. Service-fee statements are billed by Opply (not by a supplier), so when this filter is set the endpoint returns an empty list. Statement rows belong to the unfiltered Merchant-of-Record view."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns paginated service fee invoices and Opply bank details. Overdue invoices appear first, then ordered by due date descending (latest month first). Default page size is 3.\n\nSupports the same filters as `/payments/?provider=stripe` so the merged Merchant-of-Record view in the buyer app can apply one filter set across both halves of the table."
+        },
+        {
+          "info": {
+            "name": "Create a spot buy request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/spot-buy-request/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new spot buy request for the buyer company with the provided description."
+        },
+        {
+          "info": {
+            "name": "List pending spot buy requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/spot-buy-requests/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of pending spot buy requests for the authenticated buyer company."
+        },
+        {
+          "info": {
+            "name": "Cancel a spot buy request",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/spot-buy-requests/:spot_buy_request_uuid/cancel/",
+            "params": [
+              {
+                "name": "spot_buy_request_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Cancels a pending spot buy request for the authenticated buyer company."
+        },
+        {
+          "info": {
+            "name": "Retrieve a buyer service-fee statement with nested orders and bank details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/statements/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a single service-fee statement owned by the requesting brand, by UUID. Returns the statement's status, month, totals, due date and its contributing orders with their per-order service-fee breakdown plus bank details."
+        },
+        {
+          "info": {
+            "name": "Brand endpoints for Statements",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/statements/:uuid/client-notified-as-paid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Transition service fee invoice from DUE or OVERDUE to AWAITING_RECONCILIATION."
+        },
+        {
+          "info": {
+            "name": "Get statement invoice PDF URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/statements/:uuid/invoice-pdf/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetch Stripe invoice PDF URL for a service fee invoice."
+        },
+        {
+          "info": {
+            "name": "Get statement invoice URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/statements/:uuid/invoice-url/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetch Stripe hosted invoice URL for a service fee invoice."
+        },
+        {
+          "info": {
+            "name": "List suppliers for the buyer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/suppliers/",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Set to `ready_to_trade` to add the buyer's ready-to-trade suppliers to the order-derived list."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search suppliers by name (case-insensitive partial match)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a de-duplicated list of suppliers for the authenticated buyer company. By default this is every supplier the buyer has placed an order with. Pass `include=ready_to_trade` to also add the buyer's ready-to-trade suppliers (those it can start a new order with) — used by the create-order supplier picker so a ready-to-trade supplier is selectable even before its first order. Supports search by supplier name."
+        },
+        {
+          "info": {
+            "name": "Get Two credit summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/brand/two-credit-information/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the buyer's Two credit summary. The `status` field signals which of four conditions applies: `available` (totals populated), `not_configured` (buyer has no Two integration), `revoked` (Two denied credit and recourse cannot compensate), or `api_error` (transient upstream failure — retry may succeed). When status is not `available`, all credit figures are null. `total_credit` / `available_for_new_orders` are the legacy additive model (Two organic + recourse) the frontend shows by default. "
+        },
+        {
+          "info": {
+            "name": "List orders for merchant of record company",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/",
+            "params": [
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "pay_in_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payout_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a list of orders where the current user's company is the merchant of record. Supports searching by order number, buyer company name, and supplier company name."
+        },
+        {
+          "info": {
+            "name": "Merchant of Record app order endpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Approves an app order as merchant of record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/approve/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Generate and retrieve the merchant of record purchase order PDF for an App Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/buyer-purchase-order/pdf/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Change payment terms on a confirmed/forecasted order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/change-payment-terms/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Changes payment_terms and/or supplier_payout_terms on a confirmed or forecasted order. Adjusts pay-in, payout and delivery states to stay consistent with state machine rules."
+        },
+        {
+          "info": {
+            "name": "Confirm shipping responsibility (from gathering quotes state)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/confirm-shipping-responsibility/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Endpoint to add order event for app order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/create-order-event/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Endpoint to list documents for an app order uploaded by merchant of record",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/documents/",
+            "params": [
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "pay_in_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payout_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Delete a document for an order",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/documents/:document_uuid/",
+            "params": [
+              {
+                "name": "document_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes a document for a specific order"
+        },
+        {
+          "info": {
+            "name": "Duplicate an app order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/duplicate/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new order with the same data as the original orderbut with fresh states and unique identifiers. This includes duplicating all order documents and line item documents."
+        },
+        {
+          "info": {
+            "name": "Endpoint to edit all fields for an app order as merchant of record",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/edit/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Allows editing of all editable fields for an app order, including dispatchdates for already dispatched orders. When editing dispatch date, payment due dates are automatically recalculated. Works in all order statuses except for legacy orders."
+        },
+        {
+          "info": {
+            "name": "Place an order on hold",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/hold/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Places the order on hold with a reason and optional notes. While on hold, the order cannot transition through its lifecycle states."
+        },
+        {
+          "info": {
+            "name": "Returns the invoice URL or PDF",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/invoice-url/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns invoice based on payment provider:\n\n- **Stripe**: Returns JSON `{\"url\": \"https://...\"}`\n- **Two**: Returns PDF file directly with Content-Type: application/pdf\n- **Direct**: Returns JSON `{\"url\": \"https://...\"}` with supplier invoice document URL\n"
+        },
+        {
+          "info": {
+            "name": "Upload a document for an order line item",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/line-item/:line_item_uuid/ingredient-documents/",
+            "params": [
+              {
+                "name": "line_item_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Uploads a document (spec sheet) for a specific line item"
+        },
+        {
+          "info": {
+            "name": "Delete a document for an order line item",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/line-item/:line_item_uuid/ingredient-documents/:document_uuid/",
+            "params": [
+              {
+                "name": "document_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "line_item_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes a document (spec sheet) for a specific line item"
+        },
+        {
+          "info": {
+            "name": "Merchant of record mark an order as delivered on buyer's behalf",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/mark-as-delivered/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Mark order as picked up (buyer path)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/mark-as-picked-up/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Mark order as awaiting collection details (buyer path)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/mark-awaiting-collection-details/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Mark dispatch as scheduled (supplier path)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/mark-dispatch-scheduled/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Mark order as forecasted",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/mark-forecasted/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Transitions order from CONFIRMED to FORECASTED state with a target date for automatic confirmation."
+        },
+        {
+          "info": {
+            "name": "Mark order as freight ownership pending (to be confirmed path)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/mark-freight-ownership-pending/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Mark order as freight scheduled (MoR path)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/mark-freight-scheduled/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Mark order as in transit",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/mark-in-transit/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Endpoint to mark order as paid",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/mark-order-as-paid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Endpoint to mark order as paid out to supplier",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/mark-order-as-paid-out-to-supplier/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Mark order as dispatched",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/mark-order-dispatched/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Mark order as preparing freight (MoR path)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/mark-preparing-freight/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Mark freight quotes as confirmed (MoR path)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/mark-quotes-confirmed/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Mark order as ready for pickup (buyer path)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/mark-ready-for-pickup/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Move order to intermediate lifecycle status",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/move-lifecycle-intermediate-status/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Transitions order to a target intermediate lifecycle state. Valid target states: order_received, order_sent_to_supplier, order_confirming_price."
+        },
+        {
+          "info": {
+            "name": "List order activities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/order-activities/",
+            "params": [
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "pay_in_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payout_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of all order activities for the specified order."
+        },
+        {
+          "info": {
+            "name": "Update order activity",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/order-activities/:activity_uuid/update/",
+            "params": [
+              {
+                "name": "activity_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update order activity."
+        },
+        {
+          "info": {
+            "name": "Create an order activity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/order-activities/create/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new order activity for the specified order. If is_internal is True, no buyer emails will be sent. The user will be automatically set to the authenticated user making the request."
+        },
+        {
+          "info": {
+            "name": "Endpoint to get order events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/order-events/",
+            "params": [
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "pay_in_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payout_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Push order to Two",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/push-to-two/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Submit an order to Two payment provider. Creates a billing account if one doesn't exist. Returns 409 if the order has already been pushed to Two."
+        },
+        {
+          "info": {
+            "name": "Process a refund (full or partial) for an order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/refund/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Processes a manual refund for an order. The refund is recorded internally — actual money movement is handled externally by the MoR. Transitions the pay_in_state or payout_state to partially_refunded or refunded."
+        },
+        {
+          "info": {
+            "name": "Reject an app order as merchant of record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/reject/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Mark service fee as invoice sent",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/service-fee/invoice-sent/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates the service fee status to 'invoice_sent' for the order"
+        },
+        {
+          "info": {
+            "name": "Mark service fee as paid",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/service-fee/paid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates the service fee status to 'paid' for the order"
+        },
+        {
+          "info": {
+            "name": "Start gathering quotes (to be confirmed path)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/start-gathering-quotes/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Generate and retrieve the supplier purchase order PDF for an App Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/supplier-purchase-order/pdf/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "Get Two order status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/two-status/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Check if an order has been pushed to Two and get its status."
+        },
+        {
+          "info": {
+            "name": "Remove hold from an order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/unhold/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes the hold from an order, allowing it to continue through its lifecycle."
+        },
+        {
+          "info": {
+            "name": "Unmark order as forecasted",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/unmark-forecasted/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Transitions order from FORECASTED back to CONFIRMED state and clears the forecast date. Optionally sets the credit_risk_owner on the order."
+        },
+        {
+          "info": {
+            "name": "Endpoint to upload a document for an app order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/upload-document/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing app orders from the merchant of record perspective.\n\nThis ViewSet provides endpoints for merchant of record companies to:\n- List and retrieve their app orders\n- Manage order lifecycle (approve, reject, mark as paid, etc.)\n- Upload and manage order documents\n- Create order events and comments\n- Generate purchase order PDFs\n- Handle invoice URLs\n- Duplicate orders\n- Create new orders\n\nAll operations are restricted to orders where the current user's company\nis the merchant of r"
+        },
+        {
+          "info": {
+            "name": "List Zendesk tickets for order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/:uuid/zendesk-tickets/",
+            "params": [
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "pay_in_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payout_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns Zendesk tickets related to the specified order."
+        },
+        {
+          "info": {
+            "name": "MoR order activity feed",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/activity-feed/",
+            "params": [
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "pay_in_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payout_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated, newest-first feed of all order activities across every order the current MoR company manages. Backs the MoR home dashboard's Orders branch side panel."
+        },
+        {
+          "info": {
+            "name": "List orders currently on hold",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/alerts/",
+            "params": [
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Order by field: held_at, -held_at, delivery_date, -delivery_date, order_number, -order_number. Default: -held_at"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "pay_in_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payout_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "reason",
+                "value": "",
+                "type": "query",
+                "description": "Filter by hold internal reason"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of orders currently on hold for the MoR dashboard. Supports filtering by hold reason and ordering by held_at, delivery_date, or order_number."
+        },
+        {
+          "info": {
+            "name": "Get users assignable to tasks in current MoR company",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/assignable-users/",
+            "params": [
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "pay_in_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payout_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of active employees of the current MoR company. Unlike `staff-users/`, this endpoint does not filter by `is_staff` and is intended for picking task assignees (standalone tasks and order-activity tasks)."
+        },
+        {
+          "info": {
+            "name": "Get users who can be selected as ordered_by for orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/brand-users/",
+            "params": [
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "pay_in_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payout_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of users who are employees of BRAND companies associated with this MOR. These users can be selected as the ordered_by user when creating orders."
+        },
+        {
+          "info": {
+            "name": "Get users from a specific brand company",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/brand-users-by-company/:company_uuid/",
+            "params": [
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "company_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "pay_in_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payout_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a list of users who are employees of a specific BRAND company associated with this MOR. These users can be selected as the ordered_by user when creating orders."
+        },
+        {
+          "info": {
+            "name": "Get buyer balance details grouped by currency",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/buyer-balance/:buyer_uuid/",
+            "params": [
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "buyer_uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "pay_in_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payout_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns balance information for a specific buyer company including total balance, next due date, and next payment amount grouped by currency"
+        },
+        {
+          "info": {
+            "name": "Service-fee orders grouped by dispatch month (per buyer)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/buyer-orders-by-month/",
+            "params": [
+              {
+                "name": "buyer_currency",
+                "value": "",
+                "type": "query",
+                "description": "filter by buyer currency"
+              },
+              {
+                "name": "buyer_uuid",
+                "value": "",
+                "type": "query",
+                "description": "filter by buyer uuID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns, in pages of 10 months, all dispatched orders for the specified buyer company, grouped by month, and separated by buyer currency. If a currency is not provided, the most commonly used one is used"
+        },
+        {
+          "info": {
+            "name": "List buyers appearing on the MoR's orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/buyers/",
+            "params": [
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "pay_in_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payout_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Filter buyers by name."
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "query",
+                "description": "Resolve a single buyer by UUID (to label an already-selected filter value)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "De-duplicated buyers (company_ordered_by) drawn from the orders this Merchant of Record manages. Powers the Buyer filter on the orders list. Supports case-insensitive name search."
+        },
+        {
+          "info": {
+            "name": "Get Allianz credit information for a buyer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/buyers/:buyer_uuid/allianz-credit-information/",
+            "params": [
+              {
+                "name": "buyer_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns Allianz credit limit information for a specific buyer company. Requires the buyer to have allianz_company_id and is_connected_to_allianz set."
+        },
+        {
+          "info": {
+            "name": "Get allocated credit for a buyer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/buyers/:buyer_uuid/allocated-credit/",
+            "params": [
+              {
+                "name": "buyer_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns allocated credit breakdown by payment provider and order state."
+        },
+        {
+          "info": {
+            "name": "Calculate credit availability for a buyer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/buyers/:buyer_uuid/calculate-credit/",
+            "params": [
+              {
+                "name": "buyer_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Check credit availability in two modes: by order UUID, or by raw amount."
+        },
+        {
+          "info": {
+            "name": "Get or create Two billing account for a buyer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/buyers/:buyer_uuid/two-billing-account/",
+            "params": [
+              {
+                "name": "buyer_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the Two billing account for a buyer, creating one if it doesn't exist. This is an idempotent operation - calling it multiple times will return the same billing account."
+        },
+        {
+          "info": {
+            "name": "Get Two credit information for a buyer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/buyers/:buyer_uuid/two-credit-information/",
+            "params": [
+              {
+                "name": "buyer_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns Two credit limit information for a specific buyer company. Requires the buyer to have is_connected_to_two, registration_number, and registration_country_code set."
+        },
+        {
+          "info": {
+            "name": "Check if a buyer is registered on Two",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/buyers/:buyer_uuid/two-registration/",
+            "params": [
+              {
+                "name": "buyer_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Check if a buyer company is registered on Two using their stored identifiers. For non-US buyers: uses registration_number. For US buyers: uses two_us_company_id (must have TWO: or DUNS: prefix). Does not require the buyer to already be connected to Two in our system."
+        },
+        {
+          "info": {
+            "name": "Create a new app order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/create/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new app order with the specified data"
+        },
+        {
+          "info": {
+            "name": "List all delivery issue types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/delivery-issue-types/",
+            "params": [
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "pay_in_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payout_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a list of all available delivery issue types for OTIF tracking."
+        },
+        {
+          "info": {
+            "name": "MoR endpoints for Grouped Statements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/grouped-statements/",
+            "params": [
+              {
+                "name": "buyer_uuid",
+                "value": "",
+                "type": "query",
+                "description": "UUID of the buyer company (optional filter)"
+              },
+              {
+                "name": "currency",
+                "value": "",
+                "type": "query",
+                "description": "Filter by currency"
+              },
+              {
+                "name": "due_date_from",
+                "value": "",
+                "type": "query",
+                "description": "Filter by due_date >= this date (YYYY-MM-DD)."
+              },
+              {
+                "name": "due_date_to",
+                "value": "",
+                "type": "query",
+                "description": "Filter by due_date <= this date (YYYY-MM-DD)."
+              },
+              {
+                "name": "has_warning",
+                "value": "",
+                "type": "query",
+                "description": "Filter to statements with at least one orphan order (`true`) or without (`false`). Omit to include both. Server-authoritative — agents should rely on this rather than client-side filtering of a page."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "payment_provider",
+                "value": "",
+                "type": "query",
+                "description": "Filter by payment provider"
+              },
+              {
+                "name": "tab",
+                "value": "",
+                "type": "query",
+                "description": "Filter by tab. 'pending' groups DUE + OVERDUE + AWAITING_RECONCILIATION."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "MoR-facing viewset for listing, retrieving, and patching grouped statements.\n\nGET   /merchant-of-record/grouped-statements/         — paginated list with filters\nGET   /merchant-of-record/grouped-statements/{uuid}/  — detail incl. nested orders\nPATCH /merchant-of-record/grouped-statements/{uuid}/  — edit external_payment_id only\n\nWarnings (`has_warning`, `warning_count`, `warnings`) are pure derived state: a\nwarning surfaces whenever a dispatched Two order matching the statement's\ngrouping key i"
+        },
+        {
+          "info": {
+            "name": "MoR endpoints for Grouped Statements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/grouped-statements/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "MoR-facing viewset for listing, retrieving, and patching grouped statements.\n\nGET   /merchant-of-record/grouped-statements/         — paginated list with filters\nGET   /merchant-of-record/grouped-statements/{uuid}/  — detail incl. nested orders\nPATCH /merchant-of-record/grouped-statements/{uuid}/  — edit external_payment_id only\n\nWarnings (`has_warning`, `warning_count`, `warnings`) are pure derived state: a\nwarning surfaces whenever a dispatched Two order matching the statement's\ngrouping key i"
+        },
+        {
+          "info": {
+            "name": "MoR endpoints for Grouped Statements",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/grouped-statements/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "MoR-facing viewset for listing, retrieving, and patching grouped statements.\n\nGET   /merchant-of-record/grouped-statements/         — paginated list with filters\nGET   /merchant-of-record/grouped-statements/{uuid}/  — detail incl. nested orders\nPATCH /merchant-of-record/grouped-statements/{uuid}/  — edit external_payment_id only\n\nWarnings (`has_warning`, `warning_count`, `warnings`) are pure derived state: a\nwarning surfaces whenever a dispatched Two order matching the statement's\ngrouping key i"
+        },
+        {
+          "info": {
+            "name": "Get OTIF data for a line item",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/line-items/:line_item_uuid/otif-data/",
+            "params": [
+              {
+                "name": "line_item_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get, update, or replace OTIF data for a line item."
+        },
+        {
+          "info": {
+            "name": "Replace OTIF data for a line item",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/line-items/:line_item_uuid/otif-data/",
+            "params": [
+              {
+                "name": "line_item_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get, update, or replace OTIF data for a line item."
+        },
+        {
+          "info": {
+            "name": "Update OTIF data for a line item",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/line-items/:line_item_uuid/otif-data/",
+            "params": [
+              {
+                "name": "line_item_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get, update, or replace OTIF data for a line item."
+        },
+        {
+          "info": {
+            "name": "Get payout state for a given due date",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/payout-status-for-date/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the payout state (DUE or OVERDUE) for a given due date."
+        },
+        {
+          "info": {
+            "name": "List spot buy requests for merchant of record",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/spot-buy-requests/",
+            "params": [
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query",
+                "description": "Filter by buyer company UUID"
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "pay_in_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payout_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by status: 'pending' (default) or 'all'"
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of spot buy requests from buyers associated with the merchant of record. Defaults to pending requests only. Use ?status=all to include all statuses. Use ?buyer=<uuid> to filter by a specific buyer company."
+        },
+        {
+          "info": {
+            "name": "Update spot buy request status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/spot-buy-requests/:spot_buy_request_uuid/",
+            "params": [
+              {
+                "name": "spot_buy_request_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates the status of a spot buy request from pending to completed."
+        },
+        {
+          "info": {
+            "name": "Get staff users in current MoR company",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/staff-users/",
+            "params": [
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "pay_in_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payout_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "A search term."
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of staff users who are employees of the current MoR company"
+        },
+        {
+          "info": {
+            "name": "MoR endpoints for Statements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/statements/",
+            "params": [
+              {
+                "name": "buyer_uuid",
+                "value": "",
+                "type": "query",
+                "description": "UUID of the buyer company (optional filter)"
+              },
+              {
+                "name": "currency",
+                "value": "",
+                "type": "query",
+                "description": "Filter by currency"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "statement_month",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the month the payment is due (YYYY-MM-DD, e.g. 2026-04-01). Filters on due_date, not invoice_month."
+              },
+              {
+                "name": "tab",
+                "value": "",
+                "type": "query",
+                "description": "Filter by tab: all, pending, due, overdue, paid, awaiting_reconciliation"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "MoR-facing viewset for listing, retrieving, and creating service fee invoices.\n\nGET /: Lists statements sorted by due date. Supports optional `buyer_uuid`\nfilter and `tab` parameter (all, pending, due, overdue, paid, awaiting_reconciliation).\nAlso supports `currency` and `statement_month` filters.\n\nPOST /: Creates a service fee invoice for a given buyer and month.\nAuto-includes all eligible orders dispatched 2 months before the specified month."
+        },
+        {
+          "info": {
+            "name": "MoR endpoints for Statements",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/statements/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "MoR-facing viewset for listing, retrieving, and creating service fee invoices.\n\nGET /: Lists statements sorted by due date. Supports optional `buyer_uuid`\nfilter and `tab` parameter (all, pending, due, overdue, paid, awaiting_reconciliation).\nAlso supports `currency` and `statement_month` filters.\n\nPOST /: Creates a service fee invoice for a given buyer and month.\nAuto-includes all eligible orders dispatched 2 months before the specified month."
+        },
+        {
+          "info": {
+            "name": "MoR endpoints for Statements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/statements/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "MoR-facing viewset for listing, retrieving, and creating service fee invoices.\n\nGET /: Lists statements sorted by due date. Supports optional `buyer_uuid`\nfilter and `tab` parameter (all, pending, due, overdue, paid, awaiting_reconciliation).\nAlso supports `currency` and `statement_month` filters.\n\nPOST /: Creates a service fee invoice for a given buyer and month.\nAuto-includes all eligible orders dispatched 2 months before the specified month."
+        },
+        {
+          "info": {
+            "name": "Get statement invoice PDF URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/statements/:uuid/invoice-pdf/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetch Stripe invoice PDF URL for a service fee invoice."
+        },
+        {
+          "info": {
+            "name": "Get statement invoice URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/statements/:uuid/invoice-url/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetch Stripe hosted invoice URL for a service fee invoice."
+        },
+        {
+          "info": {
+            "name": "MoR endpoints for Statements",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/statements/:uuid/mark-as-paid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Transition service fee invoice from DUE, OVERDUE, or AWAITING_RECONCILIATION to PAID."
+        },
+        {
+          "info": {
+            "name": "MoR endpoints for Statements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/statements/disabled-months/",
+            "params": [
+              {
+                "name": "buyer_uuid",
+                "value": "",
+                "type": "query",
+                "description": "UUID of the buyer company (required)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Return months that already have an active statement for the given buyer."
+        },
+        {
+          "info": {
+            "name": "MoR endpoints for Statements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/statements/summary/",
+            "params": [
+              {
+                "name": "buyer_uuid",
+                "value": "",
+                "type": "query",
+                "description": "UUID of the buyer company (optional filter)"
+              },
+              {
+                "name": "currency",
+                "value": "",
+                "type": "query",
+                "description": "Filter by currency"
+              },
+              {
+                "name": "statement_month",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the month the payment is due (YYYY-MM-DD). Filters on due_date."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Narrow the Outstanding total to a single status (due / overdue / awaiting_reconciliation) so the card matches the list's Status filter. The status counts always cover the full pending set regardless."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Restrict to one statement source. Omit to count both."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Status-count summary (overdue / due / awaiting_reconciliation) over the merged\nservice-fee + Two statement set, plus the per-currency Outstanding money total\n(Two/grouped only, one bucket per currency, never summed across currencies).\nHonors buyer / currency / month / type filters, ignores the tab, and is computed\nover the full filtered set (never a page slice). An optional `status` narrows only\nthe Outstanding total (not the counts) so the card can track the list's Status filter."
+        },
+        {
+          "info": {
+            "name": "MoR endpoints for Statements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/statements/unified/",
+            "params": [
+              {
+                "name": "buyer_uuid",
+                "value": "",
+                "type": "query",
+                "description": "UUID of the buyer company (optional filter)"
+              },
+              {
+                "name": "currency",
+                "value": "",
+                "type": "query",
+                "description": "Filter by currency"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Sort field: due_date (default), buyer_company__name, statement_id, subtotal, total, total_outstanding, order_count. Prefix with '-' to reverse."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive substring match on statement ID + buyer name. A numeric term also matches a statement whose total equals it exactly (major units, e.g. `1500` == 1500.00)."
+              },
+              {
+                "name": "statement_month",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the month payment is due (YYYY-MM-DD). Filters on due_date."
+              },
+              {
+                "name": "tab",
+                "value": "",
+                "type": "query",
+                "description": "Filter by tab: all, pending, due, overdue, paid, awaiting_reconciliation, cancelled"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Restrict to one statement source. Omit to include both."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Unified statements list: service-fee + Two (grouped) merged into one shape,\nwith search, ordering and pagination applied across the *entire* MoR-scoped set\n(not a per-source page slice). Honors the same buyer / currency / month / type /\ntab filters as the individual list endpoints."
+        },
+        {
+          "info": {
+            "name": "List suppliers appearing on the MoR's orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/suppliers/",
+            "params": [
+              {
+                "name": "buyer",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "delivery_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "pay_in_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payout_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Filter suppliers by name."
+              },
+              {
+                "name": "supplier",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "query",
+                "description": "Resolve a single supplier by UUID (to label an already-selected filter value)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "De-duplicated suppliers (company_ordered_from) drawn from the orders this Merchant of Record manages. Powers the Supplier filter on the orders list, so the options match the suppliers actually shown in the table. Supports case-insensitive name search."
+        },
+        {
+          "info": {
+            "name": "Two webhook (Svix-signed)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-orders/merchant-of-record/update-two-status/"
+          },
+          "docs": "Handles Two webhook events. Requires a valid Svix signature on the `Two-Signature` (or `Svix-Signature` / `Webhook-Signature`) header triplet. Resolves the order via data.merchant_order_id or, for events that omit it (e.g. credited, invoiced), falls back to data.order_id."
+        },
+        {
+          "info": {
+            "name": "Supplier endpoints for App Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/supplier/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Supplier endpoints for App Orders"
+        },
+        {
+          "info": {
+            "name": "Supplier endpoints for App Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/supplier/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Supplier endpoints for App Orders"
+        },
+        {
+          "info": {
+            "name": "Adds Shipping details to an app order & marks it as dispatched",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/app-orders/supplier/:uuid/mark-order-dispatched/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Adds Shipping details to an app order & marks it as dispatched"
+        },
+        {
+          "info": {
+            "name": "Generate and retrieve the purchase order PDF for an App Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/app-orders/supplier/:uuid/purchase-order/pdf/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Generate and retrieve the purchase order PDF for an App Order"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

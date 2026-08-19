@@ -1,0 +1,414 @@
+{
+  "item": [
+    {
+      "id": "876c2a60-5ace-4766-854e-e583217d3236",
+      "name": "Buyer Financial Documents",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e5a05b41-1597-49b3-887b-6ba43fb728e0",
+          "name": "Buyer financial documents (P&L, balance sheet, management accounts)",
+          "request": {
+            "name": "Buyer financial documents (P&L, balance sheet, management accounts)",
+            "description": {
+              "content": "List, upload and delete financial documents that buyers attach to support\ncredit-limit reviews.\n\nTenant isolation: queryset is always filtered to ``request.user_company``.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "brand",
+                "financial-documents",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "85ac7ebc-2a3a-41af-958e-3c4206e28d14",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "brand",
+                    "financial-documents",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"certificate_number\": \"string\",\n      \"created_at\": \"2023-05-19T10:00:59.275Z\",\n      \"end_date\": \"2024-08-31\",\n      \"file_size_bytes\": 1641,\n      \"file_url\": \"string\",\n      \"holder_name\": \"string\",\n      \"issuing_authority\": \"string\",\n      \"jurisdiction\": \"string\",\n      \"name\": \"string\",\n      \"original_filename\": \"string\",\n      \"start_date\": \"1962-09-08\",\n      \"type\": \"management_accounts\",\n      \"uploaded_by_name\": \"string\",\n      \"uuid\": \"7e0fb1cd-cf7b-be4e-79c6-15213d0680b4\"\n    },\n    {\n      \"certificate_number\": \"string\",\n      \"created_at\": \"2008-11-15T05:31:11.093Z\",\n      \"end_date\": \"1952-11-15\",\n      \"file_size_bytes\": 5942,\n      \"file_url\": \"string\",\n      \"holder_name\": \"string\",\n      \"issuing_authority\": \"string\",\n      \"jurisdiction\": \"string\",\n      \"name\": \"string\",\n      \"original_filename\": \"string\",\n      \"start_date\": \"1994-04-09\",\n      \"type\": \"balance_sheet\",\n      \"uploaded_by_name\": \"string\",\n      \"uuid\": \"f3740535-ea5b-d020-0a65-c4199c909cc0\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "698a098f-6ce7-4285-aacc-c6bdbb0fcd33",
+          "name": "Upload a financial document",
+          "request": {
+            "name": "Upload a financial document",
+            "description": {
+              "content": "List, upload and delete financial documents that buyers attach to support\ncredit-limit reviews.\n\nTenant isolation: queryset is always filtered to ``request.user_company``.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "brand",
+                "financial-documents",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "description": "(Required) "
+                },
+                {
+                  "key": "type",
+                  "value": "management_accounts",
+                  "type": "text",
+                  "description": ""
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "51ea7289-077c-4c7d-997d-b89a130ad2e4",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "brand",
+                    "financial-documents",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "type",
+                      "value": "management_accounts",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"certificate_number\": \"string\",\n  \"created_at\": \"2021-12-18T19:01:54.055Z\",\n  \"end_date\": \"1992-07-27\",\n  \"file_size_bytes\": 2523,\n  \"file_url\": \"string\",\n  \"holder_name\": \"string\",\n  \"issuing_authority\": \"string\",\n  \"jurisdiction\": \"string\",\n  \"name\": \"string\",\n  \"original_filename\": \"string\",\n  \"start_date\": \"1993-05-26\",\n  \"type\": \"<string>\",\n  \"uploaded_by_name\": \"string\",\n  \"uuid\": \"ddb56f9d-2df4-f394-83b6-820376ffe7dd\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "07a00838-cea6-419c-a355-3482b71d7a31",
+          "name": "Delete a financial document",
+          "request": {
+            "name": "Delete a financial document",
+            "description": {
+              "content": "List, upload and delete financial documents that buyers attach to support\ncredit-limit reviews.\n\nTenant isolation: queryset is always filtered to ``request.user_company``.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "brand",
+                "financial-documents",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6c340de7-79e4-4ee5-b2e5-b1a1e3a8f25a",
+              "name": "Document deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "brand",
+                    "financial-documents",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c553be81-a7e9-4888-b104-921df27cf309",
+    "name": "Opply Activity Feed Buyer Financial Documents API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

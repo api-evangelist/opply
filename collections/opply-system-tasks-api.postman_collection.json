@@ -1,0 +1,698 @@
+{
+  "item": [
+    {
+      "id": "854ec45f-6673-4bb0-bbc3-40f0a7e56e50",
+      "name": "System Tasks",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4bc7a60a-1532-4230-bfca-574cc22fb01c",
+          "name": "List system-task definitions with rollup",
+          "request": {
+            "name": "List system-task definitions with rollup",
+            "description": {
+              "content": "``GET`` — list system-task definitions with rollup counts, scoped to the caller.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "system-tasks",
+                "definitions",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "company_uuid",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ad8d519f-1825-4df3-9a8f-01de800f1c16",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "system-tasks",
+                    "definitions",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "company_uuid",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"agent_name\": \"string\",\n    \"agent_slug\": \"string\",\n    \"description\": \"string\",\n    \"eligible_tenants\": 2444,\n    \"installed_tenants\": 6791,\n    \"is_enabled\": true,\n    \"key\": \"string\",\n    \"last_run_at\": \"1976-01-10T23:15:20.246Z\",\n    \"last_skip_at\": \"1950-09-24T02:24:39.167Z\",\n    \"name\": \"string\",\n    \"runs_failed\": 2449,\n    \"runs_succeeded\": 9637,\n    \"tenants_skipped_last_check\": 9258\n  },\n  {\n    \"agent_name\": \"string\",\n    \"agent_slug\": \"string\",\n    \"description\": \"string\",\n    \"eligible_tenants\": 6620,\n    \"installed_tenants\": 9904,\n    \"is_enabled\": false,\n    \"key\": \"string\",\n    \"last_run_at\": \"1994-10-09T21:36:36.842Z\",\n    \"last_skip_at\": \"1971-11-10T00:51:42.237Z\",\n    \"name\": \"string\",\n    \"runs_failed\": 2527,\n    \"runs_succeeded\": 3925,\n    \"tenants_skipped_last_check\": 7952\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "08aabf0e-ff0f-4f15-8053-bcd6863e6478",
+          "name": "Pause or resume all tenant series for a system-task definition",
+          "request": {
+            "name": "Pause or resume all tenant series for a system-task definition",
+            "description": {
+              "content": "``POST`` — pause / resume **every** installed tenant's series for one\ndefinition (the definition-level master switch on the MoR page).\n\nDefinitions are config-in-code (no persisted per-definition flag), so the\n\"enabled\" state is derived from the tenant recurrences and toggled in bulk\nhere. Same authorisation + system-task scoping as the per-tenant action.\nResuming recomputes each series' ``next_run_at`` from now and silently skips\nany exhausted series (whole batch never 400s on one dead series).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "system-tasks",
+                "definitions",
+                ":key",
+                "state",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "key",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "is_enabled",
+                  "value": "<boolean>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "04725642-c484-492e-bce7-843cb78136c1",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "system-tasks",
+                    "definitions",
+                    ":key",
+                    "state",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "is_enabled",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"is_enabled\": false,\n  \"key\": \"string\",\n  \"updated_count\": 4406\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8106f0d6-bbbc-4116-9ac4-d224dfca49b9",
+          "name": "Pause or resume a tenant's system-task series",
+          "request": {
+            "name": "Pause or resume a tenant's system-task series",
+            "description": {
+              "content": "``POST`` — pause / resume one tenant's system-task series.\n\nA MoR operates *other tenants'* system-task recurrences, whose template\n``task.company`` is the buyer — not the MoR — so the tenant-scoped\n``TaskRecurrenceViewSet.disable/enable`` (``task__company=user_company``)\ncan't reach them (404). This mirrors that behaviour but authorises through\nthe same cross-tenant ``_scope_companies`` gate the rest of the page uses,\nand only ever addresses **system-task** recurrences (``system_task_key``\nset) — a leaked UUID for a normal user series can't be toggled here.\n\nBody ``{is_enabled}``: ``false`` pauses (beat stops materialising),\n``true`` resumes and recomputes ``next_run_at`` from now so a long-paused\nseries doesn't try to backfill. Resuming an exhausted series returns 400.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "system-tasks",
+                "recurrences",
+                ":recurrence_uuid",
+                "state",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "recurrence_uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "is_enabled",
+                  "value": "<boolean>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "478ff77f-417a-4d5b-83df-e0dcf24d81d9",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "system-tasks",
+                    "recurrences",
+                    ":recurrence_uuid",
+                    "state",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "recurrence_uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "is_enabled",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"cron_expression\": \"string\",\n  \"frequency\": \"string\",\n  \"interval\": 3390,\n  \"is_enabled\": false,\n  \"next_run_at\": \"1992-09-19T23:28:23.418Z\",\n  \"recurrence_uuid\": \"37668450-e07a-b88b-d81f-1401b38ff035\",\n  \"timezone\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3b0d8bc0-49a4-466a-979c-ccdc98e1b5f4",
+          "name": "Run a system-task fan-out and return a result summary",
+          "request": {
+            "name": "Run a system-task fan-out and return a result summary",
+            "description": {
+              "content": "``POST`` — on-demand fan-out trigger. Runs the sync inline and returns a\nresult summary so the button can report what happened (e.g. \"0 new, 2 already\nup to date\") rather than a blind fire-and-forget.\n\nMoR/staff only (tenants never trigger fan-out). Body: ``{key?, company_uuid?}``.\nRuns synchronously because the summary is the whole point of the button; the\nsync is idempotent and cheap after the first run (existence checks). The beat\n/ deploy / onboarding-signal paths stay async via the Celery task.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "system-tasks",
+                "sync",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "key",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "company_uuid",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "138cbc18-c3c9-4d3f-8a3c-d5081823fc4d",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "system-tasks",
+                    "sync",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "company_uuid",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"failed\": 4565,\n  \"processed\": 3807,\n  \"skipped_existing\": 2447,\n  \"templates_created\": 4789\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6fe5ca84-0e66-40c2-99f0-f09c2a6c41df",
+          "name": "List per-tenant series (schedule + gate + occurrences) for a system-task definition",
+          "request": {
+            "name": "List per-tenant series (schedule + gate + occurrences) for a system-task definition",
+            "description": {
+              "content": "``GET ?key=`` — per-tenant *series* rows for one definition, scoped to the caller.\n\nTenant-centric (not occurrence-centric): each installed tenant is one row —\nits schedule (from the template ``TaskRecurrence``), pre-run gate state, latest\nrun, and its occurrence history. This keeps a scheduled job legible even when\nit has no occurrences yet (future first slot) or keeps getting skipped by the\ngate (hourly job, no new work) — the common case for a gated cron job.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "system-tasks",
+                "tasks",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "company_uuid",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "key",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "73331a92-9a13-439d-b1d8-ea4744b690ae",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "system-tasks",
+                    "tasks",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "company_uuid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"company\": {\n      \"name\": \"string\",\n      \"uuid\": \"148eb0ef-68f6-01c9-57f8-9cd7640ab27a\"\n    },\n    \"gate_status\": {\n      \"consecutive_skips\": 3808,\n      \"currently_skipping\": true,\n      \"last_checked_at\": \"1952-05-05T20:03:04.617Z\",\n      \"last_skip_reason\": \"string\",\n      \"last_skipped_at\": \"2006-03-02T19:01:17.640Z\"\n    },\n    \"last_run_at\": \"1974-02-13T05:56:06.628Z\",\n    \"latest_run_status\": \"string\",\n    \"occurrences\": [\n      {\n        \"assignee\": {\n          \"email\": \"K2Z8Q@BGNEKoetMmuSDhBldUHLwzXZCZVCw.kx\",\n          \"is_agent\": true,\n          \"is_mor_router\": true,\n          \"name\": \"string\",\n          \"uuid\": \"f3c537d8-93db-679a-2033-8b49904a37e5\"\n        },\n        \"attachments\": [\n          {\n            \"key_0\": {},\n            \"key_1\": {}\n          },\n          {\n            \"key_0\": {},\n            \"key_1\": {}\n          }\n        ],\n        \"company\": {\n          \"uuid\": \"93d186ee-980d-3b81-6620-f6ea2568c7cb\",\n          \"name\": \"string\"\n        },\n        \"completed_at\": \"2006-09-29T07:39:35.337Z\",\n        \"created\": \"1963-01-12T06:34:36.775Z\",\n        \"created_by\": {\n          \"email\": \"9V3LmSYNum0K@rdMzeCFVvF.rw\",\n          \"is_agent\": false,\n          \"is_mor_router\": true,\n          \"name\": \"string\",\n          \"uuid\": \"8ce56592-3a4a-2be0-9058-335f8e4700ba\"\n        },\n        \"latest_run_status\": \"string\",\n        \"modified\": \"2014-08-31T02:11:42.070Z\",\n        \"number\": 846,\n        \"parent_task\": {\n          \"key_0\": {},\n          \"key_1\": {}\n        },\n        \"plan\": {\n          \"uuid\": \"45d2d6a5-69ca-f02c-47b8-2ddb3bbe5303\",\n          \"version\": 6921,\n          \"status\": \"superseded\",\n          \"body\": \"string\",\n          \"feedback\": \"string\",\n          \"approver_kind\": \"merchant_of_record\",\n          \"decided_by_name\": \"string\",\n          \"decided_at\": \"1964-02-25T07:36:15.772Z\",\n          \"created\": \"1989-04-07T11:12:05.581Z\",\n          \"viewer_can_decide\": false,\n          \"versions\": [\n            {\n              \"uuid\": \"95b1ec35-f8b2-7eb5-68d1-fcaaad7fa91b\",\n              \"version\": 2855,\n              \"status\": \"approved\",\n              \"body\": \"string\",\n              \"feedback\": \"string\",\n              \"approver_kind\": \"task_participants\",\n              \"decided_by_name\": \"string\",\n              \"decided_at\": \"1994-03-31T14:13:29.318Z\",\n              \"created\": \"1994-12-20T01:14:08.297Z\"\n            },\n            {\n              \"uuid\": \"1d704ce6-ead2-329f-1002-b08952e7b5de\",\n              \"version\": 9991,\n              \"status\": \"pending_approval\",\n              \"body\": \"string\",\n              \"feedback\": \"string\",\n              \"approver_kind\": \"merchant_of_record\",\n              \"decided_by_name\": \"string\",\n              \"decided_at\": \"1949-03-28T01:34:32.681Z\",\n              \"created\": \"1966-10-05T15:01:09.590Z\"\n            }\n          ]\n        },\n        \"plan_awaiting_revision\": true,\n        \"recurrence_summary\": {\n          \"uuid\": \"8c79440c-ae21-6a2a-7456-8d119606541a\",\n          \"is_template\": true,\n          \"is_enabled\": true,\n          \"frequency\": \"string\",\n          \"interval\": 3551,\n          \"weekdays\": [\n            \"string\",\n            \"string\"\n          ],\n          \"monthly_mode\": \"string\",\n          \"weekday_ordinal\": 5536,\n          \"cron_expression\": \"string\",\n          \"starts_at\": \"2009-07-18T15:27:18.071Z\",\n          \"ends_mode\": \"string\",\n          \"ends_on\": \"1994-07-25\",\n          \"ends_after_count\": 8668,\n          \"overlap_policy\": \"string\",\n          \"next_run_at\": \"1987-04-08T11:54:31.450Z\",\n          \"last_run_at\": \"1997-08-15T07:49:17.120Z\",\n          \"occurrences_created\": 673\n        },\n        \"requester\": {\n          \"uuid\": \"38c984e2-30b0-b202-c6f5-d8f8d9371486\",\n          \"name\": \"string\"\n        },\n        \"show_buyer_chat_notice\": false,\n        \"status_locked\": true,\n        \"subtasks\": [\n          {\n            \"key_0\": {}\n          },\n          {\n            \"key_0\": {},\n            \"key_1\": {}\n          }\n        ],\n        \"targets\": [\n          {\n            \"key_0\": {},\n            \"key_1\": {}\n          },\n          {\n            \"key_0\": {}\n          }\n        ],\n        \"title\": \"string\",\n        \"unread_chat_count\": 9544,\n        \"unread_mention_count\": 7847,\n        \"uuid\": \"0c5b4d32-55e8-631a-b95a-5fa8c82092be\",\n        \"watchers\": [\n          {\n            \"email\": \"RAE@gBI.nke\",\n            \"is_agent\": false,\n            \"is_mor_router\": false,\n            \"name\": \"string\",\n            \"uuid\": \"c5e995c8-f7b5-9ea4-3af7-a019e7225b88\"\n          },\n          {\n            \"email\": \"nkb1nsj32kKbA@SJHsrUygWCWHD.iisz\",\n            \"is_agent\": true,\n            \"is_mor_router\": true,\n            \"name\": \"string\",\n            \"uuid\": \"e11e9a3b-9860-ca32-c29d-f37ec32a70f3\"\n          }\n        ],\n        \"description\": \"string\",\n        \"due_date\": \"1995-06-11\",\n        \"status\": \"done\",\n        \"priority\": \"low\",\n        \"is_private\": false\n      },\n      {\n        \"assignee\": {\n          \"email\": \"KEkCFC3FDZ7GB@ouZKmKFSPpOlGISGWrVVWYXCZaRRkiHc.wd\",\n          \"is_agent\": false,\n          \"is_mor_router\": true,\n          \"name\": \"string\",\n          \"uuid\": \"5fd4a728-31df-4dee-4754-0f8d79892f03\"\n        },\n        \"attachments\": [\n          {\n            \"key_0\": {},\n            \"key_1\": {},\n            \"key_2\": {},\n            \"key_3\": {}\n          },\n          {\n            \"key_0\": {},\n            \"key_1\": {},\n            \"key_2\": {}\n          }\n        ],\n        \"company\": {\n          \"uuid\": \"2610d56e-b60a-3aef-7f40-3b1db4ca5004\",\n          \"name\": \"string\"\n        },\n        \"completed_at\": \"1993-03-29T11:59:20.550Z\",\n        \"created\": \"1987-11-12T05:29:53.602Z\",\n        \"created_by\": {\n          \"email\": \"2q5j8j0h386@LQCUapgCCF.lyfs\",\n          \"is_agent\": false,\n          \"is_mor_router\": true,\n          \"name\": \"string\",\n          \"uuid\": \"1dad5311-78d5-5e85-d10e-ed9043ec329c\"\n        },\n        \"latest_run_status\": \"string\",\n        \"modified\": \"2009-05-22T09:22:27.068Z\",\n        \"number\": 2614,\n        \"parent_task\": {\n          \"key_0\": {}\n        },\n        \"plan\": {\n          \"uuid\": \"3cbc58b2-492f-2561-29d1-dc273ecea36b\",\n          \"version\": 1979,\n          \"status\": \"superseded\",\n          \"body\": \"string\",\n          \"feedback\": \"string\",\n          \"approver_kind\": \"task_participants\",\n          \"decided_by_name\": \"string\",\n          \"decided_at\": \"2026-03-15T16:07:06.108Z\",\n          \"created\": \"1965-11-11T06:52:27.193Z\",\n          \"viewer_can_decide\": false,\n          \"versions\": [\n            {\n              \"uuid\": \"7295630b-b3e8-24fd-44f1-21965b9bb3c9\",\n              \"version\": 4685,\n              \"status\": \"pending_approval\",\n              \"body\": \"string\",\n              \"feedback\": \"string\",\n              \"approver_kind\": \"task_participants\",\n              \"decided_by_name\": \"string\",\n              \"decided_at\": \"1977-03-11T18:54:13.509Z\",\n              \"created\": \"2023-04-22T19:22:32.425Z\"\n            },\n            {\n              \"uuid\": \"e212d6b6-9655-cae4-8212-04868f03d930\",\n              \"version\": 3110,\n              \"status\": \"pending_approval\",\n              \"body\": \"string\",\n              \"feedback\": \"string\",\n              \"approver_kind\": \"task_participants\",\n              \"decided_by_name\": \"string\",\n              \"decided_at\": \"1970-04-30T15:43:40.910Z\",\n              \"created\": \"1998-11-25T02:55:38.182Z\"\n            }\n          ]\n        },\n        \"plan_awaiting_revision\": true,\n        \"recurrence_summary\": {\n          \"uuid\": \"2fe76d59-b324-10ff-5efe-f3dc7f78a465\",\n          \"is_template\": false,\n          \"is_enabled\": false,\n          \"frequency\": \"string\",\n          \"interval\": 61,\n          \"weekdays\": [\n            \"string\",\n            \"string\"\n          ],\n          \"monthly_mode\": \"string\",\n          \"weekday_ordinal\": 6975,\n          \"cron_expression\": \"string\",\n          \"starts_at\": \"1963-06-14T05:56:10.588Z\",\n          \"ends_mode\": \"string\",\n          \"ends_on\": \"2010-12-24\",\n          \"ends_after_count\": 937,\n          \"overlap_policy\": \"string\",\n          \"next_run_at\": \"2022-05-29T12:22:06.887Z\",\n          \"last_run_at\": \"2015-03-13T17:00:32.499Z\",\n          \"occurrences_created\": 383\n        },\n        \"requester\": {\n          \"uuid\": \"7f5a9960-3a69-29f9-4c44-81261eff136f\",\n          \"name\": \"string\"\n        },\n        \"show_buyer_chat_notice\": false,\n        \"status_locked\": false,\n        \"subtasks\": [\n          {\n            \"key_0\": {}\n          },\n          {\n            \"key_0\": {},\n            \"key_1\": {},\n            \"key_2\": {},\n            \"key_3\": {}\n          }\n        ],\n        \"targets\": [\n          {\n            \"key_0\": {},\n            \"key_1\": {}\n          },\n          {\n            \"key_0\": {}\n          }\n        ],\n        \"title\": \"string\",\n        \"unread_chat_count\": 5687,\n        \"unread_mention_count\": 1404,\n        \"uuid\": \"f1662fd4-c433-fcec-f667-5eed541c6c99\",\n        \"watchers\": [\n          {\n            \"email\": \"QMaEj2DY34@ZuBDLCfnMQYkypJcxTNVN.bm\",\n            \"is_agent\": true,\n            \"is_mor_router\": true,\n            \"name\": \"string\",\n            \"uuid\": \"6d88a875-ed55-7330-5c4d-5ebce036c317\"\n          },\n          {\n            \"email\": \"o2uh1LD9u2OE3Z@AKJOfXiEfRDXztI.tgef\",\n            \"is_agent\": true,\n            \"is_mor_router\": true,\n            \"name\": \"string\",\n            \"uuid\": \"7e336b77-4b3c-85f2-40d1-ef8e75cfa153\"\n          }\n        ],\n        \"description\": \"string\",\n        \"due_date\": \"1979-03-21\",\n        \"status\": \"open\",\n        \"priority\": \"medium\",\n        \"is_private\": false\n      }\n    ],\n    \"occurrences_created\": 1537,\n    \"schedule\": {\n      \"cron_expression\": \"string\",\n      \"frequency\": \"string\",\n      \"interval\": 4128,\n      \"is_enabled\": true,\n      \"next_run_at\": \"1963-02-01T05:34:19.364Z\",\n      \"recurrence_uuid\": \"3a5c57d0-b62d-ca78-b6c9-82f55f3035ec\",\n      \"timezone\": \"string\"\n    }\n  },\n  {\n    \"company\": {\n      \"name\": \"string\",\n      \"uuid\": \"9dd9ea09-5b5b-77f1-1302-b3d72913b37b\"\n    },\n    \"gate_status\": {\n      \"consecutive_skips\": 1021,\n      \"currently_skipping\": true,\n      \"last_checked_at\": \"1950-09-20T04:38:25.230Z\",\n      \"last_skip_reason\": \"string\",\n      \"last_skipped_at\": \"1977-06-12T08:55:09.557Z\"\n    },\n    \"last_run_at\": \"1965-11-19T20:13:32.761Z\",\n    \"latest_run_status\": \"string\",\n    \"occurrences\": [\n      {\n        \"assignee\": {\n          \"email\": \"H7Zaq93z@oZWZxogALOERefqRDIlyK.du\",\n          \"is_agent\": false,\n          \"is_mor_router\": false,\n          \"name\": \"string\",\n          \"uuid\": \"41b020e0-49a2-9353-67ef-623599fd5ce5\"\n        },\n        \"attachments\": [\n          {\n            \"key_0\": {},\n            \"key_1\": {}\n          },\n          {\n            \"key_0\": {}\n          }\n        ],\n        \"company\": {\n          \"uuid\": \"57b4ad44-3d4b-9fe3-f37b-7ff8e3e82060\",\n          \"name\": \"string\"\n        },\n        \"completed_at\": \"2002-06-12T21:21:34.411Z\",\n        \"created\": \"1967-12-22T00:17:28.216Z\",\n        \"created_by\": {\n          \"email\": \"LBv@YVFzWsUtdlfIgmZOpheMLKPiIn.tl\",\n          \"is_agent\": true,\n          \"is_mor_router\": true,\n          \"name\": \"string\",\n          \"uuid\": \"261615c2-a3de-7f4a-2ab3-1fe0b75f8dc5\"\n        },\n        \"latest_run_status\": \"string\",\n        \"modified\": \"1956-09-18T19:34:43.798Z\",\n        \"number\": 2661,\n        \"parent_task\": {\n          \"key_0\": {},\n          \"key_1\": {},\n          \"key_2\": {}\n        },\n        \"plan\": {\n          \"uuid\": \"18a45000-b7d8-0d33-3256-65db7a966ca3\",\n          \"version\": 9734,\n          \"status\": \"rejected\",\n          \"body\": \"string\",\n          \"feedback\": \"string\",\n          \"approver_kind\": \"merchant_of_record\",\n          \"decided_by_name\": \"string\",\n          \"decided_at\": \"1991-08-30T23:05:31.961Z\",\n          \"created\": \"1977-07-16T06:25:22.302Z\",\n          \"viewer_can_decide\": true,\n          \"versions\": [\n            {\n              \"uuid\": \"52a99741-052c-08ed-9e27-ab09c359eef0\",\n              \"version\": 1447,\n              \"status\": \"approved\",\n              \"body\": \"string\",\n              \"feedback\": \"string\",\n              \"approver_kind\": \"task_participants\",\n              \"decided_by_name\": \"string\",\n              \"decided_at\": \"1967-08-08T03:42:51.900Z\",\n              \"created\": \"1975-04-05T02:10:15.961Z\"\n            },\n            {\n              \"uuid\": \"10e2982d-a2e9-4db4-706d-0805fde89ff4\",\n              \"version\": 5358,\n              \"status\": \"approved\",\n              \"body\": \"string\",\n              \"feedback\": \"string\",\n              \"approver_kind\": \"task_participants\",\n              \"decided_by_name\": \"string\",\n              \"decided_at\": \"2000-08-05T16:00:58.415Z\",\n              \"created\": \"1983-01-19T12:42:22.198Z\"\n            }\n          ]\n        },\n        \"plan_awaiting_revision\": false,\n        \"recurrence_summary\": {\n          \"uuid\": \"ed50f302-b98d-36ae-a5fc-9660a16db552\",\n          \"is_template\": false,\n          \"is_enabled\": false,\n          \"frequency\": \"string\",\n          \"interval\": 4495,\n          \"weekdays\": [\n            \"string\",\n            \"string\"\n          ],\n          \"monthly_mode\": \"string\",\n          \"weekday_ordinal\": 2608,\n          \"cron_expression\": \"string\",\n          \"starts_at\": \"1956-05-18T13:59:17.619Z\",\n          \"ends_mode\": \"string\",\n          \"ends_on\": \"2023-07-13\",\n          \"ends_after_count\": 5842,\n          \"overlap_policy\": \"string\",\n          \"next_run_at\": \"1957-10-10T10:50:54.336Z\",\n          \"last_run_at\": \"1994-01-25T19:22:36.004Z\",\n          \"occurrences_created\": 3588\n        },\n        \"requester\": {\n          \"uuid\": \"241dfb10-7cdf-718d-1d95-13f5a60f027d\",\n          \"name\": \"string\"\n        },\n        \"show_buyer_chat_notice\": true,\n        \"status_locked\": false,\n        \"subtasks\": [\n          {\n            \"key_0\": {},\n            \"key_1\": {}\n          },\n          {\n            \"key_0\": {}\n          }\n        ],\n        \"targets\": [\n          {\n            \"key_0\": {}\n          },\n          {\n            \"key_0\": {},\n            \"key_1\": {},\n            \"key_2\": {}\n          }\n        ],\n        \"title\": \"string\",\n        \"unread_chat_count\": 4362,\n        \"unread_mention_count\": 3724,\n        \"uuid\": \"2d23cb8a-313d-dbfc-f53d-4d41eb66131e\",\n        \"watchers\": [\n          {\n            \"email\": \"mH7DZZd@HhYgRRPhZJpnQiRNvvQSDlXAKkRNw.ftt\",\n            \"is_agent\": true,\n            \"is_mor_router\": true,\n            \"name\": \"string\",\n            \"uuid\": \"cb056687-a013-efbd-f6f0-e157580d6342\"\n          },\n          {\n            \"email\": \"xpVzUH@JVdI.lbr\",\n            \"is_agent\": true,\n            \"is_mor_router\": true,\n            \"name\": \"string\",\n            \"uuid\": \"ce2dbdc5-017a-20fd-2cb3-3c9734a22c9a\"\n          }\n        ],\n        \"description\": \"string\",\n        \"due_date\": \"1995-04-07\",\n        \"status\": \"done\",\n        \"priority\": \"low\",\n        \"is_private\": true\n      },\n      {\n        \"assignee\": {\n          \"email\": \"qp6au6D7@khmCEVe.mdq\",\n          \"is_agent\": false,\n          \"is_mor_router\": false,\n          \"name\": \"string\",\n          \"uuid\": \"77dc9384-1742-89f3-d673-255dfb251401\"\n        },\n        \"attachments\": [\n          {\n            \"key_0\": {}\n          },\n          {\n            \"key_0\": {},\n            \"key_1\": {}\n          }\n        ],\n        \"company\": {\n          \"uuid\": \"7c5ab417-8388-c9b3-f636-60ed95ed781e\",\n          \"name\": \"string\"\n        },\n        \"completed_at\": \"1979-03-10T06:53:20.672Z\",\n        \"created\": \"2003-11-24T17:07:44.048Z\",\n        \"created_by\": {\n          \"email\": \"vx9@dAG.bz\",\n          \"is_agent\": true,\n          \"is_mor_router\": true,\n          \"name\": \"string\",\n          \"uuid\": \"641dddc9-394f-f33c-14b6-88b8ec65c751\"\n        },\n        \"latest_run_status\": \"string\",\n        \"modified\": \"1973-12-19T17:19:24.324Z\",\n        \"number\": 6357,\n        \"parent_task\": {\n          \"key_0\": {},\n          \"key_1\": {},\n          \"key_2\": {},\n          \"key_3\": {}\n        },\n        \"plan\": {\n          \"uuid\": \"1ffd3d14-c5bf-7ef6-8dfa-0566d47955cc\",\n          \"version\": 3197,\n          \"status\": \"approved\",\n          \"body\": \"string\",\n          \"feedback\": \"string\",\n          \"approver_kind\": \"merchant_of_record\",\n          \"decided_by_name\": \"string\",\n          \"decided_at\": \"1991-07-24T18:26:27.705Z\",\n          \"created\": \"1962-09-15T02:32:11.232Z\",\n          \"viewer_can_decide\": true,\n          \"versions\": [\n            {\n              \"uuid\": \"420f0793-c5f0-5b3a-f81a-9c39f7afbe03\",\n              \"version\": 2642,\n              \"status\": \"superseded\",\n              \"body\": \"string\",\n              \"feedback\": \"string\",\n              \"approver_kind\": \"task_participants\",\n              \"decided_by_name\": \"string\",\n              \"decided_at\": \"2014-01-10T22:06:52.134Z\",\n              \"created\": \"2006-10-29T02:55:56.885Z\"\n            },\n            {\n              \"uuid\": \"eb32f1a4-c37f-c9b4-e07f-7afab97c085f\",\n              \"version\": 434,\n              \"status\": \"approved\",\n              \"body\": \"string\",\n              \"feedback\": \"string\",\n              \"approver_kind\": \"merchant_of_record\",\n              \"decided_by_name\": \"string\",\n              \"decided_at\": \"1999-05-11T00:24:16.335Z\",\n              \"created\": \"2003-09-19T01:41:55.398Z\"\n            }\n          ]\n        },\n        \"plan_awaiting_revision\": false,\n        \"recurrence_summary\": {\n          \"uuid\": \"e57024f6-32a5-6ff3-f65e-5fa341eabd07\",\n          \"is_template\": false,\n          \"is_enabled\": false,\n          \"frequency\": \"string\",\n          \"interval\": 8047,\n          \"weekdays\": [\n            \"string\",\n            \"string\"\n          ],\n          \"monthly_mode\": \"string\",\n          \"weekday_ordinal\": 9549,\n          \"cron_expression\": \"string\",\n          \"starts_at\": \"2019-02-07T12:33:50.680Z\",\n          \"ends_mode\": \"string\",\n          \"ends_on\": \"1993-10-23\",\n          \"ends_after_count\": 3663,\n          \"overlap_policy\": \"string\",\n          \"next_run_at\": \"1974-02-08T06:43:03.929Z\",\n          \"last_run_at\": \"1971-09-30T17:38:50.133Z\",\n          \"occurrences_created\": 931\n        },\n        \"requester\": {\n          \"uuid\": \"3629b563-e57c-5544-9ba1-89e3f65d9ac6\",\n          \"name\": \"string\"\n        },\n        \"show_buyer_chat_notice\": false,\n        \"status_locked\": true,\n        \"subtasks\": [\n          {\n            \"key_0\": {}\n          },\n          {\n            \"key_0\": {},\n            \"key_1\": {}\n          }\n        ],\n        \"targets\": [\n          {\n            \"key_0\": {}\n          },\n          {\n            \"key_0\": {}\n          }\n        ],\n        \"title\": \"string\",\n        \"unread_chat_count\": 6576,\n        \"unread_mention_count\": 551,\n        \"uuid\": \"45c70f3c-e5eb-f6b5-69ea-6c196c9dbea9\",\n        \"watchers\": [\n          {\n            \"email\": \"g9Ul@vlBTivcfLzREL.jryl\",\n            \"is_agent\": false,\n            \"is_mor_router\": false,\n            \"name\": \"string\",\n            \"uuid\": \"0dfbf59f-392a-7f2f-26e4-20d0af7acf98\"\n          },\n          {\n            \"email\": \"bboWdTplulTs@LemlVQtjqQMkMVAAcrcnLOWxEpPrUT.gx\",\n            \"is_agent\": false,\n            \"is_mor_router\": true,\n            \"name\": \"string\",\n            \"uuid\": \"969c17f6-b52c-9f75-33d2-ee4e61bcc603\"\n          }\n        ],\n        \"description\": \"string\",\n        \"due_date\": \"1980-01-14\",\n        \"status\": \"waiting_approval\",\n        \"priority\": \"high\",\n        \"is_private\": true\n      }\n    ],\n    \"occurrences_created\": 8678,\n    \"schedule\": {\n      \"cron_expression\": \"string\",\n      \"frequency\": \"string\",\n      \"interval\": 2547,\n      \"is_enabled\": false,\n      \"next_run_at\": \"2020-01-20T16:08:06.245Z\",\n      \"recurrence_uuid\": \"b62ae927-0108-08d0-ad2e-62769bb88860\",\n      \"timezone\": \"string\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "57a4649f-b057-4957-9ef2-08bd34ec2311",
+    "name": "Opply Activity Feed System Tasks API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

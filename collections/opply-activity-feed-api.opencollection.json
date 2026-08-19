@@ -1,0 +1,105 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Activity Feed",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List activity feed items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/activity-feed/",
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "The pagination cursor value."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Company-scoped activity feed.\n\nReturns cursor-paginated feed items, newest first, for the authenticated\nuser's company. All employees see all activity — no role-based filtering.\nA single item is also retrievable by UUID (``/activity-feed/{uuid}/``) —\nused by the agent's \"Chat about this\" read tool.\n\nPagination is via the standard DRF cursor (``cursor`` query param).\nFilter params: ``source``, ``event_type``, ``order_uuid``."
+        },
+        {
+          "info": {
+            "name": "Fetch a single activity feed item by UUID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/activity-feed/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Company-scoped activity feed.\n\nReturns cursor-paginated feed items, newest first, for the authenticated\nuser's company. All employees see all activity — no role-based filtering.\nA single item is also retrievable by UUID (``/activity-feed/{uuid}/``) —\nused by the agent's \"Chat about this\" read tool.\n\nPagination is via the standard DRF cursor (``cursor`` query param).\nFilter params: ``source``, ``event_type``, ``order_uuid``."
+        },
+        {
+          "info": {
+            "name": "Advance the current user's read cursor to now",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/activity-feed/mark-read/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Company-scoped activity feed.\n\nReturns cursor-paginated feed items, newest first, for the authenticated\nuser's company. All employees see all activity — no role-based filtering.\nA single item is also retrievable by UUID (``/activity-feed/{uuid}/``) —\nused by the agent's \"Chat about this\" read tool.\n\nPagination is via the standard DRF cursor (``cursor`` query param).\nFilter params: ``source``, ``event_type``, ``order_uuid``."
+        },
+        {
+          "info": {
+            "name": "Unread item count for current user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/activity-feed/unread-count/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Company-scoped activity feed.\n\nReturns cursor-paginated feed items, newest first, for the authenticated\nuser's company. All employees see all activity — no role-based filtering.\nA single item is also retrievable by UUID (``/activity-feed/{uuid}/``) —\nused by the agent's \"Chat about this\" read tool.\n\nPagination is via the standard DRF cursor (``cursor`` query param).\nFilter params: ``source``, ``event_type``, ``order_uuid``."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,298 @@
+{
+  "item": [
+    {
+      "id": "e8e51cc0-2c3f-416e-a11a-5bc2ec76f777",
+      "name": ".well-known",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fe701952-95b5-486b-8424-4c4f10494915",
+          "name": ".well known oauth authorization server retrieve",
+          "request": {
+            "name": ".well known oauth authorization server retrieve",
+            "description": {
+              "content": "RFC 8414 — OAuth 2.0 Authorization Server Metadata.\nAdvertised at /.well-known/oauth-authorization-server.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ".well-known",
+                "oauth-authorization-server"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5841b6c5-6636-46ab-8bf1-be9b18f24984",
+              "name": "No response body",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ".well-known",
+                    "oauth-authorization-server"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d7a9e4cc-6501-43c0-97d4-a31d0d73b87c",
+          "name": ".well known oauth protected resource retrieve",
+          "request": {
+            "name": ".well known oauth protected resource retrieve",
+            "description": {
+              "content": "RFC 9728 — OAuth 2.0 Protected Resource Metadata.\n\nAdvertised at /.well-known/oauth-protected-resource for the main Opply MCP,\nand at a path-scoped variant per additional MCP endpoint (e.g. Zendesk at\n/.well-known/oauth-protected-resource/api/v1/mcp/zendesk). ``resource_suffix``\nis appended to the ``/api/v1/mcp/`` base so the advertised ``resource``\nmatches the endpoint the client is connecting to.\n\n``scopes_supported`` is scoped to the endpoint so each MCP has its own consent\nsurface: ``scope_prefix`` narrows to a single endpoint's scopes (e.g.\n``zendesk`` → ``zendesk:read``/``zendesk:write``), while\n``exclude_scope_prefixes`` drops another endpoint's scopes from the main\nmetadata (so the root Opply MCP does not advertise ``zendesk:*``).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ".well-known",
+                "oauth-protected-resource"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "788cc76a-fb77-48ee-8fdc-66e1aa251f72",
+              "name": "No response body",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ".well-known",
+                    "oauth-protected-resource"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "35ad1a48-1cb0-40a7-ae60-61b68df21cd5",
+          "name": ".well known oauth protected resource api v1 mcp zendesk retrieve",
+          "request": {
+            "name": ".well known oauth protected resource api v1 mcp zendesk retrieve",
+            "description": {
+              "content": "RFC 9728 — OAuth 2.0 Protected Resource Metadata.\n\nAdvertised at /.well-known/oauth-protected-resource for the main Opply MCP,\nand at a path-scoped variant per additional MCP endpoint (e.g. Zendesk at\n/.well-known/oauth-protected-resource/api/v1/mcp/zendesk). ``resource_suffix``\nis appended to the ``/api/v1/mcp/`` base so the advertised ``resource``\nmatches the endpoint the client is connecting to.\n\n``scopes_supported`` is scoped to the endpoint so each MCP has its own consent\nsurface: ``scope_prefix`` narrows to a single endpoint's scopes (e.g.\n``zendesk`` → ``zendesk:read``/``zendesk:write``), while\n``exclude_scope_prefixes`` drops another endpoint's scopes from the main\nmetadata (so the root Opply MCP does not advertise ``zendesk:*``).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ".well-known",
+                "oauth-protected-resource",
+                "api",
+                "v1",
+                "mcp",
+                "zendesk"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3b8ea2ab-22cc-490e-aa7a-7cd7287216d4",
+              "name": "No response body",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ".well-known",
+                    "oauth-protected-resource",
+                    "api",
+                    "v1",
+                    "mcp",
+                    "zendesk"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b060bd24-2fa7-4b55-8238-f984b7944a09",
+    "name": "Opply Activity Feed .well-known API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

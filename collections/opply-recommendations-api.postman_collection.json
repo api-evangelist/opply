@@ -1,0 +1,1415 @@
+{
+  "item": [
+    {
+      "id": "29b1ee39-08dd-49d5-9571-92a41bbde987",
+      "name": "Recommendations",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "90332bf3-dce5-454b-b278-baebc69f3b0f",
+          "name": "List recommendations for the current buyer",
+          "request": {
+            "name": "List recommendations for the current buyer",
+            "description": {
+              "content": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time (see ``RecommendationReadSerializer``).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "recommendations",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "The pagination cursor value."
+                },
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "Filter by lifecycle state (`active`, `snoozed`, `dismissed`, `superseded`, `acted`, `stale`). Defaults to `active`."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7ea74143-28fb-4866-be55-2f7ada8a1269",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "recommendations",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"cited_insights\": [\n        {\n          \"key_0\": {},\n          \"key_1\": {}\n        },\n        {\n          \"key_0\": {},\n          \"key_1\": {},\n          \"key_2\": {},\n          \"key_3\": {}\n        }\n      ],\n      \"created\": \"1964-02-09T09:55:14.952Z\",\n      \"description\": \"string\",\n      \"kind\": \"string\",\n      \"title\": \"string\",\n      \"uuid\": \"0f1ef875-c810-2829-d570-de83c70667f7\",\n      \"visual\": {\n        \"type\": \"share\",\n        \"a\": 11.639945416660169,\n        \"left\": \"string\",\n        \"right\": \"string\"\n      },\n      \"audience\": \"buyer\",\n      \"evidence\": \"string\",\n      \"severity\": 3,\n      \"cta_label\": \"string\",\n      \"cta_target\": \"string\",\n      \"state\": \"acted\",\n      \"snoozed_until\": \"1988-06-13T23:55:53.821Z\",\n      \"expires_at\": \"2008-02-20T18:21:17.402Z\"\n    },\n    {\n      \"cited_insights\": [\n        {\n          \"key_0\": {},\n          \"key_1\": {}\n        },\n        {\n          \"key_0\": {},\n          \"key_1\": {},\n          \"key_2\": {},\n          \"key_3\": {}\n        }\n      ],\n      \"created\": \"1961-09-27T22:43:17.189Z\",\n      \"description\": \"string\",\n      \"kind\": \"string\",\n      \"title\": \"string\",\n      \"uuid\": \"4595cfe4-0a79-d933-bf9b-287118dc9104\",\n      \"visual\": {\n        \"type\": \"share\",\n        \"a\": 40.685937762164755,\n        \"left\": \"string\",\n        \"right\": \"string\"\n      },\n      \"audience\": \"supplier\",\n      \"evidence\": \"string\",\n      \"severity\": 1,\n      \"cta_label\": \"string\",\n      \"cta_target\": \"string\",\n      \"state\": \"snoozed\",\n      \"snoozed_until\": \"2020-07-19T20:43:04.220Z\",\n      \"expires_at\": \"2017-08-22T07:18:59.890Z\"\n    }\n  ],\n  \"next\": \"https://VzpFheNVnM.ymsaWdsfy2a2yqfXPvSc,GzDBl05TGRSdEb9-,,cbsHVSx1j-R9cVfkfctH5W\",\n  \"previous\": \"http://api.example.org/accounts/?cursor=cj0xJnA9NDg3\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8c782372-27be-4c38-90ea-16d30d03ac26",
+          "name": "Fetch a single recommendation by UUID (any lifecycle state)",
+          "request": {
+            "name": "Fetch a single recommendation by UUID (any lifecycle state)",
+            "description": {
+              "content": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time (see ``RecommendationReadSerializer``).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "recommendations",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "8d3a65e9-e592-40b7-a63a-f5030cc490f2",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "recommendations",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"cited_insights\": [\n    {\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {}\n    },\n    {\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {},\n      \"key_3\": {}\n    }\n  ],\n  \"created\": \"1953-04-07T12:48:38.704Z\",\n  \"description\": \"string\",\n  \"kind\": \"string\",\n  \"title\": \"string\",\n  \"uuid\": \"c5725859-3a2f-16c2-b3c8-8dc4df98bdd8\",\n  \"visual\": {\n    \"type\": \"share\",\n    \"a\": 95.28584308068152,\n    \"left\": \"string\",\n    \"right\": \"string\"\n  },\n  \"audience\": \"buyer\",\n  \"evidence\": \"string\",\n  \"severity\": 2,\n  \"cta_label\": \"string\",\n  \"cta_target\": \"string\",\n  \"state\": \"snoozed\",\n  \"snoozed_until\": \"2006-10-29T10:46:59.515Z\",\n  \"expires_at\": \"2007-06-08T16:39:34.295Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "697dfe4d-8d45-4edb-9dcd-28ba957d82c2",
+          "name": "api v1 recommendations act create",
+          "request": {
+            "name": "api v1 recommendations act create",
+            "description": {
+              "content": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time (see ``RecommendationReadSerializer``).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "recommendations",
+                ":uuid",
+                "act",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c0245f63-a43f-4a84-810f-7f7b658aedd8",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "recommendations",
+                    ":uuid",
+                    "act",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"cited_insights\": [\n    {\n      \"key_0\": {},\n      \"key_1\": {}\n    },\n    {\n      \"key_0\": {}\n    }\n  ],\n  \"created\": \"1956-09-10T04:09:19.341Z\",\n  \"created_task_uuid\": \"efa63936-efcd-8c7c-61a3-9211a4566d8e\",\n  \"description\": \"string\",\n  \"kind\": \"string\",\n  \"title\": \"string\",\n  \"uuid\": \"7887101f-b3c5-2009-14e5-28eea370eff0\",\n  \"visual\": {\n    \"type\": \"share\",\n    \"a\": 30.98745316466953,\n    \"left\": \"string\",\n    \"right\": \"string\"\n  },\n  \"audience\": \"supplier\",\n  \"evidence\": \"string\",\n  \"severity\": 3,\n  \"cta_label\": \"string\",\n  \"cta_target\": \"string\",\n  \"state\": \"superseded\",\n  \"snoozed_until\": \"1950-03-06T21:38:23.164Z\",\n  \"expires_at\": \"1990-08-20T00:28:33.707Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "df1a33d5-a1b2-4158-ad5a-d8fb47d23f17",
+          "name": "api v1 recommendations dismiss create",
+          "request": {
+            "name": "api v1 recommendations dismiss create",
+            "description": {
+              "content": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time (see ``RecommendationReadSerializer``).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "recommendations",
+                ":uuid",
+                "dismiss",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "288ab433-4c18-4687-b064-ffde06075a9b",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "recommendations",
+                    ":uuid",
+                    "dismiss",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"cited_insights\": [\n    {\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {}\n    },\n    {\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {},\n      \"key_3\": {}\n    }\n  ],\n  \"created\": \"1953-04-07T12:48:38.704Z\",\n  \"description\": \"string\",\n  \"kind\": \"string\",\n  \"title\": \"string\",\n  \"uuid\": \"c5725859-3a2f-16c2-b3c8-8dc4df98bdd8\",\n  \"visual\": {\n    \"type\": \"share\",\n    \"a\": 95.28584308068152,\n    \"left\": \"string\",\n    \"right\": \"string\"\n  },\n  \"audience\": \"buyer\",\n  \"evidence\": \"string\",\n  \"severity\": 2,\n  \"cta_label\": \"string\",\n  \"cta_target\": \"string\",\n  \"state\": \"snoozed\",\n  \"snoozed_until\": \"2006-10-29T10:46:59.515Z\",\n  \"expires_at\": \"2007-06-08T16:39:34.295Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "61621cea-8039-4de6-b250-f31f441ff692",
+          "name": "api v1 recommendations mark stale create",
+          "request": {
+            "name": "api v1 recommendations mark stale create",
+            "description": {
+              "content": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time (see ``RecommendationReadSerializer``).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "recommendations",
+                ":uuid",
+                "mark-stale",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "reason",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e69fcc41-e951-467a-a601-932f25a3eeab",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "recommendations",
+                    ":uuid",
+                    "mark-stale",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "reason",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"cited_insights\": [\n    {\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {}\n    },\n    {\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {},\n      \"key_3\": {}\n    }\n  ],\n  \"created\": \"1953-04-07T12:48:38.704Z\",\n  \"description\": \"string\",\n  \"kind\": \"string\",\n  \"title\": \"string\",\n  \"uuid\": \"c5725859-3a2f-16c2-b3c8-8dc4df98bdd8\",\n  \"visual\": {\n    \"type\": \"share\",\n    \"a\": 95.28584308068152,\n    \"left\": \"string\",\n    \"right\": \"string\"\n  },\n  \"audience\": \"buyer\",\n  \"evidence\": \"string\",\n  \"severity\": 2,\n  \"cta_label\": \"string\",\n  \"cta_target\": \"string\",\n  \"state\": \"snoozed\",\n  \"snoozed_until\": \"2006-10-29T10:46:59.515Z\",\n  \"expires_at\": \"2007-06-08T16:39:34.295Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5eac7d1c-471c-4f05-ad5d-757504069b64",
+          "name": "api v1 recommendations restore create",
+          "request": {
+            "name": "api v1 recommendations restore create",
+            "description": {
+              "content": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time (see ``RecommendationReadSerializer``).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "recommendations",
+                ":uuid",
+                "restore",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4b2b3ff1-986c-4ee2-8c9c-b2a2c2cbc18d",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "recommendations",
+                    ":uuid",
+                    "restore",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"cited_insights\": [\n    {\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {}\n    },\n    {\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {},\n      \"key_3\": {}\n    }\n  ],\n  \"created\": \"1953-04-07T12:48:38.704Z\",\n  \"description\": \"string\",\n  \"kind\": \"string\",\n  \"title\": \"string\",\n  \"uuid\": \"c5725859-3a2f-16c2-b3c8-8dc4df98bdd8\",\n  \"visual\": {\n    \"type\": \"share\",\n    \"a\": 95.28584308068152,\n    \"left\": \"string\",\n    \"right\": \"string\"\n  },\n  \"audience\": \"buyer\",\n  \"evidence\": \"string\",\n  \"severity\": 2,\n  \"cta_label\": \"string\",\n  \"cta_target\": \"string\",\n  \"state\": \"snoozed\",\n  \"snoozed_until\": \"2006-10-29T10:46:59.515Z\",\n  \"expires_at\": \"2007-06-08T16:39:34.295Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4eb522d1-9f15-434d-a975-e469908aa559",
+          "name": "api v1 recommendations snooze create",
+          "request": {
+            "name": "api v1 recommendations snooze create",
+            "description": {
+              "content": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time (see ``RecommendationReadSerializer``).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "recommendations",
+                ":uuid",
+                "snooze",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "until",
+                  "value": "<dateTime>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a12030bb-a173-4484-900f-ff635ebf6b62",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "recommendations",
+                    ":uuid",
+                    "snooze",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "until",
+                      "value": "<dateTime>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"cited_insights\": [\n    {\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {}\n    },\n    {\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {},\n      \"key_3\": {}\n    }\n  ],\n  \"created\": \"1953-04-07T12:48:38.704Z\",\n  \"description\": \"string\",\n  \"kind\": \"string\",\n  \"title\": \"string\",\n  \"uuid\": \"c5725859-3a2f-16c2-b3c8-8dc4df98bdd8\",\n  \"visual\": {\n    \"type\": \"share\",\n    \"a\": 95.28584308068152,\n    \"left\": \"string\",\n    \"right\": \"string\"\n  },\n  \"audience\": \"buyer\",\n  \"evidence\": \"string\",\n  \"severity\": 2,\n  \"cta_label\": \"string\",\n  \"cta_target\": \"string\",\n  \"state\": \"snoozed\",\n  \"snoozed_until\": \"2006-10-29T10:46:59.515Z\",\n  \"expires_at\": \"2007-06-08T16:39:34.295Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c9c7c72b-fbac-4acc-8fe9-ff01859dd6c2",
+          "name": "api v1 recommendations supersede create",
+          "request": {
+            "name": "api v1 recommendations supersede create",
+            "description": {
+              "content": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time (see ``RecommendationReadSerializer``).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "recommendations",
+                ":uuid",
+                "supersede",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "new_recommendation_uuid",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "98d91247-51e8-42cd-980b-706b15e54bb1",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "recommendations",
+                    ":uuid",
+                    "supersede",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "new_recommendation_uuid",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"cited_insights\": [\n    {\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {}\n    },\n    {\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {},\n      \"key_3\": {}\n    }\n  ],\n  \"created\": \"1953-04-07T12:48:38.704Z\",\n  \"description\": \"string\",\n  \"kind\": \"string\",\n  \"title\": \"string\",\n  \"uuid\": \"c5725859-3a2f-16c2-b3c8-8dc4df98bdd8\",\n  \"visual\": {\n    \"type\": \"share\",\n    \"a\": 95.28584308068152,\n    \"left\": \"string\",\n    \"right\": \"string\"\n  },\n  \"audience\": \"buyer\",\n  \"evidence\": \"string\",\n  \"severity\": 2,\n  \"cta_label\": \"string\",\n  \"cta_target\": \"string\",\n  \"state\": \"snoozed\",\n  \"snoozed_until\": \"2006-10-29T10:46:59.515Z\",\n  \"expires_at\": \"2007-06-08T16:39:34.295Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a00c1f9a-00a5-42db-a3a8-f3daed1edf4f",
+          "name": "Recent recipient actions (for the agent's cooldown check)",
+          "request": {
+            "name": "Recent recipient actions (for the agent's cooldown check)",
+            "description": {
+              "content": "Buyer-scoped recommendations (the agent-curated nudge feed).\n\nScoped to ``audience=buyer`` recommendations whose subject is the\nauthenticated user's company. ``list`` defaults to ``state=active`` (the\nfeed); pass ``?state=`` for the History view. The CTA/lifecycle actions\n(dismiss/snooze/act/restore) and the agent write-path actions\n(create/supersede/mark_stale, behind the MCP tools) all live here.\n\nImpact is never stored on a recommendation — it is read from the cited\ninsight(s) at render time (see ``RecommendationReadSerializer``).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "recommendations",
+                "recent-actions",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "days",
+                  "value": "<integer>",
+                  "description": "Look-back window in days (default 30)."
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0b6b0c32-ebe6-4d7a-9a02-3adf021131a5",
+              "name": "No response body",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "recommendations",
+                    "recent-actions",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "days",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1e9d86fd-f307-4808-affb-7ff7bf7b1429",
+          "name": "api v1 recommendations seed recommendation create",
+          "request": {
+            "name": "api v1 recommendations seed recommendation create",
+            "description": {
+              "content": "``POST /api/v1/recommendations/seed-recommendation/`` — staff-only.\n\nBody ``{company_uuid?}``. Creates a ready-made ``supplier_concentration``\nrecommendation directly — **no agent run** — for that buyer (defaulting to\nthe caller's own company). Use when the recommender agent declines to create\none and you just want a fresh nudge in the feed to exercise the CTA. Returns\nthe recommendation uuid. Targeting another company requires staff access.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "recommendations",
+                "seed-recommendation",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "company_uuid",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "249dea69-f5e8-45e3-878d-c9ad5b3dc524",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "recommendations",
+                    "seed-recommendation",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "company_uuid",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"recommendation_uuid\": \"7cfcd2f0-0833-f3f3-3e1f-96d117be8e96\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a886bfe7-a166-4b86-9b7a-381648d96f09",
+          "name": "api v1 recommendations trigger recommendations create",
+          "request": {
+            "name": "api v1 recommendations trigger recommendations create",
+            "description": {
+              "content": "``POST /api/v1/recommendations/trigger-recommendations/`` — staff-only.\n\nBody ``{company_uuid?}``. Creates the recommender-run Task for that buyer\n(defaulting to the caller's own company); the existing dispatch path then\nruns the agent. Returns the Task + AgentTaskRun uuids so the debug UI can\nlink to them. Targeting a company other than your own requires staff access.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "recommendations",
+                "trigger-recommendations",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "company_uuid",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b5f73f2b-7eb1-4040-b6a3-500c55c24451",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "recommendations",
+                    "trigger-recommendations",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "company_uuid",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"run_uuid\": \"c70150a2-dd4e-2ac6-3323-6f73c70dabc1\",\n  \"task_uuid\": \"49dac7eb-921a-c5df-3ba3-8d3be110e895\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "bb502b9e-14ff-4eaf-8d95-c68fd78fe84b",
+    "name": "Opply Activity Feed Recommendations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

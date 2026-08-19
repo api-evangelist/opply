@@ -1,0 +1,3563 @@
+{
+  "item": [
+    {
+      "id": "5045a61c-2106-4a10-ba9c-ed416f0a1c80",
+      "name": "Buyer self-onboarding",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1aa58e6f-aa3b-4fae-85d5-9c0cc364e3ed",
+          "name": "Update the buyer Business Profile section.",
+          "request": {
+            "name": "Update the buyer Business Profile section.",
+            "description": {
+              "content": "Write-only buyer onboarding endpoints scoped to `request.user_company`.\nBusiness profile + IBAN updates land here.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "business-profile",
+                "update",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "registration_name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "registration_number",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "legal_entity_type",
+                  "value": "<string>",
+                  "description": "Legal entity type captured on the buyer Business Profile section. Required for buyers; left blank for suppliers and merchants of record.\n\n* `ltd` - Limited Company (Ltd)\n* `llp` - Limited Liability Partnership (LLP)\n* `plc` - Public Limited Company (PLC)\n* `sole_trader` - Sole Trader\n* `partnership` - Partnership\n* `other` - Other"
+                },
+                {
+                  "disabled": false,
+                  "key": "website",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "vat_number",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "vat_country_code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "phone_country_code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "phone_number",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "buyer_accounts_email_address",
+                  "value": "<email>"
+                },
+                {
+                  "disabled": false,
+                  "key": "buyer_delivery_email_address",
+                  "value": "<email>"
+                },
+                {
+                  "disabled": false,
+                  "key": "postcode",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "street_1",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "town",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "street_2",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "region",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "use_as_billing",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "861470ca-3af1-4755-b8ab-2428a5c45330",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "business-profile",
+                    "update",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "registration_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "registration_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Legal entity type captured on the buyer Business Profile section. Required for buyers; left blank for suppliers and merchants of record.\n\n* `ltd` - Limited Company (Ltd)\n* `llp` - Limited Liability Partnership (LLP)\n* `plc` - Public Limited Company (PLC)\n* `sole_trader` - Sole Trader\n* `partnership` - Partnership\n* `other` - Other",
+                        "type": "text/plain"
+                      },
+                      "key": "legal_entity_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "website",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "vat_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "vat_country_code",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "phone_country_code",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "phone_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "buyer_accounts_email_address",
+                      "value": "<email>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "buyer_delivery_email_address",
+                      "value": "<email>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "postcode",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "street_1",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "town",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "street_2",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "region",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "use_as_billing",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"billing_matches_company\": \"string\",\n  \"country\": \"string\",\n  \"email\": \"string\",\n  \"legal_entity_type\": \"<string>\",\n  \"name\": \"string\",\n  \"registration_name\": \"string\",\n  \"registration_number\": \"string\",\n  \"website\": \"string\",\n  \"phone_country_code\": \"<string>\",\n  \"phone_number\": \"string\",\n  \"buyer_accounts_email_address\": \"Pflg0uLpQwhJp@hYnQXQatDuSYKoMjmjelBb.xfjs\",\n  \"buyer_delivery_email_address\": \"S9eWeiCohKWn@bGbWlkUXiOaXtZ.bz\",\n  \"address\": {\n    \"postcode\": \"<string>\",\n    \"street_1\": \"<string>\",\n    \"town\": \"<string>\",\n    \"uuid\": \"3c2896d5-67bf-77aa-9bce-7190c748b6c5\",\n    \"street_2\": \"<string>\",\n    \"region\": \"<string>\",\n    \"country\": \"AZ\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e3444a51-6828-43e1-87d3-7da460d09132",
+              "name": "Validation errors.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "business-profile",
+                    "update",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "registration_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "registration_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Legal entity type captured on the buyer Business Profile section. Required for buyers; left blank for suppliers and merchants of record.\n\n* `ltd` - Limited Company (Ltd)\n* `llp` - Limited Liability Partnership (LLP)\n* `plc` - Public Limited Company (PLC)\n* `sole_trader` - Sole Trader\n* `partnership` - Partnership\n* `other` - Other",
+                        "type": "text/plain"
+                      },
+                      "key": "legal_entity_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "website",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "vat_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "vat_country_code",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "phone_country_code",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "phone_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "buyer_accounts_email_address",
+                      "value": "<email>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "buyer_delivery_email_address",
+                      "value": "<email>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "postcode",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "street_1",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "town",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "street_2",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "region",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "use_as_billing",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c78cc8dd-b0a2-4028-aff0-e1421bdd0d3e",
+          "name": "api v1 companies me delivery locations create",
+          "request": {
+            "name": "api v1 companies me delivery locations create",
+            "description": {
+              "content": "Short-circuit a buyer-confirmed dedup: when the buyer picked \"Use my\nsaved address\" on a \"might be X\" delivery card, link the external id to\nthat existing address and return it — no new row, and no need for the\nfull required-address validation (we're not creating one).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "delivery-locations",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "contact_full_name",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "contact_phone",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "country",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "postcode",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "street_1",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "town",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "phone_country_code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "street_2",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "region",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "delivery_instructions",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "eori_number",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "ein_number",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "delivery_location_type",
+                  "value": "<string>",
+                  "description": "Type of delivery location (warehouse, factory, distribution_center, retail_location, other)."
+                },
+                {
+                  "disabled": false,
+                  "key": "delivery_location_type_other",
+                  "value": "<string>",
+                  "description": "Free-text description when delivery_location_type == 'other'."
+                },
+                {
+                  "disabled": false,
+                  "key": "warehouse_receiving_hours",
+                  "value": "<string>",
+                  "description": "Free-text receiving hours (e.g. 'Mon-Fri 9am-5pm')."
+                },
+                {
+                  "disabled": false,
+                  "key": "provider",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "provider_external_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "confirmed_existing_address_uuid",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f9eb3900-4b73-4e1c-aaca-affb4a0fb832",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "delivery-locations",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "contact_full_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "contact_phone",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "postcode",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "street_1",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "town",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "phone_country_code",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "street_2",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "region",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "delivery_instructions",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "eori_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "ein_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Type of delivery location (warehouse, factory, distribution_center, retail_location, other).",
+                        "type": "text/plain"
+                      },
+                      "key": "delivery_location_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Free-text description when delivery_location_type == 'other'.",
+                        "type": "text/plain"
+                      },
+                      "key": "delivery_location_type_other",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Free-text receiving hours (e.g. 'Mon-Fri 9am-5pm').",
+                        "type": "text/plain"
+                      },
+                      "key": "warehouse_receiving_hours",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "provider",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "provider_external_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "confirmed_existing_address_uuid",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"contact_full_name\": \"<string>\",\n  \"contact_phone\": \"<string>\",\n  \"country\": \"<string>\",\n  \"name\": \"<string>\",\n  \"postcode\": \"<string>\",\n  \"street_1\": \"<string>\",\n  \"town\": \"<string>\",\n  \"uuid\": \"f49f6679-bb0f-2bbd-ea1c-76fd62527881\",\n  \"phone_country_code\": \"<string>\",\n  \"street_2\": \"<string>\",\n  \"region\": \"<string>\",\n  \"delivery_instructions\": \"<string>\",\n  \"eori_number\": \"<string>\",\n  \"ein_number\": \"<string>\",\n  \"delivery_location_type\": \"<string>\",\n  \"delivery_location_type_other\": \"<string>\",\n  \"warehouse_receiving_hours\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "496cb143-1013-4a48-b2f8-cd9ad29e610d",
+          "name": "api v1 companies me delivery locations match preview create",
+          "request": {
+            "name": "api v1 companies me delivery locations match preview create",
+            "description": {
+              "content": "Preview which discovered delivery addresses the buyer already has\nsaved, so the import review can show \"already saved / might be your saved\naddress\" hints. Results are aligned by index to the request order.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "delivery-locations",
+                "match-preview",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "addresses",
+                  "value": "{\"street_1\":\"<string>\",\"town\":\"<string>\",\"postcode\":\"<string>\",\"country\":\"<string>\"}",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "addresses",
+                  "value": "{\"street_1\":\"<string>\",\"town\":\"<string>\",\"postcode\":\"<string>\",\"country\":\"<string>\"}",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "faac2329-e8d8-4c62-858b-85390bfc0d61",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "delivery-locations",
+                    "match-preview",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "addresses",
+                      "value": "{\"street_1\":\"<string>\",\"town\":\"<string>\",\"postcode\":\"<string>\",\"country\":\"<string>\"}"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "addresses",
+                      "value": "{\"street_1\":\"<string>\",\"town\":\"<string>\",\"postcode\":\"<string>\",\"country\":\"<string>\"}"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"matches\": [\n    {\n      \"matched\": true,\n      \"confidence\": \"exact\",\n      \"address_uuid\": \"389b2fce-6745-3499-9cfe-01c5b2e075d7\",\n      \"address_name\": \"string\",\n      \"ratio\": 7573.445792286714\n    },\n    {\n      \"matched\": true,\n      \"confidence\": \"exact\",\n      \"address_uuid\": \"c35e41b5-e30b-ab32-a08d-f71f83dbabe9\",\n      \"address_name\": \"string\",\n      \"ratio\": 200.45944597813502\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a271813c-5504-4905-8ae6-01760d6b7595",
+          "name": "Update the buyer's IBAN (Banking & payments section).",
+          "request": {
+            "name": "Update the buyer's IBAN (Banking & payments section).",
+            "description": {
+              "content": "Write-only buyer onboarding endpoints scoped to `request.user_company`.\nBusiness profile + IBAN updates land here.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "onboarding-banking",
+                "update",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "iban",
+                  "value": "<string>",
+                  "description": "Optional IBAN."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "deea0f54-c6ef-47cd-a1ee-8a9b1526721a",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "onboarding-banking",
+                    "update",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional IBAN.",
+                        "type": "text/plain"
+                      },
+                      "key": "iban",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"iban\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5f5db76c-bd62-4b8b-8179-9a0deefa0042",
+          "name": "api v1 companies me onboarding compliance documents create",
+          "request": {
+            "name": "api v1 companies me onboarding compliance documents create",
+            "description": {
+              "content": "``POST /companies/me/onboarding-compliance-documents/`` — commit a\nstaged compliance document (e.g. a sales tax exemption certificate).\n\nCopies the scrubbed source file out of the onboarding bucket into a\n``companies.BuyerDocument`` with the matching ``DocumentType``, applies\nany buyer edits from the review screen, and (for sales tax exemptions)\nbest-effort flips ``AccountDetail.tax_exemption_certificate``.\nIdempotent: re-committing the same staged row returns the existing\ndocument.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "onboarding-compliance-documents",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "extracted_compliance_document_uuid",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "issue_date",
+                  "value": "<date>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expiry_date",
+                  "value": "<date>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5197c479-f69d-495d-85c1-ae257ce19d0c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "onboarding-compliance-documents",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "extracted_compliance_document_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "issue_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "expiry_date",
+                      "value": "<date>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created\": \"2013-01-20T19:33:36.425Z\",\n  \"file\": \"http://cmoeaukcCsVBNGimNeDaMff.oayaq8NXf4+dvymsLqkU75bl5K0giphBCijed\",\n  \"is_archived\": false,\n  \"modified\": \"1948-06-01T11:19:56.896Z\",\n  \"name\": \"string\",\n  \"status\": \"renewed\",\n  \"superseded_by_uuid\": \"aa8239bc-74f7-01de-b00d-6c12baa5a1a0\",\n  \"type\": {\n    \"name\": \"string\",\n    \"uuid\": \"860cf20d-5107-045c-479e-835a2fdf5789\",\n    \"description\": \"string\"\n  },\n  \"uuid\": \"b53da493-c1c2-ffab-c293-274dd6039283\",\n  \"start_date\": \"1978-05-17\",\n  \"end_date\": \"2024-10-01\",\n  \"countries\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"certificate_number\": \"string\",\n  \"jurisdiction\": \"string\",\n  \"us_state_jurisdiction\": \"VT\",\n  \"issuing_authority\": \"string\",\n  \"holder_name\": \"string\",\n  \"notes\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b9b72b3b-db4a-4981-aae6-82d72e67df81",
+          "name": "api v1 companies me onboarding extractions list",
+          "request": {
+            "name": "api v1 companies me onboarding extractions list",
+            "description": {
+              "content": "``/companies/me/onboarding-extractions/`` — the staging table the\nFE persists the agent's proposal to so Step 2 survives a reload.\n\nRe-staging for the same batch destructively overwrites the\nprevious proposal (OneToOne to batch). The FE never re-runs\nextraction silently — every overwrite happens after a new\n``opplyExtractionComplete`` event.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "onboarding-extractions",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ac00a566-113e-4971-b928-4ff35e0438f3",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "onboarding-extractions",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"agent_reasoning\": \"string\",\n      \"batch_uuid\": \"aa6dd43e-01ea-7137-12d7-e49ead6e62d4\",\n      \"compliance_documents\": [\n        {\n          \"certificate_number\": \"string\",\n          \"committed_document_uuid\": \"1cfa104e-4cb7-afc8-852f-b78c873ca536\",\n          \"compliance_type\": \"OTHER\",\n          \"confidence\": \"low\",\n          \"country\": \"string\",\n          \"evidence\": \"string\",\n          \"expiry_date\": \"1978-02-22\",\n          \"gaps\": [\n            {\n              \"key_0\": {}\n            },\n            {\n              \"key_0\": {},\n              \"key_1\": {}\n            }\n          ],\n          \"holder_name\": \"string\",\n          \"issue_date\": \"2013-10-09\",\n          \"issuing_authority\": \"string\",\n          \"jurisdiction\": \"string\",\n          \"source_invoice_uuid\": \"206a5a7a-68b3-8fc3-fbf5-0cb69c38ac6d\",\n          \"title\": \"string\",\n          \"type_hint\": \"string\",\n          \"us_state\": \"string\",\n          \"uuid\": \"ffe6987a-7444-122c-b2f4-5c7cdfe7310c\"\n        },\n        {\n          \"certificate_number\": \"string\",\n          \"committed_document_uuid\": \"0f363e17-3008-57bf-9295-bc9c99eea39e\",\n          \"compliance_type\": \"SALES_TAX_EXEMPTION\",\n          \"confidence\": \"low\",\n          \"country\": \"string\",\n          \"evidence\": \"string\",\n          \"expiry_date\": \"1997-10-18\",\n          \"gaps\": [\n            {\n              \"key_0\": {},\n              \"key_1\": {}\n            },\n            {\n              \"key_0\": {},\n              \"key_1\": {}\n            }\n          ],\n          \"holder_name\": \"string\",\n          \"issue_date\": \"1964-08-31\",\n          \"issuing_authority\": \"string\",\n          \"jurisdiction\": \"string\",\n          \"source_invoice_uuid\": \"1725dbda-2085-bffa-1f25-e7715846d3a0\",\n          \"title\": \"string\",\n          \"type_hint\": \"string\",\n          \"us_state\": \"string\",\n          \"uuid\": \"c8df4748-b455-46cf-cdf0-e4a0555aa03c\"\n        }\n      ],\n      \"created_at\": \"1958-01-01T17:39:51.078Z\",\n      \"extraction_session_id\": \"string\",\n      \"modified_at\": \"1971-11-05T17:33:44.663Z\",\n      \"proposed_banking\": {},\n      \"proposed_business_profile\": {},\n      \"proposed_delivery\": {},\n      \"status\": \"discarded\",\n      \"suppliers\": [\n        {\n          \"address\": \"string\",\n          \"average_monthly_spend\": \"28155431772\",\n          \"confidence\": \"manual\",\n          \"contact_email\": \"fgS@VHiuaBtiohisFpKHaWZIntfefvjP.ji\",\n          \"contact_name\": \"string\",\n          \"contact_phone\": \"string\",\n          \"evidence\": \"string\",\n          \"gaps\": {},\n          \"invoice_currency\": \"string\",\n          \"lead_time_days\": 5144,\n          \"line_items\": [\n            {\n              \"classification\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"confidence\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source_invoice_uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source_supplier_uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"description\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"quantity\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"unit\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"unit_price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currency\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"classification\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"confidence\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source_invoice_uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source_supplier_uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"description\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"quantity\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"unit\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"unit_price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currency\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"matched_existing_supplier_id\": 178,\n          \"payment_terms\": \"string\",\n          \"registration_number\": \"string\",\n          \"source_invoice_uuid\": \"9cf7bc02-1927-de7a-844f-068a2de8b2b2\",\n          \"supplier_country\": \"string\",\n          \"supplier_name\": \"string\",\n          \"uuid\": \"70484427-91ff-5a53-f789-603e4f103683\",\n          \"vat_number\": \"string\"\n        },\n        {\n          \"address\": \"string\",\n          \"average_monthly_spend\": \"41\",\n          \"confidence\": \"high\",\n          \"contact_email\": \"dZb@tNoYwhUfczTqLaFMcKwvdywNqg.qw\",\n          \"contact_name\": \"string\",\n          \"contact_phone\": \"string\",\n          \"evidence\": \"string\",\n          \"gaps\": {},\n          \"invoice_currency\": \"string\",\n          \"lead_time_days\": 1265,\n          \"line_items\": [\n            {\n              \"classification\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"confidence\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source_invoice_uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source_supplier_uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"description\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"quantity\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"unit\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"unit_price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currency\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"classification\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"confidence\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source_invoice_uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source_supplier_uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"description\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"quantity\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"unit\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"unit_price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currency\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"matched_existing_supplier_id\": 9385,\n          \"payment_terms\": \"string\",\n          \"registration_number\": \"string\",\n          \"source_invoice_uuid\": \"cbb73bd0-2798-7c86-167a-7ecc7016715d\",\n          \"supplier_country\": \"string\",\n          \"supplier_name\": \"string\",\n          \"uuid\": \"5325d25e-291c-94a8-fb24-06c08a9d3020\",\n          \"vat_number\": \"string\"\n        }\n      ],\n      \"uuid\": \"700d42f2-ee91-6924-20ad-c9e75fc062a8\"\n    },\n    {\n      \"agent_reasoning\": \"string\",\n      \"batch_uuid\": \"e78ed782-7725-f543-8b41-ffcad3547add\",\n      \"compliance_documents\": [\n        {\n          \"certificate_number\": \"string\",\n          \"committed_document_uuid\": \"df71852c-4fc2-674b-35c3-2c39f840ccbc\",\n          \"compliance_type\": \"SALES_TAX_EXEMPTION\",\n          \"confidence\": \"low\",\n          \"country\": \"string\",\n          \"evidence\": \"string\",\n          \"expiry_date\": \"1951-02-27\",\n          \"gaps\": [\n            {\n              \"key_0\": {},\n              \"key_1\": {}\n            },\n            {\n              \"key_0\": {},\n              \"key_1\": {},\n              \"key_2\": {}\n            }\n          ],\n          \"holder_name\": \"string\",\n          \"issue_date\": \"1992-07-24\",\n          \"issuing_authority\": \"string\",\n          \"jurisdiction\": \"string\",\n          \"source_invoice_uuid\": \"26917b57-89f2-792f-a359-7f686e79c777\",\n          \"title\": \"string\",\n          \"type_hint\": \"string\",\n          \"us_state\": \"string\",\n          \"uuid\": \"df0b3081-222a-2aa4-eb9f-8c9aec0a1bbc\"\n        },\n        {\n          \"certificate_number\": \"string\",\n          \"committed_document_uuid\": \"8fab4aa7-0dee-70f9-be7f-1986fd35e47c\",\n          \"compliance_type\": \"SALES_TAX_EXEMPTION\",\n          \"confidence\": \"medium\",\n          \"country\": \"string\",\n          \"evidence\": \"string\",\n          \"expiry_date\": \"1952-06-26\",\n          \"gaps\": [\n            {\n              \"key_0\": {},\n              \"key_1\": {},\n              \"key_2\": {},\n              \"key_3\": {}\n            },\n            {\n              \"key_0\": {},\n              \"key_1\": {},\n              \"key_2\": {},\n              \"key_3\": {}\n            }\n          ],\n          \"holder_name\": \"string\",\n          \"issue_date\": \"2018-10-19\",\n          \"issuing_authority\": \"string\",\n          \"jurisdiction\": \"string\",\n          \"source_invoice_uuid\": \"987ae1d1-707a-1c08-4064-b6549a77cd76\",\n          \"title\": \"string\",\n          \"type_hint\": \"string\",\n          \"us_state\": \"string\",\n          \"uuid\": \"7b7efc63-4476-984d-3c69-3038694c81f3\"\n        }\n      ],\n      \"created_at\": \"1950-01-07T08:05:32.859Z\",\n      \"extraction_session_id\": \"string\",\n      \"modified_at\": \"2005-11-06T04:02:32.092Z\",\n      \"proposed_banking\": {},\n      \"proposed_business_profile\": {},\n      \"proposed_delivery\": {},\n      \"status\": \"discarded\",\n      \"suppliers\": [\n        {\n          \"address\": \"string\",\n          \"average_monthly_spend\": \"5\",\n          \"confidence\": \"low\",\n          \"contact_email\": \"wy6ZWeT@sLxbPjDHkqveoYhS.tgcp\",\n          \"contact_name\": \"string\",\n          \"contact_phone\": \"string\",\n          \"evidence\": \"string\",\n          \"gaps\": {},\n          \"invoice_currency\": \"string\",\n          \"lead_time_days\": 1113,\n          \"line_items\": [\n            {\n              \"classification\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"confidence\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source_invoice_uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source_supplier_uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"description\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"quantity\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"unit\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"unit_price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currency\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"classification\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"confidence\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source_invoice_uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source_supplier_uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"description\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"quantity\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"unit\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"unit_price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currency\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"matched_existing_supplier_id\": 4985,\n          \"payment_terms\": \"string\",\n          \"registration_number\": \"string\",\n          \"source_invoice_uuid\": \"0fa9630a-ae1e-88ac-7d46-1532f456fede\",\n          \"supplier_country\": \"string\",\n          \"supplier_name\": \"string\",\n          \"uuid\": \"fccf4c28-c399-4fce-b50d-9450f75d77ce\",\n          \"vat_number\": \"string\"\n        },\n        {\n          \"address\": \"string\",\n          \"average_monthly_spend\": \"-9830011632.\",\n          \"confidence\": \"medium\",\n          \"contact_email\": \"MpSGs@JNOvBfnAepTULZgWVPlKuz.phv\",\n          \"contact_name\": \"string\",\n          \"contact_phone\": \"string\",\n          \"evidence\": \"string\",\n          \"gaps\": {},\n          \"invoice_currency\": \"string\",\n          \"lead_time_days\": 4729,\n          \"line_items\": [\n            {\n              \"classification\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"confidence\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source_invoice_uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source_supplier_uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"description\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"quantity\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"unit\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"unit_price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currency\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"classification\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"confidence\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source_invoice_uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source_supplier_uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"uuid\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"description\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"quantity\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"unit\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"unit_price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currency\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"matched_existing_supplier_id\": 7164,\n          \"payment_terms\": \"string\",\n          \"registration_number\": \"string\",\n          \"source_invoice_uuid\": \"87c83639-e198-8729-622a-be5729762c17\",\n          \"supplier_country\": \"string\",\n          \"supplier_name\": \"string\",\n          \"uuid\": \"f1b01153-af52-9887-e573-10dc9fc6196e\",\n          \"vat_number\": \"string\"\n        }\n      ],\n      \"uuid\": \"300ea59f-a6e0-037c-b181-7e87d70b2ecc\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2a0bd6c6-2311-433f-b969-7c62730a0a36",
+          "name": "api v1 companies me onboarding extractions create",
+          "request": {
+            "name": "api v1 companies me onboarding extractions create",
+            "description": {
+              "content": "``/companies/me/onboarding-extractions/`` — the staging table the\nFE persists the agent's proposal to so Step 2 survives a reload.\n\nRe-staging for the same batch destructively overwrites the\nprevious proposal (OneToOne to batch). The FE never re-runs\nextraction silently — every overwrite happens after a new\n``opplyExtractionComplete`` event.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "onboarding-extractions",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "batch_uuid",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "key_0",
+                  "value": "{}"
+                },
+                {
+                  "disabled": false,
+                  "key": "key_1",
+                  "value": "{}"
+                },
+                {
+                  "disabled": false,
+                  "key": "key_0",
+                  "value": "{}"
+                },
+                {
+                  "disabled": false,
+                  "key": "key_1",
+                  "value": "{}"
+                },
+                {
+                  "disabled": false,
+                  "key": "key_2",
+                  "value": "{}"
+                },
+                {
+                  "disabled": false,
+                  "key": "proposed_delivery",
+                  "value": "{\"key_0\":{},\"key_1\":{}}"
+                },
+                {
+                  "disabled": false,
+                  "key": "proposed_delivery",
+                  "value": "{\"key_0\":{},\"key_1\":{}}"
+                },
+                {
+                  "disabled": false,
+                  "key": "agent_reasoning",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "extraction_session_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "suppliers",
+                  "value": "{\"supplier_name\":\"<string>\",\"source_invoice_uuid\":\"<uuid>\",\"vat_number\":\"\",\"registration_number\":\"\",\"address\":\"\",\"contact_name\":\"\",\"contact_email\":\"\",\"contact_phone\":\"\",\"payment_terms\":\"\",\"invoice_currency\":\"\",\"average_monthly_spend\":\"<decimal>\",\"lead_time_days\":\"<integer>\",\"supplier_country\":\"\",\"confidence\":\"medium\",\"evidence\":\"\",\"gaps\":[{\"key_0\":{},\"key_1\":{},\"key_2\":{},\"key_3\":{}},{\"key_0\":{}}],\"matched_existing_supplier_id\":\"<integer>\",\"line_items\":[{\"name\":\"<string>\",\"source_invoice_uuid\":\"<uuid>\",\"description\":\"\",\"quantity\":\"<decimal>\",\"unit\":\"\",\"unit_price\":\"<decimal>\",\"currency\":\"\",\"classification\":\"OTHER\",\"confidence\":\"medium\"},{\"name\":\"<string>\",\"source_invoice_uuid\":\"<uuid>\",\"description\":\"\",\"quantity\":\"<decimal>\",\"unit\":\"\",\"unit_price\":\"<decimal>\",\"currency\":\"\",\"classification\":\"OTHER\",\"confidence\":\"medium\"}]}"
+                },
+                {
+                  "disabled": false,
+                  "key": "suppliers",
+                  "value": "{\"supplier_name\":\"<string>\",\"source_invoice_uuid\":\"<uuid>\",\"vat_number\":\"\",\"registration_number\":\"\",\"address\":\"\",\"contact_name\":\"\",\"contact_email\":\"\",\"contact_phone\":\"\",\"payment_terms\":\"\",\"invoice_currency\":\"\",\"average_monthly_spend\":\"<decimal>\",\"lead_time_days\":\"<integer>\",\"supplier_country\":\"\",\"confidence\":\"medium\",\"evidence\":\"\",\"gaps\":[{\"key_0\":{}},{\"key_0\":{},\"key_1\":{},\"key_2\":{}}],\"matched_existing_supplier_id\":\"<integer>\",\"line_items\":[{\"name\":\"<string>\",\"source_invoice_uuid\":\"<uuid>\",\"description\":\"\",\"quantity\":\"<decimal>\",\"unit\":\"\",\"unit_price\":\"<decimal>\",\"currency\":\"\",\"classification\":\"OTHER\",\"confidence\":\"medium\"},{\"name\":\"<string>\",\"source_invoice_uuid\":\"<uuid>\",\"description\":\"\",\"quantity\":\"<decimal>\",\"unit\":\"\",\"unit_price\":\"<decimal>\",\"currency\":\"\",\"classification\":\"OTHER\",\"confidence\":\"medium\"}]}"
+                },
+                {
+                  "disabled": false,
+                  "key": "compliance_documents",
+                  "value": "{\"title\":\"<string>\",\"uuid\":\"<uuid>\",\"source_invoice_uuid\":\"<uuid>\",\"compliance_type\":\"OTHER\",\"type_hint\":\"\",\"holder_name\":\"\",\"issuing_authority\":\"\",\"jurisdiction\":\"\",\"us_state\":\"\",\"country\":\"\",\"certificate_number\":\"\",\"issue_date\":\"<date>\",\"expiry_date\":\"<date>\",\"confidence\":\"medium\",\"evidence\":\"\",\"gaps\":[{\"key_0\":{},\"key_1\":{}},{\"key_0\":{},\"key_1\":{}}]}"
+                },
+                {
+                  "disabled": false,
+                  "key": "compliance_documents",
+                  "value": "{\"title\":\"<string>\",\"uuid\":\"<uuid>\",\"source_invoice_uuid\":\"<uuid>\",\"compliance_type\":\"OTHER\",\"type_hint\":\"\",\"holder_name\":\"\",\"issuing_authority\":\"\",\"jurisdiction\":\"\",\"us_state\":\"\",\"country\":\"\",\"certificate_number\":\"\",\"issue_date\":\"<date>\",\"expiry_date\":\"<date>\",\"confidence\":\"medium\",\"evidence\":\"\",\"gaps\":[{\"key_0\":{},\"key_1\":{},\"key_2\":{}},{\"key_0\":{},\"key_1\":{}}]}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "16f4aa50-1f21-44f9-9ffd-0a56b8c2d806",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "onboarding-extractions",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "batch_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "key_0",
+                      "value": "{}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "key_1",
+                      "value": "{}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "key_0",
+                      "value": "{}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "proposed_delivery",
+                      "value": "{\"key_0\":{}}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "proposed_delivery",
+                      "value": "{\"key_0\":{},\"key_1\":{},\"key_2\":{}}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "agent_reasoning",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "extraction_session_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "suppliers",
+                      "value": "{\"supplier_name\":\"<string>\",\"source_invoice_uuid\":\"<uuid>\",\"vat_number\":\"\",\"registration_number\":\"\",\"address\":\"\",\"contact_name\":\"\",\"contact_email\":\"\",\"contact_phone\":\"\",\"payment_terms\":\"\",\"invoice_currency\":\"\",\"average_monthly_spend\":\"<decimal>\",\"lead_time_days\":\"<integer>\",\"supplier_country\":\"\",\"confidence\":\"medium\",\"evidence\":\"\",\"gaps\":[{\"key_0\":{}},{\"key_0\":{},\"key_1\":{},\"key_2\":{}}],\"matched_existing_supplier_id\":\"<integer>\",\"line_items\":[{\"name\":\"<string>\",\"source_invoice_uuid\":\"<uuid>\",\"description\":\"\",\"quantity\":\"<decimal>\",\"unit\":\"\",\"unit_price\":\"<decimal>\",\"currency\":\"\",\"classification\":\"OTHER\",\"confidence\":\"medium\"},{\"name\":\"<string>\",\"source_invoice_uuid\":\"<uuid>\",\"description\":\"\",\"quantity\":\"<decimal>\",\"unit\":\"\",\"unit_price\":\"<decimal>\",\"currency\":\"\",\"classification\":\"OTHER\",\"confidence\":\"medium\"}]}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "suppliers",
+                      "value": "{\"supplier_name\":\"<string>\",\"source_invoice_uuid\":\"<uuid>\",\"vat_number\":\"\",\"registration_number\":\"\",\"address\":\"\",\"contact_name\":\"\",\"contact_email\":\"\",\"contact_phone\":\"\",\"payment_terms\":\"\",\"invoice_currency\":\"\",\"average_monthly_spend\":\"<decimal>\",\"lead_time_days\":\"<integer>\",\"supplier_country\":\"\",\"confidence\":\"medium\",\"evidence\":\"\",\"gaps\":[{\"key_0\":{}},{\"key_0\":{},\"key_1\":{},\"key_2\":{}}],\"matched_existing_supplier_id\":\"<integer>\",\"line_items\":[{\"name\":\"<string>\",\"source_invoice_uuid\":\"<uuid>\",\"description\":\"\",\"quantity\":\"<decimal>\",\"unit\":\"\",\"unit_price\":\"<decimal>\",\"currency\":\"\",\"classification\":\"OTHER\",\"confidence\":\"medium\"},{\"name\":\"<string>\",\"source_invoice_uuid\":\"<uuid>\",\"description\":\"\",\"quantity\":\"<decimal>\",\"unit\":\"\",\"unit_price\":\"<decimal>\",\"currency\":\"\",\"classification\":\"OTHER\",\"confidence\":\"medium\"}]}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "compliance_documents",
+                      "value": "{\"title\":\"<string>\",\"uuid\":\"<uuid>\",\"source_invoice_uuid\":\"<uuid>\",\"compliance_type\":\"OTHER\",\"type_hint\":\"\",\"holder_name\":\"\",\"issuing_authority\":\"\",\"jurisdiction\":\"\",\"us_state\":\"\",\"country\":\"\",\"certificate_number\":\"\",\"issue_date\":\"<date>\",\"expiry_date\":\"<date>\",\"confidence\":\"medium\",\"evidence\":\"\",\"gaps\":[{\"key_0\":{},\"key_1\":{}},{\"key_0\":{},\"key_1\":{},\"key_2\":{}}]}"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "compliance_documents",
+                      "value": "{\"title\":\"<string>\",\"uuid\":\"<uuid>\",\"source_invoice_uuid\":\"<uuid>\",\"compliance_type\":\"OTHER\",\"type_hint\":\"\",\"holder_name\":\"\",\"issuing_authority\":\"\",\"jurisdiction\":\"\",\"us_state\":\"\",\"country\":\"\",\"certificate_number\":\"\",\"issue_date\":\"<date>\",\"expiry_date\":\"<date>\",\"confidence\":\"medium\",\"evidence\":\"\",\"gaps\":[{\"key_0\":{},\"key_1\":{},\"key_2\":{}},{\"key_0\":{}}]}"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"batch_uuid\": \"<uuid>\",\n  \"proposed_business_profile\": {\n    \"key_0\": {},\n    \"key_1\": {}\n  },\n  \"proposed_banking\": {\n    \"key_0\": {}\n  },\n  \"proposed_delivery\": [\n    {\n      \"key_0\": {}\n    },\n    {\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {}\n    }\n  ],\n  \"agent_reasoning\": \"<string>\",\n  \"extraction_session_id\": \"<string>\",\n  \"suppliers\": [\n    {\n      \"supplier_name\": \"<string>\",\n      \"source_invoice_uuid\": \"<uuid>\",\n      \"vat_number\": \"\",\n      \"registration_number\": \"\",\n      \"address\": \"\",\n      \"contact_name\": \"\",\n      \"contact_email\": \"\",\n      \"contact_phone\": \"\",\n      \"payment_terms\": \"\",\n      \"invoice_currency\": \"\",\n      \"average_monthly_spend\": \"<decimal>\",\n      \"lead_time_days\": \"<integer>\",\n      \"supplier_country\": \"\",\n      \"confidence\": \"medium\",\n      \"evidence\": \"\",\n      \"gaps\": [\n        {\n          \"key_0\": {}\n        },\n        {\n          \"key_0\": {},\n          \"key_1\": {},\n          \"key_2\": {}\n        }\n      ],\n      \"matched_existing_supplier_id\": \"<integer>\",\n      \"line_items\": [\n        {\n          \"name\": \"<string>\",\n          \"source_invoice_uuid\": \"<uuid>\",\n          \"description\": \"\",\n          \"quantity\": \"<decimal>\",\n          \"unit\": \"\",\n          \"unit_price\": \"<decimal>\",\n          \"currency\": \"\",\n          \"classification\": \"OTHER\",\n          \"confidence\": \"medium\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"source_invoice_uuid\": \"<uuid>\",\n          \"description\": \"\",\n          \"quantity\": \"<decimal>\",\n          \"unit\": \"\",\n          \"unit_price\": \"<decimal>\",\n          \"currency\": \"\",\n          \"classification\": \"OTHER\",\n          \"confidence\": \"medium\"\n        }\n      ]\n    },\n    {\n      \"supplier_name\": \"<string>\",\n      \"source_invoice_uuid\": \"<uuid>\",\n      \"vat_number\": \"\",\n      \"registration_number\": \"\",\n      \"address\": \"\",\n      \"contact_name\": \"\",\n      \"contact_email\": \"\",\n      \"contact_phone\": \"\",\n      \"payment_terms\": \"\",\n      \"invoice_currency\": \"\",\n      \"average_monthly_spend\": \"<decimal>\",\n      \"lead_time_days\": \"<integer>\",\n      \"supplier_country\": \"\",\n      \"confidence\": \"medium\",\n      \"evidence\": \"\",\n      \"gaps\": [\n        {\n          \"key_0\": {}\n        },\n        {\n          \"key_0\": {},\n          \"key_1\": {},\n          \"key_2\": {}\n        }\n      ],\n      \"matched_existing_supplier_id\": \"<integer>\",\n      \"line_items\": [\n        {\n          \"name\": \"<string>\",\n          \"source_invoice_uuid\": \"<uuid>\",\n          \"description\": \"\",\n          \"quantity\": \"<decimal>\",\n          \"unit\": \"\",\n          \"unit_price\": \"<decimal>\",\n          \"currency\": \"\",\n          \"classification\": \"OTHER\",\n          \"confidence\": \"medium\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"source_invoice_uuid\": \"<uuid>\",\n          \"description\": \"\",\n          \"quantity\": \"<decimal>\",\n          \"unit\": \"\",\n          \"unit_price\": \"<decimal>\",\n          \"currency\": \"\",\n          \"classification\": \"OTHER\",\n          \"confidence\": \"medium\"\n        }\n      ]\n    }\n  ],\n  \"compliance_documents\": [\n    {\n      \"title\": \"<string>\",\n      \"uuid\": \"<uuid>\",\n      \"source_invoice_uuid\": \"<uuid>\",\n      \"compliance_type\": \"OTHER\",\n      \"type_hint\": \"\",\n      \"holder_name\": \"\",\n      \"issuing_authority\": \"\",\n      \"jurisdiction\": \"\",\n      \"us_state\": \"\",\n      \"country\": \"\",\n      \"certificate_number\": \"\",\n      \"issue_date\": \"<date>\",\n      \"expiry_date\": \"<date>\",\n      \"confidence\": \"medium\",\n      \"evidence\": \"\",\n      \"gaps\": [\n        {\n          \"key_0\": {},\n          \"key_1\": {}\n        },\n        {\n          \"key_0\": {},\n          \"key_1\": {},\n          \"key_2\": {}\n        }\n      ]\n    },\n    {\n      \"title\": \"<string>\",\n      \"uuid\": \"<uuid>\",\n      \"source_invoice_uuid\": \"<uuid>\",\n      \"compliance_type\": \"OTHER\",\n      \"type_hint\": \"\",\n      \"holder_name\": \"\",\n      \"issuing_authority\": \"\",\n      \"jurisdiction\": \"\",\n      \"us_state\": \"\",\n      \"country\": \"\",\n      \"certificate_number\": \"\",\n      \"issue_date\": \"<date>\",\n      \"expiry_date\": \"<date>\",\n      \"confidence\": \"medium\",\n      \"evidence\": \"\",\n      \"gaps\": [\n        {\n          \"key_0\": {},\n          \"key_1\": {},\n          \"key_2\": {}\n        },\n        {\n          \"key_0\": {}\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "57963846-e657-42c8-81eb-c83b19255c22",
+          "name": "api v1 companies me onboarding extractions retrieve",
+          "request": {
+            "name": "api v1 companies me onboarding extractions retrieve",
+            "description": {
+              "content": "``/companies/me/onboarding-extractions/`` — the staging table the\nFE persists the agent's proposal to so Step 2 survives a reload.\n\nRe-staging for the same batch destructively overwrites the\nprevious proposal (OneToOne to batch). The FE never re-runs\nextraction silently — every overwrite happens after a new\n``opplyExtractionComplete`` event.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "onboarding-extractions",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a0f84af5-aee2-468f-a93c-cca13a7a4a76",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "onboarding-extractions",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"agent_reasoning\": \"string\",\n  \"batch_uuid\": \"f80c04cb-af5f-124a-9d73-274077a2bcb4\",\n  \"compliance_documents\": [\n    {\n      \"certificate_number\": \"string\",\n      \"committed_document_uuid\": \"22d03466-e4b6-caf1-3010-260107f81f86\",\n      \"compliance_type\": \"<string>\",\n      \"confidence\": \"<string>\",\n      \"country\": \"string\",\n      \"evidence\": \"string\",\n      \"expiry_date\": \"1986-12-06\",\n      \"gaps\": [\n        {\n          \"key_0\": {},\n          \"key_1\": {},\n          \"key_2\": {}\n        },\n        {\n          \"key_0\": {}\n        }\n      ],\n      \"holder_name\": \"string\",\n      \"issue_date\": \"1951-11-13\",\n      \"issuing_authority\": \"string\",\n      \"jurisdiction\": \"string\",\n      \"source_invoice_uuid\": \"76ca2182-b0ba-b7d1-7589-7f9f3daee110\",\n      \"title\": \"string\",\n      \"type_hint\": \"string\",\n      \"us_state\": \"string\",\n      \"uuid\": \"241a9c5c-2073-b5a1-64c1-eccf96a067b3\"\n    },\n    {\n      \"certificate_number\": \"string\",\n      \"committed_document_uuid\": \"a4ad6d00-5d6a-d991-0a69-8ac6e04786b4\",\n      \"compliance_type\": \"<string>\",\n      \"confidence\": \"<string>\",\n      \"country\": \"string\",\n      \"evidence\": \"string\",\n      \"expiry_date\": \"2019-06-20\",\n      \"gaps\": [\n        {\n          \"key_0\": {},\n          \"key_1\": {},\n          \"key_2\": {},\n          \"key_3\": {}\n        },\n        {\n          \"key_0\": {},\n          \"key_1\": {},\n          \"key_2\": {}\n        }\n      ],\n      \"holder_name\": \"string\",\n      \"issue_date\": \"2017-01-19\",\n      \"issuing_authority\": \"string\",\n      \"jurisdiction\": \"string\",\n      \"source_invoice_uuid\": \"107e4baa-62bf-6d85-3ba9-4151ed41a54c\",\n      \"title\": \"string\",\n      \"type_hint\": \"string\",\n      \"us_state\": \"string\",\n      \"uuid\": \"d8a3c709-c930-2043-c7f7-c0e223922df5\"\n    }\n  ],\n  \"created_at\": \"2026-06-20T02:05:21.823Z\",\n  \"extraction_session_id\": \"string\",\n  \"modified_at\": \"2022-08-24T05:29:26.298Z\",\n  \"proposed_banking\": {},\n  \"proposed_business_profile\": {},\n  \"proposed_delivery\": {},\n  \"status\": \"committed\",\n  \"suppliers\": [\n    {\n      \"address\": \"string\",\n      \"average_monthly_spend\": \"191362883678\",\n      \"confidence\": \"<string>\",\n      \"contact_email\": \"DldoIwpCVTU@rjEbbq.wf\",\n      \"contact_name\": \"string\",\n      \"contact_phone\": \"string\",\n      \"evidence\": \"string\",\n      \"gaps\": {},\n      \"invoice_currency\": \"string\",\n      \"lead_time_days\": 5637,\n      \"line_items\": [\n        {\n          \"classification\": \"<string>\",\n          \"confidence\": \"<string>\",\n          \"name\": \"string\",\n          \"source_invoice_uuid\": \"958cd90d-aae4-473f-1b8e-6f3e03761690\",\n          \"source_supplier_uuid\": \"6a46906f-42a5-48aa-a5da-c2d5fbe5a55e\",\n          \"uuid\": \"51e86ca2-c3b1-580f-56c9-c7baef667875\",\n          \"description\": \"string\",\n          \"quantity\": \"86546157922\",\n          \"unit\": \"string\",\n          \"unit_price\": \"-02154086\",\n          \"currency\": \"string\"\n        },\n        {\n          \"classification\": \"<string>\",\n          \"confidence\": \"<string>\",\n          \"name\": \"string\",\n          \"source_invoice_uuid\": \"5a6daebc-7925-5f41-16d2-5f3eefe70f99\",\n          \"source_supplier_uuid\": \"78cda8c0-5804-a0bc-656e-7fbbe92227f4\",\n          \"uuid\": \"96f51c8a-5de5-29f8-99b4-ccb22ea0bc97\",\n          \"description\": \"string\",\n          \"quantity\": \"7189\",\n          \"unit\": \"string\",\n          \"unit_price\": \"673668899\",\n          \"currency\": \"string\"\n        }\n      ],\n      \"matched_existing_supplier_id\": 3919,\n      \"payment_terms\": \"string\",\n      \"registration_number\": \"string\",\n      \"source_invoice_uuid\": \"eb0f1882-224d-49df-e148-f7524fb3a2f1\",\n      \"supplier_country\": \"string\",\n      \"supplier_name\": \"string\",\n      \"uuid\": \"a28b4f70-13ac-67f8-3c57-224a75f4bafb\",\n      \"vat_number\": \"string\"\n    },\n    {\n      \"address\": \"string\",\n      \"average_monthly_spend\": \".8\",\n      \"confidence\": \"<string>\",\n      \"contact_email\": \"2-aeFNt@oYOzmiIICeaNuCgeyOLslmssJrpXyE.nhor\",\n      \"contact_name\": \"string\",\n      \"contact_phone\": \"string\",\n      \"evidence\": \"string\",\n      \"gaps\": {},\n      \"invoice_currency\": \"string\",\n      \"lead_time_days\": 6180,\n      \"line_items\": [\n        {\n          \"classification\": \"<string>\",\n          \"confidence\": \"<string>\",\n          \"name\": \"string\",\n          \"source_invoice_uuid\": \"55480812-164b-b3a2-b04e-f0318fb2b1de\",\n          \"source_supplier_uuid\": \"05b0adc4-fccf-d373-af58-edef3f587594\",\n          \"uuid\": \"82af0693-a3a9-ba56-0c36-e89655d84f6b\",\n          \"description\": \"string\",\n          \"quantity\": \"-123430224\",\n          \"unit\": \"string\",\n          \"unit_price\": \"58714995\",\n          \"currency\": \"string\"\n        },\n        {\n          \"classification\": \"<string>\",\n          \"confidence\": \"<string>\",\n          \"name\": \"string\",\n          \"source_invoice_uuid\": \"ce5603f6-0bc3-8b4d-dc98-96a93e1e7718\",\n          \"source_supplier_uuid\": \"5384d8c9-9afb-ee9e-a07c-ffe7cdc4877a\",\n          \"uuid\": \"044647e9-8ca3-dbf1-6c1c-ce472543eae6\",\n          \"description\": \"string\",\n          \"quantity\": \"9\",\n          \"unit\": \"string\",\n          \"unit_price\": \"-6114060495.57\",\n          \"currency\": \"string\"\n        }\n      ],\n      \"matched_existing_supplier_id\": 4449,\n      \"payment_terms\": \"string\",\n      \"registration_number\": \"string\",\n      \"source_invoice_uuid\": \"3a78eccb-08ec-5d93-7f65-3865be9049d7\",\n      \"supplier_country\": \"string\",\n      \"supplier_name\": \"string\",\n      \"uuid\": \"e5083b8e-123a-8dc0-16ab-c0e1971eca4e\",\n      \"vat_number\": \"string\"\n    }\n  ],\n  \"uuid\": \"bd251344-8846-ce7f-a14c-57d34c9c1516\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6ab627e1-f283-4bfc-b2e9-8a33970e5e2a",
+          "name": "api v1 companies me onboarding ingredients create",
+          "request": {
+            "name": "api v1 companies me onboarding ingredients create",
+            "description": {
+              "content": "Create `catalog.BuyerItem` rows for the buyer's company. The\npost-onboarding Materials page reads from the same model\n(`/api/v1/catalog/items/`) so anything created here shows up\nimmediately. `kind` discriminates ingredients from packaging.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "onboarding-ingredients",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "item_name",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "item_description",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "kind",
+                  "value": "<string>",
+                  "description": "What kind of material this row represents (ingredient, packaging, ...).\n\n* `ingredient` - Ingredient\n* `packaging` - Packaging"
+                },
+                {
+                  "disabled": false,
+                  "key": "unit_of_measurement",
+                  "value": "<string>",
+                  "description": "Natural unit the material is measured in.\n\n* `fl oz` - Fluid Ounces\n* `g` - Grams\n* `mg` - milligrams\n* `gals` - Gallons\n* `kg` - Kilograms\n* `L` - Liters\n* `tons` - Metric Tons\n* `oz` - Ounces\n* `lbs` - Pounds\n* `pcs` - Pieces\n* `pt` - Pints\n* `ml` - Milliliter\n* `boxes` - Boxes\n* `pallets` - Pallets\n* `tsp` - Teaspoons\n* `tbsp` - Tablespoons\n* `units` - Units\n* `cases` - Cases\n* `trays` - Trays"
+                },
+                {
+                  "disabled": false,
+                  "key": "provider",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "provider_external_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "merge_into_item_uuid",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ff00112b-3ee0-401c-bb7a-3afa8e958acc",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "onboarding-ingredients",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "item_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "item_description",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "What kind of material this row represents (ingredient, packaging, ...).\n\n* `ingredient` - Ingredient\n* `packaging` - Packaging",
+                        "type": "text/plain"
+                      },
+                      "key": "kind",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Natural unit the material is measured in.\n\n* `fl oz` - Fluid Ounces\n* `g` - Grams\n* `mg` - milligrams\n* `gals` - Gallons\n* `kg` - Kilograms\n* `L` - Liters\n* `tons` - Metric Tons\n* `oz` - Ounces\n* `lbs` - Pounds\n* `pcs` - Pieces\n* `pt` - Pints\n* `ml` - Milliliter\n* `boxes` - Boxes\n* `pallets` - Pallets\n* `tsp` - Teaspoons\n* `tbsp` - Tablespoons\n* `units` - Units\n* `cases` - Cases\n* `trays` - Trays",
+                        "type": "text/plain"
+                      },
+                      "key": "unit_of_measurement",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "provider",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "provider_external_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "merge_into_item_uuid",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"item_name\": \"<string>\",\n  \"uuid\": \"a37b9b45-5676-594c-9188-7510fae52a2a\",\n  \"item_description\": \"<string>\",\n  \"kind\": \"<string>\",\n  \"unit_of_measurement\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7964437a-13b7-4852-9ccd-cfb4938fca4b",
+          "name": "api v1 companies me onboarding ingredients match preview create",
+          "request": {
+            "name": "api v1 companies me onboarding ingredients match preview create",
+            "description": {
+              "content": "Preview which discovered materials already exist in the buyer's\ncatalogue, so the import review can show \"already in your materials\"\n(exact — merges at commit) / \"might be your existing X\" (fuzzy) hints.\nScoped to the buyer's own `BuyerItem` rows.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "onboarding-ingredients",
+                "match-preview",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "item_names",
+                  "value": "<string>",
+                  "description": "(Required) Discovered item names to check for a match against the buyer's existing materials."
+                },
+                {
+                  "disabled": false,
+                  "key": "item_names",
+                  "value": "<string>",
+                  "description": "(Required) Discovered item names to check for a match against the buyer's existing materials."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5a98623e-cdb5-4e36-8402-a6e3e9afe758",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "onboarding-ingredients",
+                    "match-preview",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Discovered item names to check for a match against the buyer's existing materials.",
+                        "type": "text/plain"
+                      },
+                      "key": "item_names",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Discovered item names to check for a match against the buyer's existing materials.",
+                        "type": "text/plain"
+                      },
+                      "key": "item_names",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"matches\": [\n    {\n      \"item_name\": \"string\",\n      \"matched\": true,\n      \"confidence\": \"exact\",\n      \"matched_item_uuid\": \"7e10a967-1966-dead-396a-69b3a950cf4a\",\n      \"matched_item_name\": \"string\",\n      \"ratio\": 8519.41444215337\n    },\n    {\n      \"item_name\": \"string\",\n      \"matched\": true,\n      \"confidence\": \"fuzzy\",\n      \"matched_item_uuid\": \"7cf5be23-ac6c-65aa-aeb8-757a6a898c23\",\n      \"matched_item_name\": \"string\",\n      \"ratio\": 4626.798266672851\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "82c8e95f-8200-49cb-a4b6-6f38c624fd4c",
+          "name": "api v1 companies me onboarding invoice batches create",
+          "request": {
+            "name": "api v1 companies me onboarding invoice batches create",
+            "description": {
+              "content": "``/companies/me/onboarding-invoice-batches/`` — create or read a\nbatch the buyer uploads invoices into.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "onboarding-invoice-batches",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": []
+            }
+          },
+          "response": [
+            {
+              "id": "ce08dfad-8b33-42de-a25c-62176feeec16",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "onboarding-invoice-batches",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": []
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uuid\": \"4a7a1167-47a4-9222-413d-49475c4bd6f4\",\n  \"status\": \"extracted\",\n  \"total_invoice_count\": 2734,\n  \"extracted_invoice_count\": 9400,\n  \"extraction_started_at\": \"1995-10-21T16:33:31.185Z\",\n  \"extraction_completed_at\": \"1960-01-25T21:31:02.022Z\",\n  \"extraction_failed_reason\": \"string\",\n  \"invoices\": [\n    {\n      \"created_at\": \"1983-07-07T05:21:00.346Z\",\n      \"mime_type\": \"string\",\n      \"original_filename\": \"string\",\n      \"page_count\": 7668,\n      \"size_bytes\": 4509,\n      \"status\": \"discarded\",\n      \"uuid\": \"ffae0bbe-1ad4-297a-911a-562317b154f8\"\n    },\n    {\n      \"created_at\": \"1983-01-22T04:54:47.371Z\",\n      \"mime_type\": \"string\",\n      \"original_filename\": \"string\",\n      \"page_count\": 4772,\n      \"size_bytes\": 2506,\n      \"status\": \"uploaded\",\n      \"uuid\": \"25c1343d-212e-140e-bb3b-34e0f9a29d8e\"\n    }\n  ],\n  \"created_at\": \"1967-09-02T17:55:02.572Z\",\n  \"modified_at\": \"2026-06-03T00:41:00.264Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2121e29b-e3f5-4c8d-8d20-3512833f83aa",
+          "name": "api v1 companies me onboarding invoice batches retrieve",
+          "request": {
+            "name": "api v1 companies me onboarding invoice batches retrieve",
+            "description": {
+              "content": "``/companies/me/onboarding-invoice-batches/`` — create or read a\nbatch the buyer uploads invoices into.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "onboarding-invoice-batches",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b9c434a8-f125-49e4-9b01-526bcc3f6afb",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "onboarding-invoice-batches",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uuid\": \"be81ba28-a44b-758c-b5fe-bf23140ab598\",\n  \"status\": \"extracting\",\n  \"total_invoice_count\": 3255,\n  \"extracted_invoice_count\": 4573,\n  \"extraction_started_at\": \"1997-04-26T07:20:42.805Z\",\n  \"extraction_completed_at\": \"1979-03-27T08:22:22.026Z\",\n  \"extraction_failed_reason\": \"string\",\n  \"invoices\": [\n    {\n      \"created_at\": \"2017-06-15T18:59:11.838Z\",\n      \"mime_type\": \"string\",\n      \"original_filename\": \"string\",\n      \"page_count\": 9904,\n      \"size_bytes\": 4885,\n      \"status\": \"uploaded\",\n      \"uuid\": \"32d0a62a-33fa-782c-e7e1-4c4e4c086fcb\"\n    },\n    {\n      \"created_at\": \"1997-03-12T12:03:01.417Z\",\n      \"mime_type\": \"string\",\n      \"original_filename\": \"string\",\n      \"page_count\": 1135,\n      \"size_bytes\": 908,\n      \"status\": \"agent_extraction_failed\",\n      \"uuid\": \"e5526ee8-4e50-f5eb-489e-bd8f2aaec446\"\n    }\n  ],\n  \"created_at\": \"1950-04-08T08:20:45.854Z\",\n  \"modified_at\": \"1995-07-12T22:56:44.908Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "275ccd8b-43dd-4cd5-a36b-01ef7f79ab2a",
+          "name": "api v1 companies me onboarding invoices create",
+          "request": {
+            "name": "api v1 companies me onboarding invoices create",
+            "description": {
+              "content": "``/companies/me/onboarding-invoices/`` — multipart upload, read,\nand soft-delete for a single invoice file.\n\nThe bytes themselves are written to a private S3 bucket via\n``invoice_storage.upload_to_private_bucket``; the row stores only\nthe object key. ``content`` returns a 15-minute signed URL when\nthe agent (or the buyer's FE) needs to read the file.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "onboarding-invoices",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "batch_uuid",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "file",
+                  "value": "<uri>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "148a31aa-ebe3-4672-ae1d-1634e41dabf3",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "onboarding-invoices",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "batch_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<uri>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c2813d81-3b31-4c5a-916d-c22507d5cb7d",
+          "name": "api v1 companies me onboarding invoices retrieve",
+          "request": {
+            "name": "api v1 companies me onboarding invoices retrieve",
+            "description": {
+              "content": "``/companies/me/onboarding-invoices/`` — multipart upload, read,\nand soft-delete for a single invoice file.\n\nThe bytes themselves are written to a private S3 bucket via\n``invoice_storage.upload_to_private_bucket``; the row stores only\nthe object key. ``content`` returns a 15-minute signed URL when\nthe agent (or the buyer's FE) needs to read the file.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "onboarding-invoices",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "845c4e01-44a8-4873-a6e3-43810dbe5e0e",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "onboarding-invoices",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created_at\": \"1958-04-21T20:34:49.363Z\",\n  \"mime_type\": \"string\",\n  \"original_filename\": \"string\",\n  \"page_count\": 4577,\n  \"size_bytes\": 9209,\n  \"status\": \"agent_extracted\",\n  \"uuid\": \"75e57662-0345-96bf-f8e0-6edbfce4e89f\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e9eec8df-78c0-4c2b-bcfb-974f2c4d60ae",
+          "name": "api v1 companies me onboarding invoices destroy",
+          "request": {
+            "name": "api v1 companies me onboarding invoices destroy",
+            "description": {
+              "content": "``/companies/me/onboarding-invoices/`` — multipart upload, read,\nand soft-delete for a single invoice file.\n\nThe bytes themselves are written to a private S3 bucket via\n``invoice_storage.upload_to_private_bucket``; the row stores only\nthe object key. ``content`` returns a 15-minute signed URL when\nthe agent (or the buyer's FE) needs to read the file.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "onboarding-invoices",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "823729ab-bfec-45df-90e3-1f5b05c0ce83",
+              "name": "No response body",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "onboarding-invoices",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2514930f-46b2-4f4d-8843-2b9701e56cf7",
+          "name": "Return a short-TTL signed URL the agent uses to read the invoice bytes.",
+          "request": {
+            "name": "Return a short-TTL signed URL the agent uses to read the invoice bytes.",
+            "description": {
+              "content": "``/companies/me/onboarding-invoices/`` — multipart upload, read,\nand soft-delete for a single invoice file.\n\nThe bytes themselves are written to a private S3 bucket via\n``invoice_storage.upload_to_private_bucket``; the row stores only\nthe object key. ``content`` returns a 15-minute signed URL when\nthe agent (or the buyer's FE) needs to read the file.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "onboarding-invoices",
+                ":uuid",
+                "content",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a6d7e391-758b-4997-8312-7bf326844a93",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "onboarding-invoices",
+                    ":uuid",
+                    "content",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"expires_in_seconds\": 9438,\n  \"mime_type\": \"string\",\n  \"page_count\": 6578,\n  \"signed_url\": \"http://WvSaBNZDNoEtlEJsRdZniR.hfYrWQ1IB4dSs,BPtdGdNwu7Cw39,FnCD79u4pel.uFtCsYm1s3cLMMZ7WLIp+IeR4mE\",\n  \"size_bytes\": 8528\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "53c2e7d5-e097-4ac5-962e-5c58b693566b",
+          "name": "api v1 companies me onboarding suppliers list",
+          "request": {
+            "name": "api v1 companies me onboarding suppliers list",
+            "description": {
+              "content": "Create + list `Supplier` rows attached to the buyer's `BuyerOnboarding`.\n\nThe agent commits one row per extracted supplier. The list action backs\nthe post-onboarding \"Suppliers in progress\" tab, which surfaces rows the\nbuyer submitted that the MoR has not yet reviewed (`pending_review`).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "onboarding-suppliers",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "52ea9101-afc5-4f73-8847-9a7566ff4fc3",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "onboarding-suppliers",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"id\": 6074,\n      \"matched_supplier_name\": \"string\",\n      \"review_status\": \"onboarding\",\n      \"supplier_name\": \"string\",\n      \"vat_number\": \"string\",\n      \"registration_number\": \"string\",\n      \"duns\": \"string\",\n      \"products_description\": \"string\",\n      \"average_monthly_spend\": \"16035.1\",\n      \"invoice_currency\": \"str\",\n      \"payment_terms\": \"string\",\n      \"priority\": \"low\",\n      \"supplier_country\": \"string\",\n      \"supplier_state\": \"string\",\n      \"supplier_address\": \"string\",\n      \"contact_name\": \"string\",\n      \"contact_email\": \"USJAG@xzjbpjTkeMpsgxEL.ddt\",\n      \"contact_phone\": \"string\",\n      \"arranges_delivery\": true,\n      \"lead_time\": \"string\",\n      \"is_organic\": false,\n      \"relationship_notes\": \"string\",\n      \"notes\": \"string\"\n    },\n    {\n      \"id\": 2994,\n      \"matched_supplier_name\": \"string\",\n      \"review_status\": \"matched\",\n      \"supplier_name\": \"string\",\n      \"vat_number\": \"string\",\n      \"registration_number\": \"string\",\n      \"duns\": \"string\",\n      \"products_description\": \"string\",\n      \"average_monthly_spend\": \"-87861465.82\",\n      \"invoice_currency\": \"str\",\n      \"payment_terms\": \"string\",\n      \"priority\": \"high\",\n      \"supplier_country\": \"string\",\n      \"supplier_state\": \"string\",\n      \"supplier_address\": \"string\",\n      \"contact_name\": \"string\",\n      \"contact_email\": \"MDAjE56B@OgKZDXYaWdlhZDUqWUNsOrNLTBl.qh\",\n      \"contact_phone\": \"string\",\n      \"arranges_delivery\": true,\n      \"lead_time\": \"string\",\n      \"is_organic\": true,\n      \"relationship_notes\": \"string\",\n      \"notes\": \"string\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9356dcbf-4d09-427b-803d-d85b78c60d7e",
+          "name": "api v1 companies me onboarding suppliers create",
+          "request": {
+            "name": "api v1 companies me onboarding suppliers create",
+            "description": {
+              "content": "Create + list `Supplier` rows attached to the buyer's `BuyerOnboarding`.\n\nThe agent commits one row per extracted supplier. The list action backs\nthe post-onboarding \"Suppliers in progress\" tab, which surfaces rows the\nbuyer submitted that the MoR has not yet reviewed (`pending_review`).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "onboarding-suppliers",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "supplier_name",
+                  "value": "<string>",
+                  "description": "(Required) Supplier name"
+                },
+                {
+                  "disabled": false,
+                  "key": "vat_number",
+                  "value": "<string>",
+                  "description": "Supplier VAT / tax registration number"
+                },
+                {
+                  "disabled": false,
+                  "key": "registration_number",
+                  "value": "<string>",
+                  "description": "Business/company registration number (e.g. Companies House number; Xero's Contact.CompanyNumber) — distinct from the VAT number."
+                },
+                {
+                  "disabled": false,
+                  "key": "duns",
+                  "value": "<string>",
+                  "description": "DUNS number (Dun & Bradstreet identifier), primarily for US suppliers."
+                },
+                {
+                  "disabled": false,
+                  "key": "products_description",
+                  "value": "<string>",
+                  "description": "Description of products purchased from this supplier"
+                },
+                {
+                  "disabled": false,
+                  "key": "average_monthly_spend",
+                  "value": "<decimal>",
+                  "description": "Average monthly spend with this supplier"
+                },
+                {
+                  "disabled": false,
+                  "key": "invoice_currency",
+                  "value": "<string>",
+                  "description": "Invoice/Payment currency (e.g., USD, GBP, EUR)"
+                },
+                {
+                  "disabled": false,
+                  "key": "payment_terms",
+                  "value": "<string>",
+                  "description": "Supplier payment terms"
+                },
+                {
+                  "disabled": false,
+                  "key": "priority",
+                  "value": "<string>",
+                  "description": "Priority to onboard this supplier\n\n* `high` - High\n* `medium` - Medium\n* `low` - Low"
+                },
+                {
+                  "disabled": false,
+                  "key": "supplier_country",
+                  "value": "<string>",
+                  "description": "Supplier country"
+                },
+                {
+                  "disabled": false,
+                  "key": "supplier_state",
+                  "value": "<string>",
+                  "description": "Supplier state or county"
+                },
+                {
+                  "disabled": false,
+                  "key": "supplier_address",
+                  "value": "<string>",
+                  "description": "Supplier address"
+                },
+                {
+                  "disabled": false,
+                  "key": "contact_name",
+                  "value": "<string>",
+                  "description": "Supplier contact name"
+                },
+                {
+                  "disabled": false,
+                  "key": "contact_email",
+                  "value": "<email>",
+                  "description": "Supplier contact email"
+                },
+                {
+                  "disabled": false,
+                  "key": "contact_phone",
+                  "value": "<string>",
+                  "description": "Supplier contact phone number"
+                },
+                {
+                  "disabled": false,
+                  "key": "arranges_delivery",
+                  "value": "<boolean>",
+                  "description": "Does the supplier arrange delivery?"
+                },
+                {
+                  "disabled": false,
+                  "key": "lead_time",
+                  "value": "<string>",
+                  "description": "Agreed lead time"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_organic",
+                  "value": "<boolean>",
+                  "description": "Is this an organic supplier?"
+                },
+                {
+                  "disabled": false,
+                  "key": "relationship_notes",
+                  "value": "<string>",
+                  "description": "Any noteworthy information about your trading relationship"
+                },
+                {
+                  "disabled": false,
+                  "key": "notes",
+                  "value": "<string>",
+                  "description": "Additional notes about the supplier"
+                },
+                {
+                  "disabled": false,
+                  "key": "provider",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "provider_external_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "confirmed_existing_supplier_uuid",
+                  "value": "<uuid>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7bd3e9a5-0b94-443e-9253-dd2ac51c1267",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "onboarding-suppliers",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Supplier name",
+                        "type": "text/plain"
+                      },
+                      "key": "supplier_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Supplier VAT / tax registration number",
+                        "type": "text/plain"
+                      },
+                      "key": "vat_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Business/company registration number (e.g. Companies House number; Xero's Contact.CompanyNumber) — distinct from the VAT number.",
+                        "type": "text/plain"
+                      },
+                      "key": "registration_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "DUNS number (Dun & Bradstreet identifier), primarily for US suppliers.",
+                        "type": "text/plain"
+                      },
+                      "key": "duns",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Description of products purchased from this supplier",
+                        "type": "text/plain"
+                      },
+                      "key": "products_description",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Average monthly spend with this supplier",
+                        "type": "text/plain"
+                      },
+                      "key": "average_monthly_spend",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Invoice/Payment currency (e.g., USD, GBP, EUR)",
+                        "type": "text/plain"
+                      },
+                      "key": "invoice_currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Supplier payment terms",
+                        "type": "text/plain"
+                      },
+                      "key": "payment_terms",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Priority to onboard this supplier\n\n* `high` - High\n* `medium` - Medium\n* `low` - Low",
+                        "type": "text/plain"
+                      },
+                      "key": "priority",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Supplier country",
+                        "type": "text/plain"
+                      },
+                      "key": "supplier_country",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Supplier state or county",
+                        "type": "text/plain"
+                      },
+                      "key": "supplier_state",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Supplier address",
+                        "type": "text/plain"
+                      },
+                      "key": "supplier_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Supplier contact name",
+                        "type": "text/plain"
+                      },
+                      "key": "contact_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Supplier contact email",
+                        "type": "text/plain"
+                      },
+                      "key": "contact_email",
+                      "value": "<email>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Supplier contact phone number",
+                        "type": "text/plain"
+                      },
+                      "key": "contact_phone",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Does the supplier arrange delivery?",
+                        "type": "text/plain"
+                      },
+                      "key": "arranges_delivery",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Agreed lead time",
+                        "type": "text/plain"
+                      },
+                      "key": "lead_time",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Is this an organic supplier?",
+                        "type": "text/plain"
+                      },
+                      "key": "is_organic",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Any noteworthy information about your trading relationship",
+                        "type": "text/plain"
+                      },
+                      "key": "relationship_notes",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Additional notes about the supplier",
+                        "type": "text/plain"
+                      },
+                      "key": "notes",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "provider",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "provider_external_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "confirmed_existing_supplier_uuid",
+                      "value": "<uuid>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 3127,\n  \"matched_supplier_name\": \"string\",\n  \"review_status\": \"rejected\",\n  \"supplier_name\": \"string\",\n  \"vat_number\": \"string\",\n  \"registration_number\": \"string\",\n  \"duns\": \"string\",\n  \"products_description\": \"string\",\n  \"average_monthly_spend\": \"-63466306\",\n  \"invoice_currency\": \"str\",\n  \"payment_terms\": \"string\",\n  \"priority\": \"<string>\",\n  \"supplier_country\": \"string\",\n  \"supplier_state\": \"string\",\n  \"supplier_address\": \"string\",\n  \"contact_name\": \"string\",\n  \"contact_email\": \"ft5Lh@y.snx\",\n  \"contact_phone\": \"string\",\n  \"arranges_delivery\": false,\n  \"lead_time\": \"string\",\n  \"is_organic\": true,\n  \"relationship_notes\": \"string\",\n  \"notes\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c741204e-ea29-456c-be22-022492fb66b9",
+          "name": "api v1 companies me onboarding suppliers match preview create",
+          "request": {
+            "name": "api v1 companies me onboarding suppliers match preview create",
+            "description": {
+              "content": "Preview which discovered suppliers the buyer ALREADY has — onboarded,\nmid-onboarding, or a pending submission — so the import review can show\n\"you already have this / it's already being set up\" hints before commit.\n\nScoped to the buyer's own suppliers only — a graph match the buyer\ndoesn't have at all is the MoR's concern (surfaced at commit via the\nsubmission's `suggested_supplier_company`), never shown to the buyer.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "me",
+                "onboarding-suppliers",
+                "match-preview",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "supplier_names",
+                  "value": "<string>",
+                  "description": "(Required) Discovered supplier names to check for a match against the buyer's existing suppliers."
+                },
+                {
+                  "disabled": false,
+                  "key": "supplier_names",
+                  "value": "<string>",
+                  "description": "(Required) Discovered supplier names to check for a match against the buyer's existing suppliers."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "09c0177d-eb67-46bf-865e-aaaddfd945f0",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "me",
+                    "onboarding-suppliers",
+                    "match-preview",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Discovered supplier names to check for a match against the buyer's existing suppliers.",
+                        "type": "text/plain"
+                      },
+                      "key": "supplier_names",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Discovered supplier names to check for a match against the buyer's existing suppliers.",
+                        "type": "text/plain"
+                      },
+                      "key": "supplier_names",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"matches\": [\n    {\n      \"matched\": true,\n      \"supplier_name\": \"string\",\n      \"confidence\": \"exact\",\n      \"source\": \"onboarded\",\n      \"company_uuid\": \"38d411f8-6443-03ed-a822-d38d0c9714eb\",\n      \"company_name\": \"string\",\n      \"ratio\": 3500.3951319874973\n    },\n    {\n      \"matched\": true,\n      \"supplier_name\": \"string\",\n      \"confidence\": \"exact\",\n      \"source\": \"in_progress\",\n      \"company_uuid\": \"bc4233b7-5acc-df02-47f6-195bb259a458\",\n      \"company_name\": \"string\",\n      \"ratio\": 4693.223852226538\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "0e79a77f-1c8e-4d67-8254-ecce9656b051",
+    "name": "Opply Activity Feed Buyer self-onboarding API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

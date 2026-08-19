@@ -10,15 +10,12 @@ server:
   - https://api.opply.com
   auth: OAuth 2.1 (RFC 9728 protected resource; bearer token in Authorization header)
   discovery: /api/v1/mcp/tools/ (authenticated)
-notes: >-
-  Opply publishes a hosted, OAuth-protected MCP server. The root endpoint
-  (/api/v1/mcp/) and per-integration endpoints (e.g. /api/v1/mcp/zendesk/,
-  /api/v1/mcp/unleashed/) each advertise their own RFC 9728 protected-resource
-  metadata and consent scopes. Tool invocation, tool listing, access-request
-  review, per-user access, and an audit log are exposed under /api/v1/mcp/*.
-  The live tool catalog requires an authenticated call to /api/v1/mcp/tools/
-  and is not enumerable anonymously; the endpoints below are the discoverable
-  MCP control surface from the public OpenAPI.
+notes: Opply publishes a hosted, OAuth-protected MCP server. The root endpoint (/api/v1/mcp/) and per-integration
+  endpoints (e.g. /api/v1/mcp/zendesk/, /api/v1/mcp/unleashed/) each advertise their own RFC 9728 protected-resource
+  metadata and consent scopes. Tool invocation, tool listing, access-request review, per-user access,
+  and an audit log are exposed under /api/v1/mcp/*. The live tool catalog requires an authenticated call
+  to /api/v1/mcp/tools/ and is not enumerable anonymously; the endpoints below are the discoverable MCP
+  control surface from the public OpenAPI.
 endpoints:
 - path: /api/v1/mcp/
   description: Main Opply MCP resource endpoint (OAuth-protected)
@@ -64,3 +61,10 @@ scopes_supported:
 - unleashed:read
 - zendesk:read
 - zendesk:write
+deployment:
+  mode: remote
+  endpoint: https://api.opply.com/api/v1/mcp/
+  verified: probed
+  probe: gated
+  checked: '2026-08-12'
+  source: catalog MCP census

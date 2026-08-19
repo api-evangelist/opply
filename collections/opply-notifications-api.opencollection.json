@@ -1,0 +1,281 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Notifications API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Notifications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Unsubscribe groups endpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/notifications/emails/brand/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Unsubscribe groups endpoints"
+        },
+        {
+          "info": {
+            "name": "Unsubscribe groups endpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/notifications/emails/brand/all/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Unsubscribe groups endpoints"
+        },
+        {
+          "info": {
+            "name": "Activate or deactivate unsubscribe groups for users",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/notifications/emails/brand/on-off-unsubscribe-groups/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Activate or deactivate unsubscribe groups for users"
+        },
+        {
+          "info": {
+            "name": "Unsubscribe groups endpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/notifications/emails/supplier/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Unsubscribe groups endpoints"
+        },
+        {
+          "info": {
+            "name": "Unsubscribe groups endpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/notifications/emails/supplier/all/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Unsubscribe groups endpoints"
+        },
+        {
+          "info": {
+            "name": "Activate or deactivate unsubscribe groups for users",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/notifications/emails/supplier/on-off-unsubscribe-groups/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Activate or deactivate unsubscribe groups for users"
+        },
+        {
+          "info": {
+            "name": "Retrieve a list of notifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/notifications/notifications/",
+            "params": [
+              {
+                "name": "ordering",
+                "value": "",
+                "type": "query",
+                "description": "Which field to use when ordering the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This endpoint provides a list of notifications that should appear\nwhen pressing the bell icon at the top right of the dashboard.\nIt is paginated with Djangos standard pagination, but with\nthe extra field unread_count, which is a count of unread notifications"
+        },
+        {
+          "info": {
+            "name": "Mark a notification action as clear by the user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/notifications/notifications/:uuid/action-mark-clear/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Mark a notification type action as read by the user. UUID is a notification\nUUID. This endpoint is useful when the action doesn't have a related object."
+        },
+        {
+          "info": {
+            "name": "Mark a notification action as read by the user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/notifications/notifications/:uuid/action-mark-read/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Mark a notification action as read by the user"
+        },
+        {
+          "info": {
+            "name": "Mark a general notification as read by the user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/notifications/notifications/:uuid/mark-read/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Mark a notification as read by the user. UUID is a notification\nUUID which you can GET from /api/v1/notifications/notifications"
+        },
+        {
+          "info": {
+            "name": "Mark action notification with the given related_object_uuid as cleared",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/notifications/notifications/action-mark-related-cleared/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "When cleaning a action the FE should pass the related object of that action and its clear trigger,\nthen this endpoint will mark as cleared the notifications of type action with that clean trigger\nrelated to that object"
+        },
+        {
+          "info": {
+            "name": "Mark all notifications with the given related_object_uuid as read",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/notifications/notifications/mark-related-read/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Mark all notifications related to the given object as read, for example\nyou might provide related_object_type \"quote\" with related_object_uuid \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\nto mark all notifications related to that quote as read."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

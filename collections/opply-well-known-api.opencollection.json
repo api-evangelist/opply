@@ -1,0 +1,69 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed .well-known API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": ".well-known",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": ".well_known_oauth_authorization_server_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/.well-known/oauth-authorization-server",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "RFC 8414 — OAuth 2.0 Authorization Server Metadata.\nAdvertised at /.well-known/oauth-authorization-server."
+        },
+        {
+          "info": {
+            "name": ".well_known_oauth_protected_resource_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/.well-known/oauth-protected-resource",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "RFC 9728 — OAuth 2.0 Protected Resource Metadata.\n\nAdvertised at /.well-known/oauth-protected-resource for the main Opply MCP,\nand at a path-scoped variant per additional MCP endpoint (e.g. Zendesk at\n/.well-known/oauth-protected-resource/api/v1/mcp/zendesk). ``resource_suffix``\nis appended to the ``/api/v1/mcp/`` base so the advertised ``resource``\nmatches the endpoint the client is connecting to.\n\n``scopes_supported`` is scoped to the endpoint so each MCP has its own consent\nsurface: ``scope_p"
+        },
+        {
+          "info": {
+            "name": ".well_known_oauth_protected_resource_api_v1_mcp_zendesk_retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/.well-known/oauth-protected-resource/api/v1/mcp/zendesk",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "RFC 9728 — OAuth 2.0 Protected Resource Metadata.\n\nAdvertised at /.well-known/oauth-protected-resource for the main Opply MCP,\nand at a path-scoped variant per additional MCP endpoint (e.g. Zendesk at\n/.well-known/oauth-protected-resource/api/v1/mcp/zendesk). ``resource_suffix``\nis appended to the ``/api/v1/mcp/`` base so the advertised ``resource``\nmatches the endpoint the client is connecting to.\n\n``scopes_supported`` is scoped to the endpoint so each MCP has its own consent\nsurface: ``scope_p"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

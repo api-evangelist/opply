@@ -1,0 +1,534 @@
+{
+  "item": [
+    {
+      "id": "8a8dc0ca-7a82-45c7-b55b-08ade2720e3d",
+      "name": "Customer Status",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "594cf9ef-40ed-4cda-9ffb-9eb9b68e148b",
+          "name": "Get current customer status",
+          "request": {
+            "name": "Get current customer status",
+            "description": {
+              "content": "Get the current (most recent) status for a customer.\n\nReturns 404 if no status has been set yet.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "crm",
+                "companies",
+                ":uuid",
+                "status",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "96005138-e407-4d6e-9c20-388dc03906f9",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "crm",
+                    "companies",
+                    ":uuid",
+                    "status",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created\": \"2012-04-22T07:17:23.093Z\",\n  \"on_hold_public_reason\": \"string\",\n  \"on_hold_reason_category\": \"verification_needed\",\n  \"status\": \"at_risk\",\n  \"updated_by\": {\n    \"name\": \"string\",\n    \"uuid\": \"aea2e2f4-567f-5785-aeaa-92d68492c8d9\"\n  },\n  \"uuid\": \"f0ca812d-b5f3-d1d8-f0b4-caa8c93c58d9\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "213b2d85-9082-4108-9895-84ad3902ac94",
+              "name": "No status has been set for this customer",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "crm",
+                    "companies",
+                    ":uuid",
+                    "status",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c8d57132-efe0-4d47-9dcf-ecf33fa652fc",
+          "name": "Update customer status",
+          "request": {
+            "name": "Update customer status",
+            "description": {
+              "content": "Set a new status for the customer.\n\nCreates a new status record (does not update existing).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "crm",
+                "companies",
+                ":uuid",
+                "status",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "(Required) New health status for the customer\n\n* `healthy` - Healthy\n* `average` - Average\n* `at_risk` - At Risk\n* `new` - New\n* `churned` - Churned\n* `on_hold` - On Hold"
+                },
+                {
+                  "disabled": false,
+                  "key": "on_hold_reason_category",
+                  "value": "<string>",
+                  "description": "Buyer-facing reason category (dropdown). Only stored when status is ON_HOLD.\n\n* `overdue_payments` - Overdue Payments\n* `new_contract_required` - New Contract Required\n* `verification_needed` - Verification Needed\n* `other` - Other"
+                },
+                {
+                  "disabled": false,
+                  "key": "on_hold_public_reason",
+                  "value": "",
+                  "description": "Free-text reason, only stored when status is ON_HOLD and the category is OTHER."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "52c09fbf-8040-4664-b135-08e573bc0d54",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "crm",
+                    "companies",
+                    ":uuid",
+                    "status",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) New health status for the customer\n\n* `healthy` - Healthy\n* `average` - Average\n* `at_risk` - At Risk\n* `new` - New\n* `churned` - Churned\n* `on_hold` - On Hold",
+                        "type": "text/plain"
+                      },
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Buyer-facing reason category (dropdown). Only stored when status is ON_HOLD.\n\n* `overdue_payments` - Overdue Payments\n* `new_contract_required` - New Contract Required\n* `verification_needed` - Verification Needed\n* `other` - Other",
+                        "type": "text/plain"
+                      },
+                      "key": "on_hold_reason_category",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Free-text reason, only stored when status is ON_HOLD and the category is OTHER.",
+                        "type": "text/plain"
+                      },
+                      "key": "on_hold_public_reason",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created\": \"1967-01-05T16:47:10.737Z\",\n  \"on_hold_public_reason\": \"string\",\n  \"on_hold_reason_category\": \"<string>\",\n  \"status\": \"<string>\",\n  \"updated_by\": {\n    \"name\": \"string\",\n    \"uuid\": \"a1d919d1-1579-2341-1cc7-3458ae4eb889\"\n  },\n  \"uuid\": \"57b4fe9a-4615-0ff0-756a-b9c40d3dfc79\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "11603132-77fd-4113-b263-a096a018237d",
+          "name": "Get customer status history",
+          "request": {
+            "name": "Get customer status history",
+            "description": {
+              "content": "Get the full status history for a customer.\n\nReturns all status records ordered by most recent first (paginated).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "crm",
+                "companies",
+                ":uuid",
+                "status",
+                "history",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0dbbb12d-0c55-448d-98c0-ae9684eccddc",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "crm",
+                    "companies",
+                    ":uuid",
+                    "status",
+                    "history",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"created\": \"1973-09-21T03:28:47.728Z\",\n      \"on_hold_public_reason\": \"string\",\n      \"on_hold_reason_category\": \"<string>\",\n      \"status\": \"<string>\",\n      \"updated_by\": {\n        \"name\": \"string\",\n        \"uuid\": \"11b1b014-3f66-c266-1bad-136c52125a42\"\n      },\n      \"uuid\": \"cbbab92d-c9f5-20ef-75a2-f15ef9418d9d\"\n    },\n    {\n      \"created\": \"1974-07-21T15:29:25.783Z\",\n      \"on_hold_public_reason\": \"string\",\n      \"on_hold_reason_category\": \"<string>\",\n      \"status\": \"<string>\",\n      \"updated_by\": {\n        \"name\": \"string\",\n        \"uuid\": \"c34d7fc6-7783-048a-5eaa-d8761c828d9e\"\n      },\n      \"uuid\": \"b7f04923-c3af-5596-a682-2fd9aca8d697\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "da5e1845-e68d-42d5-95b2-87aca8754fb2",
+    "name": "Opply Activity Feed Customer Status API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

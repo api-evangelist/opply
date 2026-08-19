@@ -1,0 +1,1984 @@
+{
+  "item": [
+    {
+      "id": "3eb62eef-6ac0-4af8-b06e-2915a8409bba",
+      "name": "Buyer Documents",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d34584c3-5c96-4f61-a4f0-78d6280fcc49",
+          "name": "List buyer documents",
+          "request": {
+            "name": "List buyer documents",
+            "description": {
+              "content": "Returns all certification documents for the current buyer company.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "buyer-documents",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "is_archived",
+                  "value": "<boolean>",
+                  "description": "Filter by computed `is_archived` (active vs archived sub-tab)."
+                },
+                {
+                  "disabled": false,
+                  "key": "ordering",
+                  "value": "<string>",
+                  "description": "Which field to use when ordering the results."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "A search term."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by computed lifecycle status."
+                },
+                {
+                  "disabled": false,
+                  "key": "type_uuid__in",
+                  "value": "<string>",
+                  "description": "Filter by comma-separated document type UUIDs."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a67a5047-b707-40a4-86d9-9b5d31e3d488",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "buyer-documents",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "is_archived",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "ordering",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type_uuid__in",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"created\": \"1985-10-25T00:34:27.832Z\",\n      \"file\": \"https://C.xeyyiExu6YcV4knzD3kxpslTam0nZTPGaC3\",\n      \"is_archived\": false,\n      \"modified\": \"1953-02-05T01:22:18.390Z\",\n      \"name\": \"string\",\n      \"status\": \"valid\",\n      \"superseded_by_uuid\": \"e08942c4-54cd-d571-e55d-2a3145b097be\",\n      \"type\": {\n        \"name\": \"string\",\n        \"uuid\": \"20688a8a-c330-776e-b775-de9718211ed1\",\n        \"description\": \"string\"\n      },\n      \"uuid\": \"5f4354bb-3bf1-7b96-b8c8-070a0164683a\",\n      \"start_date\": \"2012-04-05\",\n      \"end_date\": \"2006-04-14\",\n      \"countries\": [\n        \"IN\",\n        \"GM\"\n      ],\n      \"certificate_number\": \"string\",\n      \"jurisdiction\": \"string\",\n      \"us_state_jurisdiction\": \"NY\",\n      \"issuing_authority\": \"string\",\n      \"holder_name\": \"string\",\n      \"notes\": \"string\"\n    },\n    {\n      \"created\": \"2016-04-22T15:43:45.654Z\",\n      \"file\": \"http://OMfzZa.rkDIgRDz.epySnghIOpM8DSGiBfN-dtPIFEse,1h\",\n      \"is_archived\": false,\n      \"modified\": \"2012-02-18T13:58:28.854Z\",\n      \"name\": \"string\",\n      \"status\": \"expired\",\n      \"superseded_by_uuid\": \"12d85d94-f088-b1eb-2ed0-2088651d0b7b\",\n      \"type\": {\n        \"name\": \"string\",\n        \"uuid\": \"56b796d0-9ad5-a78c-c48e-d9d86d71017a\",\n        \"description\": \"string\"\n      },\n      \"uuid\": \"76c469e3-90e5-c565-82c6-7284831570d4\",\n      \"start_date\": \"2023-07-29\",\n      \"end_date\": \"1959-11-13\",\n      \"countries\": [\n        \"SR\",\n        \"PF\"\n      ],\n      \"certificate_number\": \"string\",\n      \"jurisdiction\": \"string\",\n      \"us_state_jurisdiction\": \"CO\",\n      \"issuing_authority\": \"string\",\n      \"holder_name\": \"string\",\n      \"notes\": \"string\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "966326ac-fbc0-4658-b8ca-a696f0cf3081",
+          "name": "Upload buyer document",
+          "request": {
+            "name": "Upload buyer document",
+            "description": {
+              "content": "Upload a new certification document (BRCGS, organic cert, ISO 9001, etc.).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "buyer-documents",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "file",
+                  "value": "<uri>",
+                  "description": "(Required) The uploaded document file"
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "(Required) Display name for the document"
+                },
+                {
+                  "disabled": false,
+                  "key": "type_uuid",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "renewing_uuid",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "start_date",
+                  "value": "<date>",
+                  "description": "Start date of document validity"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_date",
+                  "value": "<date>",
+                  "description": "End/expiry date of document validity"
+                },
+                {
+                  "disabled": false,
+                  "key": "countries",
+                  "value": "<string>",
+                  "description": "ISO country codes this document applies to. Empty = all countries."
+                },
+                {
+                  "disabled": false,
+                  "key": "countries",
+                  "value": "<string>",
+                  "description": "ISO country codes this document applies to. Empty = all countries."
+                },
+                {
+                  "disabled": false,
+                  "key": "certificate_number",
+                  "value": "<string>",
+                  "description": "Permit / exemption / certificate number as printed on the document"
+                },
+                {
+                  "disabled": false,
+                  "key": "jurisdiction",
+                  "value": "<string>",
+                  "description": "State/region the document applies in, as printed on the document (e.g. 'Michigan'). For US documents the structured counterpart is us_state_jurisdiction."
+                },
+                {
+                  "disabled": false,
+                  "key": "us_state_jurisdiction",
+                  "value": "<string>",
+                  "description": "US state/territory this document applies in (USPS code, e.g. 'MI'). Structured counterpart of the free-text jurisdiction for US documents.\n\n* `AL` - Alabama\n* `AK` - Alaska\n* `AZ` - Arizona\n* `AR` - Arkansas\n* `CA` - California\n* `CO` - Colorado\n* `CT` - Connecticut\n* `DE` - Delaware\n* `FL` - Florida\n* `GA` - Georgia\n* `HI` - Hawaii\n* `ID` - Idaho\n* `IL` - Illinois\n* `IN` - Indiana\n* `IA` - Iowa\n* `KS` - Kansas\n* `KY` - Kentucky\n* `LA` - Louisiana\n* `ME` - Maine\n* `MD` - Maryland\n* `MA` - Massachusetts\n* `MI` - Michigan\n* `MN` - Minnesota\n* `MS` - Mississippi\n* `MO` - Missouri\n* `MT` - Montana\n* `NE` - Nebraska\n* `NV` - Nevada\n* `NH` - New Hampshire\n* `NJ` - New Jersey\n* `NM` - New Mexico\n* `NY` - New York\n* `NC` - North Carolina\n* `ND` - North Dakota\n* `OH` - Ohio\n* `OK` - Oklahoma\n* `OR` - Oregon\n* `PA` - Pennsylvania\n* `RI` - Rhode Island\n* `SC` - South Carolina\n* `SD` - South Dakota\n* `TN` - Tennessee\n* `TX` - Texas\n* `UT` - Utah\n* `VT` - Vermont\n* `VA` - Virginia\n* `WA` - Washington\n* `WV` - West Virginia\n* `WI` - Wisconsin\n* `WY` - Wyoming\n* `DC` - District of Columbia\n* `PR` - Puerto Rico\n* `GU` - Guam\n* `VI` - U.S. Virgin Islands\n* `AS` - American Samoa\n* `MP` - Northern Mariana Islands"
+                },
+                {
+                  "disabled": false,
+                  "key": "issuing_authority",
+                  "value": "<string>",
+                  "description": "Body that issued the document (e.g. 'Michigan Department of Treasury')"
+                },
+                {
+                  "disabled": false,
+                  "key": "holder_name",
+                  "value": "<string>",
+                  "description": "Entity the document is issued to as printed — normally the buyer company"
+                },
+                {
+                  "disabled": false,
+                  "key": "notes",
+                  "value": "<string>",
+                  "description": "Optional notes about this document"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "26e721f0-1196-4231-842b-01ab52506660",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "buyer-documents",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The uploaded document file",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Display name for the document",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "type_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "renewing_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Start date of document validity",
+                        "type": "text/plain"
+                      },
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "End/expiry date of document validity",
+                        "type": "text/plain"
+                      },
+                      "key": "end_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "ISO country codes this document applies to. Empty = all countries.",
+                        "type": "text/plain"
+                      },
+                      "key": "countries",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "ISO country codes this document applies to. Empty = all countries.",
+                        "type": "text/plain"
+                      },
+                      "key": "countries",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Permit / exemption / certificate number as printed on the document",
+                        "type": "text/plain"
+                      },
+                      "key": "certificate_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "State/region the document applies in, as printed on the document (e.g. 'Michigan'). For US documents the structured counterpart is us_state_jurisdiction.",
+                        "type": "text/plain"
+                      },
+                      "key": "jurisdiction",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "US state/territory this document applies in (USPS code, e.g. 'MI'). Structured counterpart of the free-text jurisdiction for US documents.\n\n* `AL` - Alabama\n* `AK` - Alaska\n* `AZ` - Arizona\n* `AR` - Arkansas\n* `CA` - California\n* `CO` - Colorado\n* `CT` - Connecticut\n* `DE` - Delaware\n* `FL` - Florida\n* `GA` - Georgia\n* `HI` - Hawaii\n* `ID` - Idaho\n* `IL` - Illinois\n* `IN` - Indiana\n* `IA` - Iowa\n* `KS` - Kansas\n* `KY` - Kentucky\n* `LA` - Louisiana\n* `ME` - Maine\n* `MD` - Maryland\n* `MA` - Massachusetts\n* `MI` - Michigan\n* `MN` - Minnesota\n* `MS` - Mississippi\n* `MO` - Missouri\n* `MT` - Montana\n* `NE` - Nebraska\n* `NV` - Nevada\n* `NH` - New Hampshire\n* `NJ` - New Jersey\n* `NM` - New Mexico\n* `NY` - New York\n* `NC` - North Carolina\n* `ND` - North Dakota\n* `OH` - Ohio\n* `OK` - Oklahoma\n* `OR` - Oregon\n* `PA` - Pennsylvania\n* `RI` - Rhode Island\n* `SC` - South Carolina\n* `SD` - South Dakota\n* `TN` - Tennessee\n* `TX` - Texas\n* `UT` - Utah\n* `VT` - Vermont\n* `VA` - Virginia\n* `WA` - Washington\n* `WV` - West Virginia\n* `WI` - Wisconsin\n* `WY` - Wyoming\n* `DC` - District of Columbia\n* `PR` - Puerto Rico\n* `GU` - Guam\n* `VI` - U.S. Virgin Islands\n* `AS` - American Samoa\n* `MP` - Northern Mariana Islands",
+                        "type": "text/plain"
+                      },
+                      "key": "us_state_jurisdiction",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Body that issued the document (e.g. 'Michigan Department of Treasury')",
+                        "type": "text/plain"
+                      },
+                      "key": "issuing_authority",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Entity the document is issued to as printed — normally the buyer company",
+                        "type": "text/plain"
+                      },
+                      "key": "holder_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional notes about this document",
+                        "type": "text/plain"
+                      },
+                      "key": "notes",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"file\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"uuid\": \"5d65ecd7-9c2c-8c22-9c68-913d367646e8\",\n  \"type\": {\n    \"name\": \"string\",\n    \"uuid\": \"5f8da41b-4d91-e099-adc1-9e127a431ae0\",\n    \"description\": \"string\"\n  },\n  \"start_date\": \"<date>\",\n  \"end_date\": \"<date>\",\n  \"countries\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"certificate_number\": \"<string>\",\n  \"jurisdiction\": \"<string>\",\n  \"us_state_jurisdiction\": \"<string>\",\n  \"issuing_authority\": \"<string>\",\n  \"holder_name\": \"<string>\",\n  \"notes\": \"<string>\",\n  \"status\": \"valid\",\n  \"is_archived\": false,\n  \"superseded_by_uuid\": \"fff061f1-0c92-2579-a16d-e3709102e027\",\n  \"created\": \"2023-08-06T13:35:45.587Z\",\n  \"modified\": \"2001-08-27T21:35:38.702Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "84fbf49d-3a26-46b2-85ac-f0a5b36d70ca",
+          "name": "Retrieve buyer document",
+          "request": {
+            "name": "Retrieve buyer document",
+            "description": {
+              "content": "Returns details for a specific buyer certification document.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "buyer-documents",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "54fc1845-2365-48f0-bed5-aaeeddec0f25",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "buyer-documents",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"file\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"uuid\": \"5d65ecd7-9c2c-8c22-9c68-913d367646e8\",\n  \"type\": {\n    \"name\": \"string\",\n    \"uuid\": \"5f8da41b-4d91-e099-adc1-9e127a431ae0\",\n    \"description\": \"string\"\n  },\n  \"start_date\": \"<date>\",\n  \"end_date\": \"<date>\",\n  \"countries\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"certificate_number\": \"<string>\",\n  \"jurisdiction\": \"<string>\",\n  \"us_state_jurisdiction\": \"<string>\",\n  \"issuing_authority\": \"<string>\",\n  \"holder_name\": \"<string>\",\n  \"notes\": \"<string>\",\n  \"status\": \"valid\",\n  \"is_archived\": false,\n  \"superseded_by_uuid\": \"fff061f1-0c92-2579-a16d-e3709102e027\",\n  \"created\": \"2023-08-06T13:35:45.587Z\",\n  \"modified\": \"2001-08-27T21:35:38.702Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "41c1ebe3-92ea-4dab-b22a-440aab646b36",
+          "name": "Update buyer document",
+          "request": {
+            "name": "Update buyer document",
+            "description": {
+              "content": "Update all fields of an existing buyer document.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "buyer-documents",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "file",
+                  "value": "<uri>",
+                  "description": "(Required) The uploaded document file"
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "(Required) Display name for the document"
+                },
+                {
+                  "disabled": false,
+                  "key": "type_uuid",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "renewing_uuid",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "start_date",
+                  "value": "<date>",
+                  "description": "Start date of document validity"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_date",
+                  "value": "<date>",
+                  "description": "End/expiry date of document validity"
+                },
+                {
+                  "disabled": false,
+                  "key": "countries",
+                  "value": "<string>",
+                  "description": "ISO country codes this document applies to. Empty = all countries."
+                },
+                {
+                  "disabled": false,
+                  "key": "countries",
+                  "value": "<string>",
+                  "description": "ISO country codes this document applies to. Empty = all countries."
+                },
+                {
+                  "disabled": false,
+                  "key": "certificate_number",
+                  "value": "<string>",
+                  "description": "Permit / exemption / certificate number as printed on the document"
+                },
+                {
+                  "disabled": false,
+                  "key": "jurisdiction",
+                  "value": "<string>",
+                  "description": "State/region the document applies in, as printed on the document (e.g. 'Michigan'). For US documents the structured counterpart is us_state_jurisdiction."
+                },
+                {
+                  "disabled": false,
+                  "key": "us_state_jurisdiction",
+                  "value": "<string>",
+                  "description": "US state/territory this document applies in (USPS code, e.g. 'MI'). Structured counterpart of the free-text jurisdiction for US documents.\n\n* `AL` - Alabama\n* `AK` - Alaska\n* `AZ` - Arizona\n* `AR` - Arkansas\n* `CA` - California\n* `CO` - Colorado\n* `CT` - Connecticut\n* `DE` - Delaware\n* `FL` - Florida\n* `GA` - Georgia\n* `HI` - Hawaii\n* `ID` - Idaho\n* `IL` - Illinois\n* `IN` - Indiana\n* `IA` - Iowa\n* `KS` - Kansas\n* `KY` - Kentucky\n* `LA` - Louisiana\n* `ME` - Maine\n* `MD` - Maryland\n* `MA` - Massachusetts\n* `MI` - Michigan\n* `MN` - Minnesota\n* `MS` - Mississippi\n* `MO` - Missouri\n* `MT` - Montana\n* `NE` - Nebraska\n* `NV` - Nevada\n* `NH` - New Hampshire\n* `NJ` - New Jersey\n* `NM` - New Mexico\n* `NY` - New York\n* `NC` - North Carolina\n* `ND` - North Dakota\n* `OH` - Ohio\n* `OK` - Oklahoma\n* `OR` - Oregon\n* `PA` - Pennsylvania\n* `RI` - Rhode Island\n* `SC` - South Carolina\n* `SD` - South Dakota\n* `TN` - Tennessee\n* `TX` - Texas\n* `UT` - Utah\n* `VT` - Vermont\n* `VA` - Virginia\n* `WA` - Washington\n* `WV` - West Virginia\n* `WI` - Wisconsin\n* `WY` - Wyoming\n* `DC` - District of Columbia\n* `PR` - Puerto Rico\n* `GU` - Guam\n* `VI` - U.S. Virgin Islands\n* `AS` - American Samoa\n* `MP` - Northern Mariana Islands"
+                },
+                {
+                  "disabled": false,
+                  "key": "issuing_authority",
+                  "value": "<string>",
+                  "description": "Body that issued the document (e.g. 'Michigan Department of Treasury')"
+                },
+                {
+                  "disabled": false,
+                  "key": "holder_name",
+                  "value": "<string>",
+                  "description": "Entity the document is issued to as printed — normally the buyer company"
+                },
+                {
+                  "disabled": false,
+                  "key": "notes",
+                  "value": "<string>",
+                  "description": "Optional notes about this document"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7afa2bdd-5f5e-4e07-9c71-2b7db3cd85ab",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "buyer-documents",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The uploaded document file",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Display name for the document",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "type_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "renewing_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Start date of document validity",
+                        "type": "text/plain"
+                      },
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "End/expiry date of document validity",
+                        "type": "text/plain"
+                      },
+                      "key": "end_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "ISO country codes this document applies to. Empty = all countries.",
+                        "type": "text/plain"
+                      },
+                      "key": "countries",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "ISO country codes this document applies to. Empty = all countries.",
+                        "type": "text/plain"
+                      },
+                      "key": "countries",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Permit / exemption / certificate number as printed on the document",
+                        "type": "text/plain"
+                      },
+                      "key": "certificate_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "State/region the document applies in, as printed on the document (e.g. 'Michigan'). For US documents the structured counterpart is us_state_jurisdiction.",
+                        "type": "text/plain"
+                      },
+                      "key": "jurisdiction",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "US state/territory this document applies in (USPS code, e.g. 'MI'). Structured counterpart of the free-text jurisdiction for US documents.\n\n* `AL` - Alabama\n* `AK` - Alaska\n* `AZ` - Arizona\n* `AR` - Arkansas\n* `CA` - California\n* `CO` - Colorado\n* `CT` - Connecticut\n* `DE` - Delaware\n* `FL` - Florida\n* `GA` - Georgia\n* `HI` - Hawaii\n* `ID` - Idaho\n* `IL` - Illinois\n* `IN` - Indiana\n* `IA` - Iowa\n* `KS` - Kansas\n* `KY` - Kentucky\n* `LA` - Louisiana\n* `ME` - Maine\n* `MD` - Maryland\n* `MA` - Massachusetts\n* `MI` - Michigan\n* `MN` - Minnesota\n* `MS` - Mississippi\n* `MO` - Missouri\n* `MT` - Montana\n* `NE` - Nebraska\n* `NV` - Nevada\n* `NH` - New Hampshire\n* `NJ` - New Jersey\n* `NM` - New Mexico\n* `NY` - New York\n* `NC` - North Carolina\n* `ND` - North Dakota\n* `OH` - Ohio\n* `OK` - Oklahoma\n* `OR` - Oregon\n* `PA` - Pennsylvania\n* `RI` - Rhode Island\n* `SC` - South Carolina\n* `SD` - South Dakota\n* `TN` - Tennessee\n* `TX` - Texas\n* `UT` - Utah\n* `VT` - Vermont\n* `VA` - Virginia\n* `WA` - Washington\n* `WV` - West Virginia\n* `WI` - Wisconsin\n* `WY` - Wyoming\n* `DC` - District of Columbia\n* `PR` - Puerto Rico\n* `GU` - Guam\n* `VI` - U.S. Virgin Islands\n* `AS` - American Samoa\n* `MP` - Northern Mariana Islands",
+                        "type": "text/plain"
+                      },
+                      "key": "us_state_jurisdiction",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Body that issued the document (e.g. 'Michigan Department of Treasury')",
+                        "type": "text/plain"
+                      },
+                      "key": "issuing_authority",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Entity the document is issued to as printed — normally the buyer company",
+                        "type": "text/plain"
+                      },
+                      "key": "holder_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional notes about this document",
+                        "type": "text/plain"
+                      },
+                      "key": "notes",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"file\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"uuid\": \"5d65ecd7-9c2c-8c22-9c68-913d367646e8\",\n  \"type\": {\n    \"name\": \"string\",\n    \"uuid\": \"5f8da41b-4d91-e099-adc1-9e127a431ae0\",\n    \"description\": \"string\"\n  },\n  \"start_date\": \"<date>\",\n  \"end_date\": \"<date>\",\n  \"countries\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"certificate_number\": \"<string>\",\n  \"jurisdiction\": \"<string>\",\n  \"us_state_jurisdiction\": \"<string>\",\n  \"issuing_authority\": \"<string>\",\n  \"holder_name\": \"<string>\",\n  \"notes\": \"<string>\",\n  \"status\": \"valid\",\n  \"is_archived\": false,\n  \"superseded_by_uuid\": \"fff061f1-0c92-2579-a16d-e3709102e027\",\n  \"created\": \"2023-08-06T13:35:45.587Z\",\n  \"modified\": \"2001-08-27T21:35:38.702Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "61c2d7ca-f0c4-426f-8377-0327fcb54964",
+          "name": "Partial update buyer document",
+          "request": {
+            "name": "Partial update buyer document",
+            "description": {
+              "content": "Update specific fields of an existing buyer document.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "buyer-documents",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "type_uuid",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "renewing_uuid",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "file",
+                  "value": "<uri>",
+                  "description": "The uploaded document file"
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Display name for the document"
+                },
+                {
+                  "disabled": false,
+                  "key": "start_date",
+                  "value": "<date>",
+                  "description": "Start date of document validity"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_date",
+                  "value": "<date>",
+                  "description": "End/expiry date of document validity"
+                },
+                {
+                  "disabled": false,
+                  "key": "countries",
+                  "value": "<string>",
+                  "description": "ISO country codes this document applies to. Empty = all countries."
+                },
+                {
+                  "disabled": false,
+                  "key": "countries",
+                  "value": "<string>",
+                  "description": "ISO country codes this document applies to. Empty = all countries."
+                },
+                {
+                  "disabled": false,
+                  "key": "certificate_number",
+                  "value": "<string>",
+                  "description": "Permit / exemption / certificate number as printed on the document"
+                },
+                {
+                  "disabled": false,
+                  "key": "jurisdiction",
+                  "value": "<string>",
+                  "description": "State/region the document applies in, as printed on the document (e.g. 'Michigan'). For US documents the structured counterpart is us_state_jurisdiction."
+                },
+                {
+                  "disabled": false,
+                  "key": "us_state_jurisdiction",
+                  "value": "<string>",
+                  "description": "US state/territory this document applies in (USPS code, e.g. 'MI'). Structured counterpart of the free-text jurisdiction for US documents.\n\n* `AL` - Alabama\n* `AK` - Alaska\n* `AZ` - Arizona\n* `AR` - Arkansas\n* `CA` - California\n* `CO` - Colorado\n* `CT` - Connecticut\n* `DE` - Delaware\n* `FL` - Florida\n* `GA` - Georgia\n* `HI` - Hawaii\n* `ID` - Idaho\n* `IL` - Illinois\n* `IN` - Indiana\n* `IA` - Iowa\n* `KS` - Kansas\n* `KY` - Kentucky\n* `LA` - Louisiana\n* `ME` - Maine\n* `MD` - Maryland\n* `MA` - Massachusetts\n* `MI` - Michigan\n* `MN` - Minnesota\n* `MS` - Mississippi\n* `MO` - Missouri\n* `MT` - Montana\n* `NE` - Nebraska\n* `NV` - Nevada\n* `NH` - New Hampshire\n* `NJ` - New Jersey\n* `NM` - New Mexico\n* `NY` - New York\n* `NC` - North Carolina\n* `ND` - North Dakota\n* `OH` - Ohio\n* `OK` - Oklahoma\n* `OR` - Oregon\n* `PA` - Pennsylvania\n* `RI` - Rhode Island\n* `SC` - South Carolina\n* `SD` - South Dakota\n* `TN` - Tennessee\n* `TX` - Texas\n* `UT` - Utah\n* `VT` - Vermont\n* `VA` - Virginia\n* `WA` - Washington\n* `WV` - West Virginia\n* `WI` - Wisconsin\n* `WY` - Wyoming\n* `DC` - District of Columbia\n* `PR` - Puerto Rico\n* `GU` - Guam\n* `VI` - U.S. Virgin Islands\n* `AS` - American Samoa\n* `MP` - Northern Mariana Islands"
+                },
+                {
+                  "disabled": false,
+                  "key": "issuing_authority",
+                  "value": "<string>",
+                  "description": "Body that issued the document (e.g. 'Michigan Department of Treasury')"
+                },
+                {
+                  "disabled": false,
+                  "key": "holder_name",
+                  "value": "<string>",
+                  "description": "Entity the document is issued to as printed — normally the buyer company"
+                },
+                {
+                  "disabled": false,
+                  "key": "notes",
+                  "value": "<string>",
+                  "description": "Optional notes about this document"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c0d03045-c536-4716-8dbd-d8f30a2954d6",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "buyer-documents",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "type_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "renewing_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The uploaded document file",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Display name for the document",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Start date of document validity",
+                        "type": "text/plain"
+                      },
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "End/expiry date of document validity",
+                        "type": "text/plain"
+                      },
+                      "key": "end_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "ISO country codes this document applies to. Empty = all countries.",
+                        "type": "text/plain"
+                      },
+                      "key": "countries",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "ISO country codes this document applies to. Empty = all countries.",
+                        "type": "text/plain"
+                      },
+                      "key": "countries",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Permit / exemption / certificate number as printed on the document",
+                        "type": "text/plain"
+                      },
+                      "key": "certificate_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "State/region the document applies in, as printed on the document (e.g. 'Michigan'). For US documents the structured counterpart is us_state_jurisdiction.",
+                        "type": "text/plain"
+                      },
+                      "key": "jurisdiction",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "US state/territory this document applies in (USPS code, e.g. 'MI'). Structured counterpart of the free-text jurisdiction for US documents.\n\n* `AL` - Alabama\n* `AK` - Alaska\n* `AZ` - Arizona\n* `AR` - Arkansas\n* `CA` - California\n* `CO` - Colorado\n* `CT` - Connecticut\n* `DE` - Delaware\n* `FL` - Florida\n* `GA` - Georgia\n* `HI` - Hawaii\n* `ID` - Idaho\n* `IL` - Illinois\n* `IN` - Indiana\n* `IA` - Iowa\n* `KS` - Kansas\n* `KY` - Kentucky\n* `LA` - Louisiana\n* `ME` - Maine\n* `MD` - Maryland\n* `MA` - Massachusetts\n* `MI` - Michigan\n* `MN` - Minnesota\n* `MS` - Mississippi\n* `MO` - Missouri\n* `MT` - Montana\n* `NE` - Nebraska\n* `NV` - Nevada\n* `NH` - New Hampshire\n* `NJ` - New Jersey\n* `NM` - New Mexico\n* `NY` - New York\n* `NC` - North Carolina\n* `ND` - North Dakota\n* `OH` - Ohio\n* `OK` - Oklahoma\n* `OR` - Oregon\n* `PA` - Pennsylvania\n* `RI` - Rhode Island\n* `SC` - South Carolina\n* `SD` - South Dakota\n* `TN` - Tennessee\n* `TX` - Texas\n* `UT` - Utah\n* `VT` - Vermont\n* `VA` - Virginia\n* `WA` - Washington\n* `WV` - West Virginia\n* `WI` - Wisconsin\n* `WY` - Wyoming\n* `DC` - District of Columbia\n* `PR` - Puerto Rico\n* `GU` - Guam\n* `VI` - U.S. Virgin Islands\n* `AS` - American Samoa\n* `MP` - Northern Mariana Islands",
+                        "type": "text/plain"
+                      },
+                      "key": "us_state_jurisdiction",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Body that issued the document (e.g. 'Michigan Department of Treasury')",
+                        "type": "text/plain"
+                      },
+                      "key": "issuing_authority",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Entity the document is issued to as printed — normally the buyer company",
+                        "type": "text/plain"
+                      },
+                      "key": "holder_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional notes about this document",
+                        "type": "text/plain"
+                      },
+                      "key": "notes",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"file\": \"<uri>\",\n  \"name\": \"<string>\",\n  \"uuid\": \"5d65ecd7-9c2c-8c22-9c68-913d367646e8\",\n  \"type\": {\n    \"name\": \"string\",\n    \"uuid\": \"5f8da41b-4d91-e099-adc1-9e127a431ae0\",\n    \"description\": \"string\"\n  },\n  \"start_date\": \"<date>\",\n  \"end_date\": \"<date>\",\n  \"countries\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"certificate_number\": \"<string>\",\n  \"jurisdiction\": \"<string>\",\n  \"us_state_jurisdiction\": \"<string>\",\n  \"issuing_authority\": \"<string>\",\n  \"holder_name\": \"<string>\",\n  \"notes\": \"<string>\",\n  \"status\": \"valid\",\n  \"is_archived\": false,\n  \"superseded_by_uuid\": \"fff061f1-0c92-2579-a16d-e3709102e027\",\n  \"created\": \"2023-08-06T13:35:45.587Z\",\n  \"modified\": \"2001-08-27T21:35:38.702Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9537f660-9d32-48c5-950f-b7ab4378552f",
+          "name": "Delete buyer document",
+          "request": {
+            "name": "Delete buyer document",
+            "description": {
+              "content": "Permanently delete a buyer document.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "buyer-documents",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b085342a-4a06-48f4-97d4-4a83d9ea4078",
+              "name": "No response body",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "buyer-documents",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a41cd854-7035-44b4-96e8-c66114897425",
+          "name": "List document types present on the buyer's documents",
+          "request": {
+            "name": "List document types present on the buyer's documents",
+            "description": {
+              "content": "Returns the distinct `DocumentType`s that have at least one BuyerDocument for the current brand. Used by the FE filter dropdown so it only offers types the user can actually narrow to.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "buyer-documents",
+                "types-facet",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ordering",
+                  "value": "<string>",
+                  "description": "Which field to use when ordering the results."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "A search term."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6b771c71-c3ed-43cd-87a5-9ca11b6501c0",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "buyer-documents",
+                    "types-facet",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ordering",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"string\",\n    \"uuid\": \"ae74a55a-1b52-f688-52ff-84c9194660c4\",\n    \"description\": \"string\"\n  },\n  {\n    \"name\": \"string\",\n    \"uuid\": \"d3086edb-fefe-9ef6-158b-b3a9b1441cac\",\n    \"description\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "647180b3-02e1-440b-b675-146f65d7f1f5",
+          "name": "List supplier documents for buyer",
+          "request": {
+            "name": "List supplier documents for buyer",
+            "description": {
+              "content": "Returns all supplier certification documents visible to the current buyer. Includes documents from all suppliers the buyer has a referral relationship with. Supplier-wide documents (no buyer assigned) and buyer-specific documents are included.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "buyer-supplier-documents",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "is_archived",
+                  "value": "<boolean>",
+                  "description": "Filter by computed `is_archived` (active vs archived sub-tab)."
+                },
+                {
+                  "disabled": false,
+                  "key": "ordering",
+                  "value": "<string>",
+                  "description": "Which field to use when ordering the results."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "A search term."
+                },
+                {
+                  "disabled": false,
+                  "key": "site_uuid__in",
+                  "value": "<string>",
+                  "description": "Filter by comma-separated supplier site UUIDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by computed lifecycle status."
+                },
+                {
+                  "disabled": false,
+                  "key": "supplier_uuid",
+                  "value": "<uuid>",
+                  "description": "Filter by supplier company UUID."
+                },
+                {
+                  "disabled": false,
+                  "key": "supplier_uuid__in",
+                  "value": "<string>",
+                  "description": "Filter by comma-separated supplier company UUIDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "type_uuid__in",
+                  "value": "<string>",
+                  "description": "Filter by comma-separated document type UUIDs."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "46f84738-8d60-4de5-bcd1-fee9ac990c1e",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "buyer-supplier-documents",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "is_archived",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "ordering",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "site_uuid__in",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "supplier_uuid",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "supplier_uuid__in",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type_uuid__in",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"buyer_name\": \"string\",\n      \"company\": 4557,\n      \"is_archived\": false,\n      \"site\": {\n        \"company\": 8234,\n        \"name\": \"string\",\n        \"uuid\": \"5c85566c-b076-5fa6-a903-14ae63cc2bbe\"\n      },\n      \"status\": \"renewed\",\n      \"superseded_by_uuid\": \"599d983e-1288-3bc7-daa2-e6014a31d3d7\",\n      \"supplier_name\": \"string\",\n      \"supplier_uuid\": \"06fa2348-377f-3b1c-d542-ee5a7c0f2ab5\",\n      \"type\": {\n        \"name\": \"string\",\n        \"uuid\": \"526f17a9-7c18-fb79-70d7-840c2b422ee7\",\n        \"description\": \"string\"\n      },\n      \"url\": \"http://yJEoRnjEEdoUqIxNBeeDjAyejqOprmr.keph7NcUraN0pqSTMh4\",\n      \"uuid\": \"88fcdd7d-eed6-1267-3be2-fd1b69988e31\",\n      \"start_date\": \"1997-11-17\",\n      \"end_date\": \"1968-09-17\",\n      \"notes\": \"string\"\n    },\n    {\n      \"buyer_name\": \"string\",\n      \"company\": 8178,\n      \"is_archived\": false,\n      \"site\": {\n        \"company\": 7344,\n        \"name\": \"string\",\n        \"uuid\": \"139fc98c-1367-4f0d-f6e0-454718154126\"\n      },\n      \"status\": \"expiring_soon\",\n      \"superseded_by_uuid\": \"088d5f96-a592-0b08-e225-f9b190ae58a3\",\n      \"supplier_name\": \"string\",\n      \"supplier_uuid\": \"0579fc53-8c34-bc6b-32ca-c31ecf274500\",\n      \"type\": {\n        \"name\": \"string\",\n        \"uuid\": \"be572b4e-9c02-26ce-b294-162802eddb2a\",\n        \"description\": \"string\"\n      },\n      \"url\": \"https://KZtYXUUsrYskppRvGeiAk.txeJNIYjLftZWoC\",\n      \"uuid\": \"d8389f50-0af8-3ba2-c0d8-353289bbe018\",\n      \"start_date\": \"1950-06-15\",\n      \"end_date\": \"2017-11-23\",\n      \"notes\": \"string\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e22c1d33-7c25-4a48-bbdb-b5fa6b5464b5",
+          "name": "Retrieve supplier document (buyer view)",
+          "request": {
+            "name": "Retrieve supplier document (buyer view)",
+            "description": {
+              "content": "Returns details for a specific supplier document.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "buyer-supplier-documents",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "78ff23b5-865f-4c8d-b8a8-2cffeb7bfa13",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "buyer-supplier-documents",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"buyer_name\": \"string\",\n  \"company\": 835,\n  \"is_archived\": false,\n  \"site\": {\n    \"company\": 6334,\n    \"name\": \"string\",\n    \"uuid\": \"3da96d15-e3cb-3786-8593-28db580d5506\"\n  },\n  \"status\": \"valid\",\n  \"superseded_by_uuid\": \"6e475c03-55c9-8ea9-3b55-4f25eacae383\",\n  \"supplier_name\": \"string\",\n  \"supplier_uuid\": \"373bf7e5-8aa7-75d7-9816-a8c9f659bc3b\",\n  \"type\": {\n    \"name\": \"string\",\n    \"uuid\": \"4e0e18f0-18c2-1543-4334-9a7acc08bc8b\",\n    \"description\": \"string\"\n  },\n  \"url\": \"http://XfGSxyycOSnxVJeSrdGVvBPQLzm.nzcri\",\n  \"uuid\": \"43a939c7-c4d5-3ed0-11c9-a15e3e4e1b07\",\n  \"start_date\": \"1973-07-05\",\n  \"end_date\": \"1995-08-23\",\n  \"notes\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d17d84f0-b988-42ed-bcf8-329ca3ebe3ac",
+          "name": "List document types present on supplier documents visible to the buyer",
+          "request": {
+            "name": "List document types present on supplier documents visible to the buyer",
+            "description": {
+              "content": "Returns the distinct `DocumentType`s that have at least one SupplierDocument visible to the current brand (via REGISTERED referral). Used by the FE filter dropdown so it only offers types the user can actually narrow to.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "buyer-supplier-documents",
+                "types-facet",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ordering",
+                  "value": "<string>",
+                  "description": "Which field to use when ordering the results."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "A search term."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "aa68ab6b-82d2-4847-9f0d-08d6fa80c8af",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "buyer-supplier-documents",
+                    "types-facet",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ordering",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"string\",\n    \"uuid\": \"ae74a55a-1b52-f688-52ff-84c9194660c4\",\n    \"description\": \"string\"\n  },\n  {\n    \"name\": \"string\",\n    \"uuid\": \"d3086edb-fefe-9ef6-158b-b3a9b1441cac\",\n    \"description\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e0c9b535-af23-4425-af77-38cd3bd18847",
+    "name": "Opply Activity Feed Buyer Documents API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

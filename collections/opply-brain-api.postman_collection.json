@@ -1,0 +1,173 @@
+{
+  "item": [
+    {
+      "id": "5cecc8c9-a291-4c4a-bd25-710a4948b5ba",
+      "name": "Brain",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f2ec8248-1ccd-46f8-9c6c-7b30e0b252cb",
+          "name": "Observe per-sector progress and return sectors to celebrate",
+          "request": {
+            "name": "Observe per-sector progress and return sectors to celebrate",
+            "description": {
+              "content": "Single endpoint driving the brain unlock celebration lifecycle.\n\nThe FE POSTs the current per-sector \"above threshold?\" map on\nevery progress change. The BE compares each sector against the\nstored row in ``BrainSectorUnlockSeen`` and returns the list of\nsectors whose modal should now fire:\n\n- **No row exists yet** — first observation of this sector for\n  this user. Create the row with ``resolved`` set to the current\n  ``above_threshold``. If above on first observation we suppress\n  the modal (resolved=True), because we have no way to know\n  whether the buyer just crossed or has been above for months.\n  No celebration in either case.\n- **Existing row, resolved=True** — done. Either we celebrated\n  previously or we suppressed on first observation. Skip.\n- **Existing row, resolved=False, above_threshold=True** — the\n  buyer was observed below threshold last time and is now above.\n  THIS is the real crossing. Flip ``resolved`` to True and\n  return the sector in ``celebrate``.\n- **Existing row, resolved=False, above_threshold=False** —\n  still below. No state change.\n\nThe whole thing runs in a savepoint so the unique-constraint\nrace (two concurrent POSTs trying to create the same row)\nfails cleanly and we re-read the row on the second attempt.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "brain",
+                "observe-progress",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "key_0",
+                  "value": "<boolean>",
+                  "description": "(Required) Map of brain sector key → whether the user is currently above the sector's unlock threshold. Keys outside the ``BrainSectorKey`` enum are silently ignored."
+                },
+                {
+                  "disabled": false,
+                  "key": "key_1",
+                  "value": "<boolean>",
+                  "description": "(Required) Map of brain sector key → whether the user is currently above the sector's unlock threshold. Keys outside the ``BrainSectorKey`` enum are silently ignored."
+                },
+                {
+                  "disabled": false,
+                  "key": "key_2",
+                  "value": "<boolean>",
+                  "description": "(Required) Map of brain sector key → whether the user is currently above the sector's unlock threshold. Keys outside the ``BrainSectorKey`` enum are silently ignored."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ea3ce3db-167f-4432-84fc-a7e842960385",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "brain",
+                    "observe-progress",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Map of brain sector key → whether the user is currently above the sector's unlock threshold. Keys outside the ``BrainSectorKey`` enum are silently ignored.",
+                        "type": "text/plain"
+                      },
+                      "key": "key_0",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"celebrate\": [\n    \"market\",\n    \"market\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e5c6a44b-52a9-4dff-8983-8268d46b861b",
+    "name": "Opply Activity Feed Brain API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

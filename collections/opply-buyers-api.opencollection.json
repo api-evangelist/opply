@@ -1,0 +1,88 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Buyers API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Buyers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List onboarding suppliers for buyer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/buyer/onboarding-suppliers/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a list of onboarding suppliers for the current buyer company"
+        },
+        {
+          "info": {
+            "name": "Get onboarding supplier details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/buyer/onboarding-suppliers/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get detailed information about an onboarding supplier for the buyer"
+        },
+        {
+          "info": {
+            "name": "Request new supplier",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/buyer/supplier-requests/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Submit a request to onboard a new supplier. Creates a buyer_onboarding.Supplier submission in PENDING_REVIEW so it lands in the MoR supplier-submissions review queue, and fires a Zendesk ticket."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

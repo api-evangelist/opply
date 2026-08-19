@@ -1,0 +1,155 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Agents API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Agents",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List installable agents for the current tenant (admin only)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agents/admin/installations/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``GET /api/v1/agents/admin/installations/`` — installable agents + current install status."
+        },
+        {
+          "info": {
+            "name": "Set the installation status for an agent on the current tenant (admin only)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/agents/admin/installations/:agent_uuid/",
+            "params": [
+              {
+                "name": "agent_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``PATCH /api/v1/agents/admin/installations/<agent_uuid>/`` — set installation status.\n\nIf no installation exists and ``status='active'``, the installation (and its\nshadow user) is created via ``create_installation``. Otherwise the existing\ninstallation's status is updated. Returns the serialized row."
+        },
+        {
+          "info": {
+            "name": "List agent (system) tasks for a company (staff cross-tenant; self otherwise)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agents/debug/system-tasks/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``GET /api/v1/agents/debug/system-tasks/`` — agent-assigned tasks for a company.\n\nOptional ``?company_uuid=`` (defaults to the caller's own company; targeting\nanother company requires staff). Returns the most recent agent-assigned Tasks\nserialized with ``TaskSerializer``."
+        },
+        {
+          "info": {
+            "name": "Fleet overview: all agents + per-agent install counts (MoR only)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agents/fleet/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``GET /api/v1/agents/fleet/`` — every enabled agent + install counts (MoR only)."
+        },
+        {
+          "info": {
+            "name": "Fleet detail: one agent's run stats + install list (MoR only)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agents/fleet/:slug/",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``GET /api/v1/agents/fleet/<slug>/`` — one agent's detail + run stats + install list (MoR only)."
+        },
+        {
+          "info": {
+            "name": "Get the active agent installation for the current tenant",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agents/installations/me/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the active ``AgentInstallation`` for ``request.user_company`` along with the shadow user's UUID + name. Used by the buyer FE to address the agent when creating a new Task. Returns ``204 No Content`` when the tenant has no active installation."
+        },
+        {
+          "info": {
+            "name": "Get the buyer's Merchant-of-Record tasks-router ('Opply')",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agents/mor-router/me/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "``GET /api/v1/agents/mor-router/me/`` — the buyer's MoR tasks-router (\"Opply\").\n\nLets the buyer FE surface \"Opply\" as an assignable actor: a buyer assigns a\ntask to ``shadow_user.uuid`` and the BE stamps ``Task.mor_router``. Returns\n``available=false`` when the buyer has no MoR, or the MoR has no active\nrouter install. The shadow user's ``name`` is the MoR's display name\n(\"Opply\"), matching the read-layer masking."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

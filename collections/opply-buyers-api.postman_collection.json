@@ -1,0 +1,639 @@
+{
+  "item": [
+    {
+      "id": "78bde7c6-2be8-46de-8fdb-8d41b5841848",
+      "name": "Buyers",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c06d2a1e-7cdb-460f-ad25-5969881fddef",
+          "name": "List onboarding suppliers for buyer",
+          "request": {
+            "name": "List onboarding suppliers for buyer",
+            "description": {
+              "content": "Get a list of onboarding suppliers for the current buyer company",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "buyer",
+                "onboarding-suppliers",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "942b4f00-83a5-4a54-9ba8-7471d3f11217",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "buyer",
+                    "onboarding-suppliers",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 123,\n  \"results\": [\n    {\n      \"buyer_name\": \"string\",\n      \"company_name\": \"string\",\n      \"created\": \"1999-11-02T11:48:01.570Z\",\n      \"is_archived\": false,\n      \"status\": \"string\",\n      \"uuid\": \"87255b1e-08fc-33ac-cfab-6b4807899798\"\n    },\n    {\n      \"buyer_name\": \"string\",\n      \"company_name\": \"string\",\n      \"created\": \"2014-04-06T03:53:13.417Z\",\n      \"is_archived\": false,\n      \"status\": \"string\",\n      \"uuid\": \"bf2239b4-11a1-812f-5c9b-6bd2e26f493c\"\n    }\n  ],\n  \"next\": \"http://api.example.org/accounts/?page=4\",\n  \"previous\": \"http://api.example.org/accounts/?page=2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4426ca07-5236-4f33-a191-80b17c3d6ca6",
+          "name": "Get onboarding supplier details",
+          "request": {
+            "name": "Get onboarding supplier details",
+            "description": {
+              "content": "Get detailed information about an onboarding supplier for the buyer",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "buyer",
+                "onboarding-suppliers",
+                ":uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "992fffe3-761a-4a16-afe0-91a96b1dd51f",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "buyer",
+                    "onboarding-suppliers",
+                    ":uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"address_contact_email\": \"tmm5Z4@djnvrn.odfw\",\n  \"address_contact_full_name\": \"string\",\n  \"address_contact_phone\": \"string\",\n  \"address_ein_number\": \"string\",\n  \"address_name\": \"string\",\n  \"address_postcode\": \"string\",\n  \"address_region\": \"string\",\n  \"address_street_1\": \"string\",\n  \"address_street_2\": \"string\",\n  \"address_town\": \"string\",\n  \"address_vat_number\": \"string\",\n  \"buyer\": 1881,\n  \"buyer_name\": \"string\",\n  \"buyers_list\": [\n    {\n      \"name\": \"string\",\n      \"uuid\": \"bf24deac-e152-0efe-96b5-4c46a880cd23\"\n    },\n    {\n      \"name\": \"string\",\n      \"uuid\": \"b1e93385-f5be-710a-f8f4-5f28f80eb659\"\n    }\n  ],\n  \"company_name\": \"string\",\n  \"created\": \"1990-07-01T01:07:50.160Z\",\n  \"duns\": \"string\",\n  \"final_supplier\": 5486,\n  \"final_supplier_name\": \"string\",\n  \"final_supplier_uuid\": \"e4e90c26-3db1-539f-d8ed-0608c81fab92\",\n  \"is_archived\": true,\n  \"modified\": \"2010-04-26T20:44:27.948Z\",\n  \"owners_list\": [\n    {\n      \"email\": \"Whaip@nzNhDAJrPICjGxBiMBe.nr\",\n      \"first_name\": \"string\",\n      \"id\": 3873,\n      \"is_staff\": true,\n      \"last_name\": \"string\",\n      \"uuid\": \"64c7c663-8b71-b4b2-9d43-e0a75cda9f1d\"\n    },\n    {\n      \"email\": \"upSXhVa-wZ2JYjC@XZpDMxfpzYOuLmYxB.tt\",\n      \"first_name\": \"string\",\n      \"id\": 4917,\n      \"is_staff\": false,\n      \"last_name\": \"string\",\n      \"uuid\": \"5a8c4240-eb81-93ef-6d17-503f0e9af805\"\n    }\n  ],\n  \"registration_name\": \"string\",\n  \"registration_number\": \"string\",\n  \"status\": \"string\",\n  \"uuid\": \"fd8a17d5-f963-91fd-7671-b307478620b2\",\n  \"address_country\": \"MH\",\n  \"address_contact_phone_country_code\": \"+1284\",\n  \"address_vat_country_code\": \"TM\",\n  \"address_note\": \"string\",\n  \"lead_time_days\": 52,\n  \"registration_country_code\": \"TJ\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bd82fb1e-5b23-49b8-afde-4c8e4320c74a",
+          "name": "Request new supplier",
+          "request": {
+            "name": "Request new supplier",
+            "description": {
+              "content": "Submit a request to onboard a new supplier. Creates a buyer_onboarding.Supplier submission in PENDING_REVIEW so it lands in the MoR supplier-submissions review queue, and fires a Zendesk ticket.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "companies",
+                "buyer",
+                "supplier-requests",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "supplier_name",
+                  "value": "<string>",
+                  "description": "(Required) Supplier name"
+                },
+                {
+                  "disabled": false,
+                  "key": "average_monthly_spend",
+                  "value": "<decimal>",
+                  "description": "Average monthly spend"
+                },
+                {
+                  "disabled": false,
+                  "key": "invoice_currency",
+                  "value": "<string>",
+                  "description": "Invoice/Payment currency (e.g., USD, GBP, EUR)\n\n* `EUR` - EUR\n* `GBP` - GBP\n* `USD` - USD"
+                },
+                {
+                  "disabled": false,
+                  "key": "payment_terms",
+                  "value": "<string>",
+                  "description": "Supplier payment terms"
+                },
+                {
+                  "disabled": false,
+                  "key": "priority",
+                  "value": "<string>",
+                  "description": "Priority to onboard this supplier\n\n* `high` - High\n* `medium` - Medium\n* `low` - Low"
+                },
+                {
+                  "disabled": false,
+                  "key": "supplier_country",
+                  "value": "<string>",
+                  "description": "Supplier country"
+                },
+                {
+                  "disabled": false,
+                  "key": "arranges_delivery",
+                  "value": "false",
+                  "description": "Does the supplier arrange delivery?"
+                },
+                {
+                  "disabled": false,
+                  "key": "lead_time",
+                  "value": "<string>",
+                  "description": "Agreed lead time"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_organic",
+                  "value": "false",
+                  "description": "Is this an organic supplier?"
+                },
+                {
+                  "disabled": false,
+                  "key": "relationship_notes",
+                  "value": "<string>",
+                  "description": "Any noteworthy information about your trading relationship"
+                },
+                {
+                  "disabled": false,
+                  "key": "duns",
+                  "value": "<string>",
+                  "description": "DUNS number for US suppliers"
+                },
+                {
+                  "disabled": false,
+                  "key": "vat_number",
+                  "value": "<string>",
+                  "description": "Supplier VAT number"
+                },
+                {
+                  "disabled": false,
+                  "key": "registration_number",
+                  "value": "<string>",
+                  "description": "Supplier company registration number"
+                },
+                {
+                  "disabled": false,
+                  "key": "contact_name",
+                  "value": "<string>",
+                  "description": "Supplier contact name"
+                },
+                {
+                  "disabled": false,
+                  "key": "contact_email",
+                  "value": "<email>",
+                  "description": "Supplier contact email"
+                },
+                {
+                  "disabled": false,
+                  "key": "contact_phone",
+                  "value": "<string>",
+                  "description": "Supplier contact phone"
+                },
+                {
+                  "disabled": false,
+                  "key": "supplier_address",
+                  "value": "<string>",
+                  "description": "Supplier address"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "17327030-913d-46a7-a2b1-57d6ac7af007",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "companies",
+                    "buyer",
+                    "supplier-requests",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Supplier name",
+                        "type": "text/plain"
+                      },
+                      "key": "supplier_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Average monthly spend",
+                        "type": "text/plain"
+                      },
+                      "key": "average_monthly_spend",
+                      "value": "<decimal>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Invoice/Payment currency (e.g., USD, GBP, EUR)\n\n* `EUR` - EUR\n* `GBP` - GBP\n* `USD` - USD",
+                        "type": "text/plain"
+                      },
+                      "key": "invoice_currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Supplier payment terms",
+                        "type": "text/plain"
+                      },
+                      "key": "payment_terms",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Priority to onboard this supplier\n\n* `high` - High\n* `medium` - Medium\n* `low` - Low",
+                        "type": "text/plain"
+                      },
+                      "key": "priority",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Supplier country",
+                        "type": "text/plain"
+                      },
+                      "key": "supplier_country",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Does the supplier arrange delivery?",
+                        "type": "text/plain"
+                      },
+                      "key": "arranges_delivery",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Agreed lead time",
+                        "type": "text/plain"
+                      },
+                      "key": "lead_time",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Is this an organic supplier?",
+                        "type": "text/plain"
+                      },
+                      "key": "is_organic",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Any noteworthy information about your trading relationship",
+                        "type": "text/plain"
+                      },
+                      "key": "relationship_notes",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "DUNS number for US suppliers",
+                        "type": "text/plain"
+                      },
+                      "key": "duns",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Supplier VAT number",
+                        "type": "text/plain"
+                      },
+                      "key": "vat_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Supplier company registration number",
+                        "type": "text/plain"
+                      },
+                      "key": "registration_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Supplier contact name",
+                        "type": "text/plain"
+                      },
+                      "key": "contact_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Supplier contact email",
+                        "type": "text/plain"
+                      },
+                      "key": "contact_email",
+                      "value": "<email>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Supplier contact phone",
+                        "type": "text/plain"
+                      },
+                      "key": "contact_phone",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Supplier address",
+                        "type": "text/plain"
+                      },
+                      "key": "supplier_address",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 2657,\n  \"matched_supplier_name\": \"string\",\n  \"review_status\": \"matched\",\n  \"supplier_name\": \"string\",\n  \"vat_number\": \"string\",\n  \"registration_number\": \"string\",\n  \"duns\": \"string\",\n  \"products_description\": \"string\",\n  \"average_monthly_spend\": \"434273477\",\n  \"invoice_currency\": \"str\",\n  \"payment_terms\": \"string\",\n  \"priority\": \"<string>\",\n  \"supplier_country\": \"string\",\n  \"supplier_state\": \"string\",\n  \"supplier_address\": \"string\",\n  \"contact_name\": \"string\",\n  \"contact_email\": \"1mbV7JawK@wZz.cbny\",\n  \"contact_phone\": \"string\",\n  \"arranges_delivery\": true,\n  \"lead_time\": \"string\",\n  \"is_organic\": true,\n  \"relationship_notes\": \"string\",\n  \"notes\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f886e25d-4700-40c0-9645-dc1398faea4b",
+    "name": "Opply Activity Feed Buyers API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

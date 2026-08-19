@@ -1,0 +1,914 @@
+{
+  "item": [
+    {
+      "id": "d6c3dcc7-2992-4815-b278-064c0a01cf55",
+      "name": "Agents",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "92517564-bad5-4674-9dc7-10b4036ba134",
+          "name": "List installable agents for the current tenant (admin only)",
+          "request": {
+            "name": "List installable agents for the current tenant (admin only)",
+            "description": {
+              "content": "``GET /api/v1/agents/admin/installations/`` — installable agents + current install status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "agents",
+                "admin",
+                "installations",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d3d4d721-4be1-4791-b792-ccd97759ca95",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "agents",
+                    "admin",
+                    "installations",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"agent\": {\n      \"description\": \"string\",\n      \"is_taskable\": true,\n      \"name\": \"string\",\n      \"slug\": \"56tj\",\n      \"uuid\": \"52a82b7c-dc6d-a8ee-2688-a5a6efe7c2ec\"\n    },\n    \"installation\": {\n      \"installed_at\": \"1978-03-14T14:13:48.177Z\",\n      \"installed_by\": {\n        \"name\": \"string\",\n        \"uuid\": \"2e08f46d-dfcc-16ee-04b1-c37b819f4f40\"\n      },\n      \"status\": \"active\",\n      \"uuid\": \"ccb1378f-62d6-6d52-d974-6e834e1e3480\"\n    }\n  },\n  {\n    \"agent\": {\n      \"description\": \"string\",\n      \"is_taskable\": false,\n      \"name\": \"string\",\n      \"slug\": \"yy4peE6DI\",\n      \"uuid\": \"cf7da52a-4329-75dc-c39a-add405faa7ac\"\n    },\n    \"installation\": {\n      \"installed_at\": \"2005-07-31T18:33:04.642Z\",\n      \"installed_by\": {\n        \"name\": \"string\",\n        \"uuid\": \"3184a861-0e4c-79c4-106e-91388ef16dd5\"\n      },\n      \"status\": \"paused\",\n      \"uuid\": \"c6262504-7b9f-0d89-419a-1b87578fe47e\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bc26124e-dbd4-4f21-a998-d8845348f6d6",
+          "name": "Set the installation status for an agent on the current tenant (admin only)",
+          "request": {
+            "name": "Set the installation status for an agent on the current tenant (admin only)",
+            "description": {
+              "content": "``PATCH /api/v1/agents/admin/installations/<agent_uuid>/`` — set installation status.\n\nIf no installation exists and ``status='active'``, the installation (and its\nshadow user) is created via ``create_installation``. Otherwise the existing\ninstallation's status is updated. Returns the serialized row.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "agents",
+                "admin",
+                "installations",
+                ":agent_uuid",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "agent_uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4eb9bdc7-bee6-4e12-b155-510a4cd0e55d",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "agents",
+                    "admin",
+                    "installations",
+                    ":agent_uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "agent_uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "status",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"agent\": {\n    \"description\": \"string\",\n    \"is_taskable\": true,\n    \"name\": \"string\",\n    \"slug\": \"UXtmt89Ap\",\n    \"uuid\": \"a2182740-c756-5582-6c83-588f6e32652d\"\n  },\n  \"installation\": {\n    \"installed_at\": \"1982-03-17T03:21:58.772Z\",\n    \"installed_by\": {\n      \"name\": \"string\",\n      \"uuid\": \"7b29cf13-d435-1c42-30c0-3c5cb982c9ed\"\n    },\n    \"status\": \"<string>\",\n    \"uuid\": \"dd8ad0d3-15c5-bf66-7a71-02cf473a31c3\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f9180e4e-5202-4972-97e6-7b74bb32df8c",
+              "name": "Agent not found or not installable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "agents",
+                    "admin",
+                    "installations",
+                    ":agent_uuid",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "agent_uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "status",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3b702533-e29f-44ac-896c-23274e696b3c",
+          "name": "List agent (system) tasks for a company (staff cross-tenant; self otherwise)",
+          "request": {
+            "name": "List agent (system) tasks for a company (staff cross-tenant; self otherwise)",
+            "description": {
+              "content": "``GET /api/v1/agents/debug/system-tasks/`` — agent-assigned tasks for a company.\n\nOptional ``?company_uuid=`` (defaults to the caller's own company; targeting\nanother company requires staff). Returns the most recent agent-assigned Tasks\nserialized with ``TaskSerializer``.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "agents",
+                "debug",
+                "system-tasks",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3592cd52-3558-43c6-83f0-3fd3f316cd75",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "agents",
+                    "debug",
+                    "system-tasks",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"assignee\": {\n      \"email\": \"2B1@wXcgxBkUjpJJyWGBFZwvAdgtpLK.az\",\n      \"is_agent\": true,\n      \"is_mor_router\": true,\n      \"name\": \"string\",\n      \"uuid\": \"69f20812-fd02-b141-c6b9-365a35c838ec\"\n    },\n    \"attachments\": [\n      {\n        \"key_0\": {},\n        \"key_1\": {}\n      },\n      {\n        \"key_0\": {}\n      }\n    ],\n    \"completed_at\": \"2024-06-10T10:35:49.764Z\",\n    \"created\": \"1950-06-29T19:49:00.242Z\",\n    \"created_by\": {\n      \"email\": \"7QWH8Y@JrCqDXQUPWnRyXT.aq\",\n      \"is_agent\": false,\n      \"is_mor_router\": true,\n      \"name\": \"string\",\n      \"uuid\": \"54c9f96d-17a9-6a20-ab4e-13756820cbcb\"\n    },\n    \"modified\": \"1989-12-10T17:49:02.611Z\",\n    \"number\": 135,\n    \"parent_task\": {\n      \"key_0\": {},\n      \"key_1\": {}\n    },\n    \"plan\": {\n      \"uuid\": \"20364031-e537-a3fd-561b-b84da3c82fbd\",\n      \"version\": 4899,\n      \"status\": \"superseded\",\n      \"body\": \"string\",\n      \"feedback\": \"string\",\n      \"approver_kind\": \"merchant_of_record\",\n      \"decided_by_name\": \"string\",\n      \"decided_at\": \"1954-05-19T12:40:34.556Z\",\n      \"created\": \"1960-09-04T03:51:17.350Z\",\n      \"viewer_can_decide\": false,\n      \"versions\": [\n        {\n          \"uuid\": \"4d791723-cb78-2e9c-ac43-18c035801843\",\n          \"version\": 3915,\n          \"status\": \"superseded\",\n          \"body\": \"string\",\n          \"feedback\": \"string\",\n          \"approver_kind\": \"merchant_of_record\",\n          \"decided_by_name\": \"string\",\n          \"decided_at\": \"2021-05-01T01:30:05.763Z\",\n          \"created\": \"1980-06-15T10:22:32.867Z\"\n        },\n        {\n          \"uuid\": \"f9fe5cdd-61fc-08a0-7e7a-557eb294a20c\",\n          \"version\": 7158,\n          \"status\": \"rejected\",\n          \"body\": \"string\",\n          \"feedback\": \"string\",\n          \"approver_kind\": \"merchant_of_record\",\n          \"decided_by_name\": \"string\",\n          \"decided_at\": \"1987-01-24T16:50:37.527Z\",\n          \"created\": \"2010-05-06T13:08:06.008Z\"\n        }\n      ]\n    },\n    \"plan_awaiting_revision\": false,\n    \"recurrence_summary\": {\n      \"uuid\": \"3997efe4-02af-9161-aca2-1b2708821f00\",\n      \"is_template\": false,\n      \"is_enabled\": false,\n      \"frequency\": \"string\",\n      \"interval\": 6258,\n      \"weekdays\": [\n        \"string\",\n        \"string\"\n      ],\n      \"monthly_mode\": \"string\",\n      \"weekday_ordinal\": 5193,\n      \"cron_expression\": \"string\",\n      \"starts_at\": \"1952-09-01T15:14:19.632Z\",\n      \"ends_mode\": \"string\",\n      \"ends_on\": \"1986-06-10\",\n      \"ends_after_count\": 414,\n      \"overlap_policy\": \"string\",\n      \"next_run_at\": \"1949-04-10T11:56:34.693Z\",\n      \"last_run_at\": \"1956-10-28T15:54:52.544Z\",\n      \"occurrences_created\": 7108\n    },\n    \"requester\": {\n      \"uuid\": \"429e85fc-6814-1e42-43d4-df85e4949512\",\n      \"name\": \"string\"\n    },\n    \"show_buyer_chat_notice\": true,\n    \"status_locked\": false,\n    \"subtasks\": [\n      {\n        \"key_0\": {}\n      },\n      {\n        \"key_0\": {},\n        \"key_1\": {},\n        \"key_2\": {},\n        \"key_3\": {}\n      }\n    ],\n    \"targets\": [\n      {\n        \"key_0\": {}\n      },\n      {\n        \"key_0\": {},\n        \"key_1\": {}\n      }\n    ],\n    \"title\": \"string\",\n    \"unread_chat_count\": 4653,\n    \"unread_mention_count\": 2871,\n    \"uuid\": \"6841eb2d-a499-de41-fd97-31298ca6af1b\",\n    \"watchers\": [\n      {\n        \"email\": \"VUZBY@oKmtAhuozi.akaf\",\n        \"is_agent\": false,\n        \"is_mor_router\": false,\n        \"name\": \"string\",\n        \"uuid\": \"4dd18799-48c6-fbd1-c901-6a95768814ec\"\n      },\n      {\n        \"email\": \"3DRO5tRXumJ@HRUlEFOYrbBeqDCK.bjs\",\n        \"is_agent\": false,\n        \"is_mor_router\": false,\n        \"name\": \"string\",\n        \"uuid\": \"40f2db60-fcc1-264a-ee0d-b4dddb804d82\"\n      }\n    ],\n    \"description\": \"string\",\n    \"due_date\": \"1959-10-08\",\n    \"status\": \"waiting_approval\",\n    \"priority\": \"medium\",\n    \"is_private\": true\n  },\n  {\n    \"assignee\": {\n      \"email\": \"UvLUyJzaScMcA@eQqiAIxJZFvncvzIRXbRpVK.sv\",\n      \"is_agent\": true,\n      \"is_mor_router\": false,\n      \"name\": \"string\",\n      \"uuid\": \"ea95c744-c7e4-abd2-6d1c-f639ace37bd1\"\n    },\n    \"attachments\": [\n      {\n        \"key_0\": {}\n      },\n      {\n        \"key_0\": {},\n        \"key_1\": {},\n        \"key_2\": {},\n        \"key_3\": {}\n      }\n    ],\n    \"completed_at\": \"1987-02-23T23:08:32.847Z\",\n    \"created\": \"2003-07-06T16:26:21.396Z\",\n    \"created_by\": {\n      \"email\": \"AcW5M2@fPKDYktExJvatyltOHakouRtNrJhv.hd\",\n      \"is_agent\": true,\n      \"is_mor_router\": false,\n      \"name\": \"string\",\n      \"uuid\": \"35eacf14-4581-99aa-aa91-5b5be729c570\"\n    },\n    \"modified\": \"1950-01-06T06:00:01.920Z\",\n    \"number\": 2238,\n    \"parent_task\": {\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {},\n      \"key_3\": {}\n    },\n    \"plan\": {\n      \"uuid\": \"97fa336e-4fc5-75c5-5e53-d70896ab8f4e\",\n      \"version\": 429,\n      \"status\": \"approved\",\n      \"body\": \"string\",\n      \"feedback\": \"string\",\n      \"approver_kind\": \"task_participants\",\n      \"decided_by_name\": \"string\",\n      \"decided_at\": \"1993-02-07T11:16:58.767Z\",\n      \"created\": \"2017-06-03T21:57:24.901Z\",\n      \"viewer_can_decide\": true,\n      \"versions\": [\n        {\n          \"uuid\": \"7015d4e9-c37b-0469-fa58-e5cb2cd9116a\",\n          \"version\": 8998,\n          \"status\": \"rejected\",\n          \"body\": \"string\",\n          \"feedback\": \"string\",\n          \"approver_kind\": \"task_participants\",\n          \"decided_by_name\": \"string\",\n          \"decided_at\": \"1953-10-21T16:21:45.359Z\",\n          \"created\": \"1991-01-31T07:14:52.059Z\"\n        },\n        {\n          \"uuid\": \"ac1fccf5-ba99-29b1-07e5-6df9e8e6173c\",\n          \"version\": 8208,\n          \"status\": \"approved\",\n          \"body\": \"string\",\n          \"feedback\": \"string\",\n          \"approver_kind\": \"merchant_of_record\",\n          \"decided_by_name\": \"string\",\n          \"decided_at\": \"2012-02-04T15:04:08.113Z\",\n          \"created\": \"1953-08-10T14:51:24.753Z\"\n        }\n      ]\n    },\n    \"plan_awaiting_revision\": false,\n    \"recurrence_summary\": {\n      \"uuid\": \"9b44ab58-9637-f0b2-b7a9-324d74cf01aa\",\n      \"is_template\": false,\n      \"is_enabled\": true,\n      \"frequency\": \"string\",\n      \"interval\": 8730,\n      \"weekdays\": [\n        \"string\",\n        \"string\"\n      ],\n      \"monthly_mode\": \"string\",\n      \"weekday_ordinal\": 3014,\n      \"cron_expression\": \"string\",\n      \"starts_at\": \"2008-04-15T06:26:00.726Z\",\n      \"ends_mode\": \"string\",\n      \"ends_on\": \"1982-04-30\",\n      \"ends_after_count\": 5413,\n      \"overlap_policy\": \"string\",\n      \"next_run_at\": \"1964-08-31T21:50:03.665Z\",\n      \"last_run_at\": \"1958-05-24T15:34:55.239Z\",\n      \"occurrences_created\": 6846\n    },\n    \"requester\": {\n      \"uuid\": \"9f33e3f3-4c85-86c8-7684-a066c9360434\",\n      \"name\": \"string\"\n    },\n    \"show_buyer_chat_notice\": true,\n    \"status_locked\": true,\n    \"subtasks\": [\n      {\n        \"key_0\": {},\n        \"key_1\": {}\n      },\n      {\n        \"key_0\": {},\n        \"key_1\": {},\n        \"key_2\": {},\n        \"key_3\": {},\n        \"key_4\": {}\n      }\n    ],\n    \"targets\": [\n      {\n        \"key_0\": {}\n      },\n      {\n        \"key_0\": {}\n      }\n    ],\n    \"title\": \"string\",\n    \"unread_chat_count\": 6435,\n    \"unread_mention_count\": 9441,\n    \"uuid\": \"8489da00-8528-d769-315e-d87d02d4d992\",\n    \"watchers\": [\n      {\n        \"email\": \"naJUiwpzwgObqE8@MwvWTGaYYmcBfAkIEooguBWPdQ.xerl\",\n        \"is_agent\": false,\n        \"is_mor_router\": true,\n        \"name\": \"string\",\n        \"uuid\": \"90dcdf4e-ec02-e4bb-4cbf-094a91fe900a\"\n      },\n      {\n        \"email\": \"KeyVdwDpvF9g@U.ce\",\n        \"is_agent\": true,\n        \"is_mor_router\": true,\n        \"name\": \"string\",\n        \"uuid\": \"0567166e-fd63-69ff-00d5-976650d1fd94\"\n      }\n    ],\n    \"description\": \"string\",\n    \"due_date\": \"1984-10-19\",\n    \"status\": \"waiting_approval\",\n    \"priority\": \"high\",\n    \"is_private\": true\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "40f1e12b-bbf8-488b-a84a-7e9fe25dc1ce",
+          "name": "Fleet overview: all agents + per-agent install counts (MoR only)",
+          "request": {
+            "name": "Fleet overview: all agents + per-agent install counts (MoR only)",
+            "description": {
+              "content": "``GET /api/v1/agents/fleet/`` — every enabled agent + install counts (MoR only).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "agents",
+                "fleet",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "cd44a9cb-ac1b-465a-b5ec-1a702a13a745",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "agents",
+                    "fleet",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"description\": \"string\",\n    \"installable_by_company_types\": [\n      \"string\",\n      \"string\"\n    ],\n    \"installs\": {\n      \"active\": 5547,\n      \"paused\": 1106,\n      \"revoked\": 8411,\n      \"total\": 8423\n    },\n    \"is_enabled\": true,\n    \"is_router\": false,\n    \"is_taskable\": true,\n    \"name\": \"string\",\n    \"scope_kind\": \"string\",\n    \"slug\": \"r\",\n    \"uuid\": \"f3f6e171-3bb9-b144-8073-13c5646b9e4a\"\n  },\n  {\n    \"description\": \"string\",\n    \"installable_by_company_types\": [\n      \"string\",\n      \"string\"\n    ],\n    \"installs\": {\n      \"active\": 5494,\n      \"paused\": 263,\n      \"revoked\": 2575,\n      \"total\": 9458\n    },\n    \"is_enabled\": false,\n    \"is_router\": true,\n    \"is_taskable\": false,\n    \"name\": \"string\",\n    \"scope_kind\": \"string\",\n    \"slug\": \"X8YBoleJRwl\",\n    \"uuid\": \"0dc7cb69-e52d-c388-5460-8480dbc98ba2\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c9e85551-f973-4c9b-a9b3-8d59c0436cfa",
+          "name": "Fleet detail: one agent's run stats + install list (MoR only)",
+          "request": {
+            "name": "Fleet detail: one agent's run stats + install list (MoR only)",
+            "description": {
+              "content": "``GET /api/v1/agents/fleet/<slug>/`` — one agent's detail + run stats + install list (MoR only).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "agents",
+                "fleet",
+                ":slug",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "slug",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "2c9ae852-2242-4190-8578-5df84994cc0c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "agents",
+                    "fleet",
+                    ":slug",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"agent\": {\n    \"default_allowed_tools\": [\n      \"string\",\n      \"string\"\n    ],\n    \"description\": \"string\",\n    \"has_runtime\": false,\n    \"installable_by_company_types\": [\n      \"string\",\n      \"string\"\n    ],\n    \"is_enabled\": false,\n    \"is_router\": false,\n    \"is_taskable\": false,\n    \"name\": \"string\",\n    \"scope_kind\": \"string\",\n    \"slug\": \"pKcS\",\n    \"uuid\": \"cebf13c6-1568-4c14-dcad-0bc5791cab82\"\n  },\n  \"installations\": [\n    {\n      \"company\": {\n        \"name\": \"string\",\n        \"uuid\": \"698c51e7-5cf2-8908-0bcb-d24d5798dd68\"\n      },\n      \"installed_at\": \"1990-01-10T05:04:36.187Z\",\n      \"installed_by\": {\n        \"name\": \"string\",\n        \"uuid\": \"81c09601-734f-7058-9655-b62c90860898\"\n      },\n      \"shadow_user\": {\n        \"name\": \"string\",\n        \"uuid\": \"47836bb9-5ef4-8d74-fef2-4fcbadc4dd6b\"\n      },\n      \"status\": \"string\"\n    },\n    {\n      \"company\": {\n        \"name\": \"string\",\n        \"uuid\": \"e5102105-195f-478d-5fcc-f494813c5a64\"\n      },\n      \"installed_at\": \"2017-06-19T02:54:49.636Z\",\n      \"installed_by\": {\n        \"name\": \"string\",\n        \"uuid\": \"80faa73e-6c84-6b41-7c7d-09008436a7fb\"\n      },\n      \"shadow_user\": {\n        \"name\": \"string\",\n        \"uuid\": \"e70592fc-4e27-581b-80b7-8e3d14abf27d\"\n      },\n      \"status\": \"string\"\n    }\n  ],\n  \"runs\": {\n    \"failed\": 2689,\n    \"latest_run_at\": \"2013-05-23T17:29:17.523Z\",\n    \"running\": 5288,\n    \"succeeded\": 3108,\n    \"total\": 1060\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9ec6252b-e99c-48d0-a88a-6d36e40d5b6e",
+          "name": "Get the active agent installation for the current tenant",
+          "request": {
+            "name": "Get the active agent installation for the current tenant",
+            "description": {
+              "content": "Returns the active ``AgentInstallation`` for ``request.user_company`` along with the shadow user's UUID + name. Used by the buyer FE to address the agent when creating a new Task. Returns ``204 No Content`` when the tenant has no active installation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "agents",
+                "installations",
+                "me",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "93270f06-7b7a-45c1-9eb3-99fa2d4b24b5",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "agents",
+                    "installations",
+                    "me",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"agent\": {\n    \"description\": \"string\",\n    \"is_taskable\": false,\n    \"name\": \"string\",\n    \"slug\": \"UVOUB\",\n    \"uuid\": \"c6976990-fb09-a477-5516-776b15cc7849\"\n  },\n  \"shadow_user\": {\n    \"name\": \"string\",\n    \"uuid\": \"2bf0672e-0e87-4cf3-18c1-fe0619857125\"\n  },\n  \"status\": \"string\",\n  \"uuid\": \"70ace3b6-0154-1f8f-1455-fcc003ef6d43\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "78c56935-f2d1-4ca9-8b27-b5bf3ab33d2f",
+              "name": "Tenant has no active agent installation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "agents",
+                    "installations",
+                    "me",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "aacdf728-e9e8-428c-8bdd-df6a8dc4d78d",
+          "name": "Get the buyer's Merchant-of-Record tasks-router ('Opply')",
+          "request": {
+            "name": "Get the buyer's Merchant-of-Record tasks-router ('Opply')",
+            "description": {
+              "content": "``GET /api/v1/agents/mor-router/me/`` — the buyer's MoR tasks-router (\"Opply\").\n\nLets the buyer FE surface \"Opply\" as an assignable actor: a buyer assigns a\ntask to ``shadow_user.uuid`` and the BE stamps ``Task.mor_router``. Returns\n``available=false`` when the buyer has no MoR, or the MoR has no active\nrouter install. The shadow user's ``name`` is the MoR's display name\n(\"Opply\"), matching the read-layer masking.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "agents",
+                "mor-router",
+                "me",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7777bed2-13e3-43e0-9ecb-547d7f632246",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "agents",
+                    "mor-router",
+                    "me",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"available\": false,\n  \"shadow_user\": {\n    \"name\": \"string\",\n    \"uuid\": \"78ec2630-e995-7f78-faab-79621b100354\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f8736291-7f2f-43cc-9457-9c8a20b44a28",
+    "name": "Opply Activity Feed Agents API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

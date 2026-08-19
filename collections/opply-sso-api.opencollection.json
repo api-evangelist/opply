@@ -1,0 +1,35 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed SSO API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SSO",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Mint a temporary token for the current user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/users/sso/mint-temporary-token/",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single-use, 5-minute temporary token bound to the authenticated user. Used by the cross-frontend redirect handshake; the destination frontend exchanges it via POST /api/v1/users/admin_panel/get_token/."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

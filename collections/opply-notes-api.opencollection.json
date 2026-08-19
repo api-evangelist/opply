@@ -1,0 +1,180 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opply Activity Feed Notes API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Notes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List notes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/notes/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              },
+              {
+                "name": "task_uuid",
+                "value": "",
+                "type": "query",
+                "description": "UUID of a task whose company-private notes to list. Mutually exclusive with target_type/target_uuid."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same t"
+        },
+        {
+          "info": {
+            "name": "Create a note",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/notes/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same t"
+        },
+        {
+          "info": {
+            "name": "Get a note",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/notes/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same t"
+        },
+        {
+          "info": {
+            "name": "Update a note",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/notes/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same t"
+        },
+        {
+          "info": {
+            "name": "Partially update a note",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/notes/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same t"
+        },
+        {
+          "info": {
+            "name": "Delete a note",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/notes/:uuid/",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same t"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
