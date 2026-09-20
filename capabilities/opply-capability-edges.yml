@@ -1,0 +1,99 @@
+slug: opply
+provider: Opply
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Transportation & Logistics
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 8
+edges:
+- tag: Inquiries
+  spec_file: opply-inquiries-api-openapi.yml
+  capability_id: BC-500.10
+  capability_id_l1: BC-500
+  capability_name: Sourcing Management
+  confidence: 0.78
+  evidence: '"Inquiry creation endpoint."; "Endpoint to retrieve all quotes list for request details page";
+    "Create a purchase request for a contract"'
+  reason: Brands raise inquiries (RFQs) to suppliers, receive and review quotes, and convert them into
+    purchase requests — strategic sourcing / RFx and supplier selection.
+- tag: Suppliers
+  spec_file: opply-suppliers-api-openapi.yml
+  capability_id: BC-510.10
+  capability_id_l1: BC-510
+  capability_name: Supplier Onboarding Management
+  confidence: 0.78
+  evidence: POST /api/v1/companies/invite-company/  Send company invite endpoint ... GET /api/v1/companies/mor/onboarding-suppliers/  List
+    all onboarding suppliers ... POST .../onboarding-suppliers/  Create a new onboarding supplier ; schemas
+    'OnboardingSupplier', 'SupplierQuestionnaire', 'FinalSupplierCreate'
+  reason: The surface registers and progresses suppliers through onboarding (invites, onboarding-supplier
+    records, supplier questionnaires, addresses, quotes), which is squarely Supplier Onboarding Management
+    within Supplier Management. Some quote/pricing endpoints spill into other areas, so not maximal confidence.
+- tag: App Orders
+  spec_file: opply-app-orders-api-openapi.yml
+  capability_id: BC-500.30
+  capability_id_l1: BC-500
+  capability_name: Purchase Order Management
+  confidence: 0.75
+  evidence: GET /api/v1/app-orders/brand/ — List all buyer orders; POST .../mark-order-as-paid-out-to-supplier/
+  reason: 'Lifecycle of buyer orders placed with suppliers: creation, editing of order prices, order events,
+    documents and payment marking — purchase order execution (with adjacent supplier-payment/AP aspects).'
+- tag: Orders
+  spec_file: opply-orders-api-openapi.yml
+  capability_id: BC-500.30
+  capability_id_l1: BC-500
+  capability_name: Purchase Order Management
+  confidence: 0.75
+  evidence: GET /api/v1/orders/brand/{order_uuid}/goods-receipt/pdf/; POST .../confirm-delivered/; schemas
+    PurchaseOrderShipping, PurchaseOrderCompanyInfo, OrderState
+  reason: Endpoints create and retrieve purchase orders placed by brands with suppliers, confirm delivery,
+    produce goods receipts and invoices, and handle order disputes — purchase order creation and execution
+    within procure-to-pay. Some spill into P2P operations, so not maximal confidence.
+- tag: Buyers
+  spec_file: opply-buyers-api-openapi.yml
+  capability_id: BC-510.10
+  capability_id_l1: BC-510
+  capability_name: Supplier Onboarding Management
+  confidence: 0.72
+  evidence: '"List onboarding suppliers for buyer"; "Request new supplier"; schemas BuyerOnboardingSupplierSubmission,
+    SupplierReviewStatusEnum, SupplierRequest'
+  reason: The buyer-scoped operations expose supplier onboarding pipelines and new-supplier requests with
+    review status, which is supplier qualification/registration rather than customer management.
+- tag: Deals
+  spec_file: opply-deals-api-openapi.yml
+  capability_id: BC-410.30
+  capability_id_l1: BC-410
+  capability_name: Opportunity & Pipeline Management
+  confidence: 0.72
+  evidence: '"Deal endpoints."; "Endpoint to create a note for a deal."; "Get the deal associated with
+    the thread."; schemas Deals, Notes, AssignThread'
+  reason: Creation and retrieval of deals with notes and thread association is classic opportunity/deal
+    pipeline tracking, though the operations are lightly documented.
+- tag: Agreements
+  spec_file: opply-agreements-api-openapi.yml
+  capability_id: BC-500.20
+  capability_id_l1: BC-500
+  capability_name: Procurement Contract Management
+  confidence: 0.7
+  evidence: POST /api/v1/agreements/brand/{uuid}/place-order/ — Place an order from an agreement; schemas
+    PayoutTermsEnum, AgreementLineItemDocument
+  reason: Supply agreements between buyers (brands) and suppliers, with line items, payment/payout terms
+    and documents, from which purchase orders are released — procurement contract lifecycle.
+- tag: Quotes
+  spec_file: opply-quotes-api-openapi.yml
+  capability_id: BC-500.10
+  capability_id_l1: BC-500
+  capability_name: Sourcing Management
+  confidence: 0.7
+  evidence: GET /api/v1/inquiries/{inquiry_uuid}/quotes/brand/{uuid}/ 'Retrieve details of a quote for
+    a brand'; POST .../decline/; schemas QuoteDeclineReason, PaginatedQuoteNegotiationList, PaginatedPurchaseRequestList
+  reason: Buyer-side handling of supplier quotes against inquiries — reviewing, declining, requesting
+    updates on expired quotes, negotiating and proceeding to contract/purchase request. This is RFx and
+    supplier selection within strategic sourcing rather than sell-side quoting; the mixed contract-renewal
+    schemas add some ambiguity.
