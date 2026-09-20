@@ -11,7 +11,7 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 8
+edge_count: 9
 edges:
 - tag: Inquiries
   spec_file: opply-inquiries-api-openapi.yml
@@ -85,6 +85,18 @@ edges:
     PayoutTermsEnum, AgreementLineItemDocument
   reason: Supply agreements between buyers (brands) and suppliers, with line items, payment/payout terms
     and documents, from which purchase orders are released — procurement contract lifecycle.
+- tag: Integrations
+  spec_file: opply-integrations-api-openapi.yml
+  capability_id: BC-500.60
+  capability_id_l1: BC-500
+  capability_name: Procurement Spend Analysis Management
+  confidence: 0.7
+  evidence: GET /api/v1/integrations/xero/supplier-spend/ 'Deterministic Xero supplier-spend breakdown
+    for the current buyer.'; schemas _SupplierSpendRow, _CategorySpendRow
+  reason: The sole operation pulls accounting data to produce supplier- and category-level spend breakdowns,
+    which is procurement spend visibility. Confidence tempered because the tag is nominally an integration
+    surface with a single endpoint.
+  recovered_from: sweep-20260829T005356Z-edges.json
 - tag: Quotes
   spec_file: opply-quotes-api-openapi.yml
   capability_id: BC-500.10
