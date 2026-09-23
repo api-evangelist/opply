@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Opply Activity Feed Welcome Modal API
+  title: Opply Welcome Modal API
   version: 0.0.0
 tags:
 - name: Welcome Modal
@@ -21,6 +21,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/WelcomeModalState'
           description: ''
+      summary: Api v1 users welcome modal me retrieve
+      x-summary-source: derived
     post:
       operationId: api_v1_users_welcome_modal_me_create
       description: Per-user dismissal state for the post-relaunch welcome modal.
@@ -48,27 +50,32 @@ paths:
               schema:
                 $ref: '#/components/schemas/WelcomeModalDismissal'
           description: ''
+      summary: Api v1 users welcome modal me create
+      x-summary-source: derived
 components:
   schemas:
-    WelcomeModalState:
+    NullEnum:
+      enum:
+      - null
+    WelcomeModalDismissalRequest:
       type: object
-      description: Response shape for `GET /users/welcome-modal/me/`.
+      description: Inbound payload for `POST /users/welcome-modal/me/`.
       properties:
-        dismissed:
-          type: boolean
         action:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/WelcomeModalActionEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        dismissed_at:
-          type: string
-          format: date-time
-          nullable: true
+          $ref: '#/components/schemas/WelcomeModalActionEnum'
       required:
       - action
-      - dismissed
-      - dismissed_at
+    WelcomeModalActionEnum:
+      enum:
+      - place_an_order
+      - payments
+      - explore
+      type: string
+      description: '* `place_an_order` - Place an order
+
+        * `payments` - Payments
+
+        * `explore` - Explore'
     WelcomeModalDismissal:
       type: object
       properties:
@@ -90,28 +97,25 @@ components:
       required:
       - action
       - dismissed_at
-    WelcomeModalDismissalRequest:
+    WelcomeModalState:
       type: object
-      description: Inbound payload for `POST /users/welcome-modal/me/`.
+      description: Response shape for `GET /users/welcome-modal/me/`.
       properties:
+        dismissed:
+          type: boolean
         action:
-          $ref: '#/components/schemas/WelcomeModalActionEnum'
+          oneOf:
+          - $ref: '#/components/schemas/WelcomeModalActionEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        dismissed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
       required:
       - action
-    WelcomeModalActionEnum:
-      enum:
-      - place_an_order
-      - payments
-      - explore
-      type: string
-      description: '* `place_an_order` - Place an order
-
-        * `payments` - Payments
-
-        * `explore` - Explore'
-    NullEnum:
-      enum:
-      - null
+      - dismissed
+      - dismissed_at
   securitySchemes:
     cookieAuth:
       type: apiKey

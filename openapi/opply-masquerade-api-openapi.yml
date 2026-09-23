@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Opply Activity Feed Masquerade API
+  title: Opply Masquerade API
   version: 0.0.0
 tags:
 - name: Masquerade
@@ -75,6 +75,15 @@ paths:
           description: No response body
 components:
   schemas:
+    MasqueradeTargetUser:
+      type: object
+      description: Request serializer for masquerade target user.
+      properties:
+        user_uuid:
+          type: string
+          format: uuid
+      required:
+      - user_uuid
     MasqueradeTokenResponse:
       type: object
       description: Response serializer containing the temporary token and target user/company info.
@@ -96,17 +105,6 @@ components:
       - target_user_email
       - target_user_name
       - token
-    CompanyTypeEnum:
-      enum:
-      - brand
-      - supplier
-      - merchant_of_record
-      type: string
-      description: '* `brand` - Brand
-
-        * `supplier` - Supplier
-
-        * `merchant_of_record` - Merchant of Record'
     MasqueradeableUser:
       type: object
       description: Serializer for listing users that can be masqueraded.
@@ -133,28 +131,32 @@ components:
           type: integer
           example: 123
         next:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           format: uri
           example: http://api.example.org/accounts/?page=4
         previous:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           format: uri
           example: http://api.example.org/accounts/?page=2
         results:
           type: array
           items:
             $ref: '#/components/schemas/MasqueradeableUser'
-    MasqueradeTargetUser:
-      type: object
-      description: Request serializer for masquerade target user.
-      properties:
-        user_uuid:
-          type: string
-          format: uuid
-      required:
-      - user_uuid
+    CompanyTypeEnum:
+      enum:
+      - brand
+      - supplier
+      - merchant_of_record
+      type: string
+      description: '* `brand` - Brand
+
+        * `supplier` - Supplier
+
+        * `merchant_of_record` - Merchant of Record'
   securitySchemes:
     cookieAuth:
       type: apiKey

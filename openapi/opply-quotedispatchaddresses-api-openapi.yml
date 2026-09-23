@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Opply Activity Feed QuoteDispatchAddresses API
+  title: Opply Quote Dispatch Addresses API
   version: 0.0.0
 tags:
 - name: QuoteDispatchAddresses
@@ -27,6 +27,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/QuoteDispatchAddress'
           description: ''
+      summary: Api v1 inquiries dispatch address retrieve
+      x-summary-source: derived
     put:
       operationId: api_v1_inquiries_dispatch_address_update
       parameters:
@@ -60,6 +62,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/QuoteDispatchAddress'
           description: ''
+      summary: Api v1 inquiries dispatch address update
+      x-summary-source: derived
     patch:
       operationId: api_v1_inquiries_dispatch_address_partial_update
       parameters:
@@ -92,694 +96,236 @@ paths:
               schema:
                 $ref: '#/components/schemas/QuoteDispatchAddress'
           description: ''
+      summary: Api v1 inquiries dispatch address partial update
+      x-summary-source: derived
 components:
   schemas:
-    PhoneCountryCodeEnum:
-      enum:
-      - '+376'
-      - '+971'
-      - '+93'
-      - '+1268'
-      - '+1264'
-      - '+355'
-      - '+374'
-      - '+244'
-      - '+672'
-      - '+54'
-      - '+1684'
-      - '+43'
-      - '+61'
-      - '+297'
-      - '+994'
-      - '+387'
-      - '+1246'
-      - '+880'
-      - '+32'
-      - '+226'
-      - '+359'
-      - '+973'
-      - '+257'
-      - '+229'
-      - '+590'
-      - '+1441'
-      - '+673'
-      - '+591'
-      - '+55'
-      - '+1242'
-      - '+975'
-      - '+267'
-      - '+375'
-      - '+501'
-      - '+1'
-      - '+243'
-      - '+236'
-      - '+242'
-      - '+41'
-      - '+225'
-      - '+682'
-      - '+56'
-      - '+237'
-      - '+86'
-      - '+57'
-      - '+506'
-      - '+53'
-      - '+238'
-      - '+357'
-      - '+420'
-      - '+49'
-      - '+253'
-      - '+45'
-      - '+1767'
-      - '+1809'
-      - '+213'
-      - '+593'
-      - '+372'
-      - '+20'
-      - '+212'
-      - '+291'
-      - '+34'
-      - '+251'
-      - '+358'
-      - '+679'
-      - '+500'
-      - '+691'
-      - '+298'
-      - '+33'
-      - '+241'
-      - '+44'
-      - '+1473'
-      - '+995'
-      - '+594'
-      - '+441481'
-      - '+233'
-      - '+350'
-      - '+299'
-      - '+220'
-      - '+224'
-      - '+240'
-      - '+30'
-      - '+502'
-      - '+1671'
-      - '+245'
-      - '+595'
-      - '+852'
-      - '+504'
-      - '+385'
-      - '+509'
-      - '+36'
-      - '+62'
-      - '+353'
-      - '+972'
-      - '+441624'
-      - '+91'
-      - '+246'
-      - '+964'
-      - '+98'
-      - '+354'
-      - '+39'
-      - '+441534'
-      - '+1876'
-      - '+962'
-      - '+81'
-      - '+254'
-      - '+996'
-      - '+855'
-      - '+686'
-      - '+269'
-      - '+1869'
-      - '+850'
-      - '+82'
-      - '+965'
-      - '+345'
-      - '+7'
-      - '+856'
-      - '+961'
-      - '+1758'
-      - '+423'
-      - '+94'
-      - '+231'
-      - '+266'
-      - '+370'
-      - '+352'
-      - '+371'
-      - '+218'
-      - '+377'
-      - '+373'
-      - '+382'
-      - '+261'
-      - '+692'
-      - '+389'
-      - '+223'
-      - '+95'
-      - '+976'
-      - '+853'
-      - '+1670'
-      - '+596'
-      - '+222'
-      - '+1664'
-      - '+356'
-      - '+230'
-      - '+960'
-      - '+265'
-      - '+52'
-      - '+60'
-      - '+258'
-      - '+264'
-      - '+687'
-      - '+227'
-      - '+234'
-      - '+505'
-      - '+31'
-      - '+47'
-      - '+977'
-      - '+674'
-      - '+683'
-      - '+64'
-      - '+968'
-      - '+507'
-      - '+51'
-      - '+689'
-      - '+675'
-      - '+63'
-      - '+92'
-      - '+48'
-      - '+508'
-      - '+1787'
-      - '+970'
-      - '+351'
-      - '+680'
-      - '+974'
-      - '+262'
-      - '+40'
-      - '+381'
-      - '+250'
-      - '+966'
-      - '+677'
-      - '+248'
-      - '+249'
-      - '+46'
-      - '+65'
-      - '+290'
-      - '+386'
-      - '+421'
-      - '+232'
-      - '+378'
-      - '+221'
-      - '+252'
-      - '+597'
-      - '+239'
-      - '+503'
-      - '+963'
-      - '+268'
-      - '+1649'
-      - '+235'
-      - '+228'
-      - '+66'
-      - '+992'
-      - '+690'
-      - '+670'
-      - '+993'
-      - '+216'
-      - '+676'
-      - '+90'
-      - '+1868'
-      - '+688'
-      - '+886'
-      - '+255'
-      - '+380'
-      - '+256'
-      - '+598'
-      - '+998'
-      - '+379'
-      - '+1784'
-      - '+58'
-      - '+1284'
-      - '+1340'
-      - '+84'
-      - '+678'
-      - '+681'
-      - '+685'
-      - '+967'
-      - '+27'
-      - '+260'
-      - '+263'
-      type: string
-      description: '* `+376` - +376
-
-        * `+971` - +971
-
-        * `+93` - +93
-
-        * `+1268` - +1268
-
-        * `+1264` - +1264
-
-        * `+355` - +355
-
-        * `+374` - +374
-
-        * `+244` - +244
-
-        * `+672` - +672
-
-        * `+54` - +54
-
-        * `+1684` - +1684
-
-        * `+43` - +43
-
-        * `+61` - +61
-
-        * `+297` - +297
-
-        * `+994` - +994
-
-        * `+387` - +387
-
-        * `+1246` - +1246
-
-        * `+880` - +880
-
-        * `+32` - +32
-
-        * `+226` - +226
-
-        * `+359` - +359
-
-        * `+973` - +973
-
-        * `+257` - +257
-
-        * `+229` - +229
-
-        * `+590` - +590
-
-        * `+1441` - +1441
-
-        * `+673` - +673
-
-        * `+591` - +591
-
-        * `+55` - +55
-
-        * `+1242` - +1242
-
-        * `+975` - +975
-
-        * `+267` - +267
-
-        * `+375` - +375
-
-        * `+501` - +501
-
-        * `+1` - +1
-
-        * `+243` - +243
-
-        * `+236` - +236
-
-        * `+242` - +242
-
-        * `+41` - +41
-
-        * `+225` - +225
-
-        * `+682` - +682
-
-        * `+56` - +56
-
-        * `+237` - +237
-
-        * `+86` - +86
-
-        * `+57` - +57
-
-        * `+506` - +506
-
-        * `+53` - +53
-
-        * `+238` - +238
-
-        * `+357` - +357
-
-        * `+420` - +420
-
-        * `+49` - +49
-
-        * `+253` - +253
-
-        * `+45` - +45
-
-        * `+1767` - +1767
-
-        * `+1809` - +1809
-
-        * `+213` - +213
-
-        * `+593` - +593
-
-        * `+372` - +372
-
-        * `+20` - +20
-
-        * `+212` - +212
-
-        * `+291` - +291
-
-        * `+34` - +34
-
-        * `+251` - +251
-
-        * `+358` - +358
-
-        * `+679` - +679
-
-        * `+500` - +500
-
-        * `+691` - +691
-
-        * `+298` - +298
-
-        * `+33` - +33
-
-        * `+241` - +241
-
-        * `+44` - +44
-
-        * `+1473` - +1473
-
-        * `+995` - +995
-
-        * `+594` - +594
-
-        * `+441481` - +441481
-
-        * `+233` - +233
-
-        * `+350` - +350
-
-        * `+299` - +299
-
-        * `+220` - +220
-
-        * `+224` - +224
-
-        * `+240` - +240
-
-        * `+30` - +30
-
-        * `+502` - +502
-
-        * `+1671` - +1671
-
-        * `+245` - +245
-
-        * `+595` - +595
-
-        * `+852` - +852
-
-        * `+504` - +504
-
-        * `+385` - +385
-
-        * `+509` - +509
-
-        * `+36` - +36
-
-        * `+62` - +62
-
-        * `+353` - +353
-
-        * `+972` - +972
-
-        * `+441624` - +441624
-
-        * `+91` - +91
-
-        * `+246` - +246
-
-        * `+964` - +964
-
-        * `+98` - +98
-
-        * `+354` - +354
-
-        * `+39` - +39
-
-        * `+441534` - +441534
-
-        * `+1876` - +1876
-
-        * `+962` - +962
-
-        * `+81` - +81
-
-        * `+254` - +254
-
-        * `+996` - +996
-
-        * `+855` - +855
-
-        * `+686` - +686
-
-        * `+269` - +269
-
-        * `+1869` - +1869
-
-        * `+850` - +850
-
-        * `+82` - +82
-
-        * `+965` - +965
-
-        * `+345` - +345
-
-        * `+7` - +7
-
-        * `+856` - +856
-
-        * `+961` - +961
-
-        * `+1758` - +1758
-
-        * `+423` - +423
-
-        * `+94` - +94
-
-        * `+231` - +231
-
-        * `+266` - +266
-
-        * `+370` - +370
-
-        * `+352` - +352
-
-        * `+371` - +371
-
-        * `+218` - +218
-
-        * `+377` - +377
-
-        * `+373` - +373
-
-        * `+382` - +382
-
-        * `+261` - +261
-
-        * `+692` - +692
-
-        * `+389` - +389
-
-        * `+223` - +223
-
-        * `+95` - +95
-
-        * `+976` - +976
-
-        * `+853` - +853
-
-        * `+1670` - +1670
-
-        * `+596` - +596
-
-        * `+222` - +222
-
-        * `+1664` - +1664
-
-        * `+356` - +356
-
-        * `+230` - +230
-
-        * `+960` - +960
-
-        * `+265` - +265
-
-        * `+52` - +52
-
-        * `+60` - +60
-
-        * `+258` - +258
-
-        * `+264` - +264
-
-        * `+687` - +687
-
-        * `+227` - +227
-
-        * `+234` - +234
-
-        * `+505` - +505
-
-        * `+31` - +31
-
-        * `+47` - +47
-
-        * `+977` - +977
-
-        * `+674` - +674
-
-        * `+683` - +683
-
-        * `+64` - +64
-
-        * `+968` - +968
-
-        * `+507` - +507
-
-        * `+51` - +51
-
-        * `+689` - +689
-
-        * `+675` - +675
-
-        * `+63` - +63
-
-        * `+92` - +92
-
-        * `+48` - +48
-
-        * `+508` - +508
-
-        * `+1787` - +1787
-
-        * `+970` - +970
-
-        * `+351` - +351
-
-        * `+680` - +680
-
-        * `+974` - +974
-
-        * `+262` - +262
-
-        * `+40` - +40
-
-        * `+381` - +381
-
-        * `+250` - +250
-
-        * `+966` - +966
-
-        * `+677` - +677
-
-        * `+248` - +248
-
-        * `+249` - +249
-
-        * `+46` - +46
-
-        * `+65` - +65
-
-        * `+290` - +290
-
-        * `+386` - +386
-
-        * `+421` - +421
-
-        * `+232` - +232
-
-        * `+378` - +378
-
-        * `+221` - +221
-
-        * `+252` - +252
-
-        * `+597` - +597
-
-        * `+239` - +239
-
-        * `+503` - +503
-
-        * `+963` - +963
-
-        * `+268` - +268
-
-        * `+1649` - +1649
-
-        * `+235` - +235
-
-        * `+228` - +228
-
-        * `+66` - +66
-
-        * `+992` - +992
-
-        * `+690` - +690
-
-        * `+670` - +670
-
-        * `+993` - +993
-
-        * `+216` - +216
-
-        * `+676` - +676
-
-        * `+90` - +90
-
-        * `+1868` - +1868
-
-        * `+688` - +688
-
-        * `+886` - +886
-
-        * `+255` - +255
-
-        * `+380` - +380
-
-        * `+256` - +256
-
-        * `+598` - +598
-
-        * `+998` - +998
-
-        * `+379` - +379
-
-        * `+1784` - +1784
-
-        * `+58` - +58
-
-        * `+1284` - +1284
-
-        * `+1340` - +1340
-
-        * `+84` - +84
-
-        * `+678` - +678
-
-        * `+681` - +681
-
-        * `+685` - +685
-
-        * `+967` - +967
-
-        * `+27` - +27
-
-        * `+260` - +260
-
-        * `+263` - +263'
-    BlankEnum:
-      enum:
-      - ''
+    PatchedQuoteDispatchAddress:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        street_1:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        street_2:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        contact_full_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        contact_phone:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        phone_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        town:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        region:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        postcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        eori_number:
+          type: string
+          maxLength: 20
+        delivery_instructions:
+          type:
+          - string
+          - 'null'
+        building:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        latitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        longitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        collection_instructions:
+          type:
+          - string
+          - 'null'
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        country:
+          readOnly: true
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/NullEnum'
+        place_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        vat_number:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        vat_country_code:
+          readOnly: true
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/NullEnum'
+        vat_exempt:
+          type: boolean
+          readOnly: true
+        country_type:
+          allOf:
+          - $ref: '#/components/schemas/CountryTypeEnum'
+          readOnly: true
+    QuoteDispatchAddress:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        street_1:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        street_2:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        contact_full_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        contact_phone:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        phone_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        town:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        region:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        postcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        eori_number:
+          type: string
+          maxLength: 20
+        delivery_instructions:
+          type:
+          - string
+          - 'null'
+        building:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        latitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        longitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        collection_instructions:
+          type:
+          - string
+          - 'null'
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        country:
+          readOnly: true
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/NullEnum'
+        place_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        vat_number:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        vat_country_code:
+          readOnly: true
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/NullEnum'
+        vat_exempt:
+          type: boolean
+          readOnly: true
+        country_type:
+          allOf:
+          - $ref: '#/components/schemas/CountryTypeEnum'
+          readOnly: true
+      required:
+      - country
+      - country_type
+      - id
+      - name
+      - place_id
+      - uuid
+      - vat_country_code
+      - vat_exempt
+      - vat_number
     Country:
       enum:
       - AF
@@ -1532,6 +1078,9 @@ components:
         * `ZM` - Zambia
 
         * `ZW` - Zimbabwe'
+    NullEnum:
+      enum:
+      - null
     CountryTypeEnum:
       enum:
       - EU
@@ -1543,213 +1092,692 @@ components:
         * `GB` - Gb
 
         * `Other` - Other'
-    PatchedQuoteDispatchAddress:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        street_1:
-          type: string
-          nullable: true
-          maxLength: 255
-        street_2:
-          type: string
-          nullable: true
-          maxLength: 255
-        contact_full_name:
-          type: string
-          nullable: true
-          maxLength: 255
-        contact_phone:
-          type: string
-          nullable: true
-          maxLength: 50
-        phone_country_code:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        town:
-          type: string
-          nullable: true
-          maxLength: 100
-        region:
-          type: string
-          nullable: true
-          maxLength: 100
-        postcode:
-          type: string
-          nullable: true
-          maxLength: 100
-        eori_number:
-          type: string
-          maxLength: 20
-        delivery_instructions:
-          type: string
-          nullable: true
-        building:
-          type: string
-          nullable: true
-          maxLength: 100
-        latitude:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-          nullable: true
-        longitude:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-          nullable: true
-        collection_instructions:
-          type: string
-          nullable: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        country:
-          readOnly: true
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/NullEnum'
-        place_id:
-          type: string
-          readOnly: true
-          nullable: true
-        vat_number:
-          type: string
-          readOnly: true
-          nullable: true
-        vat_country_code:
-          readOnly: true
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/NullEnum'
-        vat_exempt:
-          type: boolean
-          readOnly: true
-        country_type:
-          allOf:
-          - $ref: '#/components/schemas/CountryTypeEnum'
-          readOnly: true
-    QuoteDispatchAddress:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        street_1:
-          type: string
-          nullable: true
-          maxLength: 255
-        street_2:
-          type: string
-          nullable: true
-          maxLength: 255
-        contact_full_name:
-          type: string
-          nullable: true
-          maxLength: 255
-        contact_phone:
-          type: string
-          nullable: true
-          maxLength: 50
-        phone_country_code:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        town:
-          type: string
-          nullable: true
-          maxLength: 100
-        region:
-          type: string
-          nullable: true
-          maxLength: 100
-        postcode:
-          type: string
-          nullable: true
-          maxLength: 100
-        eori_number:
-          type: string
-          maxLength: 20
-        delivery_instructions:
-          type: string
-          nullable: true
-        building:
-          type: string
-          nullable: true
-          maxLength: 100
-        latitude:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-          nullable: true
-        longitude:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-          nullable: true
-        collection_instructions:
-          type: string
-          nullable: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        country:
-          readOnly: true
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/NullEnum'
-        place_id:
-          type: string
-          readOnly: true
-          nullable: true
-        vat_number:
-          type: string
-          readOnly: true
-          nullable: true
-        vat_country_code:
-          readOnly: true
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/NullEnum'
-        vat_exempt:
-          type: boolean
-          readOnly: true
-        country_type:
-          allOf:
-          - $ref: '#/components/schemas/CountryTypeEnum'
-          readOnly: true
-      required:
-      - country
-      - country_type
-      - id
-      - name
-      - place_id
-      - uuid
-      - vat_country_code
-      - vat_exempt
-      - vat_number
-    NullEnum:
+    BlankEnum:
       enum:
-      - null
+      - ''
+    PhoneCountryCodeEnum:
+      enum:
+      - '+376'
+      - '+971'
+      - '+93'
+      - '+1268'
+      - '+1264'
+      - '+355'
+      - '+374'
+      - '+244'
+      - '+672'
+      - '+54'
+      - '+1684'
+      - '+43'
+      - '+61'
+      - '+297'
+      - '+994'
+      - '+387'
+      - '+1246'
+      - '+880'
+      - '+32'
+      - '+226'
+      - '+359'
+      - '+973'
+      - '+257'
+      - '+229'
+      - '+590'
+      - '+1441'
+      - '+673'
+      - '+591'
+      - '+55'
+      - '+1242'
+      - '+975'
+      - '+267'
+      - '+375'
+      - '+501'
+      - '+1'
+      - '+243'
+      - '+236'
+      - '+242'
+      - '+41'
+      - '+225'
+      - '+682'
+      - '+56'
+      - '+237'
+      - '+86'
+      - '+57'
+      - '+506'
+      - '+53'
+      - '+238'
+      - '+357'
+      - '+420'
+      - '+49'
+      - '+253'
+      - '+45'
+      - '+1767'
+      - '+1809'
+      - '+213'
+      - '+593'
+      - '+372'
+      - '+20'
+      - '+212'
+      - '+291'
+      - '+34'
+      - '+251'
+      - '+358'
+      - '+679'
+      - '+500'
+      - '+691'
+      - '+298'
+      - '+33'
+      - '+241'
+      - '+44'
+      - '+1473'
+      - '+995'
+      - '+594'
+      - '+441481'
+      - '+233'
+      - '+350'
+      - '+299'
+      - '+220'
+      - '+224'
+      - '+240'
+      - '+30'
+      - '+502'
+      - '+1671'
+      - '+245'
+      - '+595'
+      - '+852'
+      - '+504'
+      - '+385'
+      - '+509'
+      - '+36'
+      - '+62'
+      - '+353'
+      - '+972'
+      - '+441624'
+      - '+91'
+      - '+246'
+      - '+964'
+      - '+98'
+      - '+354'
+      - '+39'
+      - '+441534'
+      - '+1876'
+      - '+962'
+      - '+81'
+      - '+254'
+      - '+996'
+      - '+855'
+      - '+686'
+      - '+269'
+      - '+1869'
+      - '+850'
+      - '+82'
+      - '+965'
+      - '+345'
+      - '+7'
+      - '+856'
+      - '+961'
+      - '+1758'
+      - '+423'
+      - '+94'
+      - '+231'
+      - '+266'
+      - '+370'
+      - '+352'
+      - '+371'
+      - '+218'
+      - '+377'
+      - '+373'
+      - '+382'
+      - '+261'
+      - '+692'
+      - '+389'
+      - '+223'
+      - '+95'
+      - '+976'
+      - '+853'
+      - '+1670'
+      - '+596'
+      - '+222'
+      - '+1664'
+      - '+356'
+      - '+230'
+      - '+960'
+      - '+265'
+      - '+52'
+      - '+60'
+      - '+258'
+      - '+264'
+      - '+687'
+      - '+227'
+      - '+234'
+      - '+505'
+      - '+31'
+      - '+47'
+      - '+977'
+      - '+674'
+      - '+683'
+      - '+64'
+      - '+968'
+      - '+507'
+      - '+51'
+      - '+689'
+      - '+675'
+      - '+63'
+      - '+92'
+      - '+48'
+      - '+508'
+      - '+1787'
+      - '+970'
+      - '+351'
+      - '+680'
+      - '+974'
+      - '+262'
+      - '+40'
+      - '+381'
+      - '+250'
+      - '+966'
+      - '+677'
+      - '+248'
+      - '+249'
+      - '+46'
+      - '+65'
+      - '+290'
+      - '+386'
+      - '+421'
+      - '+232'
+      - '+378'
+      - '+221'
+      - '+252'
+      - '+597'
+      - '+239'
+      - '+503'
+      - '+963'
+      - '+268'
+      - '+1649'
+      - '+235'
+      - '+228'
+      - '+66'
+      - '+992'
+      - '+690'
+      - '+670'
+      - '+993'
+      - '+216'
+      - '+676'
+      - '+90'
+      - '+1868'
+      - '+688'
+      - '+886'
+      - '+255'
+      - '+380'
+      - '+256'
+      - '+598'
+      - '+998'
+      - '+379'
+      - '+1784'
+      - '+58'
+      - '+1284'
+      - '+1340'
+      - '+84'
+      - '+678'
+      - '+681'
+      - '+685'
+      - '+967'
+      - '+27'
+      - '+260'
+      - '+263'
+      type: string
+      description: '* `+376` - +376
+
+        * `+971` - +971
+
+        * `+93` - +93
+
+        * `+1268` - +1268
+
+        * `+1264` - +1264
+
+        * `+355` - +355
+
+        * `+374` - +374
+
+        * `+244` - +244
+
+        * `+672` - +672
+
+        * `+54` - +54
+
+        * `+1684` - +1684
+
+        * `+43` - +43
+
+        * `+61` - +61
+
+        * `+297` - +297
+
+        * `+994` - +994
+
+        * `+387` - +387
+
+        * `+1246` - +1246
+
+        * `+880` - +880
+
+        * `+32` - +32
+
+        * `+226` - +226
+
+        * `+359` - +359
+
+        * `+973` - +973
+
+        * `+257` - +257
+
+        * `+229` - +229
+
+        * `+590` - +590
+
+        * `+1441` - +1441
+
+        * `+673` - +673
+
+        * `+591` - +591
+
+        * `+55` - +55
+
+        * `+1242` - +1242
+
+        * `+975` - +975
+
+        * `+267` - +267
+
+        * `+375` - +375
+
+        * `+501` - +501
+
+        * `+1` - +1
+
+        * `+243` - +243
+
+        * `+236` - +236
+
+        * `+242` - +242
+
+        * `+41` - +41
+
+        * `+225` - +225
+
+        * `+682` - +682
+
+        * `+56` - +56
+
+        * `+237` - +237
+
+        * `+86` - +86
+
+        * `+57` - +57
+
+        * `+506` - +506
+
+        * `+53` - +53
+
+        * `+238` - +238
+
+        * `+357` - +357
+
+        * `+420` - +420
+
+        * `+49` - +49
+
+        * `+253` - +253
+
+        * `+45` - +45
+
+        * `+1767` - +1767
+
+        * `+1809` - +1809
+
+        * `+213` - +213
+
+        * `+593` - +593
+
+        * `+372` - +372
+
+        * `+20` - +20
+
+        * `+212` - +212
+
+        * `+291` - +291
+
+        * `+34` - +34
+
+        * `+251` - +251
+
+        * `+358` - +358
+
+        * `+679` - +679
+
+        * `+500` - +500
+
+        * `+691` - +691
+
+        * `+298` - +298
+
+        * `+33` - +33
+
+        * `+241` - +241
+
+        * `+44` - +44
+
+        * `+1473` - +1473
+
+        * `+995` - +995
+
+        * `+594` - +594
+
+        * `+441481` - +441481
+
+        * `+233` - +233
+
+        * `+350` - +350
+
+        * `+299` - +299
+
+        * `+220` - +220
+
+        * `+224` - +224
+
+        * `+240` - +240
+
+        * `+30` - +30
+
+        * `+502` - +502
+
+        * `+1671` - +1671
+
+        * `+245` - +245
+
+        * `+595` - +595
+
+        * `+852` - +852
+
+        * `+504` - +504
+
+        * `+385` - +385
+
+        * `+509` - +509
+
+        * `+36` - +36
+
+        * `+62` - +62
+
+        * `+353` - +353
+
+        * `+972` - +972
+
+        * `+441624` - +441624
+
+        * `+91` - +91
+
+        * `+246` - +246
+
+        * `+964` - +964
+
+        * `+98` - +98
+
+        * `+354` - +354
+
+        * `+39` - +39
+
+        * `+441534` - +441534
+
+        * `+1876` - +1876
+
+        * `+962` - +962
+
+        * `+81` - +81
+
+        * `+254` - +254
+
+        * `+996` - +996
+
+        * `+855` - +855
+
+        * `+686` - +686
+
+        * `+269` - +269
+
+        * `+1869` - +1869
+
+        * `+850` - +850
+
+        * `+82` - +82
+
+        * `+965` - +965
+
+        * `+345` - +345
+
+        * `+7` - +7
+
+        * `+856` - +856
+
+        * `+961` - +961
+
+        * `+1758` - +1758
+
+        * `+423` - +423
+
+        * `+94` - +94
+
+        * `+231` - +231
+
+        * `+266` - +266
+
+        * `+370` - +370
+
+        * `+352` - +352
+
+        * `+371` - +371
+
+        * `+218` - +218
+
+        * `+377` - +377
+
+        * `+373` - +373
+
+        * `+382` - +382
+
+        * `+261` - +261
+
+        * `+692` - +692
+
+        * `+389` - +389
+
+        * `+223` - +223
+
+        * `+95` - +95
+
+        * `+976` - +976
+
+        * `+853` - +853
+
+        * `+1670` - +1670
+
+        * `+596` - +596
+
+        * `+222` - +222
+
+        * `+1664` - +1664
+
+        * `+356` - +356
+
+        * `+230` - +230
+
+        * `+960` - +960
+
+        * `+265` - +265
+
+        * `+52` - +52
+
+        * `+60` - +60
+
+        * `+258` - +258
+
+        * `+264` - +264
+
+        * `+687` - +687
+
+        * `+227` - +227
+
+        * `+234` - +234
+
+        * `+505` - +505
+
+        * `+31` - +31
+
+        * `+47` - +47
+
+        * `+977` - +977
+
+        * `+674` - +674
+
+        * `+683` - +683
+
+        * `+64` - +64
+
+        * `+968` - +968
+
+        * `+507` - +507
+
+        * `+51` - +51
+
+        * `+689` - +689
+
+        * `+675` - +675
+
+        * `+63` - +63
+
+        * `+92` - +92
+
+        * `+48` - +48
+
+        * `+508` - +508
+
+        * `+1787` - +1787
+
+        * `+970` - +970
+
+        * `+351` - +351
+
+        * `+680` - +680
+
+        * `+974` - +974
+
+        * `+262` - +262
+
+        * `+40` - +40
+
+        * `+381` - +381
+
+        * `+250` - +250
+
+        * `+966` - +966
+
+        * `+677` - +677
+
+        * `+248` - +248
+
+        * `+249` - +249
+
+        * `+46` - +46
+
+        * `+65` - +65
+
+        * `+290` - +290
+
+        * `+386` - +386
+
+        * `+421` - +421
+
+        * `+232` - +232
+
+        * `+378` - +378
+
+        * `+221` - +221
+
+        * `+252` - +252
+
+        * `+597` - +597
+
+        * `+239` - +239
+
+        * `+503` - +503
+
+        * `+963` - +963
+
+        * `+268` - +268
+
+        * `+1649` - +1649
+
+        * `+235` - +235
+
+        * `+228` - +228
+
+        * `+66` - +66
+
+        * `+992` - +992
+
+        * `+690` - +690
+
+        * `+670` - +670
+
+        * `+993` - +993
+
+        * `+216` - +216
+
+        * `+676` - +676
+
+        * `+90` - +90
+
+        * `+1868` - +1868
+
+        * `+688` - +688
+
+        * `+886` - +886
+
+        * `+255` - +255
+
+        * `+380` - +380
+
+        * `+256` - +256
+
+        * `+598` - +598
+
+        * `+998` - +998
+
+        * `+379` - +379
+
+        * `+1784` - +1784
+
+        * `+58` - +58
+
+        * `+1284` - +1284
+
+        * `+1340` - +1340
+
+        * `+84` - +84
+
+        * `+678` - +678
+
+        * `+681` - +681
+
+        * `+685` - +685
+
+        * `+967` - +967
+
+        * `+27` - +27
+
+        * `+260` - +260
+
+        * `+263` - +263'
   securitySchemes:
     cookieAuth:
       type: apiKey

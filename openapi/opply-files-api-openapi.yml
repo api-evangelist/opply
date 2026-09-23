@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Opply Activity Feed Files API
+  title: Opply Files API
   version: 0.0.0
 tags:
 - name: Files
@@ -11,7 +11,7 @@ paths:
       description: 'Unified read access to any tenant file.
 
 
-        A single ``/api/v1/files/<uuid>/`` rail backs every file source the user
+        A single ``/api/v1/files//`` rail backs every file source the user
 
         can already reach via the REST API (task attachments, order docs, PO
 
@@ -51,7 +51,7 @@ paths:
       description: 'Unified read access to any tenant file.
 
 
-        A single ``/api/v1/files/<uuid>/`` rail backs every file source the user
+        A single ``/api/v1/files//`` rail backs every file source the user
 
         can already reach via the REST API (task attachments, order docs, PO
 
@@ -98,7 +98,7 @@ paths:
       description: 'Unified read access to any tenant file.
 
 
-        A single ``/api/v1/files/<uuid>/`` rail backs every file source the user
+        A single ``/api/v1/files//`` rail backs every file source the user
 
         can already reach via the REST API (task attachments, order docs, PO
 
@@ -416,8 +416,103 @@ paths:
               schema:
                 $ref: '#/components/schemas/FileUploadResponse'
           description: ''
+      summary: Api v1 files upload create
+      x-summary-source: derived
 components:
   schemas:
+    FileTooLarge:
+      type: object
+      description: '413 response from ``GET /api/v1/files/<uuid>/content/`` when the file
+
+        exceeds the inline cap — points the caller at the ``/url/`` action.'
+      properties:
+        type:
+          type: string
+          description: Registered file-resource type slug (e.g. ``task-attachment``).
+        uuid:
+          type: string
+          format: uuid
+          description: UUID of the file row.
+        filename:
+          type: string
+          description: Sanitised filename suitable for ``Content-Disposition``.
+        content_type:
+          type: string
+          description: MIME type of the file bytes.
+        size_bytes:
+          type: integer
+          minimum: 0
+          description: Size of the file in bytes.
+        detail:
+          type: string
+        max_inline_bytes:
+          type: integer
+          minimum: 0
+      required:
+      - content_type
+      - detail
+      - filename
+      - max_inline_bytes
+      - size_bytes
+      - type
+      - uuid
+    FileUpload:
+      type: object
+      properties:
+        file_name:
+          type: string
+          description: Name of the file being uploaded
+          maxLength: 1024
+        model_name:
+          type: string
+          description: Name of the model related to this file. eg. for chats it would be 'Message'
+          maxLength: 256
+        field_name:
+          type: string
+          description: Name of the field on the model where file is stored. eg. for chats it would be 'attachment'
+          maxLength: 256
+        content_type:
+          type: string
+          description: Content type of the file.
+          maxLength: 256
+        size:
+          type: integer
+          minimum: 1
+          description: File size.
+      required:
+      - content_type
+      - field_name
+      - file_name
+      - model_name
+      - size
+    AttachmentDownloadUrl:
+      type: object
+      description: A short-lived presigned GET URL for a downloadable attachment.
+      properties:
+        download_url:
+          type: string
+          format: uri
+          readOnly: true
+        expires_in_seconds:
+          type: integer
+          readOnly: true
+      required:
+      - download_url
+      - expires_in_seconds
+    PresignedPost:
+      type: object
+      description: The presigned POST the browser uploads the bytes with.
+      properties:
+        url:
+          type: string
+          format: uri
+        fields:
+          type: object
+          additionalProperties:
+            type: string
+      required:
+      - fields
+      - url
     AttachmentCreateResponse:
       type: object
       description: Status fields plus the presigned POST to upload the bytes with.
@@ -437,19 +532,22 @@ components:
           - $ref: '#/components/schemas/AttachmentScanStatusEnum'
           readOnly: true
         size_bytes:
-          type: integer
+          type:
+          - integer
+          - 'null'
           readOnly: true
-          nullable: true
         upload_confirmed_at:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
           readOnly: true
-          nullable: true
         scan_completed_at:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
           readOnly: true
-          nullable: true
         presigned_post:
           allOf:
           - $ref: '#/components/schemas/PresignedPost'
@@ -463,20 +561,41 @@ components:
       - size_bytes
       - upload_confirmed_at
       - uuid
-    AttachmentDownloadUrl:
+    AttachmentScanStatusEnum:
+      enum:
+      - pending
+      - clean
+      - malicious
+      - failed
+      - skipped
+      type: string
+      description: '* `pending` - Pending scan
+
+        * `clean` - Clean
+
+        * `malicious` - Malicious
+
+        * `failed` - Scan failed
+
+        * `skipped` - Scan skipped'
+    MessageAttachmentCreate:
       type: object
-      description: A short-lived presigned GET URL for a downloadable attachment.
+      description: 'Request body for minting an unbound message attachment.
+
+
+        No ``company_uuid`` / entity — the attachment is created unbound and scoped
+
+        to the caller''s company; it is bound to its ``Message`` server-side on send.'
       properties:
-        download_url:
+        original_filename:
           type: string
-          format: uri
-          readOnly: true
-        expires_in_seconds:
-          type: integer
-          readOnly: true
+          maxLength: 255
+        mime_type:
+          type: string
+          maxLength: 128
       required:
-      - download_url
-      - expires_in_seconds
+      - mime_type
+      - original_filename
     FileUploadResponse:
       type: object
       properties:
@@ -491,6 +610,50 @@ components:
       - file_name
       - token
       - url
+    AttachmentTestCreate:
+      type: object
+      description: Request body for minting a pending attachment.
+      properties:
+        original_filename:
+          type: string
+          maxLength: 255
+        mime_type:
+          type: string
+          maxLength: 128
+        company_uuid:
+          type: string
+          format: uuid
+          description: Company the attachment is owned by (and used as its entity). Defaults to the caller's company.
+      required:
+      - mime_type
+      - original_filename
+    FileMetadata:
+      type: object
+      description: Metadata payload returned by ``GET /api/v1/files/<uuid>/``.
+      properties:
+        type:
+          type: string
+          description: Registered file-resource type slug (e.g. ``task-attachment``).
+        uuid:
+          type: string
+          format: uuid
+          description: UUID of the file row.
+        filename:
+          type: string
+          description: Sanitised filename suitable for ``Content-Disposition``.
+        content_type:
+          type: string
+          description: MIME type of the file bytes.
+        size_bytes:
+          type: integer
+          minimum: 0
+          description: Size of the file in bytes.
+      required:
+      - content_type
+      - filename
+      - size_bytes
+      - type
+      - uuid
     FileSignedUrl:
       type: object
       description: 'Returned by ``GET /api/v1/files/<uuid>/url/`` — metadata + a
@@ -530,93 +693,6 @@ components:
       - size_bytes
       - type
       - uuid
-    FileMetadata:
-      type: object
-      description: Metadata payload returned by ``GET /api/v1/files/<uuid>/``.
-      properties:
-        type:
-          type: string
-          description: Registered file-resource type slug (e.g. ``task-attachment``).
-        uuid:
-          type: string
-          format: uuid
-          description: UUID of the file row.
-        filename:
-          type: string
-          description: Sanitised filename suitable for ``Content-Disposition``.
-        content_type:
-          type: string
-          description: MIME type of the file bytes.
-        size_bytes:
-          type: integer
-          minimum: 0
-          description: Size of the file in bytes.
-      required:
-      - content_type
-      - filename
-      - size_bytes
-      - type
-      - uuid
-    FileUpload:
-      type: object
-      properties:
-        file_name:
-          type: string
-          description: Name of the file being uploaded
-          maxLength: 1024
-        model_name:
-          type: string
-          description: Name of the model related to this file. eg. for chats it would be 'Message'
-          maxLength: 256
-        field_name:
-          type: string
-          description: Name of the field on the model where file is stored. eg. for chats it would be 'attachment'
-          maxLength: 256
-        content_type:
-          type: string
-          description: Content type of the file.
-          maxLength: 256
-        size:
-          type: integer
-          minimum: 1
-          description: File size.
-      required:
-      - content_type
-      - field_name
-      - file_name
-      - model_name
-      - size
-    AttachmentScanStatusEnum:
-      enum:
-      - pending
-      - clean
-      - malicious
-      - failed
-      - skipped
-      type: string
-      description: '* `pending` - Pending scan
-
-        * `clean` - Clean
-
-        * `malicious` - Malicious
-
-        * `failed` - Scan failed
-
-        * `skipped` - Scan skipped'
-    PresignedPost:
-      type: object
-      description: The presigned POST the browser uploads the bytes with.
-      properties:
-        url:
-          type: string
-          format: uri
-        fields:
-          type: object
-          additionalProperties:
-            type: string
-      required:
-      - fields
-      - url
     AttachmentStatus:
       type: object
       description: Read view of an ``Attachment`` row's lifecycle state.
@@ -636,19 +712,22 @@ components:
           - $ref: '#/components/schemas/AttachmentScanStatusEnum'
           readOnly: true
         size_bytes:
-          type: integer
+          type:
+          - integer
+          - 'null'
           readOnly: true
-          nullable: true
         upload_confirmed_at:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
           readOnly: true
-          nullable: true
         scan_completed_at:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
           readOnly: true
-          nullable: true
       required:
       - mime_type
       - original_filename
@@ -657,77 +736,6 @@ components:
       - size_bytes
       - upload_confirmed_at
       - uuid
-    AttachmentTestCreate:
-      type: object
-      description: Request body for minting a pending attachment.
-      properties:
-        original_filename:
-          type: string
-          maxLength: 255
-        mime_type:
-          type: string
-          maxLength: 128
-        company_uuid:
-          type: string
-          format: uuid
-          description: Company the attachment is owned by (and used as its entity). Defaults to the caller's company.
-      required:
-      - mime_type
-      - original_filename
-    FileTooLarge:
-      type: object
-      description: '413 response from ``GET /api/v1/files/<uuid>/content/`` when the file
-
-        exceeds the inline cap — points the caller at the ``/url/`` action.'
-      properties:
-        type:
-          type: string
-          description: Registered file-resource type slug (e.g. ``task-attachment``).
-        uuid:
-          type: string
-          format: uuid
-          description: UUID of the file row.
-        filename:
-          type: string
-          description: Sanitised filename suitable for ``Content-Disposition``.
-        content_type:
-          type: string
-          description: MIME type of the file bytes.
-        size_bytes:
-          type: integer
-          minimum: 0
-          description: Size of the file in bytes.
-        detail:
-          type: string
-        max_inline_bytes:
-          type: integer
-          minimum: 0
-      required:
-      - content_type
-      - detail
-      - filename
-      - max_inline_bytes
-      - size_bytes
-      - type
-      - uuid
-    MessageAttachmentCreate:
-      type: object
-      description: 'Request body for minting an unbound message attachment.
-
-
-        No ``company_uuid`` / entity — the attachment is created unbound and scoped
-
-        to the caller''s company; it is bound to its ``Message`` server-side on send.'
-      properties:
-        original_filename:
-          type: string
-          maxLength: 255
-        mime_type:
-          type: string
-          maxLength: 128
-      required:
-      - mime_type
-      - original_filename
   securitySchemes:
     cookieAuth:
       type: apiKey

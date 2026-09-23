@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Opply Activity Feed Agreements API
+  title: Opply Agreements API
   version: 0.0.0
 tags:
 - name: Agreements
@@ -627,6 +627,222 @@ paths:
           description: Contract or delivery address not found
 components:
   schemas:
+    AgreementLineItemDocument:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        document:
+          type: string
+          format: uri
+        category:
+          $ref: '#/components/schemas/AgreementLineItemDocumentCategoryEnum'
+      required:
+      - category
+      - document
+      - uuid
+    AgreementOrderCreate:
+      type: object
+      properties:
+        delivery_address_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        delivery_date:
+          type: string
+          format: date
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementOrderLineItem'
+        buyer_purchase_order_reference:
+          type:
+          - string
+          - 'null'
+      required:
+      - delivery_date
+      - line_items
+    AgreementLineItemDocumentUpload:
+      type: object
+      properties:
+        file_name:
+          type: string
+          writeOnly: true
+        category:
+          $ref: '#/components/schemas/AgreementLineItemDocumentCategoryEnum'
+      required:
+      - category
+      - file_name
+    BuyerAgreementAggregateResult:
+      type: object
+      properties:
+        operation:
+          type: string
+        field:
+          type: string
+        by_currency:
+          type: object
+          additionalProperties:
+            type: integer
+        by_currency_display:
+          type: object
+          additionalProperties:
+            type: string
+        agreement_count:
+          type: integer
+      required:
+      - agreement_count
+      - by_currency
+      - by_currency_display
+      - field
+      - operation
+    MerchantOfRecordAgreementDetails:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        agreement_number:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MerchantOfRecordAgreementLineItem'
+        supplier_company_name:
+          type: string
+        buyer_company_name:
+          type: string
+        delivery_address:
+          allOf:
+          - $ref: '#/components/schemas/DeliveryAddressResponse'
+        buyer_currency:
+          type: string
+        supplier_currency:
+          $ref: '#/components/schemas/AvailableCurrenciesEnum'
+        shipping_price_in_supplier_currency:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        import_fee_price_in_buyer_currency:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        export_fee_price_in_supplier_currency:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        shipping_price_for_buyer_in_cents:
+          type: number
+          readOnly: true
+        buyer_shipping_tax_rate:
+          type: number
+          format: double
+        buyer_total_shipping_tax_amount_in_buyer_currency_in_cents:
+          type: number
+          readOnly: true
+        estimated_number_of_orders:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        minimum_lead_time_for_first_order_in_days:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        minimum_lead_time_for_following_orders_in_days:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        days_until_payment_due:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        supplier_total_shipping_price_in_supplier_currency_in_cents:
+          type: number
+          readOnly: true
+        supplier_total_shipping_tax_amount_in_supplier_currency_in_cents:
+          type: number
+          readOnly: true
+        supplier_shipping_tax_rate:
+          type: number
+          format: double
+        days_until_payout_due:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        payment_terms:
+          $ref: '#/components/schemas/AppOrderPaymentTermsEnum'
+        payout_terms:
+          $ref: '#/components/schemas/PayoutTermsEnum'
+        channel_uuid:
+          type: string
+          format: uuid
+        payment_provider:
+          $ref: '#/components/schemas/PaymentProviderEnum'
+        contract_start_date:
+          type: string
+          format: date
+        contract_end_date:
+          type: string
+          format: date
+        buyer_company_uuid:
+          type: string
+          format: uuid
+        supplier_company_uuid:
+          type: string
+          format: uuid
+        summary:
+          allOf:
+          - $ref: '#/components/schemas/AgreementSummary'
+          readOnly: true
+        has_at_least_one_order:
+          type: boolean
+          description: Checks if there is at least one AppOrder associated with this Agreement.
+          readOnly: true
+        order_management_contract_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          readOnly: true
+      required:
+      - agreement_number
+      - buyer_company_name
+      - buyer_company_uuid
+      - buyer_currency
+      - buyer_shipping_tax_rate
+      - buyer_total_shipping_tax_amount_in_buyer_currency_in_cents
+      - channel_uuid
+      - contract_end_date
+      - contract_start_date
+      - created_at
+      - delivery_address
+      - estimated_number_of_orders
+      - has_at_least_one_order
+      - line_items
+      - minimum_lead_time_for_first_order_in_days
+      - minimum_lead_time_for_following_orders_in_days
+      - order_management_contract_uuid
+      - shipping_price_for_buyer_in_cents
+      - shipping_price_in_supplier_currency
+      - summary
+      - supplier_company_name
+      - supplier_company_uuid
+      - supplier_shipping_tax_rate
+      - supplier_total_shipping_price_in_supplier_currency_in_cents
+      - supplier_total_shipping_tax_amount_in_supplier_currency_in_cents
+      - uuid
     LifecycleStateEnum:
       enum:
       - initializing
@@ -653,6 +869,78 @@ components:
         * `order_confirming_price` - Order Confirming Price
 
         * `forecasted` - Forecasted'
+    DeliveryStateEnum:
+      enum:
+      - initializing
+      - not_started
+      - pending_dispatch
+      - in_transit
+      - delivered
+      - freight_ownership_pending
+      - gathering_quotes
+      - dispatch_scheduled
+      - awaiting_collection_details
+      - ready_for_pickup
+      - picked_up
+      - preparing_freight
+      - freight_scheduled
+      - gathering_freight_quotes
+      - quotes_confirmed
+      type: string
+      description: '* `initializing` - Initializing
+
+        * `not_started` - Not Started
+
+        * `pending_dispatch` - Pending Dispatch
+
+        * `in_transit` - In Transit
+
+        * `delivered` - Delivered
+
+        * `freight_ownership_pending` - Freight Ownership Pending
+
+        * `gathering_quotes` - Gathering Quotes
+
+        * `dispatch_scheduled` - Dispatch Scheduled
+
+        * `awaiting_collection_details` - Awaiting Collection Details
+
+        * `ready_for_pickup` - Ready for Pickup
+
+        * `picked_up` - Picked Up
+
+        * `preparing_freight` - Preparing Freight
+
+        * `freight_scheduled` - Freight Scheduled
+
+        * `gathering_freight_quotes` - Gathering Freight Quotes
+
+        * `quotes_confirmed` - Quotes Confirmed'
+    PaginatedMerchantOfRecordAgreementListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MerchantOfRecordAgreementList'
     Country:
       enum:
       - AF
@@ -1405,99 +1693,146 @@ components:
         * `ZM` - Zambia
 
         * `ZW` - Zimbabwe'
-    PaginatedBuyerAgreementListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerAgreementList'
-    PaginatedMerchantOfRecordAgreementLinkedOrderList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/MerchantOfRecordAgreementLinkedOrder'
-    DeliveryStateEnum:
+    UnitOfMeasurementEnum:
       enum:
-      - initializing
-      - not_started
-      - pending_dispatch
-      - in_transit
-      - delivered
-      - freight_ownership_pending
-      - gathering_quotes
-      - dispatch_scheduled
-      - awaiting_collection_details
-      - ready_for_pickup
-      - picked_up
-      - preparing_freight
-      - freight_scheduled
-      - gathering_freight_quotes
-      - quotes_confirmed
+      - fl oz
+      - g
+      - mg
+      - gals
+      - kg
+      - L
+      - tons
+      - oz
+      - lbs
+      - pcs
+      - pt
+      - ml
+      - boxes
+      - pallets
+      - tsp
+      - tbsp
+      - units
+      - cases
+      - trays
       type: string
-      description: '* `initializing` - Initializing
+      description: '* `fl oz` - Fluid Ounces
 
-        * `not_started` - Not Started
+        * `g` - Grams
 
-        * `pending_dispatch` - Pending Dispatch
+        * `mg` - milligrams
 
-        * `in_transit` - In Transit
+        * `gals` - Gallons
 
-        * `delivered` - Delivered
+        * `kg` - Kilograms
 
-        * `freight_ownership_pending` - Freight Ownership Pending
+        * `L` - Liters
 
-        * `gathering_quotes` - Gathering Quotes
+        * `tons` - Metric Tons
 
-        * `dispatch_scheduled` - Dispatch Scheduled
+        * `oz` - Ounces
 
-        * `awaiting_collection_details` - Awaiting Collection Details
+        * `lbs` - Pounds
 
-        * `ready_for_pickup` - Ready for Pickup
+        * `pcs` - Pieces
 
-        * `picked_up` - Picked Up
+        * `pt` - Pints
 
-        * `preparing_freight` - Preparing Freight
+        * `ml` - Milliliter
 
-        * `freight_scheduled` - Freight Scheduled
+        * `boxes` - Boxes
 
-        * `gathering_freight_quotes` - Gathering Freight Quotes
+        * `pallets` - Pallets
 
-        * `quotes_confirmed` - Quotes Confirmed'
+        * `tsp` - Teaspoons
+
+        * `tbsp` - Tablespoons
+
+        * `units` - Units
+
+        * `cases` - Cases
+
+        * `trays` - Trays'
+    MerchantOfRecordAgreementLineItemCreate:
+      type: object
+      properties:
+        product_name:
+          type: string
+          maxLength: 255
+        unit_of_measurement:
+          $ref: '#/components/schemas/UnitOfMeasurementEnum'
+        buyer_tax_rate:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+        supplier_tax_rate:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+        supplier_unit_price_in_supplier_currency:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        buyer_commission_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,20})?$
+        total_quantity_agreed:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        minimum_order_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        sku:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        product_description:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        packaging_format:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        delivery_surcharge_price_in_supplier_currency:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        buyer_item_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          writeOnly: true
+        supplier_item_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          writeOnly: true
+      required:
+      - minimum_order_quantity
+      - product_name
+      - supplier_unit_price_in_supplier_currency
+      - total_quantity_agreed
+    BlankEnum:
+      enum:
+      - ''
+    AgreementOrderResponse:
+      type: object
+      properties:
+        order_uuid:
+          type: string
+          format: uuid
+      required:
+      - order_uuid
     AvailableCurrenciesEnum:
       enum:
       - EUR
@@ -1509,16 +1844,12 @@ components:
         * `GBP` - GBP
 
         * `USD` - USD'
-    BuyerAgreementLineItem:
+    MerchantOfRecordAgreementLineItem:
       type: object
       properties:
         uuid:
           type: string
           format: uuid
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
           readOnly: true
         product_name:
           type: string
@@ -1538,33 +1869,51 @@ components:
         buyer_total_tax_amount_in_buyer_currency_in_cents:
           type: number
           readOnly: true
-        minimum_order_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        quantity_ordered:
+          type: number
+          readOnly: true
+        supplier_tax_rate:
+          type: number
+          format: float
+          readOnly: true
+        supplier_unit_price_in_supplier_currency:
+          type: integer
+        supplier_total_price_in_supplier_currency_in_cents:
+          type: number
+          readOnly: true
+        supplier_total_tax_amount_in_supplier_currency_in_cents:
+          type: number
+          readOnly: true
+        buyer_commission_percentage:
+          type: number
+          format: float
+          readOnly: true
         total_quantity_agreed:
           type: string
           format: decimal
           pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
         sku:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           maxLength: 255
         product_description:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           maxLength: 255
         packaging_format:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           maxLength: 255
-        quantity_ordered:
-          type: number
-          readOnly: true
         quantity:
-          type: number
-          format: float
+          type: string
           readOnly: true
+        minimum_order_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
         spec_sheet_document:
           allOf:
           - $ref: '#/components/schemas/AgreementLineItemDocument'
@@ -1573,28 +1922,70 @@ components:
           allOf:
           - $ref: '#/components/schemas/AgreementLineItemDocument'
           readOnly: true
+        delivery_surcharge_price_in_supplier_currency:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        buyer_item:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemSummary'
+          readOnly: true
+        supplier_item:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemSummary'
+          readOnly: true
       required:
+      - buyer_commission_percentage
+      - buyer_item
       - buyer_tax_rate
       - buyer_total_price_in_buyer_currency_in_cents
       - buyer_total_tax_amount_in_buyer_currency_in_cents
       - buyer_unit_price_in_buyer_currency
-      - created_at
       - minimum_order_quantity
       - product_name
       - quantity
       - quantity_ordered
       - signed_agreement_document
       - spec_sheet_document
+      - supplier_item
+      - supplier_tax_rate
+      - supplier_total_price_in_supplier_currency_in_cents
+      - supplier_total_tax_amount_in_supplier_currency_in_cents
+      - supplier_unit_price_in_supplier_currency
       - total_quantity_agreed
       - uuid
-    AgreementOrderResponse:
+    NullEnum:
+      enum:
+      - null
+    PatchedMerchantOfRecordAgreementList:
       type: object
       properties:
-        order_uuid:
+        uuid:
           type: string
           format: uuid
-      required:
-      - order_uuid
+          readOnly: true
+        agreement_number:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MerchantOfRecordAgreementLineItem'
+        supplier_company_name:
+          type: string
+        buyer_company_name:
+          type: string
+        contract_end_date:
+          type: string
+          format: date
+        contract_start_date:
+          type: string
+          format: date
     AgreementLineItemDocumentCategoryEnum:
       enum:
       - spec_sheet
@@ -1603,71 +1994,6 @@ components:
       description: '* `spec_sheet` - Spec Sheet
 
         * `signed_agreement` - Signed Agreement'
-    NullEnum:
-      enum:
-      - null
-    PaymentProviderEnum:
-      enum:
-      - stripe
-      - two
-      - direct
-      type: string
-      description: '* `stripe` - Stripe
-
-        * `two` - Two
-
-        * `direct` - Direct'
-    DeliveryAddressResponse:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          nullable: true
-          maxLength: 255
-        street_1:
-          type: string
-          nullable: true
-          maxLength: 100
-        street_2:
-          type: string
-          nullable: true
-          maxLength: 100
-        postcode:
-          type: string
-          nullable: true
-          maxLength: 100
-        town:
-          type: string
-          nullable: true
-          maxLength: 100
-        region:
-          type: string
-          nullable: true
-          maxLength: 100
-        country:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        delivery_instructions:
-          type: string
-          nullable: true
-        contact_phone:
-          type: string
-          nullable: true
-        phone_country_code:
-          type: string
-          nullable: true
-        contact_full_name:
-          type: string
-          nullable: true
-      required:
-      - uuid
     MerchantOfRecordAgreementCreate:
       type: object
       properties:
@@ -1748,9 +2074,10 @@ components:
           type: string
           format: date
         order_management_contract_uuid:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
       required:
       - buyer_company
       - contract_end_date
@@ -1762,703 +2089,6 @@ components:
       - minimum_lead_time_for_following_orders_in_days
       - shipping_price_in_supplier_currency
       - supplier_company
-    CatalogItemSummary:
-      type: object
-      description: 'Compact read-only summary of a `BuyerItem` or `SupplierItem` for embedding
-
-        on order / agreement line-item read serializers.
-
-
-        A plain `Serializer` (not `ModelSerializer`) because both catalogue models
-
-        expose the same field names, so one summary serves both — and it stays
-
-        read-only, so it never participates in write validation.'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        item_name:
-          type: string
-          readOnly: true
-        sku:
-          type: string
-          readOnly: true
-          nullable: true
-        kind:
-          type: string
-          readOnly: true
-        unit_of_measurement:
-          type: string
-          readOnly: true
-      required:
-      - item_name
-      - kind
-      - sku
-      - unit_of_measurement
-      - uuid
-    MerchantOfRecordAgreementOrderResponse:
-      type: object
-      properties:
-        order_uuid:
-          type: string
-          format: uuid
-      required:
-      - order_uuid
-    BuyerAgreementAggregateResult:
-      type: object
-      properties:
-        operation:
-          type: string
-        field:
-          type: string
-        by_currency:
-          type: object
-          additionalProperties:
-            type: integer
-        by_currency_display:
-          type: object
-          additionalProperties:
-            type: string
-        agreement_count:
-          type: integer
-      required:
-      - agreement_count
-      - by_currency
-      - by_currency_display
-      - field
-      - operation
-    AgreementOrderLineItem:
-      type: object
-      properties:
-        agreement_line_item_uuid:
-          type: string
-          format: uuid
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-      required:
-      - agreement_line_item_uuid
-      - quantity
-    MerchantOfRecordAgreementLinkedOrder:
-      type: object
-      description: Lightweight row for the contract detail's Linked Orders table.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        order_number:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        lifecycle_state:
-          $ref: '#/components/schemas/LifecycleStateEnum'
-        delivery_state:
-          $ref: '#/components/schemas/DeliveryStateEnum'
-      required:
-      - created_at
-      - order_number
-      - uuid
-    MerchantOfRecordAgreementLineItemCreate:
-      type: object
-      properties:
-        product_name:
-          type: string
-          maxLength: 255
-        unit_of_measurement:
-          $ref: '#/components/schemas/UnitOfMeasurementEnum'
-        buyer_tax_rate:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
-        supplier_tax_rate:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
-        supplier_unit_price_in_supplier_currency:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-        buyer_commission_percentage:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,6}(?:\.\d{0,20})?$
-        total_quantity_agreed:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-        minimum_order_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-        sku:
-          type: string
-          nullable: true
-          maxLength: 255
-        product_description:
-          type: string
-          nullable: true
-          maxLength: 255
-        packaging_format:
-          type: string
-          nullable: true
-          maxLength: 255
-        delivery_surcharge_price_in_supplier_currency:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-        buyer_item_uuid:
-          type: string
-          format: uuid
-          writeOnly: true
-          nullable: true
-        supplier_item_uuid:
-          type: string
-          format: uuid
-          writeOnly: true
-          nullable: true
-      required:
-      - minimum_order_quantity
-      - product_name
-      - supplier_unit_price_in_supplier_currency
-      - total_quantity_agreed
-    MerchantOfRecordAgreementList:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        agreement_number:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        line_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/MerchantOfRecordAgreementLineItem'
-        supplier_company_name:
-          type: string
-        buyer_company_name:
-          type: string
-        contract_end_date:
-          type: string
-          format: date
-        contract_start_date:
-          type: string
-          format: date
-      required:
-      - agreement_number
-      - buyer_company_name
-      - contract_end_date
-      - contract_start_date
-      - created_at
-      - line_items
-      - supplier_company_name
-      - uuid
-    AppOrderPaymentTermsEnum:
-      enum:
-      - pay_before_dispatch
-      - pay_after_dispatch
-      - pay_on_28th_second_month_after_dispatch
-      - pay_end_of_month_of_dispatch_date
-      type: string
-      description: '* `pay_before_dispatch` - Pay Before Dispatch
-
-        * `pay_after_dispatch` - Pay After Dispatch
-
-        * `pay_on_28th_second_month_after_dispatch` - Pay on 28th second month after dispatch
-
-        * `pay_end_of_month_of_dispatch_date` - Pay End of Month of Dispatch Date'
-    MerchantOfRecordAgreementDetails:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        agreement_number:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        line_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/MerchantOfRecordAgreementLineItem'
-        supplier_company_name:
-          type: string
-        buyer_company_name:
-          type: string
-        delivery_address:
-          allOf:
-          - $ref: '#/components/schemas/DeliveryAddressResponse'
-          nullable: true
-        buyer_currency:
-          type: string
-        supplier_currency:
-          $ref: '#/components/schemas/AvailableCurrenciesEnum'
-        shipping_price_in_supplier_currency:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-        import_fee_price_in_buyer_currency:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-        export_fee_price_in_supplier_currency:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-        shipping_price_for_buyer_in_cents:
-          type: number
-          readOnly: true
-        buyer_shipping_tax_rate:
-          type: number
-          format: double
-        buyer_total_shipping_tax_amount_in_buyer_currency_in_cents:
-          type: number
-          readOnly: true
-        estimated_number_of_orders:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        minimum_lead_time_for_first_order_in_days:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        minimum_lead_time_for_following_orders_in_days:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        days_until_payment_due:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        supplier_total_shipping_price_in_supplier_currency_in_cents:
-          type: number
-          readOnly: true
-        supplier_total_shipping_tax_amount_in_supplier_currency_in_cents:
-          type: number
-          readOnly: true
-        supplier_shipping_tax_rate:
-          type: number
-          format: double
-        days_until_payout_due:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        payment_terms:
-          $ref: '#/components/schemas/AppOrderPaymentTermsEnum'
-        payout_terms:
-          $ref: '#/components/schemas/PayoutTermsEnum'
-        channel_uuid:
-          type: string
-          format: uuid
-        payment_provider:
-          $ref: '#/components/schemas/PaymentProviderEnum'
-        contract_start_date:
-          type: string
-          format: date
-        contract_end_date:
-          type: string
-          format: date
-        buyer_company_uuid:
-          type: string
-          format: uuid
-        supplier_company_uuid:
-          type: string
-          format: uuid
-        summary:
-          allOf:
-          - $ref: '#/components/schemas/AgreementSummary'
-          readOnly: true
-        has_at_least_one_order:
-          type: boolean
-          description: Checks if there is at least one AppOrder associated with this Agreement.
-          readOnly: true
-        order_management_contract_uuid:
-          type: string
-          format: uuid
-          nullable: true
-          readOnly: true
-      required:
-      - agreement_number
-      - buyer_company_name
-      - buyer_company_uuid
-      - buyer_currency
-      - buyer_shipping_tax_rate
-      - buyer_total_shipping_tax_amount_in_buyer_currency_in_cents
-      - channel_uuid
-      - contract_end_date
-      - contract_start_date
-      - created_at
-      - delivery_address
-      - estimated_number_of_orders
-      - has_at_least_one_order
-      - line_items
-      - minimum_lead_time_for_first_order_in_days
-      - minimum_lead_time_for_following_orders_in_days
-      - order_management_contract_uuid
-      - shipping_price_for_buyer_in_cents
-      - shipping_price_in_supplier_currency
-      - summary
-      - supplier_company_name
-      - supplier_company_uuid
-      - supplier_shipping_tax_rate
-      - supplier_total_shipping_price_in_supplier_currency_in_cents
-      - supplier_total_shipping_tax_amount_in_supplier_currency_in_cents
-      - uuid
-    AgreementLineItemDocument:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        document:
-          type: string
-          format: uri
-        category:
-          $ref: '#/components/schemas/AgreementLineItemDocumentCategoryEnum'
-      required:
-      - category
-      - document
-      - uuid
-    PayoutTermsEnum:
-      enum:
-      - payout_before_dispatch
-      - payout_after_dispatch
-      type: string
-      description: '* `payout_before_dispatch` - Payout Before Dispatch
-
-        * `payout_after_dispatch` - Payout After Dispatch'
-    MerchantOfRecordAgreementLineItem:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        product_name:
-          type: string
-          maxLength: 255
-        unit_of_measurement:
-          $ref: '#/components/schemas/UnitOfMeasurementEnum'
-        buyer_tax_rate:
-          type: number
-          format: float
-          readOnly: true
-        buyer_unit_price_in_buyer_currency:
-          type: number
-          readOnly: true
-        buyer_total_price_in_buyer_currency_in_cents:
-          type: number
-          readOnly: true
-        buyer_total_tax_amount_in_buyer_currency_in_cents:
-          type: number
-          readOnly: true
-        quantity_ordered:
-          type: number
-          readOnly: true
-        supplier_tax_rate:
-          type: number
-          format: float
-          readOnly: true
-        supplier_unit_price_in_supplier_currency:
-          type: integer
-        supplier_total_price_in_supplier_currency_in_cents:
-          type: number
-          readOnly: true
-        supplier_total_tax_amount_in_supplier_currency_in_cents:
-          type: number
-          readOnly: true
-        buyer_commission_percentage:
-          type: number
-          format: float
-          readOnly: true
-        total_quantity_agreed:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-        sku:
-          type: string
-          nullable: true
-          maxLength: 255
-        product_description:
-          type: string
-          nullable: true
-          maxLength: 255
-        packaging_format:
-          type: string
-          nullable: true
-          maxLength: 255
-        quantity:
-          type: string
-          readOnly: true
-        minimum_order_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-        spec_sheet_document:
-          allOf:
-          - $ref: '#/components/schemas/AgreementLineItemDocument'
-          readOnly: true
-        signed_agreement_document:
-          allOf:
-          - $ref: '#/components/schemas/AgreementLineItemDocument'
-          readOnly: true
-        delivery_surcharge_price_in_supplier_currency:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-        buyer_item:
-          allOf:
-          - $ref: '#/components/schemas/CatalogItemSummary'
-          readOnly: true
-          nullable: true
-        supplier_item:
-          allOf:
-          - $ref: '#/components/schemas/CatalogItemSummary'
-          readOnly: true
-          nullable: true
-      required:
-      - buyer_commission_percentage
-      - buyer_item
-      - buyer_tax_rate
-      - buyer_total_price_in_buyer_currency_in_cents
-      - buyer_total_tax_amount_in_buyer_currency_in_cents
-      - buyer_unit_price_in_buyer_currency
-      - minimum_order_quantity
-      - product_name
-      - quantity
-      - quantity_ordered
-      - signed_agreement_document
-      - spec_sheet_document
-      - supplier_item
-      - supplier_tax_rate
-      - supplier_total_price_in_supplier_currency_in_cents
-      - supplier_total_tax_amount_in_supplier_currency_in_cents
-      - supplier_unit_price_in_supplier_currency
-      - total_quantity_agreed
-      - uuid
-    PatchedMerchantOfRecordAgreementList:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        agreement_number:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        line_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/MerchantOfRecordAgreementLineItem'
-        supplier_company_name:
-          type: string
-        buyer_company_name:
-          type: string
-        contract_end_date:
-          type: string
-          format: date
-        contract_start_date:
-          type: string
-          format: date
-    BuyerAgreementDetails:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        agreement_number:
-          type: string
-          readOnly: true
-        payment_terms:
-          $ref: '#/components/schemas/AppOrderPaymentTermsEnum'
-        payment_provider:
-          $ref: '#/components/schemas/PaymentProviderEnum'
-        buyer_currency:
-          type: string
-        line_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerAgreementLineItem'
-        shipping_price_for_buyer_in_cents:
-          type: number
-          readOnly: true
-        buyer_total_shipping_tax_amount_in_buyer_currency_in_cents:
-          type: number
-          readOnly: true
-        delivery_address:
-          allOf:
-          - $ref: '#/components/schemas/DeliveryAddressResponse'
-          nullable: true
-        buyer_shipping_tax_rate:
-          type: number
-          format: double
-        estimated_number_of_orders:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        minimum_lead_time_for_first_order_in_days:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        minimum_lead_time_for_following_orders_in_days:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        days_until_payment_due:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        has_at_least_one_order:
-          type: boolean
-          description: Checks if there is at least one AppOrder associated with this Agreement.
-          readOnly: true
-        channel_uuid:
-          type: string
-          format: uuid
-        legacy_contract_uuid:
-          type: string
-          readOnly: true
-        summary:
-          allOf:
-          - $ref: '#/components/schemas/AgreementSummary'
-          readOnly: true
-        contract_start_date:
-          type: string
-          format: date
-        contract_end_date:
-          type: string
-          format: date
-        supplier_company_name:
-          type: string
-          readOnly: true
-        supplier_company_uuid:
-          type: string
-          readOnly: true
-      required:
-      - agreement_number
-      - buyer_currency
-      - buyer_shipping_tax_rate
-      - buyer_total_shipping_tax_amount_in_buyer_currency_in_cents
-      - channel_uuid
-      - contract_end_date
-      - contract_start_date
-      - delivery_address
-      - estimated_number_of_orders
-      - has_at_least_one_order
-      - legacy_contract_uuid
-      - line_items
-      - minimum_lead_time_for_first_order_in_days
-      - minimum_lead_time_for_following_orders_in_days
-      - shipping_price_for_buyer_in_cents
-      - summary
-      - supplier_company_name
-      - supplier_company_uuid
-      - uuid
-    PaginatedMerchantOfRecordAgreementListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/MerchantOfRecordAgreementList'
-    AgreementSummary:
-      type: object
-      description: Serializer for agreement summary metrics.
-      properties:
-        percent_fulfilled:
-          type: number
-          format: double
-        orders_completed:
-          type: integer
-        orders_estimated:
-          type: integer
-      required:
-      - orders_completed
-      - orders_estimated
-      - percent_fulfilled
-    MerchantOfRecordAgreementOrderCreate:
-      type: object
-      description: "Place an order from a contract as the merchant of record.\n\nMirrors the buyer ``AgreementOrderCreateSerializer`` (delivery date + address\n+ per-line quantities), with two MoR-specific differences:\n\n- ``ordered_by_uuid`` — the MoR operator isn't the buyer, so the buyer\n  contact the order is placed on behalf of is supplied explicitly and must be\n  an employee of the contract's buyer company.\n- the delivery address is scoped to the contract's **buyer** company (not the\n  caller's company, which is the MoR).\n\nEverything else (prices, currencies, terms, shipping/fees, product details)\nis derived server-side from the contract by ``AgreementOrderCreationService``."
-      properties:
-        ordered_by_uuid:
-          type: string
-          format: uuid
-        delivery_address_uuid:
-          type: string
-          format: uuid
-          nullable: true
-        delivery_date:
-          type: string
-          format: date
-        line_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementOrderLineItem'
-        buyer_purchase_order_reference:
-          type: string
-          nullable: true
-      required:
-      - delivery_date
-      - line_items
-      - ordered_by_uuid
-    AgreementLineItemDocumentUpload:
-      type: object
-      properties:
-        file_name:
-          type: string
-          writeOnly: true
-        category:
-          $ref: '#/components/schemas/AgreementLineItemDocumentCategoryEnum'
-      required:
-      - category
-      - file_name
-    BlankEnum:
-      enum:
-      - ''
     BuyerAgreementList:
       type: object
       properties:
@@ -2528,72 +2158,242 @@ components:
       - supplier_company_name
       - supplier_company_uuid
       - uuid
-    UnitOfMeasurementEnum:
+    PaymentProviderEnum:
       enum:
-      - fl oz
-      - g
-      - mg
-      - gals
-      - kg
-      - L
-      - tons
-      - oz
-      - lbs
-      - pcs
-      - pt
-      - ml
-      - boxes
-      - pallets
-      - tsp
-      - tbsp
-      - units
-      - cases
-      - trays
+      - stripe
+      - two
+      - direct
       type: string
-      description: '* `fl oz` - Fluid Ounces
+      description: '* `stripe` - Stripe
 
-        * `g` - Grams
+        * `two` - Two
 
-        * `mg` - milligrams
-
-        * `gals` - Gallons
-
-        * `kg` - Kilograms
-
-        * `L` - Liters
-
-        * `tons` - Metric Tons
-
-        * `oz` - Ounces
-
-        * `lbs` - Pounds
-
-        * `pcs` - Pieces
-
-        * `pt` - Pints
-
-        * `ml` - Milliliter
-
-        * `boxes` - Boxes
-
-        * `pallets` - Pallets
-
-        * `tsp` - Teaspoons
-
-        * `tbsp` - Tablespoons
-
-        * `units` - Units
-
-        * `cases` - Cases
-
-        * `trays` - Trays'
-    AgreementOrderCreate:
+        * `direct` - Direct'
+    BuyerAgreementLineItem:
       type: object
       properties:
-        delivery_address_uuid:
+        uuid:
           type: string
           format: uuid
-          nullable: true
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        product_name:
+          type: string
+          maxLength: 255
+        unit_of_measurement:
+          $ref: '#/components/schemas/UnitOfMeasurementEnum'
+        buyer_tax_rate:
+          type: number
+          format: float
+          readOnly: true
+        buyer_unit_price_in_buyer_currency:
+          type: number
+          readOnly: true
+        buyer_total_price_in_buyer_currency_in_cents:
+          type: number
+          readOnly: true
+        buyer_total_tax_amount_in_buyer_currency_in_cents:
+          type: number
+          readOnly: true
+        minimum_order_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        total_quantity_agreed:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        sku:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        product_description:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        packaging_format:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        quantity_ordered:
+          type: number
+          readOnly: true
+        quantity:
+          type: number
+          format: float
+          readOnly: true
+        spec_sheet_document:
+          allOf:
+          - $ref: '#/components/schemas/AgreementLineItemDocument'
+          readOnly: true
+        signed_agreement_document:
+          allOf:
+          - $ref: '#/components/schemas/AgreementLineItemDocument'
+          readOnly: true
+      required:
+      - buyer_tax_rate
+      - buyer_total_price_in_buyer_currency_in_cents
+      - buyer_total_tax_amount_in_buyer_currency_in_cents
+      - buyer_unit_price_in_buyer_currency
+      - created_at
+      - minimum_order_quantity
+      - product_name
+      - quantity
+      - quantity_ordered
+      - signed_agreement_document
+      - spec_sheet_document
+      - total_quantity_agreed
+      - uuid
+    DeliveryAddressResponse:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        street_1:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        street_2:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        postcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        town:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        region:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        delivery_instructions:
+          type:
+          - string
+          - 'null'
+        contact_phone:
+          type:
+          - string
+          - 'null'
+        phone_country_code:
+          type:
+          - string
+          - 'null'
+        contact_full_name:
+          type:
+          - string
+          - 'null'
+      required:
+      - uuid
+    PaginatedBuyerAgreementListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerAgreementList'
+    AppOrderPaymentTermsEnum:
+      enum:
+      - pay_before_dispatch
+      - pay_after_dispatch
+      - pay_on_28th_second_month_after_dispatch
+      - pay_end_of_month_of_dispatch_date
+      type: string
+      description: '* `pay_before_dispatch` - Pay Before Dispatch
+
+        * `pay_after_dispatch` - Pay After Dispatch
+
+        * `pay_on_28th_second_month_after_dispatch` - Pay on 28th second month after dispatch
+
+        * `pay_end_of_month_of_dispatch_date` - Pay End of Month of Dispatch Date'
+    MerchantOfRecordAgreementOrderResponse:
+      type: object
+      properties:
+        order_uuid:
+          type: string
+          format: uuid
+      required:
+      - order_uuid
+    PaginatedMerchantOfRecordAgreementLinkedOrderList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MerchantOfRecordAgreementLinkedOrder'
+    MerchantOfRecordAgreementOrderCreate:
+      type: object
+      description: "Place an order from a contract as the merchant of record.\n\nMirrors the buyer ``AgreementOrderCreateSerializer`` (delivery date + address\n+ per-line quantities), with two MoR-specific differences:\n\n- ``ordered_by_uuid`` — the MoR operator isn't the buyer, so the buyer\n  contact the order is placed on behalf of is supplied explicitly and must be\n  an employee of the contract's buyer company.\n- the delivery address is scoped to the contract's **buyer** company (not the\n  caller's company, which is the MoR).\n\nEverything else (prices, currencies, terms, shipping/fees, product details)\nis derived server-side from the contract by ``AgreementOrderCreationService``."
+      properties:
+        ordered_by_uuid:
+          type: string
+          format: uuid
+        delivery_address_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
         delivery_date:
           type: string
           format: date
@@ -2602,11 +2402,240 @@ components:
           items:
             $ref: '#/components/schemas/AgreementOrderLineItem'
         buyer_purchase_order_reference:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       required:
       - delivery_date
       - line_items
+      - ordered_by_uuid
+    BuyerAgreementDetails:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        agreement_number:
+          type: string
+          readOnly: true
+        payment_terms:
+          $ref: '#/components/schemas/AppOrderPaymentTermsEnum'
+        payment_provider:
+          $ref: '#/components/schemas/PaymentProviderEnum'
+        buyer_currency:
+          type: string
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerAgreementLineItem'
+        shipping_price_for_buyer_in_cents:
+          type: number
+          readOnly: true
+        buyer_total_shipping_tax_amount_in_buyer_currency_in_cents:
+          type: number
+          readOnly: true
+        delivery_address:
+          allOf:
+          - $ref: '#/components/schemas/DeliveryAddressResponse'
+        buyer_shipping_tax_rate:
+          type: number
+          format: double
+        estimated_number_of_orders:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        minimum_lead_time_for_first_order_in_days:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        minimum_lead_time_for_following_orders_in_days:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        days_until_payment_due:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        has_at_least_one_order:
+          type: boolean
+          description: Checks if there is at least one AppOrder associated with this Agreement.
+          readOnly: true
+        channel_uuid:
+          type: string
+          format: uuid
+        legacy_contract_uuid:
+          type: string
+          readOnly: true
+        summary:
+          allOf:
+          - $ref: '#/components/schemas/AgreementSummary'
+          readOnly: true
+        contract_start_date:
+          type: string
+          format: date
+        contract_end_date:
+          type: string
+          format: date
+        supplier_company_name:
+          type: string
+          readOnly: true
+        supplier_company_uuid:
+          type: string
+          readOnly: true
+      required:
+      - agreement_number
+      - buyer_currency
+      - buyer_shipping_tax_rate
+      - buyer_total_shipping_tax_amount_in_buyer_currency_in_cents
+      - channel_uuid
+      - contract_end_date
+      - contract_start_date
+      - delivery_address
+      - estimated_number_of_orders
+      - has_at_least_one_order
+      - legacy_contract_uuid
+      - line_items
+      - minimum_lead_time_for_first_order_in_days
+      - minimum_lead_time_for_following_orders_in_days
+      - shipping_price_for_buyer_in_cents
+      - summary
+      - supplier_company_name
+      - supplier_company_uuid
+      - uuid
+    AgreementSummary:
+      type: object
+      description: Serializer for agreement summary metrics.
+      properties:
+        percent_fulfilled:
+          type: number
+          format: double
+        orders_completed:
+          type: integer
+        orders_estimated:
+          type: integer
+      required:
+      - orders_completed
+      - orders_estimated
+      - percent_fulfilled
+    MerchantOfRecordAgreementLinkedOrder:
+      type: object
+      description: Lightweight row for the contract detail's Linked Orders table.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        order_number:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        lifecycle_state:
+          $ref: '#/components/schemas/LifecycleStateEnum'
+        delivery_state:
+          $ref: '#/components/schemas/DeliveryStateEnum'
+      required:
+      - created_at
+      - order_number
+      - uuid
+    AgreementOrderLineItem:
+      type: object
+      properties:
+        agreement_line_item_uuid:
+          type: string
+          format: uuid
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+      required:
+      - agreement_line_item_uuid
+      - quantity
+    PayoutTermsEnum:
+      enum:
+      - payout_before_dispatch
+      - payout_after_dispatch
+      type: string
+      description: '* `payout_before_dispatch` - Payout Before Dispatch
+
+        * `payout_after_dispatch` - Payout After Dispatch'
+    CatalogItemSummary:
+      type: object
+      description: 'Compact read-only summary of a `BuyerItem` or `SupplierItem` for embedding
+
+        on order / agreement line-item read serializers.
+
+
+        A plain `Serializer` (not `ModelSerializer`) because both catalogue models
+
+        expose the same field names, so one summary serves both — and it stays
+
+        read-only, so it never participates in write validation.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        item_name:
+          type: string
+          readOnly: true
+        sku:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        kind:
+          type: string
+          readOnly: true
+        unit_of_measurement:
+          type: string
+          readOnly: true
+      required:
+      - item_name
+      - kind
+      - sku
+      - unit_of_measurement
+      - uuid
+    MerchantOfRecordAgreementList:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        agreement_number:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MerchantOfRecordAgreementLineItem'
+        supplier_company_name:
+          type: string
+        buyer_company_name:
+          type: string
+        contract_end_date:
+          type: string
+          format: date
+        contract_start_date:
+          type: string
+          format: date
+      required:
+      - agreement_number
+      - buyer_company_name
+      - contract_end_date
+      - contract_start_date
+      - created_at
+      - line_items
+      - supplier_company_name
+      - uuid
   securitySchemes:
     cookieAuth:
       type: apiKey

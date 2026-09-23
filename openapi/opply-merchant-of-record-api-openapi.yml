@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Opply Activity Feed Merchant of Record API
+  title: Opply Merchant of Record API
   version: 0.0.0
 tags:
 - name: Merchant of Record
@@ -36,7 +36,7 @@ paths:
       description: 'List every employee of the Merchant of Record company that the requesting user belongs to.
 
 
-        Use `?is_staff=true` to narrow the result to users with the staff flag (rendered as "admins" in the MoR frontend). Use `?is_active=true|false` to filter by the active flag. Use `?search=<term>` for a case-insensitive partial match against `email`, `first_name` or `last_name`. Filters compose with each other and with pagination. Results are paginated and ordered alphabetically by `first_name`, then `last_name`. Non-staff callers can only see active users; staff callers see everyone and can use `?is_active`.'
+        Use `?is_staff=true` to narrow the result to users with the staff flag (rendered as "admins" in the MoR frontend). Use `?is_active=true|false` to filter by the active flag. Use `?search=` for a case-insensitive partial match against `email`, `first_name` or `last_name`. Filters compose with each other and with pagination. Results are paginated and ordered alphabetically by `first_name`, then `last_name`. Non-staff callers can only see active users; staff callers see everyone and can use `?is_active`.'
       summary: List MoR users
       parameters:
       - in: query
@@ -145,91 +145,6 @@ paths:
           description: ''
 components:
   schemas:
-    MerchantOfRecordUserUpdate:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        email:
-          type: string
-          format: email
-          readOnly: true
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        is_staff:
-          type: boolean
-          title: Staff status
-          description: Designates whether the user can log into this admin site.
-        is_active:
-          type: boolean
-          title: Active
-          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
-        date_joined:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - date_joined
-      - email
-      - uuid
-    PatchedMerchantOfRecordUserUpdate:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        email:
-          type: string
-          format: email
-          readOnly: true
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        is_staff:
-          type: boolean
-          title: Staff status
-          description: Designates whether the user can log into this admin site.
-        is_active:
-          type: boolean
-          title: Active
-          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
-        date_joined:
-          type: string
-          format: date-time
-          readOnly: true
-    PaginatedMerchantOfRecordUserListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/MerchantOfRecordUserList'
     MerchantOfRecordUserCreate:
       type: object
       properties:
@@ -268,6 +183,64 @@ components:
       - is_active
       - is_staff
       - last_name
+      - uuid
+    PaginatedMerchantOfRecordUserListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MerchantOfRecordUserList'
+    MerchantOfRecordUserUpdate:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        is_staff:
+          type: boolean
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - date_joined
+      - email
       - uuid
     MerchantOfRecordUserList:
       type: object
@@ -308,6 +281,35 @@ components:
       - is_staff
       - last_name
       - uuid
+    PatchedMerchantOfRecordUserUpdate:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        is_staff:
+          type: boolean
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
   securitySchemes:
     cookieAuth:
       type: apiKey

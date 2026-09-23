@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Opply Activity Feed Customer Status API
+  title: Opply Customer Status API
   version: 0.0.0
 tags:
 - name: Customer Status
@@ -151,9 +151,42 @@ components:
         * `verification_needed` - Verification Needed
 
         * `other` - Other'
-    BlankEnum:
-      enum:
-      - ''
+    UpdatedBy:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - uuid
+    PaginatedCustomerStatusList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerStatus'
     CustomerStatus:
       type: object
       description: Serializer for reading CustomerStatus records.
@@ -213,40 +246,9 @@ components:
       - status
       - updated_by
       - uuid
-    PaginatedCustomerStatusList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerStatus'
-    UpdatedBy:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        name:
-          type: string
-      required:
-      - name
-      - uuid
+    BlankEnum:
+      enum:
+      - ''
     CustomerStatusNotFoundResponse:
       type: object
       properties:

@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Opply Activity Feed Registration Validation API
+  title: Opply Registration Validation API
   version: 0.0.0
 tags:
 - name: Registration Validation
@@ -8,7 +8,7 @@ paths:
   /api/v1/companies/companies-house/search/:
     get:
       operationId: api_v1_companies_companies_house_search_retrieve
-      description: 'GET /api/v1/companies/companies-house/search/?q=<name>&limit=10
+      description: 'GET /api/v1/companies/companies-house/search/?q=&limit=10
 
 
         Autocomplete endpoint backing the registered-company picker in MoR forms.
@@ -84,6 +84,23 @@ paths:
           description: No response body
 components:
   schemas:
+    RegistrationValidationResponse:
+      type: object
+      properties:
+        registration_name:
+          type:
+          - string
+          - 'null'
+        registration_number:
+          type:
+          - string
+          - 'null'
+        registration_country_code:
+          type: string
+      required:
+      - registration_country_code
+      - registration_name
+      - registration_number
     CompaniesHouseSearchResult:
       type: object
       properties:
@@ -94,30 +111,17 @@ components:
       required:
       - registration_name
       - registration_number
-    RegistrationValidationResponse:
-      type: object
-      properties:
-        registration_name:
-          type: string
-          nullable: true
-        registration_number:
-          type: string
-          nullable: true
-        registration_country_code:
-          type: string
-      required:
-      - registration_country_code
-      - registration_name
-      - registration_number
     RegistrationValidationInput:
       type: object
       properties:
         registration_name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         registration_number:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         registration_country_code:
           type: string
       required:

@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Opply Activity Feed Ingredients API
+  title: Opply Ingredients API
   version: 0.0.0
 tags:
 - name: Ingredients
@@ -45,7 +45,7 @@ paths:
           description: ''
     post:
       operationId: api_v1_inquiries_ingredients_create
-      summary: Ingredient creation endpoint.
+      summary: Ingredient creation endpoint
       tags:
       - Ingredients
       requestBody:
@@ -91,6 +91,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Ingredient'
           description: ''
+      summary: Api v1 inquiries ingredients retrieve
+      x-summary-source: derived
     put:
       operationId: api_v1_inquiries_ingredients_update
       parameters:
@@ -123,6 +125,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Ingredient'
           description: ''
+      summary: Api v1 inquiries ingredients update
+      x-summary-source: derived
     patch:
       operationId: api_v1_inquiries_ingredients_partial_update
       parameters:
@@ -154,6 +158,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Ingredient'
           description: ''
+      summary: Api v1 inquiries ingredients partial update
+      x-summary-source: derived
     delete:
       operationId: api_v1_inquiries_ingredients_destroy
       parameters:
@@ -170,6 +176,8 @@ paths:
       responses:
         '204':
           description: No response body
+      summary: Api v1 inquiries ingredients destroy
+      x-summary-source: derived
   /api/v1/inquiries/ingredients/{uuid}/delete-documents/:
     delete:
       operationId: api_v1_inquiries_ingredients_delete_documents_destroy
@@ -189,6 +197,8 @@ paths:
           description: No response body
         '200':
           description: No response body
+      summary: Api v1 inquiries ingredients delete documents destroy
+      x-summary-source: derived
   /api/v1/inquiries/ingredients/{uuid}/documents/:
     get:
       operationId: api_v1_inquiries_ingredients_documents_list
@@ -222,6 +232,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedInquiryDocumentList'
           description: ''
+      summary: Api v1 inquiries ingredients documents list
+      x-summary-source: derived
   /api/v1/inquiries/ingredients/{uuid}/retrieve-assigned-ingredient/:
     get:
       operationId: api_v1_inquiries_ingredients_retrieve_assigned_ingredient_retrieve
@@ -273,6 +285,8 @@ paths:
       responses:
         '204':
           description: No response body
+      summary: Api v1 inquiries ingredients upload create
+      x-summary-source: derived
   /api/v1/inquiries/ingredients/process-csv/:
     post:
       operationId: api_v1_inquiries_ingredients_process_csv_create
@@ -332,33 +346,81 @@ paths:
           description: ''
 components:
   schemas:
-    BlankEnum:
+    Currencies:
       enum:
-      - ''
-    TaskCreated:
+      - EUR
+      - USD
+      - GBP
+      - CAD
+      type: string
+      description: '* `EUR` - EUR
+
+        * `USD` - USD
+
+        * `GBP` - GBP
+
+        * `CAD` - CAD'
+    PaginatedIngredientList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+    TaskResult:
       type: object
       properties:
         task_id:
           type: string
-          format: uuid
-      required:
-      - task_id
-    InquiryDocument:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
+          description: Celery ID for the Task that was run
+          maxLength: 255
+        status:
+          allOf:
+          - $ref: '#/components/schemas/TaskResultStatusEnum'
+          title: Task State
+          description: 'Current state of the task being run
+
+
+            * `FAILURE` - FAILURE
+
+            * `PENDING` - PENDING
+
+            * `RECEIVED` - RECEIVED
+
+            * `RETRY` - RETRY
+
+            * `REVOKED` - REVOKED
+
+            * `STARTED` - STARTED
+
+            * `SUCCESS` - SUCCESS'
+        result:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
           readOnly: true
-        document:
-          type: string
-          format: uri
-        description:
-          type: string
-          nullable: true
       required:
-      - document
-      - uuid
+      - result
+      - task_id
     Ingredient:
       type: object
       properties:
@@ -377,23 +439,24 @@ components:
           format: uri
           maxLength: 2048
         current_unit_price:
-          type: string
+          type:
+          - string
+          - 'null'
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-          nullable: true
           default: '0.00'
         currency:
           $ref: '#/components/schemas/Currencies'
         description:
           type: string
         quantity:
-          type: string
+          type:
+          - string
+          - 'null'
           format: decimal
           pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-          nullable: true
           default: '0.00'
         unit_of_measurement:
-          nullable: true
           default: kg
           oneOf:
           - $ref: '#/components/schemas/UnitOfMeasurementEnum'
@@ -418,46 +481,103 @@ components:
         current_supplier:
           type: string
         frequency:
-          nullable: true
           oneOf:
           - $ref: '#/components/schemas/FrequencyEnum'
           - $ref: '#/components/schemas/BlankEnum'
           - $ref: '#/components/schemas/NullEnum'
         article:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
         existing_suppliers:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: string
             format: uuid
           readOnly: true
-          nullable: true
         parent_uuid:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
       required:
       - description
       - existing_suppliers
       - id
       - name
       - uuid
-    FrequencyEnum:
+    AllergenRequirementsEnum:
       enum:
-      - weekly
-      - monthly
-      - quarterly
-      - annually
+      - celery
+      - cereals_containing_gluten
+      - crustaceans
+      - eggs
+      - fish
+      - lupin
+      - milk
+      - molluscs
+      - mustard
+      - nuts
+      - peanuts
+      - sesame_seeds
+      - soya
+      - sulphur_dioxide
       type: string
-      description: '* `weekly` - Weekly
+      description: '* `celery` - Celery
 
-        * `monthly` - Monthly
+        * `cereals_containing_gluten` - Cereals Containing Gluten
 
-        * `quarterly` - Quarterly
+        * `crustaceans` - Crustaceans
 
-        * `annually` - Annually'
+        * `eggs` - Eggs
+
+        * `fish` - Fish
+
+        * `lupin` - Lupin
+
+        * `milk` - Milk
+
+        * `molluscs` - Molluscs
+
+        * `mustard` - Mustard
+
+        * `nuts` - Nuts
+
+        * `peanuts` - Peanuts
+
+        * `sesame_seeds` - Sesame Seeds
+
+        * `soya` - Soya
+
+        * `sulphur_dioxide` - Sulphur Dioxide'
+    PaginatedInquiryDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InquiryDocument'
     UnitOfMeasurementEnum:
       enum:
       - fl oz
@@ -517,41 +637,68 @@ components:
         * `cases` - Cases
 
         * `trays` - Trays'
-    TaskResult:
+    DietRequirementsEnum:
+      enum:
+      - kosher
+      - halal
+      - organic
+      - vegan
+      - vegetarian
+      type: string
+      description: '* `kosher` - Kosher
+
+        * `halal` - Halal
+
+        * `organic` - Organic
+
+        * `vegan` - Vegan
+
+        * `vegetarian` - Vegetarian'
+    NullEnum:
+      enum:
+      - null
+    FrequencyEnum:
+      enum:
+      - weekly
+      - monthly
+      - quarterly
+      - annually
+      type: string
+      description: '* `weekly` - Weekly
+
+        * `monthly` - Monthly
+
+        * `quarterly` - Quarterly
+
+        * `annually` - Annually'
+    TaskCreated:
       type: object
       properties:
         task_id:
           type: string
-          description: Celery ID for the Task that was run
-          maxLength: 255
-        status:
-          allOf:
-          - $ref: '#/components/schemas/TaskResultStatusEnum'
-          title: Task State
-          description: 'Current state of the task being run
-
-
-            * `FAILURE` - FAILURE
-
-            * `PENDING` - PENDING
-
-            * `RECEIVED` - RECEIVED
-
-            * `RETRY` - RETRY
-
-            * `REVOKED` - REVOKED
-
-            * `STARTED` - STARTED
-
-            * `SUCCESS` - SUCCESS'
-        result:
-          type: object
-          additionalProperties: {}
-          nullable: true
-          readOnly: true
+          format: uuid
       required:
-      - result
       - task_id
+    InquiryDocument:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        document:
+          type: string
+          format: uri
+        description:
+          type:
+          - string
+          - 'null'
+      required:
+      - document
+      - uuid
+    BlankEnum:
+      enum:
+      - ''
     ProcessCSV:
       type: object
       properties:
@@ -583,69 +730,6 @@ components:
         * `STARTED` - STARTED
 
         * `SUCCESS` - SUCCESS'
-    PaginatedInquiryDocumentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/InquiryDocument'
-    DietRequirementsEnum:
-      enum:
-      - kosher
-      - halal
-      - organic
-      - vegan
-      - vegetarian
-      type: string
-      description: '* `kosher` - Kosher
-
-        * `halal` - Halal
-
-        * `organic` - Organic
-
-        * `vegan` - Vegan
-
-        * `vegetarian` - Vegetarian'
-    PaginatedIngredientList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Ingredient'
     PatchedIngredient:
       type: object
       properties:
@@ -664,23 +748,24 @@ components:
           format: uri
           maxLength: 2048
         current_unit_price:
-          type: string
+          type:
+          - string
+          - 'null'
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-          nullable: true
           default: '0.00'
         currency:
           $ref: '#/components/schemas/Currencies'
         description:
           type: string
         quantity:
-          type: string
+          type:
+          - string
+          - 'null'
           format: decimal
           pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-          nullable: true
           default: '0.00'
         unit_of_measurement:
-          nullable: true
           default: kg
           oneOf:
           - $ref: '#/components/schemas/UnitOfMeasurementEnum'
@@ -705,87 +790,28 @@ components:
         current_supplier:
           type: string
         frequency:
-          nullable: true
           oneOf:
           - $ref: '#/components/schemas/FrequencyEnum'
           - $ref: '#/components/schemas/BlankEnum'
           - $ref: '#/components/schemas/NullEnum'
         article:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
         existing_suppliers:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: string
             format: uuid
           readOnly: true
-          nullable: true
         parent_uuid:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
-    Currencies:
-      enum:
-      - EUR
-      - USD
-      - GBP
-      - CAD
-      type: string
-      description: '* `EUR` - EUR
-
-        * `USD` - USD
-
-        * `GBP` - GBP
-
-        * `CAD` - CAD'
-    AllergenRequirementsEnum:
-      enum:
-      - celery
-      - cereals_containing_gluten
-      - crustaceans
-      - eggs
-      - fish
-      - lupin
-      - milk
-      - molluscs
-      - mustard
-      - nuts
-      - peanuts
-      - sesame_seeds
-      - soya
-      - sulphur_dioxide
-      type: string
-      description: '* `celery` - Celery
-
-        * `cereals_containing_gluten` - Cereals Containing Gluten
-
-        * `crustaceans` - Crustaceans
-
-        * `eggs` - Eggs
-
-        * `fish` - Fish
-
-        * `lupin` - Lupin
-
-        * `milk` - Milk
-
-        * `molluscs` - Molluscs
-
-        * `mustard` - Mustard
-
-        * `nuts` - Nuts
-
-        * `peanuts` - Peanuts
-
-        * `sesame_seeds` - Sesame Seeds
-
-        * `soya` - Soya
-
-        * `sulphur_dioxide` - Sulphur Dioxide'
-    NullEnum:
-      enum:
-      - null
   securitySchemes:
     cookieAuth:
       type: apiKey

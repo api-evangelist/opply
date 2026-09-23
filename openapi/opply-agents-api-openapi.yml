@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Opply Activity Feed Agents API
+  title: Opply Agents API
   version: 0.0.0
 tags:
 - name: Agents
@@ -27,7 +27,7 @@ paths:
   /api/v1/agents/admin/installations/{agent_uuid}/:
     patch:
       operationId: api_v1_agents_admin_installations_partial_update
-      description: '``PATCH /api/v1/agents/admin/installations/<agent_uuid>/`` — set installation status.
+      description: '``PATCH /api/v1/agents/admin/installations//`` — set installation status.
 
 
         If no installation exists and ``status=''active''``, the installation (and its
@@ -116,7 +116,7 @@ paths:
   /api/v1/agents/fleet/{slug}/:
     get:
       operationId: api_v1_agents_fleet_retrieve
-      description: '``GET /api/v1/agents/fleet/<slug>/`` — one agent''s detail + run stats + install list (MoR only).'
+      description: '``GET /api/v1/agents/fleet//`` — one agent''s detail + run stats + install list (MoR only).'
       summary: 'Fleet detail: one agent''s run stats + install list (MoR only)'
       parameters:
       - in: path
@@ -185,6 +185,172 @@ paths:
           description: ''
 components:
   schemas:
+    Patched_SetStatusInput:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/AgentInstallationStatusEnum'
+    TaskPriorityEnum:
+      enum:
+      - low
+      - medium
+      - high
+      - urgent
+      type: string
+      description: '* `low` - Low
+
+        * `medium` - Medium
+
+        * `high` - High
+
+        * `urgent` - Urgent'
+    _CompanyRef:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - uuid
+    _FleetAgentDetailAgent:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        slug:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+        description:
+          type: string
+        is_taskable:
+          type: boolean
+        is_router:
+          type: boolean
+        is_enabled:
+          type: boolean
+        scope_kind:
+          type: string
+        installable_by_company_types:
+          type: array
+          items:
+            type: string
+        has_runtime:
+          type: boolean
+        default_allowed_tools:
+          type: array
+          items:
+            type: string
+      required:
+      - default_allowed_tools
+      - description
+      - has_runtime
+      - installable_by_company_types
+      - is_enabled
+      - is_router
+      - is_taskable
+      - name
+      - scope_kind
+      - slug
+      - uuid
+    _ShadowUserRef:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - uuid
+    _InstalledBy:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - uuid
+    RelatedItemInput:
+      type: object
+      description: 'One write-side related-item: a target ``type`` + entity ``uuid``.'
+      properties:
+        type:
+          type: string
+        uuid:
+          type: string
+          format: uuid
+      required:
+      - type
+      - uuid
+    _InstallationRef:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/AgentInstallationStatusEnum'
+        installed_by:
+          allOf:
+          - $ref: '#/components/schemas/_InstalledBy'
+        installed_at:
+          type: string
+          format: date-time
+      required:
+      - installed_at
+      - installed_by
+      - status
+      - uuid
+    AgentInstallationMe:
+      type: object
+      description: The shape the FE consumes — enough to address the agent and render its name.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        status:
+          type: string
+        agent:
+          $ref: '#/components/schemas/_AgentRef'
+        shadow_user:
+          $ref: '#/components/schemas/_ShadowUserRef'
+      required:
+      - agent
+      - shadow_user
+      - status
+      - uuid
+    AgentInstallationStatusEnum:
+      enum:
+      - active
+      - paused
+      - revoked
+      type: string
+      description: '* `active` - Active
+
+        * `paused` - Paused
+
+        * `revoked` - Revoked'
+    AgentInstallationAdminRow:
+      type: object
+      properties:
+        agent:
+          $ref: '#/components/schemas/_AgentRef'
+        installation:
+          allOf:
+          - $ref: '#/components/schemas/_InstallationRef'
+      required:
+      - agent
+      - installation
     Task:
       type: object
       properties:
@@ -193,9 +359,10 @@ components:
           format: uuid
           readOnly: true
         number:
-          type: integer
+          type:
+          - integer
+          - 'null'
           readOnly: true
-          nullable: true
           description: 'Per-company task number (human-facing id, e.g. #12).'
         title:
           type: string
@@ -203,16 +370,18 @@ components:
         description:
           type: string
         due_date:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date
-          nullable: true
         status:
           $ref: '#/components/schemas/TaskStatusEnum'
         completed_at:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
           readOnly: true
-          nullable: true
         priority:
           $ref: '#/components/schemas/TaskPriorityEnum'
         is_private:
@@ -222,10 +391,11 @@ components:
           - $ref: '#/components/schemas/UserMinimal'
           readOnly: true
         assignee_uuid:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
           writeOnly: true
-          nullable: true
         created_by:
           allOf:
           - $ref: '#/components/schemas/UserMinimal'
@@ -259,8 +429,9 @@ components:
             uses, so the notice and the masking never disagree.'
           readOnly: true
         requester:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           properties:
             uuid:
               type: string
@@ -280,15 +451,17 @@ components:
             $ref: '#/components/schemas/RelatedItemInput'
           writeOnly: true
         parent_task:
-          type: object
+          type:
+          - object
+          - 'null'
           additionalProperties: {}
-          nullable: true
           readOnly: true
         parent_task_uuid:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
           writeOnly: true
-          nullable: true
         subtasks:
           type: array
           items:
@@ -343,8 +516,9 @@ components:
             controls whose PATCH the gate rejects).'
           readOnly: true
         recurrence_summary:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           properties:
             uuid:
               type: string
@@ -364,40 +538,48 @@ components:
             monthly_mode:
               type: string
             weekday_ordinal:
-              type: integer
-              nullable: true
+              type:
+              - integer
+              - 'null'
             cron_expression:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
             starts_at:
-              type: string
+              type:
+              - string
+              - 'null'
               format: date-time
-              nullable: true
             ends_mode:
               type: string
             ends_on:
-              type: string
+              type:
+              - string
+              - 'null'
               format: date
-              nullable: true
             ends_after_count:
-              type: integer
-              nullable: true
+              type:
+              - integer
+              - 'null'
             overlap_policy:
               type: string
             next_run_at:
-              type: string
+              type:
+              - string
+              - 'null'
               format: date-time
-              nullable: true
             last_run_at:
-              type: string
+              type:
+              - string
+              - 'null'
               format: date-time
-              nullable: true
             occurrences_created:
               type: integer
           readOnly: true
         plan:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           properties:
             uuid:
               type: string
@@ -421,12 +603,14 @@ components:
               - task_participants
               - merchant_of_record
             decided_by_name:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
             decided_at:
-              type: string
+              type:
+              - string
+              - 'null'
               format: date-time
-              nullable: true
             created:
               type: string
               format: date-time
@@ -459,12 +643,14 @@ components:
                     - task_participants
                     - merchant_of_record
                   decided_by_name:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
                   decided_at:
-                    type: string
+                    type:
+                    - string
+                    - 'null'
                     format: date-time
-                    nullable: true
                   created:
                     type: string
                     format: date-time
@@ -508,30 +694,23 @@ components:
         shadow_user:
           allOf:
           - $ref: '#/components/schemas/_ShadowUserRef'
-          nullable: true
       required:
       - available
       - shadow_user
-    _InstallationRef:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        status:
-          $ref: '#/components/schemas/AgentInstallationStatusEnum'
-        installed_by:
-          allOf:
-          - $ref: '#/components/schemas/_InstalledBy'
-          nullable: true
-        installed_at:
-          type: string
-          format: date-time
-      required:
-      - installed_at
-      - installed_by
-      - status
-      - uuid
+    TaskStatusEnum:
+      enum:
+      - open
+      - in_progress
+      - waiting_approval
+      - done
+      type: string
+      description: '* `open` - Open
+
+        * `in_progress` - In Progress
+
+        * `waiting_approval` - Waiting Approval
+
+        * `done` - Done'
     AgentFleetDetail:
       type: object
       properties:
@@ -547,260 +726,6 @@ components:
       - agent
       - installations
       - runs
-    _ShadowUserRef:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        name:
-          type: string
-      required:
-      - name
-      - uuid
-    TaskPriorityEnum:
-      enum:
-      - low
-      - medium
-      - high
-      - urgent
-      type: string
-      description: '* `low` - Low
-
-        * `medium` - Medium
-
-        * `high` - High
-
-        * `urgent` - Urgent'
-    Patched_SetStatusInput:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/AgentInstallationStatusEnum'
-    UserMinimal:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        name:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          format: email
-        is_agent:
-          type: boolean
-          readOnly: true
-        is_mor_router:
-          type: boolean
-          readOnly: true
-      required:
-      - email
-      - is_agent
-      - is_mor_router
-      - name
-      - uuid
-    _AgentRef:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        slug:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        name:
-          type: string
-        description:
-          type: string
-        is_taskable:
-          type: boolean
-      required:
-      - description
-      - is_taskable
-      - name
-      - slug
-      - uuid
-    _FleetAgentDetailAgent:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        slug:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        name:
-          type: string
-        description:
-          type: string
-        is_taskable:
-          type: boolean
-        is_router:
-          type: boolean
-        is_enabled:
-          type: boolean
-        scope_kind:
-          type: string
-        installable_by_company_types:
-          type: array
-          items:
-            type: string
-        has_runtime:
-          type: boolean
-        default_allowed_tools:
-          type: array
-          items:
-            type: string
-      required:
-      - default_allowed_tools
-      - description
-      - has_runtime
-      - installable_by_company_types
-      - is_enabled
-      - is_router
-      - is_taskable
-      - name
-      - scope_kind
-      - slug
-      - uuid
-    AgentInstallationStatusEnum:
-      enum:
-      - active
-      - paused
-      - revoked
-      type: string
-      description: '* `active` - Active
-
-        * `paused` - Paused
-
-        * `revoked` - Revoked'
-    RelatedItemInput:
-      type: object
-      description: 'One write-side related-item: a target ``type`` + entity ``uuid``.'
-      properties:
-        type:
-          type: string
-        uuid:
-          type: string
-          format: uuid
-      required:
-      - type
-      - uuid
-    _CompanyRef:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        name:
-          type: string
-      required:
-      - name
-      - uuid
-    _RunStats:
-      type: object
-      properties:
-        latest_run_at:
-          type: string
-          format: date-time
-          nullable: true
-        succeeded:
-          type: integer
-        failed:
-          type: integer
-        running:
-          type: integer
-        total:
-          type: integer
-      required:
-      - failed
-      - latest_run_at
-      - running
-      - succeeded
-      - total
-    AgentInstallationMe:
-      type: object
-      description: The shape the FE consumes — enough to address the agent and render its name.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        status:
-          type: string
-        agent:
-          $ref: '#/components/schemas/_AgentRef'
-        shadow_user:
-          $ref: '#/components/schemas/_ShadowUserRef'
-      required:
-      - agent
-      - shadow_user
-      - status
-      - uuid
-    AgentInstallationAdminRow:
-      type: object
-      properties:
-        agent:
-          $ref: '#/components/schemas/_AgentRef'
-        installation:
-          allOf:
-          - $ref: '#/components/schemas/_InstallationRef'
-          nullable: true
-      required:
-      - agent
-      - installation
-    _InstalledBy:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        name:
-          type: string
-      required:
-      - name
-      - uuid
-    TaskStatusEnum:
-      enum:
-      - open
-      - in_progress
-      - waiting_approval
-      - done
-      type: string
-      description: '* `open` - Open
-
-        * `in_progress` - In Progress
-
-        * `waiting_approval` - Waiting Approval
-
-        * `done` - Done'
-    _FleetInstallation:
-      type: object
-      properties:
-        company:
-          allOf:
-          - $ref: '#/components/schemas/_CompanyRef'
-          nullable: true
-        status:
-          type: string
-        installed_by:
-          allOf:
-          - $ref: '#/components/schemas/_UserRef'
-          nullable: true
-        installed_at:
-          type: string
-          format: date-time
-        shadow_user:
-          allOf:
-          - $ref: '#/components/schemas/_UserRef'
-          nullable: true
-      required:
-      - company
-      - installed_at
-      - installed_by
-      - shadow_user
-      - status
     _InstallCounts:
       type: object
       properties:
@@ -856,6 +781,74 @@ components:
       - scope_kind
       - slug
       - uuid
+    UserMinimal:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+        is_agent:
+          type: boolean
+          readOnly: true
+        is_mor_router:
+          type: boolean
+          readOnly: true
+      required:
+      - email
+      - is_agent
+      - is_mor_router
+      - name
+      - uuid
+    _FleetInstallation:
+      type: object
+      properties:
+        company:
+          allOf:
+          - $ref: '#/components/schemas/_CompanyRef'
+        status:
+          type: string
+        installed_by:
+          allOf:
+          - $ref: '#/components/schemas/_UserRef'
+        installed_at:
+          type: string
+          format: date-time
+        shadow_user:
+          allOf:
+          - $ref: '#/components/schemas/_UserRef'
+      required:
+      - company
+      - installed_at
+      - installed_by
+      - shadow_user
+      - status
+    _AgentRef:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        slug:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+        description:
+          type: string
+        is_taskable:
+          type: boolean
+      required:
+      - description
+      - is_taskable
+      - name
+      - slug
+      - uuid
     _UserRef:
       type: object
       properties:
@@ -867,6 +860,28 @@ components:
       required:
       - name
       - uuid
+    _RunStats:
+      type: object
+      properties:
+        latest_run_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        succeeded:
+          type: integer
+        failed:
+          type: integer
+        running:
+          type: integer
+        total:
+          type: integer
+      required:
+      - failed
+      - latest_run_at
+      - running
+      - succeeded
+      - total
   securitySchemes:
     cookieAuth:
       type: apiKey

@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Opply Activity Feed Orders API
+  title: Opply Orders API
   version: 0.0.0
 tags:
 - name: Orders
@@ -104,6 +104,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrderCreateSwagger'
           description: ''
+      summary: Api v1 orders brand create
+      x-summary-source: derived
   /api/v1/orders/brand/{order_uuid}/:
     get:
       operationId: api_v1_orders_brand_retrieve
@@ -167,6 +169,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrderDetail'
           description: ''
+      summary: Api v1 orders brand confirm delivered create
+      x-summary-source: derived
   /api/v1/orders/brand/{order_uuid}/disputes/:
     get:
       operationId: api_v1_orders_brand_disputes_list
@@ -380,6 +384,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/GoodsReceiptPDFUrl'
           description: ''
+      summary: Api v1 orders brand goods receipt pdf retrieve
+      x-summary-source: derived
   /api/v1/orders/brand/{order_uuid}/invoice/:
     get:
       operationId: api_v1_orders_brand_invoice_retrieve
@@ -407,6 +413,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/BrandInvoice'
           description: ''
+      summary: Api v1 orders brand invoice retrieve
+      x-summary-source: derived
   /api/v1/orders/brand/{order_uuid}/invoice/pdf/:
     get:
       operationId: api_v1_orders_brand_invoice_pdf_retrieve
@@ -430,6 +438,8 @@ paths:
                 type: string
                 format: binary
           description: ''
+      summary: Api v1 orders brand invoice pdf retrieve
+      x-summary-source: derived
   /api/v1/orders/brand/{order_uuid}/vat-invoice/:
     get:
       operationId: api_v1_orders_brand_vat_invoice_retrieve
@@ -452,10 +462,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/BrandVatInvoiceData'
           description: ''
+      summary: Api v1 orders brand vat invoice retrieve
+      x-summary-source: derived
   /api/v1/orders/brand/{order_uuid}/vat-invoice/pdf/:
     get:
       operationId: api_v1_orders_brand_vat_invoice_pdf_retrieve
-      summary: Returns commission invoice as pdf_url, combined Admin and commission invoice as pdf_url_merged.
+      summary: Returns commission invoice as pdf_url, combined Admin and commission invoice as…
       parameters:
       - in: path
         name: order_uuid
@@ -633,6 +645,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrderDetail'
           description: ''
+      summary: Api v1 orders supplier confirm dispatch create
+      x-summary-source: derived
   /api/v1/orders/supplier/{order_uuid}/documents/:
     get:
       operationId: api_v1_orders_supplier_documents_list
@@ -666,6 +680,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedOrderDocumentList'
           description: ''
+      summary: Api v1 orders supplier documents list
+      x-summary-source: derived
     post:
       operationId: api_v1_orders_supplier_documents_create
       parameters:
@@ -698,6 +714,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrderDocument'
           description: ''
+      summary: Api v1 orders supplier documents create
+      x-summary-source: derived
   /api/v1/orders/supplier/{order_uuid}/documents/{uuid}/:
     get:
       operationId: api_v1_orders_supplier_documents_retrieve
@@ -724,6 +742,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrderDocument'
           description: ''
+      summary: Api v1 orders supplier documents retrieve
+      x-summary-source: derived
     delete:
       operationId: api_v1_orders_supplier_documents_destroy
       parameters:
@@ -745,6 +765,8 @@ paths:
       responses:
         '204':
           description: No response body
+      summary: Api v1 orders supplier documents destroy
+      x-summary-source: derived
   /api/v1/orders/supplier/{order_uuid}/purchase-order/:
     get:
       operationId: api_v1_orders_supplier_purchase_order_retrieve
@@ -767,6 +789,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/PurchaseOrder'
           description: ''
+      summary: Api v1 orders supplier purchase order retrieve
+      x-summary-source: derived
   /api/v1/orders/supplier/{order_uuid}/purchase-order/pdf/:
     get:
       operationId: api_v1_orders_supplier_purchase_order_pdf_retrieve
@@ -789,6 +813,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/PDFUrl'
           description: ''
+      summary: Api v1 orders supplier purchase order pdf retrieve
+      x-summary-source: derived
   /api/v1/orders/supplier/{order_uuid}/vat-invoice/:
     get:
       operationId: api_v1_orders_supplier_vat_invoice_retrieve
@@ -811,10 +837,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/BrandVatInvoiceData'
           description: ''
+      summary: Api v1 orders supplier vat invoice retrieve
+      x-summary-source: derived
   /api/v1/orders/supplier/{order_uuid}/vat-invoice/pdf/:
     get:
       operationId: api_v1_orders_supplier_vat_invoice_pdf_retrieve
-      summary: Returns commission invoice as pdf_url.
+      summary: Returns commission invoice as pdf_url
       parameters:
       - in: path
         name: order_uuid
@@ -837,7 +865,7 @@ paths:
   /api/v1/orders/supplier/dashboard-orders/:
     get:
       operationId: api_v1_orders_supplier_dashboard_orders_list
-      summary: Returns pending dispatch orders for Supplier's dashboard.
+      summary: Returns pending dispatch orders for Supplier's dashboard
       parameters:
       - name: ordering
         required: false
@@ -871,788 +899,172 @@ paths:
           description: ''
 components:
   schemas:
-    QuoteState:
+    Currencies:
       enum:
-      - available
-      - ordered
-      - expired
-      - declined
-      - pending_payment
-      - proceeded
-      - contract_created
-      - contract_proceeded
-      - contract_confirmed
+      - EUR
+      - USD
+      - GBP
+      - CAD
       type: string
-      description: '* `available` - available
+      description: '* `EUR` - EUR
 
-        * `ordered` - ordered
+        * `USD` - USD
 
-        * `expired` - expired
+        * `GBP` - GBP
 
-        * `declined` - declined
-
-        * `pending_payment` - pending_payment
-
-        * `proceeded` - proceeded
-
-        * `contract_created` - Contract Created
-
-        * `contract_proceeded` - contract_proceeded
-
-        * `contract_confirmed` - contract_confirmed'
-    Country:
+        * `CAD` - CAD'
+    ProductDetails:
+      type: object
+      properties:
+        name:
+          type: string
+        quantity:
+          type: string
+        unit_final_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_of_measurement:
+          $ref: '#/components/schemas/UnitOfMeasurementEnum'
+        total_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        sku:
+          type: string
+        vat_rate:
+          type: string
+        description_blocks:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/QuoteDescriptionBlockCreate'
+        shipping_vat_rate:
+          type: string
+          default: '0.00'
+      required:
+      - name
+      - quantity
+      - sku
+      - total_price
+      - unit_final_price
+      - unit_of_measurement
+    PatchedOrderDispute:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        reasons_for_dispute:
+          type: string
+    BasketPrices:
+      type: object
+      properties:
+        sum_to_pay:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        currency:
+          $ref: '#/components/schemas/AllCurrencies'
+        sum_to_pay_no_discount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        discount_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_shipping_cost:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_no_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_shipping_cost_no_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_cost:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_additional_fees:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+      required:
+      - currency
+      - discount_amount
+      - sum_to_pay
+      - sum_to_pay_no_discount
+      - total_additional_fees
+      - total_cost
+      - total_price
+      - total_price_no_vat
+      - total_shipping_cost
+      - total_shipping_cost_no_vat
+      - total_vat
+    PaymentTermsEnum:
       enum:
-      - AF
-      - AX
-      - AL
-      - DZ
-      - AS
-      - AD
-      - AO
-      - AI
-      - AQ
-      - AG
-      - AR
-      - AM
-      - AW
-      - AU
-      - AT
-      - AZ
-      - BS
-      - BH
-      - BD
-      - BB
-      - BY
-      - BE
-      - BZ
-      - BJ
-      - BM
-      - BT
-      - BO
-      - BQ
-      - BA
-      - BW
-      - BV
-      - BR
-      - IO
-      - BN
-      - BG
-      - BF
-      - BI
-      - CV
-      - KH
-      - CM
-      - CA
-      - KY
-      - CF
-      - TD
-      - CL
-      - CN
-      - CX
-      - CC
-      - CO
-      - KM
-      - CG
-      - CD
-      - CK
-      - CR
-      - CI
-      - HR
-      - CU
-      - CW
-      - CY
-      - CZ
-      - DK
-      - DJ
-      - DM
-      - DO
-      - EC
-      - EG
-      - SV
-      - GQ
-      - ER
-      - EE
-      - SZ
-      - ET
-      - FK
-      - FO
-      - FJ
-      - FI
-      - FR
-      - GF
-      - PF
-      - TF
-      - GA
-      - GM
-      - GE
-      - DE
-      - GH
-      - GI
-      - GR
-      - GL
-      - GD
-      - GP
-      - GU
-      - GT
-      - GG
-      - GN
-      - GW
-      - GY
-      - HT
-      - HM
-      - VA
-      - HN
-      - HK
-      - HU
-      - IS
-      - IN
-      - ID
-      - IR
-      - IQ
-      - IE
-      - IM
-      - IL
-      - IT
-      - JM
-      - JP
-      - JE
-      - JO
-      - KZ
-      - KE
-      - KI
-      - KW
-      - KG
-      - LA
-      - LV
-      - LB
-      - LS
-      - LR
-      - LY
-      - LI
-      - LT
-      - LU
-      - MO
-      - MG
-      - MW
-      - MY
-      - MV
-      - ML
-      - MT
-      - MH
-      - MQ
-      - MR
-      - MU
-      - YT
-      - MX
-      - FM
-      - MD
-      - MC
-      - MN
-      - ME
-      - MS
-      - MA
-      - MZ
-      - MM
-      - NA
-      - NR
-      - NP
-      - NL
-      - NC
-      - NZ
-      - NI
-      - NE
-      - NG
-      - NU
-      - NF
-      - KP
-      - MK
-      - XI
-      - MP
-      - 'NO'
-      - OM
-      - PK
-      - PW
-      - PS
-      - PA
-      - PG
-      - PY
-      - PE
-      - PH
-      - PN
-      - PL
-      - PT
-      - PR
-      - QA
-      - RE
-      - RO
-      - RU
-      - RW
-      - BL
-      - SH
-      - KN
-      - LC
-      - MF
-      - PM
-      - VC
-      - WS
-      - SM
-      - ST
-      - SA
-      - SN
-      - RS
-      - SC
-      - SL
-      - SG
-      - SX
-      - SK
-      - SI
-      - SB
-      - SO
-      - ZA
-      - GS
-      - KR
-      - SS
-      - ES
-      - LK
-      - SD
-      - SR
-      - SJ
-      - SE
-      - CH
-      - SY
-      - TW
-      - TJ
-      - TZ
-      - TH
-      - TL
-      - TG
-      - TK
-      - TO
-      - TT
-      - TN
-      - TR
-      - TM
-      - TC
-      - TV
-      - UG
-      - UA
-      - AE
-      - GB
-      - UM
-      - US
-      - UY
-      - UZ
-      - VU
-      - VE
-      - VN
-      - VG
-      - VI
-      - WF
-      - EH
-      - YE
-      - ZM
-      - ZW
+      - in_advance
+      - on_dispatch
+      - 7_days_after_dispatch
+      - 14_days_after_dispatch
+      - 30_days_after_dispatch
+      - 60_days_after_dispatch
       type: string
-      description: '* `AF` - Afghanistan
-
-        * `AX` - Åland Islands
-
-        * `AL` - Albania
-
-        * `DZ` - Algeria
-
-        * `AS` - American Samoa
-
-        * `AD` - Andorra
-
-        * `AO` - Angola
-
-        * `AI` - Anguilla
-
-        * `AQ` - Antarctica
-
-        * `AG` - Antigua and Barbuda
-
-        * `AR` - Argentina
-
-        * `AM` - Armenia
-
-        * `AW` - Aruba
-
-        * `AU` - Australia
-
-        * `AT` - Austria
-
-        * `AZ` - Azerbaijan
-
-        * `BS` - Bahamas
-
-        * `BH` - Bahrain
-
-        * `BD` - Bangladesh
-
-        * `BB` - Barbados
-
-        * `BY` - Belarus
-
-        * `BE` - Belgium
-
-        * `BZ` - Belize
-
-        * `BJ` - Benin
-
-        * `BM` - Bermuda
-
-        * `BT` - Bhutan
-
-        * `BO` - Bolivia
-
-        * `BQ` - Bonaire, Sint Eustatius and Saba
-
-        * `BA` - Bosnia and Herzegovina
-
-        * `BW` - Botswana
-
-        * `BV` - Bouvet Island
-
-        * `BR` - Brazil
-
-        * `IO` - British Indian Ocean Territory
-
-        * `BN` - Brunei
-
-        * `BG` - Bulgaria
-
-        * `BF` - Burkina Faso
-
-        * `BI` - Burundi
-
-        * `CV` - Cabo Verde
-
-        * `KH` - Cambodia
-
-        * `CM` - Cameroon
-
-        * `CA` - Canada
-
-        * `KY` - Cayman Islands
-
-        * `CF` - Central African Republic
-
-        * `TD` - Chad
-
-        * `CL` - Chile
-
-        * `CN` - China
-
-        * `CX` - Christmas Island
-
-        * `CC` - Cocos (Keeling) Islands
-
-        * `CO` - Colombia
-
-        * `KM` - Comoros
-
-        * `CG` - Congo
-
-        * `CD` - Congo (the Democratic Republic of the)
-
-        * `CK` - Cook Islands
-
-        * `CR` - Costa Rica
-
-        * `CI` - Côte d''Ivoire
-
-        * `HR` - Croatia
-
-        * `CU` - Cuba
-
-        * `CW` - Curaçao
-
-        * `CY` - Cyprus
-
-        * `CZ` - Czechia
-
-        * `DK` - Denmark
-
-        * `DJ` - Djibouti
-
-        * `DM` - Dominica
-
-        * `DO` - Dominican Republic
-
-        * `EC` - Ecuador
-
-        * `EG` - Egypt
-
-        * `SV` - El Salvador
-
-        * `GQ` - Equatorial Guinea
-
-        * `ER` - Eritrea
-
-        * `EE` - Estonia
-
-        * `SZ` - Eswatini
-
-        * `ET` - Ethiopia
-
-        * `FK` - Falkland Islands (Malvinas)
-
-        * `FO` - Faroe Islands
-
-        * `FJ` - Fiji
-
-        * `FI` - Finland
-
-        * `FR` - France
-
-        * `GF` - French Guiana
-
-        * `PF` - French Polynesia
-
-        * `TF` - French Southern Territories
-
-        * `GA` - Gabon
-
-        * `GM` - Gambia
-
-        * `GE` - Georgia
-
-        * `DE` - Germany
-
-        * `GH` - Ghana
-
-        * `GI` - Gibraltar
-
-        * `GR` - Greece
-
-        * `GL` - Greenland
-
-        * `GD` - Grenada
-
-        * `GP` - Guadeloupe
-
-        * `GU` - Guam
-
-        * `GT` - Guatemala
-
-        * `GG` - Guernsey
-
-        * `GN` - Guinea
-
-        * `GW` - Guinea-Bissau
-
-        * `GY` - Guyana
-
-        * `HT` - Haiti
-
-        * `HM` - Heard Island and McDonald Islands
-
-        * `VA` - Holy See
-
-        * `HN` - Honduras
-
-        * `HK` - Hong Kong
-
-        * `HU` - Hungary
-
-        * `IS` - Iceland
-
-        * `IN` - India
-
-        * `ID` - Indonesia
-
-        * `IR` - Iran
-
-        * `IQ` - Iraq
-
-        * `IE` - Ireland
-
-        * `IM` - Isle of Man
-
-        * `IL` - Israel
-
-        * `IT` - Italy
-
-        * `JM` - Jamaica
-
-        * `JP` - Japan
-
-        * `JE` - Jersey
-
-        * `JO` - Jordan
-
-        * `KZ` - Kazakhstan
-
-        * `KE` - Kenya
-
-        * `KI` - Kiribati
-
-        * `KW` - Kuwait
-
-        * `KG` - Kyrgyzstan
-
-        * `LA` - Laos
-
-        * `LV` - Latvia
-
-        * `LB` - Lebanon
-
-        * `LS` - Lesotho
-
-        * `LR` - Liberia
-
-        * `LY` - Libya
-
-        * `LI` - Liechtenstein
-
-        * `LT` - Lithuania
-
-        * `LU` - Luxembourg
-
-        * `MO` - Macao
-
-        * `MG` - Madagascar
-
-        * `MW` - Malawi
-
-        * `MY` - Malaysia
-
-        * `MV` - Maldives
-
-        * `ML` - Mali
-
-        * `MT` - Malta
-
-        * `MH` - Marshall Islands
-
-        * `MQ` - Martinique
-
-        * `MR` - Mauritania
-
-        * `MU` - Mauritius
-
-        * `YT` - Mayotte
-
-        * `MX` - Mexico
-
-        * `FM` - Micronesia
-
-        * `MD` - Moldova
-
-        * `MC` - Monaco
-
-        * `MN` - Mongolia
-
-        * `ME` - Montenegro
-
-        * `MS` - Montserrat
-
-        * `MA` - Morocco
-
-        * `MZ` - Mozambique
-
-        * `MM` - Myanmar
-
-        * `NA` - Namibia
-
-        * `NR` - Nauru
-
-        * `NP` - Nepal
-
-        * `NL` - Netherlands
-
-        * `NC` - New Caledonia
-
-        * `NZ` - New Zealand
-
-        * `NI` - Nicaragua
-
-        * `NE` - Niger
-
-        * `NG` - Nigeria
-
-        * `NU` - Niue
-
-        * `NF` - Norfolk Island
-
-        * `KP` - North Korea
-
-        * `MK` - North Macedonia
-
-        * `XI` - Northern Ireland
-
-        * `MP` - Northern Mariana Islands
-
-        * `NO` - Norway
-
-        * `OM` - Oman
-
-        * `PK` - Pakistan
-
-        * `PW` - Palau
-
-        * `PS` - Palestine, State of
-
-        * `PA` - Panama
-
-        * `PG` - Papua New Guinea
-
-        * `PY` - Paraguay
-
-        * `PE` - Peru
-
-        * `PH` - Philippines
-
-        * `PN` - Pitcairn
-
-        * `PL` - Poland
-
-        * `PT` - Portugal
-
-        * `PR` - Puerto Rico
-
-        * `QA` - Qatar
-
-        * `RE` - Réunion
-
-        * `RO` - Romania
-
-        * `RU` - Russia
-
-        * `RW` - Rwanda
-
-        * `BL` - Saint Barthélemy
-
-        * `SH` - Saint Helena, Ascension and Tristan da Cunha
-
-        * `KN` - Saint Kitts and Nevis
-
-        * `LC` - Saint Lucia
-
-        * `MF` - Saint Martin (French part)
-
-        * `PM` - Saint Pierre and Miquelon
-
-        * `VC` - Saint Vincent and the Grenadines
-
-        * `WS` - Samoa
-
-        * `SM` - San Marino
-
-        * `ST` - Sao Tome and Principe
-
-        * `SA` - Saudi Arabia
-
-        * `SN` - Senegal
-
-        * `RS` - Serbia
-
-        * `SC` - Seychelles
-
-        * `SL` - Sierra Leone
-
-        * `SG` - Singapore
-
-        * `SX` - Sint Maarten (Dutch part)
-
-        * `SK` - Slovakia
-
-        * `SI` - Slovenia
-
-        * `SB` - Solomon Islands
-
-        * `SO` - Somalia
-
-        * `ZA` - South Africa
-
-        * `GS` - South Georgia and the South Sandwich Islands
-
-        * `KR` - South Korea
-
-        * `SS` - South Sudan
-
-        * `ES` - Spain
-
-        * `LK` - Sri Lanka
-
-        * `SD` - Sudan
-
-        * `SR` - Suriname
-
-        * `SJ` - Svalbard and Jan Mayen
-
-        * `SE` - Sweden
-
-        * `CH` - Switzerland
-
-        * `SY` - Syria
-
-        * `TW` - Taiwan
-
-        * `TJ` - Tajikistan
-
-        * `TZ` - Tanzania
-
-        * `TH` - Thailand
-
-        * `TL` - Timor-Leste
-
-        * `TG` - Togo
-
-        * `TK` - Tokelau
-
-        * `TO` - Tonga
-
-        * `TT` - Trinidad and Tobago
-
-        * `TN` - Tunisia
-
-        * `TR` - Türkiye
-
-        * `TM` - Turkmenistan
-
-        * `TC` - Turks and Caicos Islands
-
-        * `TV` - Tuvalu
-
-        * `UG` - Uganda
-
-        * `UA` - Ukraine
-
-        * `AE` - United Arab Emirates
-
-        * `GB` - United Kingdom
-
-        * `UM` - United States Minor Outlying Islands
-
-        * `US` - United States of America
-
-        * `UY` - Uruguay
-
-        * `UZ` - Uzbekistan
-
-        * `VU` - Vanuatu
-
-        * `VE` - Venezuela
-
-        * `VN` - Vietnam
-
-        * `VG` - Virgin Islands (British)
-
-        * `VI` - Virgin Islands (U.S.)
-
-        * `WF` - Wallis and Futuna
-
-        * `EH` - Western Sahara
-
-        * `YE` - Yemen
-
-        * `ZM` - Zambia
-
-        * `ZW` - Zimbabwe'
-    OrderDetail:
+      description: '* `in_advance` - In Advance
+
+        * `on_dispatch` - On Dispatch
+
+        * `7_days_after_dispatch` - Days After Dispatch 7
+
+        * `14_days_after_dispatch` - Days After Dispatch 14
+
+        * `30_days_after_dispatch` - Days After Dispatch 30
+
+        * `60_days_after_dispatch` - Days After Dispatch 60'
+    VirtualBankTransfer:
+      type: object
+      properties:
+        bank_account:
+          type: string
+          readOnly: true
+        merchant_reference_id:
+          type: string
+          readOnly: true
+        reference_number:
+          type: string
+          readOnly: true
+      required:
+      - bank_account
+      - merchant_reference_id
+      - reference_number
+    PaymentScenarioEnum:
+      enum:
+      - in_advance
+      - on_dispatch
+      type: string
+      description: '* `in_advance` - In Advance
+
+        * `on_dispatch` - On Dispatch'
+    Order:
       type: object
       properties:
         uuid:
@@ -1668,19 +1080,16 @@ components:
         state:
           $ref: '#/components/schemas/OrderState'
         payment_status:
-          nullable: true
           oneOf:
           - $ref: '#/components/schemas/PaymentStatusEnum'
           - $ref: '#/components/schemas/BlankEnum'
           - $ref: '#/components/schemas/NullEnum'
         kriya_status:
-          nullable: true
           oneOf:
           - $ref: '#/components/schemas/KriyaStatusEnum'
           - $ref: '#/components/schemas/BlankEnum'
           - $ref: '#/components/schemas/NullEnum'
         payment_currency:
-          nullable: true
           description: 'if this is not None, then during payment was chosen not default currency and this field should be passed to the payment as selected_currency
 
 
@@ -1696,15 +1105,16 @@ components:
           - $ref: '#/components/schemas/BlankEnum'
           - $ref: '#/components/schemas/NullEnum'
         payment_due_date:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
         kriya_payment_due_date:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
         payment_method:
-          nullable: true
           oneOf:
           - $ref: '#/components/schemas/PaymentMethod'
           - $ref: '#/components/schemas/NullEnum'
@@ -1714,14 +1124,16 @@ components:
         shipment_status:
           $ref: '#/components/schemas/ShipmentStatusEnum'
         dispatch_confirmation_date:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date
           readOnly: true
-          nullable: true
         delivery_confirmation_date:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date
-          nullable: true
         is_new:
           type: boolean
           readOnly: true
@@ -1750,9 +1162,10 @@ components:
           type: number
           readOnly: true
         latest_delivery_date:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date
-          nullable: true
           readOnly: true
         discount_amount:
           type: number
@@ -1772,12 +1185,14 @@ components:
           type: number
           readOnly: true
         order_date:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date
-          nullable: true
         payment_delay:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           readOnly: true
         has_pending_purchase_request:
           type: boolean
@@ -1793,61 +1208,8 @@ components:
           type: string
           format: uuid
           readOnly: true
-        state_updated:
-          type: string
-          format: date-time
-          readOnly: true
-        tracking_code:
-          type: string
-          nullable: true
-        selected_currency:
-          type: string
-          readOnly: true
-        virtual_bank_account:
-          allOf:
-          - $ref: '#/components/schemas/VirtualBankTransfer'
-          nullable: true
-        quotes:
-          type: array
-          items:
-            $ref: '#/components/schemas/QuoteOrderDetail'
-          readOnly: true
-        delivery_address:
-          allOf:
-          - $ref: '#/components/schemas/DeliveryAddressResponse'
-          readOnly: true
-        terms:
-          type: string
-          nullable: true
-        expected_delivery_date:
-          type: string
-          format: date
-          nullable: true
-        shipping_provider:
-          type: string
-          nullable: true
-          maxLength: 255
-        delivery_contact:
-          type: string
-          readOnly: true
-        delivery_contact_number:
-          type: string
-          readOnly: true
-        contract_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        bank_transfer_details:
-          allOf:
-          - $ref: '#/components/schemas/BankTransfer'
-          readOnly: true
       required:
-      - bank_transfer_details
-      - contract_uuid
       - created
-      - delivery_address
-      - delivery_contact
-      - delivery_contact_number
       - delivery_date
       - discount_amount
       - dispatch_confirmation_date
@@ -1860,13 +1222,10 @@ components:
       - payment_delay
       - payment_scenario
       - purchase_quote_uuid
-      - quotes
       - quotes_prices
       - related_contract_uuid
-      - selected_currency
       - shipping_cost_no_vat
       - shipping_price
-      - state_updated
       - sum_payout
       - sum_to_pay
       - sum_to_pay_no_discount
@@ -1874,206 +1233,6 @@ components:
       - total_price_currency
       - uuid
       - vat_sum
-      - virtual_bank_account
-    QuoteDescriptionBlock:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        description:
-          type: string
-      required:
-      - description
-      - uuid
-    FrequencyEnum:
-      enum:
-      - weekly
-      - monthly
-      - quarterly
-      - annually
-      type: string
-      description: '* `weekly` - Weekly
-
-        * `monthly` - Monthly
-
-        * `quarterly` - Quarterly
-
-        * `annually` - Annually'
-    OrderConfirmDispatched:
-      type: object
-      properties:
-        tracking_code:
-          type: string
-          nullable: true
-        dispatch_confirmation_date:
-          type: string
-          format: date
-        expected_delivery_date:
-          type: string
-          format: date
-        shipping_provider:
-          type: string
-      required:
-      - dispatch_confirmation_date
-      - expected_delivery_date
-      - shipping_provider
-    IngredientsForQuote:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-      required:
-      - id
-      - name
-      - uuid
-    CompanyAddress:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        address_type:
-          $ref: '#/components/schemas/AddressTypeEnum'
-        contact_full_name:
-          type: string
-          nullable: true
-          maxLength: 255
-        contact_phone:
-          type: string
-          nullable: true
-          maxLength: 50
-        building:
-          type: string
-          nullable: true
-          maxLength: 100
-        street_1:
-          type: string
-          nullable: true
-          maxLength: 255
-        street_2:
-          type: string
-          nullable: true
-          maxLength: 255
-        town:
-          type: string
-          nullable: true
-          maxLength: 100
-        region:
-          type: string
-          nullable: true
-          maxLength: 100
-        postcode:
-          type: string
-          nullable: true
-          maxLength: 100
-        country:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        place_id:
-          type: string
-          nullable: true
-          maxLength: 100
-        latitude:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-          nullable: true
-        longitude:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-          nullable: true
-        vat_number:
-          type: string
-          nullable: true
-          maxLength: 50
-        vat_country_code:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        vat_exempt:
-          type: boolean
-        phone_country_code:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        delivery_instructions:
-          type: string
-          nullable: true
-        collection_instructions:
-          type: string
-          nullable: true
-        country_type:
-          $ref: '#/components/schemas/CountryTypeEnum'
-        eori_number:
-          type: string
-          maxLength: 20
-        ein_number:
-          type: string
-          maxLength: 20
-        notes:
-          type: string
-        delivery_location_type:
-          type: string
-          description: Type of delivery location (warehouse, factory, distribution_center, retail_location, other).
-          maxLength: 50
-        delivery_location_type_other:
-          type: string
-          description: Free-text description when delivery_location_type == 'other'.
-          maxLength: 255
-        warehouse_receiving_hours:
-          type: string
-          description: Free-text receiving hours (e.g. 'Mon-Fri 9am-5pm').
-          maxLength: 255
-      required:
-      - created
-      - id
-      - modified
-      - name
-      - uuid
-    BasketResponse:
-      type: object
-      properties:
-        supplier_uuid:
-          type: string
-          format: uuid
-        basket_prices:
-          $ref: '#/components/schemas/BasketPrices'
-      required:
-      - basket_prices
-      - supplier_uuid
     PaginatedDashboardOrdersList:
       type: object
       required:
@@ -2084,72 +1243,129 @@ components:
           type: integer
           example: 123
         next:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           format: uri
           example: http://api.example.org/accounts/?page=4
         previous:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           format: uri
           example: http://api.example.org/accounts/?page=2
         results:
           type: array
           items:
             $ref: '#/components/schemas/DashboardOrders'
-    Fees:
+    PurchaseOrder:
       type: object
       properties:
-        amount:
+        order_number:
+          type: string
+        created:
+          type: string
+          format: date-time
+        payment_due_date:
+          type: string
+          format: date-time
+        shipping:
+          $ref: '#/components/schemas/PurchaseOrderShipping'
+        currency:
+          $ref: '#/components/schemas/AllCurrencies'
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductDetails'
+        shipping_price:
           type: string
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        vat_rate:
+        total_price:
           type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        vat_sum_no_commission:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        sum_payout:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        supplier:
+          $ref: '#/components/schemas/PurchaseOrderCompanyInfo'
+        buyer:
+          $ref: '#/components/schemas/PurchaseOrderCompanyInfo'
       required:
-      - amount
-    OrderDocumentCategory:
+      - buyer
+      - created
+      - currency
+      - order_number
+      - payment_due_date
+      - products
+      - shipping
+      - shipping_price
+      - sum_payout
+      - supplier
+      - total_price
+      - vat_sum_no_commission
+    DashboardOrders:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        order_number:
+          type: string
+          readOnly: true
+        quote_delivery_date:
+          type: string
+          format: date
+          readOnly: true
+        shipment_status:
+          $ref: '#/components/schemas/ShipmentStatusEnum'
+        is_new:
+          type: boolean
+          readOnly: true
+      required:
+      - is_new
+      - order_number
+      - quote_delivery_date
+      - uuid
+    IncotermsEnum:
       enum:
-      - uploaded_by_admin
-      - uploaded_by_supplier
+      - delivery_duty_paid
+      - delivery_duty_unpaid
+      - cost_insurance_and_freight
+      - carriage_and_insurance_paid_to
+      - cost_and_freight
+      - carriage_paid_to
+      - delivered_at_place
+      - ex_works
+      - free_alongside_ship
+      - free_on_board
       type: string
-      description: '* `uploaded_by_admin` - Uploaded By Admin
+      description: '* `delivery_duty_paid` - delivery_duty_paid
 
-        * `uploaded_by_supplier` - Uploaded By Supplier'
-    PaginatedOrderDisputeList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrderDispute'
-    NullEnum:
-      enum:
-      - null
-    VatInvoiceSupplierResponse:
-      type: object
-      properties:
-        pdf_url:
-          type: string
-          format: uri
-      required:
-      - pdf_url
+        * `delivery_duty_unpaid` - delivery_duty_unpaid
+
+        * `cost_insurance_and_freight` - cost_insurance_and_freight
+
+        * `carriage_and_insurance_paid_to` - carriage_and_insurance_paid_to
+
+        * `cost_and_freight` - cost_and_freight
+
+        * `carriage_paid_to` - carriage_paid_to
+
+        * `delivered_at_place` - delivered_at_place
+
+        * `ex_works` - ex_works
+
+        * `free_alongside_ship` - free_alongside_ship
+
+        * `free_on_board` - free_on_board'
     PhoneCountryCodeEnum:
       enum:
       - '+376'
@@ -2833,1178 +2049,270 @@ components:
         * `+260` - +260
 
         * `+263` - +263'
-    PurchaseOrderCompanyInfo:
-      type: object
-      properties:
-        name:
-          type: string
-        contacts:
-          type: string
-          nullable: true
-        address:
-          type: string
-          nullable: true
-      required:
-      - address
-      - contacts
-      - name
-    SamplesFeedbackEnum:
-      enum:
-      - ingredient_quality
-      - quote_price
-      - supplier_communication
-      - quality_not_as_expected
-      - too_expensive
-      - not_suitable_for_recipe
-      - not_needed_anymore
-      - dont_provided_samples
-      - ingredient_out_of_stock
-      - other
-      type: string
-      description: '* `ingredient_quality` - Ingredient Quality
-
-        * `quote_price` - Quote Price
-
-        * `supplier_communication` - Supplier Communication
-
-        * `quality_not_as_expected` - Quality Not As Expected
-
-        * `too_expensive` - Too Expensive
-
-        * `not_suitable_for_recipe` - Not Suitable For Recipe
-
-        * `not_needed_anymore` - Not Needed Anymore
-
-        * `dont_provided_samples` - Dont Provide Samples
-
-        * `ingredient_out_of_stock` - Ingredient Out Of Stock
-
-        * `other` - Other'
-    PaymentTermsEnum:
-      enum:
-      - in_advance
-      - on_dispatch
-      - 7_days_after_dispatch
-      - 14_days_after_dispatch
-      - 30_days_after_dispatch
-      - 60_days_after_dispatch
-      type: string
-      description: '* `in_advance` - In Advance
-
-        * `on_dispatch` - On Dispatch
-
-        * `7_days_after_dispatch` - Days After Dispatch 7
-
-        * `14_days_after_dispatch` - Days After Dispatch 14
-
-        * `30_days_after_dispatch` - Days After Dispatch 30
-
-        * `60_days_after_dispatch` - Days After Dispatch 60'
-    SectionSupplierCountryEnum:
-      enum:
-      - AF
-      - AX
-      - AL
-      - DZ
-      - AS
-      - AD
-      - AO
-      - AI
-      - AQ
-      - AG
-      - AR
-      - AM
-      - AW
-      - AU
-      - AT
-      - AZ
-      - BS
-      - BH
-      - BD
-      - BB
-      - BY
-      - BE
-      - BZ
-      - BJ
-      - BM
-      - BT
-      - BO
-      - BQ
-      - BA
-      - BW
-      - BV
-      - BR
-      - IO
-      - BN
-      - BG
-      - BF
-      - BI
-      - CV
-      - KH
-      - CM
-      - CA
-      - KY
-      - CF
-      - TD
-      - CL
-      - CN
-      - CX
-      - CC
-      - CO
-      - KM
-      - CG
-      - CD
-      - CK
-      - CR
-      - CI
-      - HR
-      - CU
-      - CW
-      - CY
-      - CZ
-      - DK
-      - DJ
-      - DM
-      - DO
-      - EC
-      - EG
-      - SV
-      - GQ
-      - ER
-      - EE
-      - SZ
-      - ET
-      - FK
-      - FO
-      - FJ
-      - FI
-      - FR
-      - GF
-      - PF
-      - TF
-      - GA
-      - GM
-      - GE
-      - DE
-      - GH
-      - GI
-      - GR
-      - GL
-      - GD
-      - GP
-      - GU
-      - GT
-      - GG
-      - GN
-      - GW
-      - GY
-      - HT
-      - HM
-      - VA
-      - HN
-      - HK
-      - HU
-      - IS
-      - IN
-      - ID
-      - IR
-      - IQ
-      - IE
-      - IM
-      - IL
-      - IT
-      - JM
-      - JP
-      - JE
-      - JO
-      - KZ
-      - KE
-      - KI
-      - KW
-      - KG
-      - LA
-      - LV
-      - LB
-      - LS
-      - LR
-      - LY
-      - LI
-      - LT
-      - LU
-      - MO
-      - MG
-      - MW
-      - MY
-      - MV
-      - ML
-      - MT
-      - MH
-      - MQ
-      - MR
-      - MU
-      - YT
-      - MX
-      - FM
-      - MD
-      - MC
-      - MN
-      - ME
-      - MS
-      - MA
-      - MZ
-      - MM
-      - NA
-      - NR
-      - NP
-      - NL
-      - NC
-      - NZ
-      - NI
-      - NE
-      - NG
-      - NU
-      - NF
-      - KP
-      - MK
-      - XI
-      - MP
-      - 'NO'
-      - OM
-      - PK
-      - PW
-      - PS
-      - PA
-      - PG
-      - PY
-      - PE
-      - PH
-      - PN
-      - PL
-      - PT
-      - PR
-      - QA
-      - RE
-      - RO
-      - RU
-      - RW
-      - BL
-      - SH
-      - KN
-      - LC
-      - MF
-      - PM
-      - VC
-      - WS
-      - SM
-      - ST
-      - SA
-      - SN
-      - RS
-      - SC
-      - SL
-      - SG
-      - SX
-      - SK
-      - SI
-      - SB
-      - SO
-      - ZA
-      - GS
-      - KR
-      - SS
-      - ES
-      - LK
-      - SD
-      - SR
-      - SJ
-      - SE
-      - CH
-      - SY
-      - TW
-      - TJ
-      - TZ
-      - TH
-      - TL
-      - TG
-      - TK
-      - TO
-      - TT
-      - TN
-      - TR
-      - TM
-      - TC
-      - TV
-      - UG
-      - UA
-      - AE
-      - GB
-      - UM
-      - US
-      - UY
-      - UZ
-      - VU
-      - VE
-      - VN
-      - VG
-      - VI
-      - WF
-      - EH
-      - YE
-      - ZM
-      - ZW
-      type: string
-      description: '* `AF` - AF
-
-        * `AX` - AX
-
-        * `AL` - AL
-
-        * `DZ` - DZ
-
-        * `AS` - AS
-
-        * `AD` - AD
-
-        * `AO` - AO
-
-        * `AI` - AI
-
-        * `AQ` - AQ
-
-        * `AG` - AG
-
-        * `AR` - AR
-
-        * `AM` - AM
-
-        * `AW` - AW
-
-        * `AU` - AU
-
-        * `AT` - AT
-
-        * `AZ` - AZ
-
-        * `BS` - BS
-
-        * `BH` - BH
-
-        * `BD` - BD
-
-        * `BB` - BB
-
-        * `BY` - BY
-
-        * `BE` - BE
-
-        * `BZ` - BZ
-
-        * `BJ` - BJ
-
-        * `BM` - BM
-
-        * `BT` - BT
-
-        * `BO` - BO
-
-        * `BQ` - BQ
-
-        * `BA` - BA
-
-        * `BW` - BW
-
-        * `BV` - BV
-
-        * `BR` - BR
-
-        * `IO` - IO
-
-        * `BN` - BN
-
-        * `BG` - BG
-
-        * `BF` - BF
-
-        * `BI` - BI
-
-        * `CV` - CV
-
-        * `KH` - KH
-
-        * `CM` - CM
-
-        * `CA` - CA
-
-        * `KY` - KY
-
-        * `CF` - CF
-
-        * `TD` - TD
-
-        * `CL` - CL
-
-        * `CN` - CN
-
-        * `CX` - CX
-
-        * `CC` - CC
-
-        * `CO` - CO
-
-        * `KM` - KM
-
-        * `CG` - CG
-
-        * `CD` - CD
-
-        * `CK` - CK
-
-        * `CR` - CR
-
-        * `CI` - CI
-
-        * `HR` - HR
-
-        * `CU` - CU
-
-        * `CW` - CW
-
-        * `CY` - CY
-
-        * `CZ` - CZ
-
-        * `DK` - DK
-
-        * `DJ` - DJ
-
-        * `DM` - DM
-
-        * `DO` - DO
-
-        * `EC` - EC
-
-        * `EG` - EG
-
-        * `SV` - SV
-
-        * `GQ` - GQ
-
-        * `ER` - ER
-
-        * `EE` - EE
-
-        * `SZ` - SZ
-
-        * `ET` - ET
-
-        * `FK` - FK
-
-        * `FO` - FO
-
-        * `FJ` - FJ
-
-        * `FI` - FI
-
-        * `FR` - FR
-
-        * `GF` - GF
-
-        * `PF` - PF
-
-        * `TF` - TF
-
-        * `GA` - GA
-
-        * `GM` - GM
-
-        * `GE` - GE
-
-        * `DE` - DE
-
-        * `GH` - GH
-
-        * `GI` - GI
-
-        * `GR` - GR
-
-        * `GL` - GL
-
-        * `GD` - GD
-
-        * `GP` - GP
-
-        * `GU` - GU
-
-        * `GT` - GT
-
-        * `GG` - GG
-
-        * `GN` - GN
-
-        * `GW` - GW
-
-        * `GY` - GY
-
-        * `HT` - HT
-
-        * `HM` - HM
-
-        * `VA` - VA
-
-        * `HN` - HN
-
-        * `HK` - HK
-
-        * `HU` - HU
-
-        * `IS` - IS
-
-        * `IN` - IN
-
-        * `ID` - ID
-
-        * `IR` - IR
-
-        * `IQ` - IQ
-
-        * `IE` - IE
-
-        * `IM` - IM
-
-        * `IL` - IL
-
-        * `IT` - IT
-
-        * `JM` - JM
-
-        * `JP` - JP
-
-        * `JE` - JE
-
-        * `JO` - JO
-
-        * `KZ` - KZ
-
-        * `KE` - KE
-
-        * `KI` - KI
-
-        * `KW` - KW
-
-        * `KG` - KG
-
-        * `LA` - LA
-
-        * `LV` - LV
-
-        * `LB` - LB
-
-        * `LS` - LS
-
-        * `LR` - LR
-
-        * `LY` - LY
-
-        * `LI` - LI
-
-        * `LT` - LT
-
-        * `LU` - LU
-
-        * `MO` - MO
-
-        * `MG` - MG
-
-        * `MW` - MW
-
-        * `MY` - MY
-
-        * `MV` - MV
-
-        * `ML` - ML
-
-        * `MT` - MT
-
-        * `MH` - MH
-
-        * `MQ` - MQ
-
-        * `MR` - MR
-
-        * `MU` - MU
-
-        * `YT` - YT
-
-        * `MX` - MX
-
-        * `FM` - FM
-
-        * `MD` - MD
-
-        * `MC` - MC
-
-        * `MN` - MN
-
-        * `ME` - ME
-
-        * `MS` - MS
-
-        * `MA` - MA
-
-        * `MZ` - MZ
-
-        * `MM` - MM
-
-        * `NA` - NA
-
-        * `NR` - NR
-
-        * `NP` - NP
-
-        * `NL` - NL
-
-        * `NC` - NC
-
-        * `NZ` - NZ
-
-        * `NI` - NI
-
-        * `NE` - NE
-
-        * `NG` - NG
-
-        * `NU` - NU
-
-        * `NF` - NF
-
-        * `KP` - KP
-
-        * `MK` - MK
-
-        * `XI` - XI
-
-        * `MP` - MP
-
-        * `NO` - NO
-
-        * `OM` - OM
-
-        * `PK` - PK
-
-        * `PW` - PW
-
-        * `PS` - PS
-
-        * `PA` - PA
-
-        * `PG` - PG
-
-        * `PY` - PY
-
-        * `PE` - PE
-
-        * `PH` - PH
-
-        * `PN` - PN
-
-        * `PL` - PL
-
-        * `PT` - PT
-
-        * `PR` - PR
-
-        * `QA` - QA
-
-        * `RE` - RE
-
-        * `RO` - RO
-
-        * `RU` - RU
-
-        * `RW` - RW
-
-        * `BL` - BL
-
-        * `SH` - SH
-
-        * `KN` - KN
-
-        * `LC` - LC
-
-        * `MF` - MF
-
-        * `PM` - PM
-
-        * `VC` - VC
-
-        * `WS` - WS
-
-        * `SM` - SM
-
-        * `ST` - ST
-
-        * `SA` - SA
-
-        * `SN` - SN
-
-        * `RS` - RS
-
-        * `SC` - SC
-
-        * `SL` - SL
-
-        * `SG` - SG
-
-        * `SX` - SX
-
-        * `SK` - SK
-
-        * `SI` - SI
-
-        * `SB` - SB
-
-        * `SO` - SO
-
-        * `ZA` - ZA
-
-        * `GS` - GS
-
-        * `KR` - KR
-
-        * `SS` - SS
-
-        * `ES` - ES
-
-        * `LK` - LK
-
-        * `SD` - SD
-
-        * `SR` - SR
-
-        * `SJ` - SJ
-
-        * `SE` - SE
-
-        * `CH` - CH
-
-        * `SY` - SY
-
-        * `TW` - TW
-
-        * `TJ` - TJ
-
-        * `TZ` - TZ
-
-        * `TH` - TH
-
-        * `TL` - TL
-
-        * `TG` - TG
-
-        * `TK` - TK
-
-        * `TO` - TO
-
-        * `TT` - TT
-
-        * `TN` - TN
-
-        * `TR` - TR
-
-        * `TM` - TM
-
-        * `TC` - TC
-
-        * `TV` - TV
-
-        * `UG` - UG
-
-        * `UA` - UA
-
-        * `AE` - AE
-
-        * `GB` - GB
-
-        * `UM` - UM
-
-        * `US` - US
-
-        * `UY` - UY
-
-        * `UZ` - UZ
-
-        * `VU` - VU
-
-        * `VE` - VE
-
-        * `VN` - VN
-
-        * `VG` - VG
-
-        * `VI` - VI
-
-        * `WF` - WF
-
-        * `EH` - EH
-
-        * `YE` - YE
-
-        * `ZM` - ZM
-
-        * `ZW` - ZW'
-    OrderCategory:
-      enum:
-      - regular
-      type: string
-      description: '* `regular` - Regular'
-    DeliveryAddressResponse:
+    OrderDetail:
       type: object
       properties:
         uuid:
           type: string
           format: uuid
           readOnly: true
-        name:
+        created:
           type: string
-          nullable: true
-          maxLength: 255
-        street_1:
-          type: string
-          nullable: true
-          maxLength: 100
-        street_2:
-          type: string
-          nullable: true
-          maxLength: 100
-        postcode:
-          type: string
-          nullable: true
-          maxLength: 100
-        town:
-          type: string
-          nullable: true
-          maxLength: 100
-        region:
-          type: string
-          nullable: true
-          maxLength: 100
-        country:
-          nullable: true
+          format: date-time
+          readOnly: true
+        category:
+          $ref: '#/components/schemas/OrderCategory'
+        state:
+          $ref: '#/components/schemas/OrderState'
+        payment_status:
           oneOf:
-          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/PaymentStatusEnum'
           - $ref: '#/components/schemas/BlankEnum'
           - $ref: '#/components/schemas/NullEnum'
-        delivery_instructions:
-          type: string
-          nullable: true
-        contact_phone:
-          type: string
-          nullable: true
-        phone_country_code:
-          type: string
-          nullable: true
-        contact_full_name:
-          type: string
-          nullable: true
-      required:
-      - uuid
-    OrderConfirmDelivered:
-      type: object
-      properties:
-        quote_uuid:
-          type: string
-          format: uuid
-        delivered_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-        converted_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-          nullable: true
-        unit_of_measurement:
-          nullable: true
+        kriya_status:
           oneOf:
-          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          - $ref: '#/components/schemas/KriyaStatusEnum'
+          - $ref: '#/components/schemas/BlankEnum'
           - $ref: '#/components/schemas/NullEnum'
-      required:
-      - delivered_quantity
-      - quote_uuid
-    PurchaseOrderShipping:
-      type: object
-      properties:
+        payment_currency:
+          description: 'if this is not None, then during payment was chosen not default currency and this field should be passed to the payment as selected_currency
+
+
+            * `EUR` - EUR
+
+            * `USD` - USD
+
+            * `GBP` - GBP
+
+            * `CAD` - CAD'
+          oneOf:
+          - $ref: '#/components/schemas/Currencies'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        payment_due_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        kriya_payment_due_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        payment_method:
+          oneOf:
+          - $ref: '#/components/schemas/PaymentMethod'
+          - $ref: '#/components/schemas/NullEnum'
+        payment_scenario:
+          type: string
+          readOnly: true
+        shipment_status:
+          $ref: '#/components/schemas/ShipmentStatusEnum'
+        dispatch_confirmation_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+        delivery_confirmation_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        is_new:
+          type: boolean
+          readOnly: true
+        order_number:
+          type: string
+          readOnly: true
+        number_of_quotes_ordered:
+          type: integer
+          readOnly: true
+        total_price:
+          type: number
+          readOnly: true
+        total_price_currency:
+          type: string
+          readOnly: true
         delivery_date:
           type: string
           format: date
-        delivery_address:
-          type: string
-        contact_full_name:
-          type: string
-          nullable: true
-        contact_phone_number:
-          type: string
-          nullable: true
-        eori_number:
-          type: string
-          nullable: true
-        delivery_instructions:
-          type: string
-          nullable: true
-        delivery_contact:
-          type: string
-          nullable: true
-      required:
-      - contact_full_name
-      - contact_phone_number
-      - delivery_address
-      - delivery_contact
-      - delivery_date
-      - delivery_instructions
-      - eori_number
-    BankAccount:
-      type: object
-      properties:
-        beneficiary_name:
-          type: string
-        address:
-          type: string
-        sort_code:
-          type: string
-          nullable: true
-        account_no:
-          type: string
-          nullable: true
-        bic:
-          type: string
-          nullable: true
-        iban:
-          type: string
-          nullable: true
-        aba_routing_number:
-          type: string
-          nullable: true
-        account_type:
-          type: string
-          nullable: true
-      required:
-      - address
-      - beneficiary_name
-    CountryTypeEnum:
-      enum:
-      - EU
-      - GB
-      - Other
-      type: string
-      description: '* `EU` - Eu
-
-        * `GB` - Gb
-
-        * `Other` - Other'
-    OrderDisputeRequest:
-      type: object
-      properties:
-        uuid:
+        shipping_price:
+          type: number
+          readOnly: true
+        shipping_cost_no_vat:
+          type: number
+          readOnly: true
+        sum_to_pay:
+          type: number
+          readOnly: true
+        latest_delivery_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+        discount_amount:
+          type: number
+          readOnly: true
+        sum_to_pay_no_discount:
+          type: number
+          readOnly: true
+        quotes_prices:
+          type: array
+          items:
+            $ref: '#/components/schemas/PricesRetrieve'
+          readOnly: true
+        vat_sum:
+          type: number
+          readOnly: true
+        sum_payout:
+          type: number
+          readOnly: true
+        order_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        payment_delay:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        has_pending_purchase_request:
+          type: boolean
+          readOnly: true
+        is_recurring:
+          type: boolean
+          readOnly: true
+        related_contract_uuid:
           type: string
           format: uuid
           readOnly: true
-        reasons_for_dispute:
+        purchase_quote_uuid:
           type: string
-        documents:
+          format: uuid
+          readOnly: true
+        state_updated:
+          type: string
+          format: date-time
+          readOnly: true
+        tracking_code:
+          type:
+          - string
+          - 'null'
+        selected_currency:
+          type: string
+          readOnly: true
+        virtual_bank_account:
+          allOf:
+          - $ref: '#/components/schemas/VirtualBankTransfer'
+        quotes:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuoteOrderDetail'
+          readOnly: true
+        delivery_address:
+          allOf:
+          - $ref: '#/components/schemas/DeliveryAddressResponse'
+          readOnly: true
+        terms:
+          type:
+          - string
+          - 'null'
+        expected_delivery_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        shipping_provider:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        delivery_contact:
+          type: string
+          readOnly: true
+        delivery_contact_number:
+          type: string
+          readOnly: true
+        contract_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        bank_transfer_details:
+          allOf:
+          - $ref: '#/components/schemas/BankTransfer'
+          readOnly: true
+      required:
+      - bank_transfer_details
+      - contract_uuid
+      - created
+      - delivery_address
+      - delivery_contact
+      - delivery_contact_number
+      - delivery_date
+      - discount_amount
+      - dispatch_confirmation_date
+      - has_pending_purchase_request
+      - is_new
+      - is_recurring
+      - latest_delivery_date
+      - number_of_quotes_ordered
+      - order_number
+      - payment_delay
+      - payment_scenario
+      - purchase_quote_uuid
+      - quotes
+      - quotes_prices
+      - related_contract_uuid
+      - selected_currency
+      - shipping_cost_no_vat
+      - shipping_price
+      - state_updated
+      - sum_payout
+      - sum_to_pay
+      - sum_to_pay_no_discount
+      - total_price
+      - total_price_currency
+      - uuid
+      - vat_sum
+      - virtual_bank_account
+    BankTransfer:
+      type: object
+      properties:
+        merchant_reference_id:
+          type: string
+        reference_number:
+          type: string
+        bank_account:
+          allOf:
+          - $ref: '#/components/schemas/BankAccount'
+      required:
+      - merchant_reference_id
+      - reference_number
+    VatInvoiceResponse:
+      type: object
+      properties:
+        pdf_url:
+          type: string
+          format: uri
+        pdf_url_merged:
           type: string
           format: uri
       required:
-      - documents
-      - reasons_for_dispute
-      - uuid
-    PaymentScenarioEnum:
-      enum:
-      - in_advance
-      - on_dispatch
-      type: string
-      description: '* `in_advance` - In Advance
-
-        * `on_dispatch` - On Dispatch'
-    PricesRetrieve:
+      - pdf_url
+      - pdf_url_merged
+    BasketDiscountSwagger:
       type: object
       properties:
-        currency:
-          type: string
-        name:
-          type: string
-        quote_uuid:
-          type: string
-          format: uuid
-        sum_to_pay:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        unit_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_price_commission_with_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        sum_payout:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_shipping_cost:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_price_with_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        unit_price_with_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_price_with_vat_with_shipping_with_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        unit_price_with_commission_with_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        unit_price_no_vat_with_shipping:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_price_no_vat_with_shipping:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        unit_price_no_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_price_no_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        shipping_cost_no_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        vat_sum:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        unit_price_with_vat_with_shipping:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        payout_per_unit:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        sum_payout_no_shipping:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        payout_per_unit_no_shipping:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        vat_sum_no_commission:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        additional_buyer_to_opply_fees_no_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        additional_buyer_to_opply_fees_with_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        additional_fees_vat_rate:
+        quote_uuids:
           type: array
           items:
             type: string
-            format: decimal
-            pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        vat_sum_for_supplier:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        vat_sum_no_commission_for_supplier:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+            format: uuid
       required:
-      - additional_buyer_to_opply_fees_no_vat
-      - additional_buyer_to_opply_fees_with_vat
-      - additional_fees_vat_rate
-      - payout_per_unit
-      - payout_per_unit_no_shipping
-      - shipping_cost_no_vat
-      - sum_payout
-      - sum_payout_no_shipping
-      - sum_to_pay
-      - total_price
-      - total_price_commission_with_vat
-      - total_price_no_vat
-      - total_price_no_vat_with_shipping
-      - total_price_with_vat
-      - total_price_with_vat_with_shipping_with_vat
-      - total_shipping_cost
-      - unit_price
-      - unit_price_no_vat
-      - unit_price_no_vat_with_shipping
-      - unit_price_with_commission_with_vat
-      - unit_price_with_vat
-      - unit_price_with_vat_with_shipping
-      - vat_sum
-      - vat_sum_for_supplier
-      - vat_sum_no_commission
-      - vat_sum_no_commission_for_supplier
-    PaginatedOrderDocumentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrderDocument'
-    AddressTypeEnum:
-      enum:
-      - billing_address
-      - delivery_address
-      - dispatch_address
-      - company_address
-      type: string
-      description: '* `billing_address` - Billing address
-
-        * `delivery_address` - Delivery address
-
-        * `dispatch_address` - Dispatch address
-
-        * `company_address` - Company address'
+      - quote_uuids
     AllCurrencies:
       enum:
       - BND
@@ -4928,1031 +3236,1510 @@ components:
         * `LUC` - LUC
 
         * `YER` - YER'
-    OurAddress:
-      type: object
-      properties:
-        address_line_1:
-          type: string
-          maxLength: 64
-        address_line_2:
-          type: string
-          maxLength: 64
-        city:
-          type: string
-          maxLength: 64
-        postal_code:
-          type: string
-          maxLength: 64
-        country:
-          type: string
-          maxLength: 64
-        vat_number:
-          type: string
-          maxLength: 32
-        email:
-          type: string
-          format: email
-        phone:
-          type: string
-          maxLength: 128
-        company_number:
-          type: string
-          maxLength: 64
-      required:
-      - address_line_1
-      - address_line_2
-      - city
-      - company_number
-      - country
-      - email
-      - phone
-      - postal_code
-      - vat_number
-    IncotermsEnum:
+    SectionSupplierCountryEnum:
       enum:
-      - delivery_duty_paid
-      - delivery_duty_unpaid
-      - cost_insurance_and_freight
-      - carriage_and_insurance_paid_to
-      - cost_and_freight
-      - carriage_paid_to
-      - delivered_at_place
-      - ex_works
-      - free_alongside_ship
-      - free_on_board
+      - AF
+      - AX
+      - AL
+      - DZ
+      - AS
+      - AD
+      - AO
+      - AI
+      - AQ
+      - AG
+      - AR
+      - AM
+      - AW
+      - AU
+      - AT
+      - AZ
+      - BS
+      - BH
+      - BD
+      - BB
+      - BY
+      - BE
+      - BZ
+      - BJ
+      - BM
+      - BT
+      - BO
+      - BQ
+      - BA
+      - BW
+      - BV
+      - BR
+      - IO
+      - BN
+      - BG
+      - BF
+      - BI
+      - CV
+      - KH
+      - CM
+      - CA
+      - KY
+      - CF
+      - TD
+      - CL
+      - CN
+      - CX
+      - CC
+      - CO
+      - KM
+      - CG
+      - CD
+      - CK
+      - CR
+      - CI
+      - HR
+      - CU
+      - CW
+      - CY
+      - CZ
+      - DK
+      - DJ
+      - DM
+      - DO
+      - EC
+      - EG
+      - SV
+      - GQ
+      - ER
+      - EE
+      - SZ
+      - ET
+      - FK
+      - FO
+      - FJ
+      - FI
+      - FR
+      - GF
+      - PF
+      - TF
+      - GA
+      - GM
+      - GE
+      - DE
+      - GH
+      - GI
+      - GR
+      - GL
+      - GD
+      - GP
+      - GU
+      - GT
+      - GG
+      - GN
+      - GW
+      - GY
+      - HT
+      - HM
+      - VA
+      - HN
+      - HK
+      - HU
+      - IS
+      - IN
+      - ID
+      - IR
+      - IQ
+      - IE
+      - IM
+      - IL
+      - IT
+      - JM
+      - JP
+      - JE
+      - JO
+      - KZ
+      - KE
+      - KI
+      - KW
+      - KG
+      - LA
+      - LV
+      - LB
+      - LS
+      - LR
+      - LY
+      - LI
+      - LT
+      - LU
+      - MO
+      - MG
+      - MW
+      - MY
+      - MV
+      - ML
+      - MT
+      - MH
+      - MQ
+      - MR
+      - MU
+      - YT
+      - MX
+      - FM
+      - MD
+      - MC
+      - MN
+      - ME
+      - MS
+      - MA
+      - MZ
+      - MM
+      - NA
+      - NR
+      - NP
+      - NL
+      - NC
+      - NZ
+      - NI
+      - NE
+      - NG
+      - NU
+      - NF
+      - KP
+      - MK
+      - XI
+      - MP
+      - 'NO'
+      - OM
+      - PK
+      - PW
+      - PS
+      - PA
+      - PG
+      - PY
+      - PE
+      - PH
+      - PN
+      - PL
+      - PT
+      - PR
+      - QA
+      - RE
+      - RO
+      - RU
+      - RW
+      - BL
+      - SH
+      - KN
+      - LC
+      - MF
+      - PM
+      - VC
+      - WS
+      - SM
+      - ST
+      - SA
+      - SN
+      - RS
+      - SC
+      - SL
+      - SG
+      - SX
+      - SK
+      - SI
+      - SB
+      - SO
+      - ZA
+      - GS
+      - KR
+      - SS
+      - ES
+      - LK
+      - SD
+      - SR
+      - SJ
+      - SE
+      - CH
+      - SY
+      - TW
+      - TJ
+      - TZ
+      - TH
+      - TL
+      - TG
+      - TK
+      - TO
+      - TT
+      - TN
+      - TR
+      - TM
+      - TC
+      - TV
+      - UG
+      - UA
+      - AE
+      - GB
+      - UM
+      - US
+      - UY
+      - UZ
+      - VU
+      - VE
+      - VN
+      - VG
+      - VI
+      - WF
+      - EH
+      - YE
+      - ZM
+      - ZW
       type: string
-      description: '* `delivery_duty_paid` - delivery_duty_paid
+      description: '* `AF` - AF
 
-        * `delivery_duty_unpaid` - delivery_duty_unpaid
+        * `AX` - AX
 
-        * `cost_insurance_and_freight` - cost_insurance_and_freight
+        * `AL` - AL
 
-        * `carriage_and_insurance_paid_to` - carriage_and_insurance_paid_to
+        * `DZ` - DZ
 
-        * `cost_and_freight` - cost_and_freight
+        * `AS` - AS
 
-        * `carriage_paid_to` - carriage_paid_to
+        * `AD` - AD
 
-        * `delivered_at_place` - delivered_at_place
+        * `AO` - AO
 
-        * `ex_works` - ex_works
+        * `AI` - AI
 
-        * `free_alongside_ship` - free_alongside_ship
+        * `AQ` - AQ
 
-        * `free_on_board` - free_on_board'
-    BasketPrices:
-      type: object
-      properties:
-        sum_to_pay:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        currency:
-          $ref: '#/components/schemas/AllCurrencies'
-        sum_to_pay_no_discount:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        discount_amount:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_shipping_cost:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_price_no_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_shipping_cost_no_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_cost:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_additional_fees:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-      required:
-      - currency
-      - discount_amount
-      - sum_to_pay
-      - sum_to_pay_no_discount
-      - total_additional_fees
-      - total_cost
-      - total_price
-      - total_price_no_vat
-      - total_shipping_cost
-      - total_shipping_cost_no_vat
-      - total_vat
-    PatchedOrderDispute:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        reasons_for_dispute:
-          type: string
-    PaginatedOrderList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Order'
-    OrderState:
+        * `AG` - AG
+
+        * `AR` - AR
+
+        * `AM` - AM
+
+        * `AW` - AW
+
+        * `AU` - AU
+
+        * `AT` - AT
+
+        * `AZ` - AZ
+
+        * `BS` - BS
+
+        * `BH` - BH
+
+        * `BD` - BD
+
+        * `BB` - BB
+
+        * `BY` - BY
+
+        * `BE` - BE
+
+        * `BZ` - BZ
+
+        * `BJ` - BJ
+
+        * `BM` - BM
+
+        * `BT` - BT
+
+        * `BO` - BO
+
+        * `BQ` - BQ
+
+        * `BA` - BA
+
+        * `BW` - BW
+
+        * `BV` - BV
+
+        * `BR` - BR
+
+        * `IO` - IO
+
+        * `BN` - BN
+
+        * `BG` - BG
+
+        * `BF` - BF
+
+        * `BI` - BI
+
+        * `CV` - CV
+
+        * `KH` - KH
+
+        * `CM` - CM
+
+        * `CA` - CA
+
+        * `KY` - KY
+
+        * `CF` - CF
+
+        * `TD` - TD
+
+        * `CL` - CL
+
+        * `CN` - CN
+
+        * `CX` - CX
+
+        * `CC` - CC
+
+        * `CO` - CO
+
+        * `KM` - KM
+
+        * `CG` - CG
+
+        * `CD` - CD
+
+        * `CK` - CK
+
+        * `CR` - CR
+
+        * `CI` - CI
+
+        * `HR` - HR
+
+        * `CU` - CU
+
+        * `CW` - CW
+
+        * `CY` - CY
+
+        * `CZ` - CZ
+
+        * `DK` - DK
+
+        * `DJ` - DJ
+
+        * `DM` - DM
+
+        * `DO` - DO
+
+        * `EC` - EC
+
+        * `EG` - EG
+
+        * `SV` - SV
+
+        * `GQ` - GQ
+
+        * `ER` - ER
+
+        * `EE` - EE
+
+        * `SZ` - SZ
+
+        * `ET` - ET
+
+        * `FK` - FK
+
+        * `FO` - FO
+
+        * `FJ` - FJ
+
+        * `FI` - FI
+
+        * `FR` - FR
+
+        * `GF` - GF
+
+        * `PF` - PF
+
+        * `TF` - TF
+
+        * `GA` - GA
+
+        * `GM` - GM
+
+        * `GE` - GE
+
+        * `DE` - DE
+
+        * `GH` - GH
+
+        * `GI` - GI
+
+        * `GR` - GR
+
+        * `GL` - GL
+
+        * `GD` - GD
+
+        * `GP` - GP
+
+        * `GU` - GU
+
+        * `GT` - GT
+
+        * `GG` - GG
+
+        * `GN` - GN
+
+        * `GW` - GW
+
+        * `GY` - GY
+
+        * `HT` - HT
+
+        * `HM` - HM
+
+        * `VA` - VA
+
+        * `HN` - HN
+
+        * `HK` - HK
+
+        * `HU` - HU
+
+        * `IS` - IS
+
+        * `IN` - IN
+
+        * `ID` - ID
+
+        * `IR` - IR
+
+        * `IQ` - IQ
+
+        * `IE` - IE
+
+        * `IM` - IM
+
+        * `IL` - IL
+
+        * `IT` - IT
+
+        * `JM` - JM
+
+        * `JP` - JP
+
+        * `JE` - JE
+
+        * `JO` - JO
+
+        * `KZ` - KZ
+
+        * `KE` - KE
+
+        * `KI` - KI
+
+        * `KW` - KW
+
+        * `KG` - KG
+
+        * `LA` - LA
+
+        * `LV` - LV
+
+        * `LB` - LB
+
+        * `LS` - LS
+
+        * `LR` - LR
+
+        * `LY` - LY
+
+        * `LI` - LI
+
+        * `LT` - LT
+
+        * `LU` - LU
+
+        * `MO` - MO
+
+        * `MG` - MG
+
+        * `MW` - MW
+
+        * `MY` - MY
+
+        * `MV` - MV
+
+        * `ML` - ML
+
+        * `MT` - MT
+
+        * `MH` - MH
+
+        * `MQ` - MQ
+
+        * `MR` - MR
+
+        * `MU` - MU
+
+        * `YT` - YT
+
+        * `MX` - MX
+
+        * `FM` - FM
+
+        * `MD` - MD
+
+        * `MC` - MC
+
+        * `MN` - MN
+
+        * `ME` - ME
+
+        * `MS` - MS
+
+        * `MA` - MA
+
+        * `MZ` - MZ
+
+        * `MM` - MM
+
+        * `NA` - NA
+
+        * `NR` - NR
+
+        * `NP` - NP
+
+        * `NL` - NL
+
+        * `NC` - NC
+
+        * `NZ` - NZ
+
+        * `NI` - NI
+
+        * `NE` - NE
+
+        * `NG` - NG
+
+        * `NU` - NU
+
+        * `NF` - NF
+
+        * `KP` - KP
+
+        * `MK` - MK
+
+        * `XI` - XI
+
+        * `MP` - MP
+
+        * `NO` - NO
+
+        * `OM` - OM
+
+        * `PK` - PK
+
+        * `PW` - PW
+
+        * `PS` - PS
+
+        * `PA` - PA
+
+        * `PG` - PG
+
+        * `PY` - PY
+
+        * `PE` - PE
+
+        * `PH` - PH
+
+        * `PN` - PN
+
+        * `PL` - PL
+
+        * `PT` - PT
+
+        * `PR` - PR
+
+        * `QA` - QA
+
+        * `RE` - RE
+
+        * `RO` - RO
+
+        * `RU` - RU
+
+        * `RW` - RW
+
+        * `BL` - BL
+
+        * `SH` - SH
+
+        * `KN` - KN
+
+        * `LC` - LC
+
+        * `MF` - MF
+
+        * `PM` - PM
+
+        * `VC` - VC
+
+        * `WS` - WS
+
+        * `SM` - SM
+
+        * `ST` - ST
+
+        * `SA` - SA
+
+        * `SN` - SN
+
+        * `RS` - RS
+
+        * `SC` - SC
+
+        * `SL` - SL
+
+        * `SG` - SG
+
+        * `SX` - SX
+
+        * `SK` - SK
+
+        * `SI` - SI
+
+        * `SB` - SB
+
+        * `SO` - SO
+
+        * `ZA` - ZA
+
+        * `GS` - GS
+
+        * `KR` - KR
+
+        * `SS` - SS
+
+        * `ES` - ES
+
+        * `LK` - LK
+
+        * `SD` - SD
+
+        * `SR` - SR
+
+        * `SJ` - SJ
+
+        * `SE` - SE
+
+        * `CH` - CH
+
+        * `SY` - SY
+
+        * `TW` - TW
+
+        * `TJ` - TJ
+
+        * `TZ` - TZ
+
+        * `TH` - TH
+
+        * `TL` - TL
+
+        * `TG` - TG
+
+        * `TK` - TK
+
+        * `TO` - TO
+
+        * `TT` - TT
+
+        * `TN` - TN
+
+        * `TR` - TR
+
+        * `TM` - TM
+
+        * `TC` - TC
+
+        * `TV` - TV
+
+        * `UG` - UG
+
+        * `UA` - UA
+
+        * `AE` - AE
+
+        * `GB` - GB
+
+        * `UM` - UM
+
+        * `US` - US
+
+        * `UY` - UY
+
+        * `UZ` - UZ
+
+        * `VU` - VU
+
+        * `VE` - VE
+
+        * `VN` - VN
+
+        * `VG` - VG
+
+        * `VI` - VI
+
+        * `WF` - WF
+
+        * `EH` - EH
+
+        * `YE` - YE
+
+        * `ZM` - ZM
+
+        * `ZW` - ZW'
+    Country:
       enum:
-      - checkout
-      - confirmed
-      - pending_payment
-      - canceled
-      - awaiting_approval
-      - on_hold
-      - placed
-      - dispatched
-      - completed
+      - AF
+      - AX
+      - AL
+      - DZ
+      - AS
+      - AD
+      - AO
+      - AI
+      - AQ
+      - AG
+      - AR
+      - AM
+      - AW
+      - AU
+      - AT
+      - AZ
+      - BS
+      - BH
+      - BD
+      - BB
+      - BY
+      - BE
+      - BZ
+      - BJ
+      - BM
+      - BT
+      - BO
+      - BQ
+      - BA
+      - BW
+      - BV
+      - BR
+      - IO
+      - BN
+      - BG
+      - BF
+      - BI
+      - CV
+      - KH
+      - CM
+      - CA
+      - KY
+      - CF
+      - TD
+      - CL
+      - CN
+      - CX
+      - CC
+      - CO
+      - KM
+      - CG
+      - CD
+      - CK
+      - CR
+      - CI
+      - HR
+      - CU
+      - CW
+      - CY
+      - CZ
+      - DK
+      - DJ
+      - DM
+      - DO
+      - EC
+      - EG
+      - SV
+      - GQ
+      - ER
+      - EE
+      - SZ
+      - ET
+      - FK
+      - FO
+      - FJ
+      - FI
+      - FR
+      - GF
+      - PF
+      - TF
+      - GA
+      - GM
+      - GE
+      - DE
+      - GH
+      - GI
+      - GR
+      - GL
+      - GD
+      - GP
+      - GU
+      - GT
+      - GG
+      - GN
+      - GW
+      - GY
+      - HT
+      - HM
+      - VA
+      - HN
+      - HK
+      - HU
+      - IS
+      - IN
+      - ID
+      - IR
+      - IQ
+      - IE
+      - IM
+      - IL
+      - IT
+      - JM
+      - JP
+      - JE
+      - JO
+      - KZ
+      - KE
+      - KI
+      - KW
+      - KG
+      - LA
+      - LV
+      - LB
+      - LS
+      - LR
+      - LY
+      - LI
+      - LT
+      - LU
+      - MO
+      - MG
+      - MW
+      - MY
+      - MV
+      - ML
+      - MT
+      - MH
+      - MQ
+      - MR
+      - MU
+      - YT
+      - MX
+      - FM
+      - MD
+      - MC
+      - MN
+      - ME
+      - MS
+      - MA
+      - MZ
+      - MM
+      - NA
+      - NR
+      - NP
+      - NL
+      - NC
+      - NZ
+      - NI
+      - NE
+      - NG
+      - NU
+      - NF
+      - KP
+      - MK
+      - XI
+      - MP
+      - 'NO'
+      - OM
+      - PK
+      - PW
+      - PS
+      - PA
+      - PG
+      - PY
+      - PE
+      - PH
+      - PN
+      - PL
+      - PT
+      - PR
+      - QA
+      - RE
+      - RO
+      - RU
+      - RW
+      - BL
+      - SH
+      - KN
+      - LC
+      - MF
+      - PM
+      - VC
+      - WS
+      - SM
+      - ST
+      - SA
+      - SN
+      - RS
+      - SC
+      - SL
+      - SG
+      - SX
+      - SK
+      - SI
+      - SB
+      - SO
+      - ZA
+      - GS
+      - KR
+      - SS
+      - ES
+      - LK
+      - SD
+      - SR
+      - SJ
+      - SE
+      - CH
+      - SY
+      - TW
+      - TJ
+      - TZ
+      - TH
+      - TL
+      - TG
+      - TK
+      - TO
+      - TT
+      - TN
+      - TR
+      - TM
+      - TC
+      - TV
+      - UG
+      - UA
+      - AE
+      - GB
+      - UM
+      - US
+      - UY
+      - UZ
+      - VU
+      - VE
+      - VN
+      - VG
+      - VI
+      - WF
+      - EH
+      - YE
+      - ZM
+      - ZW
       type: string
-      description: '* `checkout` - Checkout
+      description: '* `AF` - Afghanistan
 
-        * `confirmed` - confirmed
+        * `AX` - Åland Islands
 
-        * `pending_payment` - pending_payment
+        * `AL` - Albania
 
-        * `canceled` - canceled
+        * `DZ` - Algeria
 
-        * `awaiting_approval` - awaiting_approval
+        * `AS` - American Samoa
 
-        * `on_hold` - on_hold
+        * `AD` - Andorra
 
-        * `placed` - placed
+        * `AO` - Angola
 
-        * `dispatched` - dispatched
+        * `AI` - Anguilla
 
-        * `completed` - completed'
-    OrderCreateSwagger:
-      type: object
-      properties:
-        quotes:
-          type: array
-          items:
-            type: string
-            format: uuid
-      required:
-      - quotes
-    ShipmentStatusEnum:
-      enum:
-      - pending_dispatch
-      - dispatched
-      - delivered
-      type: string
-      description: '* `pending_dispatch` - pending_dispatch
+        * `AQ` - Antarctica
 
-        * `dispatched` - Dispatched
+        * `AG` - Antigua and Barbuda
 
-        * `delivered` - Delivered'
-    BrandVatInvoiceData:
-      type: object
-      properties:
-        invoice_id:
-          type: integer
-          minimum: 1
-        brand_name:
-          type: string
-        address_line_1:
-          type: string
-          nullable: true
-        address_line_2:
-          type: string
-          nullable: true
-        city:
-          type: string
-          nullable: true
-        country:
-          type: string
-          nullable: true
-        postal_code:
-          type: string
-          nullable: true
-        payment_date:
-          type: string
-          readOnly: true
-        order_number:
-          type: string
-          format: uuid
-        currency:
-          type: string
-        total_price_commission:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-        commission_payin_vat_rate_pct:
-          type: string
-          nullable: true
-        total_price_commission_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-        total_price_commission_with_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-        fx_rate:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-          nullable: true
-        total_price_fx_fee:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-        our_address:
-          $ref: '#/components/schemas/OurAddress'
-      required:
-      - address_line_1
-      - address_line_2
-      - brand_name
-      - city
-      - commission_payin_vat_rate_pct
-      - country
-      - currency
-      - fx_rate
-      - invoice_id
-      - order_number
-      - our_address
-      - payment_date
-      - postal_code
-      - total_price_commission
-      - total_price_commission_vat
-      - total_price_commission_with_vat
-      - total_price_fx_fee
-    OrderDispute:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        reasons_for_dispute:
-          type: string
-      required:
-      - created
-      - reasons_for_dispute
-      - uuid
-    PaymentDetailsInvoice:
-      type: object
-      properties:
-        payment_method:
-          $ref: '#/components/schemas/PaymentMethod'
-        payment_scenario:
-          $ref: '#/components/schemas/PaymentScenarioEnum'
-        bank_transfer_details: {}
-      required:
-      - bank_transfer_details
-      - payment_method
-      - payment_scenario
-    ProductDetails:
-      type: object
-      properties:
-        name:
-          type: string
-        quantity:
-          type: string
-        unit_final_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        unit_of_measurement:
-          $ref: '#/components/schemas/UnitOfMeasurementEnum'
-        total_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        sku:
-          type: string
-        vat_rate:
-          type: string
-        description_blocks:
-          type: array
-          items:
-            $ref: '#/components/schemas/QuoteDescriptionBlockCreate'
-          nullable: true
-        shipping_vat_rate:
-          type: string
-          default: '0.00'
-      required:
-      - name
-      - quantity
-      - sku
-      - total_price
-      - unit_final_price
-      - unit_of_measurement
-    QuoteOrderDetail:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        product_name:
-          type: string
-          maxLength: 255
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-        delivery_date:
-          type: string
-          format: date
-        payment_scenario:
-          $ref: '#/components/schemas/PaymentScenarioEnum'
-        payment_delay:
-          type: integer
-          maximum: 365
-          minimum: 0
-        quote_valid_for:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          nullable: true
-        lead_time:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          title: The maximum time a supplier agrees to deliver the product within (days)
-        product_description:
-          type: string
-          nullable: true
-        shipping_cost:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-          nullable: true
-        currency:
-          $ref: '#/components/schemas/Currencies'
-        status:
-          $ref: '#/components/schemas/QuoteState'
-        published:
-          type: string
-          format: date-time
-          nullable: true
-          description: Datetime when the quote becomes published. Leave empty to keep it unpublished.
-        unit_of_measurement:
-          $ref: '#/components/schemas/UnitOfMeasurementEnum'
-        inquiry_unit_of_measurement:
-          type: string
-          readOnly: true
-        created_date:
-          type: string
-          format: date-time
-          readOnly: true
-        expiry_date:
-          type: string
-          format: date
-          nullable: true
-        inquiry:
-          type: string
-          format: uuid
-          readOnly: true
-        logo_url:
-          type: string
-          format: uri
-          maxLength: 2048
-        total_price:
-          type: number
-          format: double
-          readOnly: true
-        unit_price:
-          type: number
-          format: double
-          readOnly: true
-        vat_rate:
-          type: number
-          format: double
-          readOnly: true
-        is_reverse_charge:
-          type: boolean
-        vat_charged:
-          type: boolean
-        vat_remitted:
-          type: boolean
-        vat_exempt:
-          type: boolean
-        fx_fee:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
-        fx_rate:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,9}(?:\.\d{0,6})?$
-        prices:
-          allOf:
-          - $ref: '#/components/schemas/PricesRetrieve'
-          readOnly: true
-        commission_payout_vat_rate:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
-        commission_payin_vat_rate:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
-        commission_is_reverse_charge:
-          type: boolean
-        inquiry_currency:
-          type: string
-          readOnly: true
-        is_new:
-          type: boolean
-          readOnly: true
-        sku:
-          type: string
-          nullable: true
-          maxLength: 32
-        category:
-          $ref: '#/components/schemas/QuoteCategory'
-        order_frequency:
-          allOf:
-          - $ref: '#/components/schemas/FrequencyEnum'
-          readOnly: true
-        total_forecast_volume:
-          type: string
-          readOnly: true
-        is_contract_expired:
-          type: boolean
-          readOnly: true
-        inquiry_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        contract_end_date:
-          type: string
-          format: date
-          nullable: true
-        contract_status:
-          type: string
-          readOnly: true
-        total_forecast_price:
-          type: string
-          readOnly: true
-        total_forecast_price_for_supplier:
-          type: number
-          format: double
-          readOnly: true
-        number_of_recurring_orders:
-          type: string
-          readOnly: true
-        is_custom_contract:
-          type: boolean
-        custom_contract_frequency:
-          type: string
-          readOnly: true
-        contract_length:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-          nullable: true
-          description: Duration of the contract in months.
-        buyer_company_name:
-          type: string
-          readOnly: true
-        agreement_required:
-          type: boolean
-        is_filled:
-          type: boolean
-          readOnly: true
-        total_forecast_payout:
-          type: string
-          readOnly: true
-        original_quote_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        shipping_vat_rate:
-          type: number
-          format: double
-          readOnly: true
-        expires_in:
-          type: string
-          readOnly: true
-        total_forecast_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-          nullable: true
-        selected_price_option:
-          $ref: '#/components/schemas/SelectedPriceOptionEnum'
-        update_requested:
-          type: boolean
-        ordered_volume:
-          type: number
-          readOnly: true
-        delivery_address:
-          allOf:
-          - $ref: '#/components/schemas/DeliveryAddressResponse'
-          readOnly: true
-        incoterms:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/IncotermsEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        payment_terms:
-          $ref: '#/components/schemas/PaymentTermsEnum'
-        kyb_status:
-          type: string
-          readOnly: true
-        dispatch_address:
-          $ref: '#/components/schemas/CompanyAddress'
-        samples_status:
-          $ref: '#/components/schemas/SamplesStatusEnum'
-        samples_delivery_address:
-          allOf:
-          - $ref: '#/components/schemas/CompanyAddress'
-          readOnly: true
-        samples_feedback:
-          type: array
-          items:
-            $ref: '#/components/schemas/SamplesFeedbackEnum'
-          nullable: true
-        samples_feedback_comment:
-          type: string
-        supplier:
-          allOf:
-          - $ref: '#/components/schemas/SectionSupplier'
-          readOnly: true
-          nullable: true
-        is_recurring:
-          type: string
-          readOnly: true
-        recurring_order_lead_time:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          nullable: true
-        account_form_required:
-          type: boolean
-        payout_per_order:
-          type: string
-          readOnly: true
-        case_size:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,17}(?:\.\d{0,2})?$
-          nullable: true
-        minimum_order_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,17}(?:\.\d{0,2})?$
-          nullable: true
-        inquiry_frequency:
-          type: string
-        delivery_address_id:
-          type: integer
-          readOnly: true
-        requested_payment_terms:
-          $ref: '#/components/schemas/PaymentTermsEnum'
-        is_opply_supplier:
-          type: string
-          readOnly: true
-        ingredient:
-          allOf:
-          - $ref: '#/components/schemas/IngredientsForQuote'
-          readOnly: true
-        samples_dispatch_date:
-          type: string
-          format: date
-          nullable: true
-        samples_sent_date:
-          type: string
-          format: date
-          nullable: true
-        samples_received_date:
-          type: string
-          format: date
-          nullable: true
-        samples_accepted_date:
-          type: string
-          format: date
-          nullable: true
-        samples_rejected_date:
-          type: string
-          format: date
-          nullable: true
-        samples_requested_date:
-          type: string
-          format: date
-          nullable: true
-        samples_declined_date:
-          type: string
-          format: date
-          nullable: true
-        samples_tracking_code:
-          type: string
-          nullable: true
-        samples_expected_delivery_date:
-          type: string
-          format: date
-          nullable: true
-        samples_shipping_provider:
-          type: string
-          nullable: true
-          maxLength: 255
-        autoconfirm_orders:
-          type: boolean
-        minimum_lead_time:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          nullable: true
-        order_in_multiples_of:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          nullable: true
-        minimum_autoconfirm_order_quantity:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          nullable: true
-        maximum_autoconfirm_order_quantity:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          nullable: true
-        extension_length:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          nullable: true
-        extension_accepted:
-          type: boolean
-          nullable: true
-        packaging_format:
-          type: string
-        original_quote:
-          type: string
-          readOnly: true
-        description_blocks:
-          type: array
-          items:
-            $ref: '#/components/schemas/QuoteDescriptionBlock'
-          nullable: true
-        payment_terms_updated_by_supplier:
-          type: boolean
-        product_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        discount:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
-          nullable: true
-      required:
-      - buyer_company_name
-      - contract_status
-      - created_date
-      - custom_contract_frequency
-      - delivery_address
-      - delivery_address_id
-      - delivery_date
-      - dispatch_address
-      - expires_in
-      - ingredient
-      - inquiry
-      - inquiry_currency
-      - inquiry_frequency
-      - inquiry_unit_of_measurement
-      - inquiry_uuid
-      - is_contract_expired
-      - is_filled
-      - is_new
-      - is_opply_supplier
-      - is_recurring
-      - kyb_status
-      - lead_time
-      - number_of_recurring_orders
-      - order_frequency
-      - ordered_volume
-      - original_quote
-      - original_quote_uuid
-      - payout_per_order
-      - prices
-      - product_name
-      - product_uuid
-      - quantity
-      - samples_delivery_address
-      - shipping_vat_rate
-      - supplier
-      - total_forecast_payout
-      - total_forecast_price
-      - total_forecast_price_for_supplier
-      - total_forecast_volume
-      - total_price
-      - unit_price
-      - uuid
-      - vat_rate
-    QuoteCategory:
-      enum:
-      - non_recurring
-      - recurring
-      - purchase_request_quote
-      type: string
-      description: '* `non_recurring` - Non Recurring
+        * `AR` - Argentina
 
-        * `recurring` - Recurring
+        * `AM` - Armenia
 
-        * `purchase_request_quote` - Purchase Request Quote'
-    PaymentMethod:
-      enum:
-      - card
-      - bank_transfer
-      - PAY30
-      - PAY30EOFM
-      type: string
-      description: '* `card` - Card
+        * `AW` - Aruba
 
-        * `bank_transfer` - Bank Transfer
+        * `AU` - Australia
 
-        * `PAY30` - Kriya 30
+        * `AT` - Austria
 
-        * `PAY30EOFM` - Kriya Next Month'
-    Currencies:
-      enum:
-      - EUR
-      - USD
-      - GBP
-      - CAD
-      type: string
-      description: '* `EUR` - EUR
+        * `AZ` - Azerbaijan
 
-        * `USD` - USD
+        * `BS` - Bahamas
 
-        * `GBP` - GBP
+        * `BH` - Bahrain
 
-        * `CAD` - CAD'
-    SelectedPriceOptionEnum:
-      enum:
-      - total
-      - unit
-      type: string
-      description: '* `total` - total
+        * `BD` - Bangladesh
 
-        * `unit` - unit'
-    SamplesStatusEnum:
-      enum:
-      - available
-      - requested
-      - sent
-      - received
-      - accepted
-      - rejected
-      - declined
-      type: string
-      description: '* `available` - Available
+        * `BB` - Barbados
 
-        * `requested` - Requested
+        * `BY` - Belarus
 
-        * `sent` - Sent
+        * `BE` - Belgium
 
-        * `received` - Received
+        * `BZ` - Belize
 
-        * `accepted` - Accepted
+        * `BJ` - Benin
 
-        * `rejected` - Rejected
+        * `BM` - Bermuda
 
-        * `declined` - Declined'
-    QuoteDescriptionBlockCreate:
-      type: object
-      properties:
-        description:
-          type: string
-      required:
-      - description
-    BankTransfer:
-      type: object
-      properties:
-        merchant_reference_id:
-          type: string
-        reference_number:
-          type: string
-        bank_account:
-          allOf:
-          - $ref: '#/components/schemas/BankAccount'
-          nullable: true
-      required:
-      - merchant_reference_id
-      - reference_number
-    GoodsReceiptPDFUrl:
-      type: object
-      properties:
-        pdf_url:
-          type: string
-          format: uri
-      required:
-      - pdf_url
-    BlankEnum:
-      enum:
-      - ''
-    BrandInvoice:
-      type: object
-      properties:
-        number:
-          type: string
-        billed_to:
-          type: string
-        billed_on:
-          type: string
-          format: date-time
-        due_to:
-          type: string
-          readOnly: true
-        payment_due_date:
-          type: string
-          nullable: true
-        payment_status:
-          type: string
-        paid_date:
-          type: string
-          format: date-time
-          nullable: true
-        payment_details:
-          allOf:
-          - $ref: '#/components/schemas/PaymentDetailsInvoice'
-          nullable: true
-        currency:
-          $ref: '#/components/schemas/AllCurrencies'
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductDetails'
-        fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/Fees'
-          nullable: true
-        fees_sum:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        products_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        shipping_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        vat_sum:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-      required:
-      - billed_on
-      - billed_to
-      - currency
-      - due_to
-      - fees_sum
-      - number
-      - paid_date
-      - payment_details
-      - payment_due_date
-      - payment_status
-      - products
-      - products_price
-      - shipping_price
-      - total_price
-      - vat_sum
-    KriyaStatusEnum:
-      enum:
-      - Draft
-      - Submitted
-      - ReadyToAdvance
-      - Advanced
-      - Repaid
-      - Due
-      - Overdue
-      - Closed
-      - Cancelled
-      type: string
-      description: '* `Draft` - Draft
+        * `BT` - Bhutan
 
-        * `Submitted` - Submitted
+        * `BO` - Bolivia
 
-        * `ReadyToAdvance` - Ready To Advance
+        * `BQ` - Bonaire, Sint Eustatius and Saba
 
-        * `Advanced` - Advanced
+        * `BA` - Bosnia and Herzegovina
 
-        * `Repaid` - Repaid
+        * `BW` - Botswana
 
-        * `Due` - Due
+        * `BV` - Bouvet Island
 
-        * `Overdue` - Overdue
+        * `BR` - Brazil
 
-        * `Closed` - Closed
+        * `IO` - British Indian Ocean Territory
 
-        * `Cancelled` - Cancelled'
-    PDFUrl:
-      type: object
-      properties:
-        pdf_url:
-          type: string
-          format: uri
-      required:
-      - pdf_url
-    PurchaseOrder:
-      type: object
-      properties:
-        order_number:
-          type: string
-        created:
-          type: string
-          format: date-time
-        payment_due_date:
-          type: string
-          format: date-time
-        shipping:
-          $ref: '#/components/schemas/PurchaseOrderShipping'
-        currency:
-          $ref: '#/components/schemas/AllCurrencies'
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductDetails'
-        shipping_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        vat_sum_no_commission:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        sum_payout:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        supplier:
-          $ref: '#/components/schemas/PurchaseOrderCompanyInfo'
-        buyer:
-          $ref: '#/components/schemas/PurchaseOrderCompanyInfo'
-      required:
-      - buyer
-      - created
-      - currency
-      - order_number
-      - payment_due_date
-      - products
-      - shipping
-      - shipping_price
-      - sum_payout
-      - supplier
-      - total_price
-      - vat_sum_no_commission
+        * `BN` - Brunei
+
+        * `BG` - Bulgaria
+
+        * `BF` - Burkina Faso
+
+        * `BI` - Burundi
+
+        * `CV` - Cabo Verde
+
+        * `KH` - Cambodia
+
+        * `CM` - Cameroon
+
+        * `CA` - Canada
+
+        * `KY` - Cayman Islands
+
+        * `CF` - Central African Republic
+
+        * `TD` - Chad
+
+        * `CL` - Chile
+
+        * `CN` - China
+
+        * `CX` - Christmas Island
+
+        * `CC` - Cocos (Keeling) Islands
+
+        * `CO` - Colombia
+
+        * `KM` - Comoros
+
+        * `CG` - Congo
+
+        * `CD` - Congo (the Democratic Republic of the)
+
+        * `CK` - Cook Islands
+
+        * `CR` - Costa Rica
+
+        * `CI` - Côte d''Ivoire
+
+        * `HR` - Croatia
+
+        * `CU` - Cuba
+
+        * `CW` - Curaçao
+
+        * `CY` - Cyprus
+
+        * `CZ` - Czechia
+
+        * `DK` - Denmark
+
+        * `DJ` - Djibouti
+
+        * `DM` - Dominica
+
+        * `DO` - Dominican Republic
+
+        * `EC` - Ecuador
+
+        * `EG` - Egypt
+
+        * `SV` - El Salvador
+
+        * `GQ` - Equatorial Guinea
+
+        * `ER` - Eritrea
+
+        * `EE` - Estonia
+
+        * `SZ` - Eswatini
+
+        * `ET` - Ethiopia
+
+        * `FK` - Falkland Islands (Malvinas)
+
+        * `FO` - Faroe Islands
+
+        * `FJ` - Fiji
+
+        * `FI` - Finland
+
+        * `FR` - France
+
+        * `GF` - French Guiana
+
+        * `PF` - French Polynesia
+
+        * `TF` - French Southern Territories
+
+        * `GA` - Gabon
+
+        * `GM` - Gambia
+
+        * `GE` - Georgia
+
+        * `DE` - Germany
+
+        * `GH` - Ghana
+
+        * `GI` - Gibraltar
+
+        * `GR` - Greece
+
+        * `GL` - Greenland
+
+        * `GD` - Grenada
+
+        * `GP` - Guadeloupe
+
+        * `GU` - Guam
+
+        * `GT` - Guatemala
+
+        * `GG` - Guernsey
+
+        * `GN` - Guinea
+
+        * `GW` - Guinea-Bissau
+
+        * `GY` - Guyana
+
+        * `HT` - Haiti
+
+        * `HM` - Heard Island and McDonald Islands
+
+        * `VA` - Holy See
+
+        * `HN` - Honduras
+
+        * `HK` - Hong Kong
+
+        * `HU` - Hungary
+
+        * `IS` - Iceland
+
+        * `IN` - India
+
+        * `ID` - Indonesia
+
+        * `IR` - Iran
+
+        * `IQ` - Iraq
+
+        * `IE` - Ireland
+
+        * `IM` - Isle of Man
+
+        * `IL` - Israel
+
+        * `IT` - Italy
+
+        * `JM` - Jamaica
+
+        * `JP` - Japan
+
+        * `JE` - Jersey
+
+        * `JO` - Jordan
+
+        * `KZ` - Kazakhstan
+
+        * `KE` - Kenya
+
+        * `KI` - Kiribati
+
+        * `KW` - Kuwait
+
+        * `KG` - Kyrgyzstan
+
+        * `LA` - Laos
+
+        * `LV` - Latvia
+
+        * `LB` - Lebanon
+
+        * `LS` - Lesotho
+
+        * `LR` - Liberia
+
+        * `LY` - Libya
+
+        * `LI` - Liechtenstein
+
+        * `LT` - Lithuania
+
+        * `LU` - Luxembourg
+
+        * `MO` - Macao
+
+        * `MG` - Madagascar
+
+        * `MW` - Malawi
+
+        * `MY` - Malaysia
+
+        * `MV` - Maldives
+
+        * `ML` - Mali
+
+        * `MT` - Malta
+
+        * `MH` - Marshall Islands
+
+        * `MQ` - Martinique
+
+        * `MR` - Mauritania
+
+        * `MU` - Mauritius
+
+        * `YT` - Mayotte
+
+        * `MX` - Mexico
+
+        * `FM` - Micronesia
+
+        * `MD` - Moldova
+
+        * `MC` - Monaco
+
+        * `MN` - Mongolia
+
+        * `ME` - Montenegro
+
+        * `MS` - Montserrat
+
+        * `MA` - Morocco
+
+        * `MZ` - Mozambique
+
+        * `MM` - Myanmar
+
+        * `NA` - Namibia
+
+        * `NR` - Nauru
+
+        * `NP` - Nepal
+
+        * `NL` - Netherlands
+
+        * `NC` - New Caledonia
+
+        * `NZ` - New Zealand
+
+        * `NI` - Nicaragua
+
+        * `NE` - Niger
+
+        * `NG` - Nigeria
+
+        * `NU` - Niue
+
+        * `NF` - Norfolk Island
+
+        * `KP` - North Korea
+
+        * `MK` - North Macedonia
+
+        * `XI` - Northern Ireland
+
+        * `MP` - Northern Mariana Islands
+
+        * `NO` - Norway
+
+        * `OM` - Oman
+
+        * `PK` - Pakistan
+
+        * `PW` - Palau
+
+        * `PS` - Palestine, State of
+
+        * `PA` - Panama
+
+        * `PG` - Papua New Guinea
+
+        * `PY` - Paraguay
+
+        * `PE` - Peru
+
+        * `PH` - Philippines
+
+        * `PN` - Pitcairn
+
+        * `PL` - Poland
+
+        * `PT` - Portugal
+
+        * `PR` - Puerto Rico
+
+        * `QA` - Qatar
+
+        * `RE` - Réunion
+
+        * `RO` - Romania
+
+        * `RU` - Russia
+
+        * `RW` - Rwanda
+
+        * `BL` - Saint Barthélemy
+
+        * `SH` - Saint Helena, Ascension and Tristan da Cunha
+
+        * `KN` - Saint Kitts and Nevis
+
+        * `LC` - Saint Lucia
+
+        * `MF` - Saint Martin (French part)
+
+        * `PM` - Saint Pierre and Miquelon
+
+        * `VC` - Saint Vincent and the Grenadines
+
+        * `WS` - Samoa
+
+        * `SM` - San Marino
+
+        * `ST` - Sao Tome and Principe
+
+        * `SA` - Saudi Arabia
+
+        * `SN` - Senegal
+
+        * `RS` - Serbia
+
+        * `SC` - Seychelles
+
+        * `SL` - Sierra Leone
+
+        * `SG` - Singapore
+
+        * `SX` - Sint Maarten (Dutch part)
+
+        * `SK` - Slovakia
+
+        * `SI` - Slovenia
+
+        * `SB` - Solomon Islands
+
+        * `SO` - Somalia
+
+        * `ZA` - South Africa
+
+        * `GS` - South Georgia and the South Sandwich Islands
+
+        * `KR` - South Korea
+
+        * `SS` - South Sudan
+
+        * `ES` - Spain
+
+        * `LK` - Sri Lanka
+
+        * `SD` - Sudan
+
+        * `SR` - Suriname
+
+        * `SJ` - Svalbard and Jan Mayen
+
+        * `SE` - Sweden
+
+        * `CH` - Switzerland
+
+        * `SY` - Syria
+
+        * `TW` - Taiwan
+
+        * `TJ` - Tajikistan
+
+        * `TZ` - Tanzania
+
+        * `TH` - Thailand
+
+        * `TL` - Timor-Leste
+
+        * `TG` - Togo
+
+        * `TK` - Tokelau
+
+        * `TO` - Tonga
+
+        * `TT` - Trinidad and Tobago
+
+        * `TN` - Tunisia
+
+        * `TR` - Türkiye
+
+        * `TM` - Turkmenistan
+
+        * `TC` - Turks and Caicos Islands
+
+        * `TV` - Tuvalu
+
+        * `UG` - Uganda
+
+        * `UA` - Ukraine
+
+        * `AE` - United Arab Emirates
+
+        * `GB` - United Kingdom
+
+        * `UM` - United States Minor Outlying Islands
+
+        * `US` - United States of America
+
+        * `UY` - Uruguay
+
+        * `UZ` - Uzbekistan
+
+        * `VU` - Vanuatu
+
+        * `VE` - Venezuela
+
+        * `VN` - Vietnam
+
+        * `VG` - Virgin Islands (British)
+
+        * `VI` - Virgin Islands (U.S.)
+
+        * `WF` - Wallis and Futuna
+
+        * `EH` - Western Sahara
+
+        * `YE` - Yemen
+
+        * `ZM` - Zambia
+
+        * `ZW` - Zimbabwe'
     UnitOfMeasurementEnum:
       enum:
       - fl oz
@@ -6012,224 +4799,237 @@ components:
         * `cases` - Cases
 
         * `trays` - Trays'
-    Order:
+    SectionSupplier:
       type: object
       properties:
+        is_existing:
+          type: boolean
+        company_name:
+          type: string
+        city:
+          type:
+          - string
+          - 'null'
+        country:
+          $ref: '#/components/schemas/SectionSupplierCountryEnum'
         uuid:
           type: string
           format: uuid
+      required:
+      - company_name
+      - country
+      - is_existing
+      - uuid
+    CountryTypeEnum:
+      enum:
+      - EU
+      - GB
+      - Other
+      type: string
+      description: '* `EU` - Eu
+
+        * `GB` - Gb
+
+        * `Other` - Other'
+    OrderState:
+      enum:
+      - checkout
+      - confirmed
+      - pending_payment
+      - canceled
+      - awaiting_approval
+      - on_hold
+      - placed
+      - dispatched
+      - completed
+      type: string
+      description: '* `checkout` - Checkout
+
+        * `confirmed` - confirmed
+
+        * `pending_payment` - pending_payment
+
+        * `canceled` - canceled
+
+        * `awaiting_approval` - awaiting_approval
+
+        * `on_hold` - on_hold
+
+        * `placed` - placed
+
+        * `dispatched` - dispatched
+
+        * `completed` - completed'
+    BlankEnum:
+      enum:
+      - ''
+    CompanyAddress:
+      type: object
+      properties:
+        id:
+          type: integer
           readOnly: true
         created:
           type: string
           format: date-time
           readOnly: true
-        category:
-          $ref: '#/components/schemas/OrderCategory'
-        state:
-          $ref: '#/components/schemas/OrderState'
-        payment_status:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/PaymentStatusEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        kriya_status:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/KriyaStatusEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        payment_currency:
-          nullable: true
-          description: 'if this is not None, then during payment was chosen not default currency and this field should be passed to the payment as selected_currency
-
-
-            * `EUR` - EUR
-
-            * `USD` - USD
-
-            * `GBP` - GBP
-
-            * `CAD` - CAD'
-          oneOf:
-          - $ref: '#/components/schemas/Currencies'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        payment_due_date:
+        modified:
           type: string
           format: date-time
-          nullable: true
-        kriya_payment_due_date:
-          type: string
-          format: date-time
-          nullable: true
-        payment_method:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/PaymentMethod'
-          - $ref: '#/components/schemas/NullEnum'
-        payment_scenario:
-          type: string
           readOnly: true
-        shipment_status:
-          $ref: '#/components/schemas/ShipmentStatusEnum'
-        dispatch_confirmation_date:
-          type: string
-          format: date
-          readOnly: true
-          nullable: true
-        delivery_confirmation_date:
-          type: string
-          format: date
-          nullable: true
-        is_new:
-          type: boolean
-          readOnly: true
-        order_number:
-          type: string
-          readOnly: true
-        number_of_quotes_ordered:
-          type: integer
-          readOnly: true
-        total_price:
-          type: number
-          readOnly: true
-        total_price_currency:
-          type: string
-          readOnly: true
-        delivery_date:
-          type: string
-          format: date
-        shipping_price:
-          type: number
-          readOnly: true
-        shipping_cost_no_vat:
-          type: number
-          readOnly: true
-        sum_to_pay:
-          type: number
-          readOnly: true
-        latest_delivery_date:
-          type: string
-          format: date
-          nullable: true
-          readOnly: true
-        discount_amount:
-          type: number
-          readOnly: true
-        sum_to_pay_no_discount:
-          type: number
-          readOnly: true
-        quotes_prices:
-          type: array
-          items:
-            $ref: '#/components/schemas/PricesRetrieve'
-          readOnly: true
-        vat_sum:
-          type: number
-          readOnly: true
-        sum_payout:
-          type: number
-          readOnly: true
-        order_date:
-          type: string
-          format: date
-          nullable: true
-        payment_delay:
-          type: integer
-          nullable: true
-          readOnly: true
-        has_pending_purchase_request:
-          type: boolean
-          readOnly: true
-        is_recurring:
-          type: boolean
-          readOnly: true
-        related_contract_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        purchase_quote_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-      required:
-      - created
-      - delivery_date
-      - discount_amount
-      - dispatch_confirmation_date
-      - has_pending_purchase_request
-      - is_new
-      - is_recurring
-      - latest_delivery_date
-      - number_of_quotes_ordered
-      - order_number
-      - payment_delay
-      - payment_scenario
-      - purchase_quote_uuid
-      - quotes_prices
-      - related_contract_uuid
-      - shipping_cost_no_vat
-      - shipping_price
-      - sum_payout
-      - sum_to_pay
-      - sum_to_pay_no_discount
-      - total_price
-      - total_price_currency
-      - uuid
-      - vat_sum
-    DashboardOrders:
-      type: object
-      properties:
         uuid:
           type: string
           format: uuid
           readOnly: true
-        order_number:
+        name:
           type: string
-          readOnly: true
-        quote_delivery_date:
-          type: string
-          format: date
-          readOnly: true
-        shipment_status:
-          $ref: '#/components/schemas/ShipmentStatusEnum'
-        is_new:
+          maxLength: 255
+        address_type:
+          $ref: '#/components/schemas/AddressTypeEnum'
+        contact_full_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        contact_phone:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        building:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        street_1:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        street_2:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        town:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        region:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        postcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        place_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        latitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        longitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        vat_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        vat_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        vat_exempt:
           type: boolean
-          readOnly: true
+        phone_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        delivery_instructions:
+          type:
+          - string
+          - 'null'
+        collection_instructions:
+          type:
+          - string
+          - 'null'
+        country_type:
+          $ref: '#/components/schemas/CountryTypeEnum'
+        eori_number:
+          type: string
+          maxLength: 20
+        ein_number:
+          type: string
+          maxLength: 20
+        notes:
+          type: string
+        delivery_location_type:
+          type: string
+          description: Type of delivery location (warehouse, factory, distribution_center, retail_location, other).
+          maxLength: 50
+        delivery_location_type_other:
+          type: string
+          description: Free-text description when delivery_location_type == 'other'.
+          maxLength: 255
+        warehouse_receiving_hours:
+          type: string
+          description: Free-text receiving hours (e.g. 'Mon-Fri 9am-5pm').
+          maxLength: 255
       required:
-      - is_new
-      - order_number
-      - quote_delivery_date
+      - created
+      - id
+      - modified
+      - name
       - uuid
-    VirtualBankTransfer:
-      type: object
-      properties:
-        bank_account:
-          type: string
-          readOnly: true
-        merchant_reference_id:
-          type: string
-          readOnly: true
-        reference_number:
-          type: string
-          readOnly: true
-      required:
-      - bank_account
-      - merchant_reference_id
-      - reference_number
-    VatInvoiceResponse:
-      type: object
-      properties:
-        pdf_url:
-          type: string
-          format: uri
-        pdf_url_merged:
-          type: string
-          format: uri
-      required:
-      - pdf_url
-      - pdf_url_merged
+    QuoteState:
+      enum:
+      - available
+      - ordered
+      - expired
+      - declined
+      - pending_payment
+      - proceeded
+      - contract_created
+      - contract_proceeded
+      - contract_confirmed
+      type: string
+      description: '* `available` - available
+
+        * `ordered` - ordered
+
+        * `expired` - expired
+
+        * `declined` - declined
+
+        * `pending_payment` - pending_payment
+
+        * `proceeded` - proceeded
+
+        * `contract_created` - Contract Created
+
+        * `contract_proceeded` - contract_proceeded
+
+        * `contract_confirmed` - contract_confirmed'
     PaymentStatusEnum:
       enum:
       - paid
@@ -6244,36 +5044,788 @@ components:
         * `payment_processing` - payment_processing
 
         * `payment_due` - payment_due'
-    SectionSupplier:
+    BrandVatInvoiceData:
       type: object
       properties:
-        is_existing:
-          type: boolean
-        company_name:
+        invoice_id:
+          type: integer
+          minimum: 1
+        brand_name:
           type: string
+        address_line_1:
+          type:
+          - string
+          - 'null'
+        address_line_2:
+          type:
+          - string
+          - 'null'
         city:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         country:
-          $ref: '#/components/schemas/SectionSupplierCountryEnum'
+          type:
+          - string
+          - 'null'
+        postal_code:
+          type:
+          - string
+          - 'null'
+        payment_date:
+          type: string
+          readOnly: true
+        order_number:
+          type: string
+          format: uuid
+        currency:
+          type: string
+        total_price_commission:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        commission_payin_vat_rate_pct:
+          type:
+          - string
+          - 'null'
+        total_price_commission_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        total_price_commission_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        fx_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        total_price_fx_fee:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        our_address:
+          $ref: '#/components/schemas/OurAddress'
+      required:
+      - address_line_1
+      - address_line_2
+      - brand_name
+      - city
+      - commission_payin_vat_rate_pct
+      - country
+      - currency
+      - fx_rate
+      - invoice_id
+      - order_number
+      - our_address
+      - payment_date
+      - postal_code
+      - total_price_commission
+      - total_price_commission_vat
+      - total_price_commission_with_vat
+      - total_price_fx_fee
+    OrderDisputeRequest:
+      type: object
+      properties:
         uuid:
           type: string
           format: uuid
+          readOnly: true
+        reasons_for_dispute:
+          type: string
+        documents:
+          type: string
+          format: uri
       required:
-      - company_name
-      - country
-      - is_existing
+      - documents
+      - reasons_for_dispute
       - uuid
-    BasketDiscountSwagger:
+    SelectedPriceOptionEnum:
+      enum:
+      - total
+      - unit
+      type: string
+      description: '* `total` - total
+
+        * `unit` - unit'
+    PaginatedOrderDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderDocument'
+    PaginatedOrderList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+    VatInvoiceSupplierResponse:
       type: object
       properties:
-        quote_uuids:
+        pdf_url:
+          type: string
+          format: uri
+      required:
+      - pdf_url
+    PDFUrl:
+      type: object
+      properties:
+        pdf_url:
+          type: string
+          format: uri
+      required:
+      - pdf_url
+    ShipmentStatusEnum:
+      enum:
+      - pending_dispatch
+      - dispatched
+      - delivered
+      type: string
+      description: '* `pending_dispatch` - pending_dispatch
+
+        * `dispatched` - Dispatched
+
+        * `delivered` - Delivered'
+    PurchaseOrderCompanyInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        contacts:
+          type:
+          - string
+          - 'null'
+        address:
+          type:
+          - string
+          - 'null'
+      required:
+      - address
+      - contacts
+      - name
+    BrandInvoice:
+      type: object
+      properties:
+        number:
+          type: string
+        billed_to:
+          type: string
+        billed_on:
+          type: string
+          format: date-time
+        due_to:
+          type: string
+          readOnly: true
+        payment_due_date:
+          type:
+          - string
+          - 'null'
+        payment_status:
+          type: string
+        paid_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        payment_details:
+          allOf:
+          - $ref: '#/components/schemas/PaymentDetailsInvoice'
+        currency:
+          $ref: '#/components/schemas/AllCurrencies'
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductDetails'
+        fees:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/Fees'
+        fees_sum:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        products_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        shipping_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        vat_sum:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+      required:
+      - billed_on
+      - billed_to
+      - currency
+      - due_to
+      - fees_sum
+      - number
+      - paid_date
+      - payment_details
+      - payment_due_date
+      - payment_status
+      - products
+      - products_price
+      - shipping_price
+      - total_price
+      - vat_sum
+    OrderDocumentCategory:
+      enum:
+      - uploaded_by_admin
+      - uploaded_by_supplier
+      type: string
+      description: '* `uploaded_by_admin` - Uploaded By Admin
+
+        * `uploaded_by_supplier` - Uploaded By Supplier'
+    BasketResponse:
+      type: object
+      properties:
+        supplier_uuid:
+          type: string
+          format: uuid
+        basket_prices:
+          $ref: '#/components/schemas/BasketPrices'
+      required:
+      - basket_prices
+      - supplier_uuid
+    NullEnum:
+      enum:
+      - null
+    OurAddress:
+      type: object
+      properties:
+        address_line_1:
+          type: string
+          maxLength: 64
+        address_line_2:
+          type: string
+          maxLength: 64
+        city:
+          type: string
+          maxLength: 64
+        postal_code:
+          type: string
+          maxLength: 64
+        country:
+          type: string
+          maxLength: 64
+        vat_number:
+          type: string
+          maxLength: 32
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+          maxLength: 128
+        company_number:
+          type: string
+          maxLength: 64
+      required:
+      - address_line_1
+      - address_line_2
+      - city
+      - company_number
+      - country
+      - email
+      - phone
+      - postal_code
+      - vat_number
+    Fees:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        vat_rate:
+          type: string
+      required:
+      - amount
+    OrderConfirmDispatched:
+      type: object
+      properties:
+        tracking_code:
+          type:
+          - string
+          - 'null'
+        dispatch_confirmation_date:
+          type: string
+          format: date
+        expected_delivery_date:
+          type: string
+          format: date
+        shipping_provider:
+          type: string
+      required:
+      - dispatch_confirmation_date
+      - expected_delivery_date
+      - shipping_provider
+    PaymentMethod:
+      enum:
+      - card
+      - bank_transfer
+      - PAY30
+      - PAY30EOFM
+      type: string
+      description: '* `card` - Card
+
+        * `bank_transfer` - Bank Transfer
+
+        * `PAY30` - Kriya 30
+
+        * `PAY30EOFM` - Kriya Next Month'
+    DeliveryAddressResponse:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        street_1:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        street_2:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        postcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        town:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        region:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        delivery_instructions:
+          type:
+          - string
+          - 'null'
+        contact_phone:
+          type:
+          - string
+          - 'null'
+        phone_country_code:
+          type:
+          - string
+          - 'null'
+        contact_full_name:
+          type:
+          - string
+          - 'null'
+      required:
+      - uuid
+    PricesRetrieve:
+      type: object
+      properties:
+        currency:
+          type: string
+        name:
+          type: string
+        quote_uuid:
+          type: string
+          format: uuid
+        sum_to_pay:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_commission_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        sum_payout:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_shipping_cost:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_price_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_with_vat_with_shipping_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_price_with_commission_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_price_no_vat_with_shipping:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_no_vat_with_shipping:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_price_no_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_no_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        shipping_cost_no_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        vat_sum:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_price_with_vat_with_shipping:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        payout_per_unit:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        sum_payout_no_shipping:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        payout_per_unit_no_shipping:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        vat_sum_no_commission:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        additional_buyer_to_opply_fees_no_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        additional_buyer_to_opply_fees_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        additional_fees_vat_rate:
+          type: array
+          items:
+            type: string
+            format: decimal
+            pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        vat_sum_for_supplier:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        vat_sum_no_commission_for_supplier:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+      required:
+      - additional_buyer_to_opply_fees_no_vat
+      - additional_buyer_to_opply_fees_with_vat
+      - additional_fees_vat_rate
+      - payout_per_unit
+      - payout_per_unit_no_shipping
+      - shipping_cost_no_vat
+      - sum_payout
+      - sum_payout_no_shipping
+      - sum_to_pay
+      - total_price
+      - total_price_commission_with_vat
+      - total_price_no_vat
+      - total_price_no_vat_with_shipping
+      - total_price_with_vat
+      - total_price_with_vat_with_shipping_with_vat
+      - total_shipping_cost
+      - unit_price
+      - unit_price_no_vat
+      - unit_price_no_vat_with_shipping
+      - unit_price_with_commission_with_vat
+      - unit_price_with_vat
+      - unit_price_with_vat_with_shipping
+      - vat_sum
+      - vat_sum_for_supplier
+      - vat_sum_no_commission
+      - vat_sum_no_commission_for_supplier
+    AddressTypeEnum:
+      enum:
+      - billing_address
+      - delivery_address
+      - dispatch_address
+      - company_address
+      type: string
+      description: '* `billing_address` - Billing address
+
+        * `delivery_address` - Delivery address
+
+        * `dispatch_address` - Dispatch address
+
+        * `company_address` - Company address'
+    OrderConfirmDelivered:
+      type: object
+      properties:
+        quote_uuid:
+          type: string
+          format: uuid
+        delivered_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        converted_quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        unit_of_measurement:
+          oneOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          - $ref: '#/components/schemas/NullEnum'
+      required:
+      - delivered_quantity
+      - quote_uuid
+    BankAccount:
+      type: object
+      properties:
+        beneficiary_name:
+          type: string
+        address:
+          type: string
+        sort_code:
+          type:
+          - string
+          - 'null'
+        account_no:
+          type:
+          - string
+          - 'null'
+        bic:
+          type:
+          - string
+          - 'null'
+        iban:
+          type:
+          - string
+          - 'null'
+        aba_routing_number:
+          type:
+          - string
+          - 'null'
+        account_type:
+          type:
+          - string
+          - 'null'
+      required:
+      - address
+      - beneficiary_name
+    PaginatedOrderDisputeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderDispute'
+    OrderCategory:
+      enum:
+      - regular
+      type: string
+      description: '* `regular` - Regular'
+    GoodsReceiptPDFUrl:
+      type: object
+      properties:
+        pdf_url:
+          type: string
+          format: uri
+      required:
+      - pdf_url
+    KriyaStatusEnum:
+      enum:
+      - Draft
+      - Submitted
+      - ReadyToAdvance
+      - Advanced
+      - Repaid
+      - Due
+      - Overdue
+      - Closed
+      - Cancelled
+      type: string
+      description: '* `Draft` - Draft
+
+        * `Submitted` - Submitted
+
+        * `ReadyToAdvance` - Ready To Advance
+
+        * `Advanced` - Advanced
+
+        * `Repaid` - Repaid
+
+        * `Due` - Due
+
+        * `Overdue` - Overdue
+
+        * `Closed` - Closed
+
+        * `Cancelled` - Cancelled'
+    FrequencyEnum:
+      enum:
+      - weekly
+      - monthly
+      - quarterly
+      - annually
+      type: string
+      description: '* `weekly` - Weekly
+
+        * `monthly` - Monthly
+
+        * `quarterly` - Quarterly
+
+        * `annually` - Annually'
+    QuoteDescriptionBlockCreate:
+      type: object
+      properties:
+        description:
+          type: string
+      required:
+      - description
+    QuoteDescriptionBlock:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        description:
+          type: string
+      required:
+      - description
+      - uuid
+    IngredientsForQuote:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+      required:
+      - id
+      - name
+      - uuid
+    OrderCreateSwagger:
+      type: object
+      properties:
+        quotes:
           type: array
           items:
             type: string
             format: uuid
       required:
-      - quote_uuids
+      - quotes
     OrderDocument:
       type: object
       properties:
@@ -6292,6 +5844,572 @@ components:
       - category
       - document
       - uuid
+    SamplesFeedbackEnum:
+      enum:
+      - ingredient_quality
+      - quote_price
+      - supplier_communication
+      - quality_not_as_expected
+      - too_expensive
+      - not_suitable_for_recipe
+      - not_needed_anymore
+      - dont_provided_samples
+      - ingredient_out_of_stock
+      - other
+      type: string
+      description: '* `ingredient_quality` - Ingredient Quality
+
+        * `quote_price` - Quote Price
+
+        * `supplier_communication` - Supplier Communication
+
+        * `quality_not_as_expected` - Quality Not As Expected
+
+        * `too_expensive` - Too Expensive
+
+        * `not_suitable_for_recipe` - Not Suitable For Recipe
+
+        * `not_needed_anymore` - Not Needed Anymore
+
+        * `dont_provided_samples` - Dont Provide Samples
+
+        * `ingredient_out_of_stock` - Ingredient Out Of Stock
+
+        * `other` - Other'
+    QuoteOrderDetail:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        product_name:
+          type: string
+          maxLength: 255
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        delivery_date:
+          type: string
+          format: date
+        payment_scenario:
+          $ref: '#/components/schemas/PaymentScenarioEnum'
+        payment_delay:
+          type: integer
+          maximum: 365
+          minimum: 0
+        quote_valid_for:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        lead_time:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: The maximum time a supplier agrees to deliver the product within (days)
+        product_description:
+          type:
+          - string
+          - 'null'
+        shipping_cost:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        currency:
+          $ref: '#/components/schemas/Currencies'
+        status:
+          $ref: '#/components/schemas/QuoteState'
+        published:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Datetime when the quote becomes published. Leave empty to keep it unpublished.
+        unit_of_measurement:
+          $ref: '#/components/schemas/UnitOfMeasurementEnum'
+        inquiry_unit_of_measurement:
+          type: string
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+        expiry_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        inquiry:
+          type: string
+          format: uuid
+          readOnly: true
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        total_price:
+          type: number
+          format: double
+          readOnly: true
+        unit_price:
+          type: number
+          format: double
+          readOnly: true
+        vat_rate:
+          type: number
+          format: double
+          readOnly: true
+        is_reverse_charge:
+          type: boolean
+        vat_charged:
+          type: boolean
+        vat_remitted:
+          type: boolean
+        vat_exempt:
+          type: boolean
+        fx_fee:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+        fx_rate:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,9}(?:\.\d{0,6})?$
+        prices:
+          allOf:
+          - $ref: '#/components/schemas/PricesRetrieve'
+          readOnly: true
+        commission_payout_vat_rate:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+        commission_payin_vat_rate:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+        commission_is_reverse_charge:
+          type: boolean
+        inquiry_currency:
+          type: string
+          readOnly: true
+        is_new:
+          type: boolean
+          readOnly: true
+        sku:
+          type:
+          - string
+          - 'null'
+          maxLength: 32
+        category:
+          $ref: '#/components/schemas/QuoteCategory'
+        order_frequency:
+          allOf:
+          - $ref: '#/components/schemas/FrequencyEnum'
+          readOnly: true
+        total_forecast_volume:
+          type: string
+          readOnly: true
+        is_contract_expired:
+          type: boolean
+          readOnly: true
+        inquiry_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        contract_end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        contract_status:
+          type: string
+          readOnly: true
+        total_forecast_price:
+          type: string
+          readOnly: true
+        total_forecast_price_for_supplier:
+          type: number
+          format: double
+          readOnly: true
+        number_of_recurring_orders:
+          type: string
+          readOnly: true
+        is_custom_contract:
+          type: boolean
+        custom_contract_frequency:
+          type: string
+          readOnly: true
+        contract_length:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Duration of the contract in months.
+        buyer_company_name:
+          type: string
+          readOnly: true
+        agreement_required:
+          type: boolean
+        is_filled:
+          type: boolean
+          readOnly: true
+        total_forecast_payout:
+          type: string
+          readOnly: true
+        original_quote_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        shipping_vat_rate:
+          type: number
+          format: double
+          readOnly: true
+        expires_in:
+          type: string
+          readOnly: true
+        total_forecast_quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        selected_price_option:
+          $ref: '#/components/schemas/SelectedPriceOptionEnum'
+        update_requested:
+          type: boolean
+        ordered_volume:
+          type: number
+          readOnly: true
+        delivery_address:
+          allOf:
+          - $ref: '#/components/schemas/DeliveryAddressResponse'
+          readOnly: true
+        incoterms:
+          oneOf:
+          - $ref: '#/components/schemas/IncotermsEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        payment_terms:
+          $ref: '#/components/schemas/PaymentTermsEnum'
+        kyb_status:
+          type: string
+          readOnly: true
+        dispatch_address:
+          $ref: '#/components/schemas/CompanyAddress'
+        samples_status:
+          $ref: '#/components/schemas/SamplesStatusEnum'
+        samples_delivery_address:
+          allOf:
+          - $ref: '#/components/schemas/CompanyAddress'
+          readOnly: true
+        samples_feedback:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/SamplesFeedbackEnum'
+        samples_feedback_comment:
+          type: string
+        supplier:
+          allOf:
+          - $ref: '#/components/schemas/SectionSupplier'
+          readOnly: true
+        is_recurring:
+          type: string
+          readOnly: true
+        recurring_order_lead_time:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        account_form_required:
+          type: boolean
+        payout_per_order:
+          type: string
+          readOnly: true
+        case_size:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,17}(?:\.\d{0,2})?$
+        minimum_order_quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,17}(?:\.\d{0,2})?$
+        inquiry_frequency:
+          type: string
+        delivery_address_id:
+          type: integer
+          readOnly: true
+        requested_payment_terms:
+          $ref: '#/components/schemas/PaymentTermsEnum'
+        is_opply_supplier:
+          type: string
+          readOnly: true
+        ingredient:
+          allOf:
+          - $ref: '#/components/schemas/IngredientsForQuote'
+          readOnly: true
+        samples_dispatch_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        samples_sent_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        samples_received_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        samples_accepted_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        samples_rejected_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        samples_requested_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        samples_declined_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        samples_tracking_code:
+          type:
+          - string
+          - 'null'
+        samples_expected_delivery_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        samples_shipping_provider:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        autoconfirm_orders:
+          type: boolean
+        minimum_lead_time:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        order_in_multiples_of:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        minimum_autoconfirm_order_quantity:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        maximum_autoconfirm_order_quantity:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        extension_length:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        extension_accepted:
+          type:
+          - boolean
+          - 'null'
+        packaging_format:
+          type: string
+        original_quote:
+          type: string
+          readOnly: true
+        description_blocks:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/QuoteDescriptionBlock'
+        payment_terms_updated_by_supplier:
+          type: boolean
+        product_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        discount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+      required:
+      - buyer_company_name
+      - contract_status
+      - created_date
+      - custom_contract_frequency
+      - delivery_address
+      - delivery_address_id
+      - delivery_date
+      - dispatch_address
+      - expires_in
+      - ingredient
+      - inquiry
+      - inquiry_currency
+      - inquiry_frequency
+      - inquiry_unit_of_measurement
+      - inquiry_uuid
+      - is_contract_expired
+      - is_filled
+      - is_new
+      - is_opply_supplier
+      - is_recurring
+      - kyb_status
+      - lead_time
+      - number_of_recurring_orders
+      - order_frequency
+      - ordered_volume
+      - original_quote
+      - original_quote_uuid
+      - payout_per_order
+      - prices
+      - product_name
+      - product_uuid
+      - quantity
+      - samples_delivery_address
+      - shipping_vat_rate
+      - supplier
+      - total_forecast_payout
+      - total_forecast_price
+      - total_forecast_price_for_supplier
+      - total_forecast_volume
+      - total_price
+      - unit_price
+      - uuid
+      - vat_rate
+    OrderDispute:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        reasons_for_dispute:
+          type: string
+      required:
+      - created
+      - reasons_for_dispute
+      - uuid
+    SamplesStatusEnum:
+      enum:
+      - available
+      - requested
+      - sent
+      - received
+      - accepted
+      - rejected
+      - declined
+      type: string
+      description: '* `available` - Available
+
+        * `requested` - Requested
+
+        * `sent` - Sent
+
+        * `received` - Received
+
+        * `accepted` - Accepted
+
+        * `rejected` - Rejected
+
+        * `declined` - Declined'
+    PaymentDetailsInvoice:
+      type: object
+      properties:
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethod'
+        payment_scenario:
+          $ref: '#/components/schemas/PaymentScenarioEnum'
+        bank_transfer_details: {}
+      required:
+      - bank_transfer_details
+      - payment_method
+      - payment_scenario
+    PurchaseOrderShipping:
+      type: object
+      properties:
+        delivery_date:
+          type: string
+          format: date
+        delivery_address:
+          type: string
+        contact_full_name:
+          type:
+          - string
+          - 'null'
+        contact_phone_number:
+          type:
+          - string
+          - 'null'
+        eori_number:
+          type:
+          - string
+          - 'null'
+        delivery_instructions:
+          type:
+          - string
+          - 'null'
+        delivery_contact:
+          type:
+          - string
+          - 'null'
+      required:
+      - contact_full_name
+      - contact_phone_number
+      - delivery_address
+      - delivery_contact
+      - delivery_date
+      - delivery_instructions
+      - eori_number
+    QuoteCategory:
+      enum:
+      - non_recurring
+      - recurring
+      - purchase_request_quote
+      type: string
+      description: '* `non_recurring` - Non Recurring
+
+        * `recurring` - Recurring
+
+        * `purchase_request_quote` - Purchase Request Quote'
   securitySchemes:
     cookieAuth:
       type: apiKey

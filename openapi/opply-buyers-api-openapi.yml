@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Opply Activity Feed Buyers API
+  title: Opply Buyers API
   version: 0.0.0
 tags:
 - name: Buyers
@@ -83,20 +83,206 @@ paths:
           description: ''
 components:
   schemas:
-    BlankEnum:
+    StaffUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+      required:
+      - email
+      - first_name
+      - id
+      - is_staff
+      - last_name
+      - uuid
+    BuyerSummary:
+      type: object
+      description: Serializer for buyer summary information
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+      required:
+      - name
+      - uuid
+    AvailableCurrenciesEnum:
       enum:
-      - ''
-    PriorityEnum:
-      enum:
-      - high
-      - medium
-      - low
+      - EUR
+      - GBP
+      - USD
       type: string
-      description: '* `high` - High
+      description: '* `EUR` - EUR
 
-        * `medium` - Medium
+        * `GBP` - GBP
 
-        * `low` - Low'
+        * `USD` - USD'
+    BuyerOnboardingSupplierSubmission:
+      type: object
+      description: 'Buyer Suppliers section. The agent commit POSTs one row per extracted
+
+        supplier; only `supplier_name` is required. Backed by the
+
+        `buyer_onboarding.Supplier` model — the MoR review queue reads from
+
+        the same table.
+
+
+        `review_status` and `matched_supplier_name` are surfaced read-only so
+
+        the buyer can see whether each submission is still pending review,
+
+        has been matched to an existing supplier, or is being onboarded by
+
+        their MoR.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        supplier_name:
+          type: string
+          description: Supplier name
+          maxLength: 255
+        vat_number:
+          type: string
+          description: Supplier VAT / tax registration number
+          maxLength: 64
+        registration_number:
+          type: string
+          description: Business/company registration number (e.g. Companies House number; Xero's Contact.CompanyNumber) — distinct from the VAT number.
+          maxLength: 64
+        duns:
+          type: string
+          description: DUNS number (Dun & Bradstreet identifier), primarily for US suppliers.
+          maxLength: 50
+        products_description:
+          type: string
+          description: Description of products purchased from this supplier
+        average_monthly_spend:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          description: Average monthly spend with this supplier
+        invoice_currency:
+          type: string
+          description: Invoice/Payment currency (e.g., USD, GBP, EUR)
+          maxLength: 3
+        payment_terms:
+          type: string
+          description: Supplier payment terms
+        priority:
+          description: 'Priority to onboard this supplier
+
+
+            * `high` - High
+
+            * `medium` - Medium
+
+            * `low` - Low'
+          oneOf:
+          - $ref: '#/components/schemas/PriorityEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        supplier_country:
+          type: string
+          description: Supplier country
+          maxLength: 100
+        supplier_state:
+          type: string
+          title: Supplier State/County
+          description: Supplier state or county
+          maxLength: 100
+        supplier_address:
+          type: string
+          description: Supplier address
+        contact_name:
+          type: string
+          description: Supplier contact name
+          maxLength: 255
+        contact_email:
+          type: string
+          format: email
+          description: Supplier contact email
+          maxLength: 255
+        contact_phone:
+          type: string
+          description: Supplier contact phone number
+          maxLength: 50
+        arranges_delivery:
+          type: boolean
+          description: Does the supplier arrange delivery?
+        lead_time:
+          type: string
+          description: Agreed lead time
+          maxLength: 255
+        is_organic:
+          type: boolean
+          description: Is this an organic supplier?
+        relationship_notes:
+          type: string
+          description: Any noteworthy information about your trading relationship
+        notes:
+          type: string
+          description: Additional notes about the supplier
+        review_status:
+          allOf:
+          - $ref: '#/components/schemas/SupplierReviewStatusEnum'
+          readOnly: true
+          description: 'Where this submission sits in the MoR review queue.
+
+
+            * `pending_review` - Pending review
+
+            * `matched` - Matched to existing supplier
+
+            * `onboarding` - Onboarding new supplier
+
+            * `rejected` - Rejected'
+        matched_supplier_name:
+          type: string
+          readOnly: true
+        provider:
+          type: string
+          writeOnly: true
+        provider_external_id:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        confirmed_existing_supplier_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          writeOnly: true
+      required:
+      - id
+      - matched_supplier_name
+      - review_status
+      - supplier_name
     Country:
       enum:
       - AF
@@ -849,17 +1035,297 @@ components:
         * `ZM` - Zambia
 
         * `ZW` - Zimbabwe'
-    AvailableCurrenciesEnum:
+    PaginatedOnboardingSupplierListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OnboardingSupplierList'
+    NullEnum:
       enum:
-      - EUR
-      - GBP
-      - USD
+      - null
+    PriorityEnum:
+      enum:
+      - high
+      - medium
+      - low
       type: string
-      description: '* `EUR` - EUR
+      description: '* `high` - High
 
-        * `GBP` - GBP
+        * `medium` - Medium
 
-        * `USD` - USD'
+        * `low` - Low'
+    OnboardingSupplierList:
+      type: object
+      description: Lightweight serializer for list views
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        company_name:
+          type: string
+          readOnly: true
+        status:
+          type: string
+          readOnly: true
+        buyer_name:
+          type: string
+          readOnly: true
+        is_archived:
+          type: boolean
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - buyer_name
+      - company_name
+      - created
+      - is_archived
+      - status
+      - uuid
+    BlankEnum:
+      enum:
+      - ''
+    OnboardingSupplier:
+      type: object
+      description: Serializer for OnboardingSupplier model
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        company_name:
+          type: string
+          maxLength: 255
+        status:
+          type: string
+          readOnly: true
+        buyer:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The buyer company that referred this supplier - DEPRECATED, use buyers field
+        buyer_name:
+          type: string
+          readOnly: true
+        buyers_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerSummary'
+          readOnly: true
+        buyer_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          writeOnly: true
+          description: List of buyer UUIDs to associate with this supplier
+        owners_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/StaffUser'
+          readOnly: true
+        owner_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          writeOnly: true
+          description: List of staff user UUIDs to assign as owners
+        final_supplier:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Reference to the final supplier company after completing onboarding
+        final_supplier_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          readOnly: true
+        final_supplier_name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        address_name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_street_1:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_street_2:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_town:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_region:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_postcode:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_country:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/NullEnum'
+        address_contact_full_name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_contact_phone_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/AddressContactPhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        address_contact_phone:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_contact_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          readOnly: true
+        address_vat_number:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_vat_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/NullEnum'
+        address_ein_number:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: 'EIN number for US suppliers (format: XX-XXXXXXX)'
+        address_note:
+          type: string
+        duns:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: DUNS number for US suppliers
+        lead_time_days:
+          type:
+          - integer
+          - 'null'
+          maximum: 365
+          minimum: 0
+          description: Default supplier lead time in calendar days, copied to the final supplier on completion.
+        registration_name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: Canonical registered name from Companies House (GB) — captured at onboarding-supplier creation.
+        registration_number:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: Canonical Companies House registration number (GB) — captured at onboarding-supplier creation.
+        registration_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/NullEnum'
+        is_archived:
+          type: boolean
+          readOnly: true
+      required:
+      - address_contact_email
+      - address_contact_full_name
+      - address_contact_phone
+      - address_ein_number
+      - address_name
+      - address_postcode
+      - address_region
+      - address_street_1
+      - address_street_2
+      - address_town
+      - address_vat_number
+      - buyer
+      - buyer_name
+      - buyers_list
+      - company_name
+      - created
+      - duns
+      - final_supplier
+      - final_supplier_name
+      - final_supplier_uuid
+      - is_archived
+      - modified
+      - owners_list
+      - registration_name
+      - registration_number
+      - status
+      - uuid
+    SupplierReviewStatusEnum:
+      enum:
+      - pending_review
+      - matched
+      - onboarding
+      - rejected
+      type: string
+      description: '* `pending_review` - Pending review
+
+        * `matched` - Matched to existing supplier
+
+        * `onboarding` - Onboarding new supplier
+
+        * `rejected` - Rejected'
     SupplierRequest:
       type: object
       description: 'Serializer for buyer supplier requests submitted from the portal
@@ -884,10 +1350,11 @@ components:
           description: Supplier name
           maxLength: 255
         average_monthly_spend:
-          type: string
+          type:
+          - string
+          - 'null'
           format: decimal
           pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-          nullable: true
           description: Average monthly spend
         invoice_currency:
           description: 'Invoice/Payment currency (e.g., USD, GBP, EUR)
@@ -936,8 +1403,9 @@ components:
           type: string
           description: Any noteworthy information about your trading relationship
         duns:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: DUNS number for US suppliers
           maxLength: 50
         vat_number:
@@ -1648,453 +2116,6 @@ components:
         * `+260` - +260
 
         * `+263` - +263'
-    OnboardingSupplierList:
-      type: object
-      description: Lightweight serializer for list views
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        company_name:
-          type: string
-          readOnly: true
-        status:
-          type: string
-          readOnly: true
-        buyer_name:
-          type: string
-          readOnly: true
-        is_archived:
-          type: boolean
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - buyer_name
-      - company_name
-      - created
-      - is_archived
-      - status
-      - uuid
-    StaffUser:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        email:
-          type: string
-          format: email
-          readOnly: true
-        first_name:
-          type: string
-          readOnly: true
-        last_name:
-          type: string
-          readOnly: true
-        is_staff:
-          type: boolean
-          readOnly: true
-          title: Staff status
-          description: Designates whether the user can log into this admin site.
-      required:
-      - email
-      - first_name
-      - id
-      - is_staff
-      - last_name
-      - uuid
-    PaginatedOnboardingSupplierListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/OnboardingSupplierList'
-    BuyerSummary:
-      type: object
-      description: Serializer for buyer summary information
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-      required:
-      - name
-      - uuid
-    OnboardingSupplier:
-      type: object
-      description: Serializer for OnboardingSupplier model
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        company_name:
-          type: string
-          maxLength: 255
-        status:
-          type: string
-          readOnly: true
-        buyer:
-          type: integer
-          readOnly: true
-          nullable: true
-          description: The buyer company that referred this supplier - DEPRECATED, use buyers field
-        buyer_name:
-          type: string
-          readOnly: true
-        buyers_list:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerSummary'
-          readOnly: true
-        buyer_uuids:
-          type: array
-          items:
-            type: string
-            format: uuid
-          writeOnly: true
-          description: List of buyer UUIDs to associate with this supplier
-        owners_list:
-          type: array
-          items:
-            $ref: '#/components/schemas/StaffUser'
-          readOnly: true
-        owner_uuids:
-          type: array
-          items:
-            type: string
-            format: uuid
-          writeOnly: true
-          description: List of staff user UUIDs to assign as owners
-        final_supplier:
-          type: integer
-          readOnly: true
-          nullable: true
-          description: Reference to the final supplier company after completing onboarding
-        final_supplier_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-          nullable: true
-        final_supplier_name:
-          type: string
-          readOnly: true
-          nullable: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        address_name:
-          type: string
-          readOnly: true
-          nullable: true
-        address_street_1:
-          type: string
-          readOnly: true
-          nullable: true
-        address_street_2:
-          type: string
-          readOnly: true
-          nullable: true
-        address_town:
-          type: string
-          readOnly: true
-          nullable: true
-        address_region:
-          type: string
-          readOnly: true
-          nullable: true
-        address_postcode:
-          type: string
-          readOnly: true
-          nullable: true
-        address_country:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/NullEnum'
-        address_contact_full_name:
-          type: string
-          readOnly: true
-          nullable: true
-        address_contact_phone_country_code:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/AddressContactPhoneCountryCodeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        address_contact_phone:
-          type: string
-          readOnly: true
-          nullable: true
-        address_contact_email:
-          type: string
-          format: email
-          readOnly: true
-          nullable: true
-        address_vat_number:
-          type: string
-          readOnly: true
-          nullable: true
-        address_vat_country_code:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/NullEnum'
-        address_ein_number:
-          type: string
-          readOnly: true
-          nullable: true
-          description: 'EIN number for US suppliers (format: XX-XXXXXXX)'
-        address_note:
-          type: string
-        duns:
-          type: string
-          readOnly: true
-          nullable: true
-          description: DUNS number for US suppliers
-        lead_time_days:
-          type: integer
-          maximum: 365
-          minimum: 0
-          nullable: true
-          description: Default supplier lead time in calendar days, copied to the final supplier on completion.
-        registration_name:
-          type: string
-          readOnly: true
-          nullable: true
-          description: Canonical registered name from Companies House (GB) — captured at onboarding-supplier creation.
-        registration_number:
-          type: string
-          readOnly: true
-          nullable: true
-          description: Canonical Companies House registration number (GB) — captured at onboarding-supplier creation.
-        registration_country_code:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/NullEnum'
-        is_archived:
-          type: boolean
-          readOnly: true
-      required:
-      - address_contact_email
-      - address_contact_full_name
-      - address_contact_phone
-      - address_ein_number
-      - address_name
-      - address_postcode
-      - address_region
-      - address_street_1
-      - address_street_2
-      - address_town
-      - address_vat_number
-      - buyer
-      - buyer_name
-      - buyers_list
-      - company_name
-      - created
-      - duns
-      - final_supplier
-      - final_supplier_name
-      - final_supplier_uuid
-      - is_archived
-      - modified
-      - owners_list
-      - registration_name
-      - registration_number
-      - status
-      - uuid
-    BuyerOnboardingSupplierSubmission:
-      type: object
-      description: 'Buyer Suppliers section. The agent commit POSTs one row per extracted
-
-        supplier; only `supplier_name` is required. Backed by the
-
-        `buyer_onboarding.Supplier` model — the MoR review queue reads from
-
-        the same table.
-
-
-        `review_status` and `matched_supplier_name` are surfaced read-only so
-
-        the buyer can see whether each submission is still pending review,
-
-        has been matched to an existing supplier, or is being onboarded by
-
-        their MoR.'
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        supplier_name:
-          type: string
-          description: Supplier name
-          maxLength: 255
-        vat_number:
-          type: string
-          description: Supplier VAT / tax registration number
-          maxLength: 64
-        registration_number:
-          type: string
-          description: Business/company registration number (e.g. Companies House number; Xero's Contact.CompanyNumber) — distinct from the VAT number.
-          maxLength: 64
-        duns:
-          type: string
-          description: DUNS number (Dun & Bradstreet identifier), primarily for US suppliers.
-          maxLength: 50
-        products_description:
-          type: string
-          description: Description of products purchased from this supplier
-        average_monthly_spend:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-          nullable: true
-          description: Average monthly spend with this supplier
-        invoice_currency:
-          type: string
-          description: Invoice/Payment currency (e.g., USD, GBP, EUR)
-          maxLength: 3
-        payment_terms:
-          type: string
-          description: Supplier payment terms
-        priority:
-          description: 'Priority to onboard this supplier
-
-
-            * `high` - High
-
-            * `medium` - Medium
-
-            * `low` - Low'
-          oneOf:
-          - $ref: '#/components/schemas/PriorityEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-        supplier_country:
-          type: string
-          description: Supplier country
-          maxLength: 100
-        supplier_state:
-          type: string
-          title: Supplier State/County
-          description: Supplier state or county
-          maxLength: 100
-        supplier_address:
-          type: string
-          description: Supplier address
-        contact_name:
-          type: string
-          description: Supplier contact name
-          maxLength: 255
-        contact_email:
-          type: string
-          format: email
-          description: Supplier contact email
-          maxLength: 255
-        contact_phone:
-          type: string
-          description: Supplier contact phone number
-          maxLength: 50
-        arranges_delivery:
-          type: boolean
-          description: Does the supplier arrange delivery?
-        lead_time:
-          type: string
-          description: Agreed lead time
-          maxLength: 255
-        is_organic:
-          type: boolean
-          description: Is this an organic supplier?
-        relationship_notes:
-          type: string
-          description: Any noteworthy information about your trading relationship
-        notes:
-          type: string
-          description: Additional notes about the supplier
-        review_status:
-          allOf:
-          - $ref: '#/components/schemas/SupplierReviewStatusEnum'
-          readOnly: true
-          description: 'Where this submission sits in the MoR review queue.
-
-
-            * `pending_review` - Pending review
-
-            * `matched` - Matched to existing supplier
-
-            * `onboarding` - Onboarding new supplier
-
-            * `rejected` - Rejected'
-        matched_supplier_name:
-          type: string
-          readOnly: true
-        provider:
-          type: string
-          writeOnly: true
-        provider_external_id:
-          type: string
-          writeOnly: true
-          maxLength: 128
-        confirmed_existing_supplier_uuid:
-          type: string
-          format: uuid
-          writeOnly: true
-          nullable: true
-      required:
-      - id
-      - matched_supplier_name
-      - review_status
-      - supplier_name
-    SupplierReviewStatusEnum:
-      enum:
-      - pending_review
-      - matched
-      - onboarding
-      - rejected
-      type: string
-      description: '* `pending_review` - Pending review
-
-        * `matched` - Matched to existing supplier
-
-        * `onboarding` - Onboarding new supplier
-
-        * `rejected` - Rejected'
-    NullEnum:
-      enum:
-      - null
   securitySchemes:
     cookieAuth:
       type: apiKey

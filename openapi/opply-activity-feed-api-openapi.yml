@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Opply Activity Feed API
   version: 0.0.0
@@ -168,22 +168,27 @@ components:
           type: string
           readOnly: true
         order_uuid:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
         order_number:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         actor_email:
-          type: string
+          type:
+          - string
+          - 'null'
           format: email
-          nullable: true
         actor_first_name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         actor_last_name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         summary:
           type: string
         body_text:
@@ -211,25 +216,6 @@ components:
       - status
       - summary
       - uuid
-    PaginatedFeedItemReadList:
-      type: object
-      required:
-      - results
-      properties:
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/FeedItemRead'
     FeedItemStatusEnum:
       enum:
       - queued
@@ -244,6 +230,27 @@ components:
         * `integrating` - Integrating
 
         * `processed` - Processed'
+    PaginatedFeedItemReadList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeedItemRead'
   securitySchemes:
     cookieAuth:
       type: apiKey

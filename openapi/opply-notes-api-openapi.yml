@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Opply Activity Feed Notes API
+  title: Opply Notes API
   version: 0.0.0
 tags:
 - name: Notes
@@ -8,7 +8,29 @@ paths:
   /api/v1/notes/:
     get:
       operationId: api_v1_notes_list
-      description: "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same task (e.g. the buyer on a MoR-routed task). Usable by\n  buyers, MoR, and taskable agents (agents are hard-scoped to their\n  installation company, so company-private visibility scopes them for free)."
+      description: 'ViewSet for managing notes.
+
+
+        Two note flavours share this viewset:
+
+
+        - **Company-CRM notes** — attached to a managed Company via the legacy
+
+        ``target`` GenericForeignKey. MoR-only in practice (the queryset filters
+
+        to companies the caller manages).
+
+        - **Task notes** — company-private annotations on a Task, linked through the
+
+        ``TaskNote`` join (inversion of control; the note itself is context-free).
+
+        Visible only to members of the note''s owning company, never to another
+
+        company on the same task (e.g. the buyer on a MoR-routed task). Usable by
+
+        buyers, MoR, and taskable agents (agents are hard-scoped to their
+
+        installation company, so company-private visibility scopes them for free).'
       summary: List notes
       parameters:
       - name: page
@@ -43,7 +65,29 @@ paths:
           description: ''
     post:
       operationId: api_v1_notes_create
-      description: "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same task (e.g. the buyer on a MoR-routed task). Usable by\n  buyers, MoR, and taskable agents (agents are hard-scoped to their\n  installation company, so company-private visibility scopes them for free)."
+      description: 'ViewSet for managing notes.
+
+
+        Two note flavours share this viewset:
+
+
+        - **Company-CRM notes** — attached to a managed Company via the legacy
+
+        ``target`` GenericForeignKey. MoR-only in practice (the queryset filters
+
+        to companies the caller manages).
+
+        - **Task notes** — company-private annotations on a Task, linked through the
+
+        ``TaskNote`` join (inversion of control; the note itself is context-free).
+
+        Visible only to members of the note''s owning company, never to another
+
+        company on the same task (e.g. the buyer on a MoR-routed task). Usable by
+
+        buyers, MoR, and taskable agents (agents are hard-scoped to their
+
+        installation company, so company-private visibility scopes them for free).'
       summary: Create a note
       tags:
       - Notes
@@ -72,7 +116,29 @@ paths:
   /api/v1/notes/{uuid}/:
     get:
       operationId: api_v1_notes_retrieve
-      description: "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same task (e.g. the buyer on a MoR-routed task). Usable by\n  buyers, MoR, and taskable agents (agents are hard-scoped to their\n  installation company, so company-private visibility scopes them for free)."
+      description: 'ViewSet for managing notes.
+
+
+        Two note flavours share this viewset:
+
+
+        - **Company-CRM notes** — attached to a managed Company via the legacy
+
+        ``target`` GenericForeignKey. MoR-only in practice (the queryset filters
+
+        to companies the caller manages).
+
+        - **Task notes** — company-private annotations on a Task, linked through the
+
+        ``TaskNote`` join (inversion of control; the note itself is context-free).
+
+        Visible only to members of the note''s owning company, never to another
+
+        company on the same task (e.g. the buyer on a MoR-routed task). Usable by
+
+        buyers, MoR, and taskable agents (agents are hard-scoped to their
+
+        installation company, so company-private visibility scopes them for free).'
       summary: Get a note
       parameters:
       - in: path
@@ -95,7 +161,29 @@ paths:
           description: ''
     put:
       operationId: api_v1_notes_update
-      description: "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same task (e.g. the buyer on a MoR-routed task). Usable by\n  buyers, MoR, and taskable agents (agents are hard-scoped to their\n  installation company, so company-private visibility scopes them for free)."
+      description: 'ViewSet for managing notes.
+
+
+        Two note flavours share this viewset:
+
+
+        - **Company-CRM notes** — attached to a managed Company via the legacy
+
+        ``target`` GenericForeignKey. MoR-only in practice (the queryset filters
+
+        to companies the caller manages).
+
+        - **Task notes** — company-private annotations on a Task, linked through the
+
+        ``TaskNote`` join (inversion of control; the note itself is context-free).
+
+        Visible only to members of the note''s owning company, never to another
+
+        company on the same task (e.g. the buyer on a MoR-routed task). Usable by
+
+        buyers, MoR, and taskable agents (agents are hard-scoped to their
+
+        installation company, so company-private visibility scopes them for free).'
       summary: Update a note
       parameters:
       - in: path
@@ -130,7 +218,29 @@ paths:
           description: ''
     patch:
       operationId: api_v1_notes_partial_update
-      description: "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same task (e.g. the buyer on a MoR-routed task). Usable by\n  buyers, MoR, and taskable agents (agents are hard-scoped to their\n  installation company, so company-private visibility scopes them for free)."
+      description: 'ViewSet for managing notes.
+
+
+        Two note flavours share this viewset:
+
+
+        - **Company-CRM notes** — attached to a managed Company via the legacy
+
+        ``target`` GenericForeignKey. MoR-only in practice (the queryset filters
+
+        to companies the caller manages).
+
+        - **Task notes** — company-private annotations on a Task, linked through the
+
+        ``TaskNote`` join (inversion of control; the note itself is context-free).
+
+        Visible only to members of the note''s owning company, never to another
+
+        company on the same task (e.g. the buyer on a MoR-routed task). Usable by
+
+        buyers, MoR, and taskable agents (agents are hard-scoped to their
+
+        installation company, so company-private visibility scopes them for free).'
       summary: Partially update a note
       parameters:
       - in: path
@@ -164,7 +274,29 @@ paths:
           description: ''
     delete:
       operationId: api_v1_notes_destroy
-      description: "ViewSet for managing notes.\n\nTwo note flavours share this viewset:\n\n- **Company-CRM notes** — attached to a managed Company via the legacy\n  ``target`` GenericForeignKey. MoR-only in practice (the queryset filters\n  to companies the caller manages).\n- **Task notes** — company-private annotations on a Task, linked through the\n  ``TaskNote`` join (inversion of control; the note itself is context-free).\n  Visible only to members of the note's owning company, never to another\n  company on the same task (e.g. the buyer on a MoR-routed task). Usable by\n  buyers, MoR, and taskable agents (agents are hard-scoped to their\n  installation company, so company-private visibility scopes them for free)."
+      description: 'ViewSet for managing notes.
+
+
+        Two note flavours share this viewset:
+
+
+        - **Company-CRM notes** — attached to a managed Company via the legacy
+
+        ``target`` GenericForeignKey. MoR-only in practice (the queryset filters
+
+        to companies the caller manages).
+
+        - **Task notes** — company-private annotations on a Task, linked through the
+
+        ``TaskNote`` join (inversion of control; the note itself is context-free).
+
+        Visible only to members of the note''s owning company, never to another
+
+        company on the same task (e.g. the buyer on a MoR-routed task). Usable by
+
+        buyers, MoR, and taskable agents (agents are hard-scoped to their
+
+        installation company, so company-private visibility scopes them for free).'
       summary: Delete a note
       parameters:
       - in: path
@@ -183,6 +315,54 @@ paths:
           description: No response body
 components:
   schemas:
+    Target:
+      type: object
+      description: 'Serialize a model''s ``target`` GenericForeignKey to ``{type, uuid, name}``.
+
+
+        Used by notes (which still carry a single ``target`` GFK). Tasks moved to the
+
+        multi ``targets``/``target_items`` relation and no longer use this.'
+      properties:
+        type:
+          type: string
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+      required:
+      - name
+      - type
+      - uuid
+    PaginatedNoteList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Note'
     NoteCreate:
       type: object
       description: 'Request-body schema for creating a note (drf-spectacular only).
@@ -218,30 +398,68 @@ components:
           maxItems: 100
       required:
       - body
-    UserMinimal:
+    MessageAttachmentDispositionEnum:
+      enum:
+      - sent
+      - suspicious
+      - skipped_timeout
+      type: string
+      description: '* `sent` - Sent
+
+        * `suspicious` - Suspicious
+
+        * `skipped_timeout` - Not used (scan pending)'
+    PatchedNote:
       type: object
       properties:
         uuid:
           type: string
           format: uuid
-        name:
+          readOnly: true
+        body:
           type: string
+          description: Note content
+        is_pinned:
+          type: boolean
+          description: Whether this note should be pinned to the top
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/UserMinimal'
           readOnly: true
-        email:
+        company_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          readOnly: true
+        target:
+          allOf:
+          - $ref: '#/components/schemas/Target'
+          readOnly: true
+        target_type:
           type: string
-          format: email
-        is_agent:
-          type: boolean
+          writeOnly: true
+        target_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        task_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageAttachmentRef'
           readOnly: true
-        is_mor_router:
-          type: boolean
+        created:
+          type: string
+          format: date-time
           readOnly: true
-      required:
-      - email
-      - is_agent
-      - is_mor_router
-      - name
-      - uuid
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
     Note:
       type: object
       properties:
@@ -260,10 +478,11 @@ components:
           - $ref: '#/components/schemas/UserMinimal'
           readOnly: true
         company_uuid:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
           readOnly: true
-          nullable: true
         target:
           allOf:
           - $ref: '#/components/schemas/Target'
@@ -301,29 +520,6 @@ components:
       - modified
       - target
       - uuid
-    PaginatedNoteList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Note'
     MessageAttachmentRef:
       type: object
       description: 'One attachment ref carried on a message''s ``metadata["attachments"]``
@@ -366,89 +562,29 @@ components:
       - filename
       - mime
       - uuid
-    MessageAttachmentDispositionEnum:
-      enum:
-      - sent
-      - suspicious
-      - skipped_timeout
-      type: string
-      description: '* `sent` - Sent
-
-        * `suspicious` - Suspicious
-
-        * `skipped_timeout` - Not used (scan pending)'
-    PatchedNote:
+    UserMinimal:
       type: object
       properties:
         uuid:
           type: string
           format: uuid
-          readOnly: true
-        body:
-          type: string
-          description: Note content
-        is_pinned:
-          type: boolean
-          description: Whether this note should be pinned to the top
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/UserMinimal'
-          readOnly: true
-        company_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-          nullable: true
-        target:
-          allOf:
-          - $ref: '#/components/schemas/Target'
-          readOnly: true
-        target_type:
-          type: string
-          writeOnly: true
-        target_uuid:
-          type: string
-          format: uuid
-          writeOnly: true
-        task_uuid:
-          type: string
-          format: uuid
-          writeOnly: true
-        attachments:
-          type: array
-          items:
-            $ref: '#/components/schemas/MessageAttachmentRef'
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-    Target:
-      type: object
-      description: 'Serialize a model''s ``target`` GenericForeignKey to ``{type, uuid, name}``.
-
-
-        Used by notes (which still carry a single ``target`` GFK). Tasks moved to the
-
-        multi ``targets``/``target_items`` relation and no longer use this.'
-      properties:
-        type:
-          type: string
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
         name:
           type: string
           readOnly: true
+        email:
+          type: string
+          format: email
+        is_agent:
+          type: boolean
+          readOnly: true
+        is_mor_router:
+          type: boolean
+          readOnly: true
       required:
+      - email
+      - is_agent
+      - is_mor_router
       - name
-      - type
       - uuid
   securitySchemes:
     cookieAuth:

@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Opply Activity Feed Notifications API
+  title: Opply Notifications API
   version: 0.0.0
 tags:
 - name: Notifications
@@ -311,333 +311,6 @@ paths:
           description: No response body
 components:
   schemas:
-    ActionTypeEnum:
-      enum:
-      - order
-      - request
-      - contracts
-      - onboarding
-      - samples
-      - quotes
-      type: string
-      description: '* `order` - Order
-
-        * `request` - Request
-
-        * `contracts` - Contracts
-
-        * `onboarding` - Onboarding
-
-        * `samples` - Samples
-
-        * `quotes` - Quotes'
-    TitleEnum:
-      enum:
-      - Kriya KYB Reminder
-      - New Quote
-      - New Quote Reminder
-      - New Request
-      - New Request Reminder
-      - New Samples Request
-      - Samples Request Reminder
-      - Samples Dispatched
-      - Samples Received Reminder
-      - Samples Approved
-      - Samples Not Approved
-      - Buyer Started Negotiation
-      - Supplier Negotiation Response
-      - Quote updated
-      - New Order
-      - Order Dispatched
-      - Payment Due
-      - Quote Proceeded
-      - Create Contract Reminder
-      - Proceed with Contract
-      - 'Reminder: Proceed with Contract'
-      - Confirm Contract
-      - Contract Created
-      - New Purchase Request
-      - New Purchase Request Reminder
-      - Response to Purchase Request
-      - Purchase Request Cancelled
-      - Quote Expiring
-      - Request Expiring
-      - New Message
-      - New User
-      - Contract Renewal Declined
-      - Supplier Accepts Contract Renewal
-      - Sign New Contract Purchase Agreement
-      - Contract Renewal Requested
-      - Contract Renewal Terms accepted
-      - Supplier Negotiates Contract Renewal
-      - Re-order
-      - Request for Re-order Declined
-      - Supplier change payment terms
-      type: string
-      description: '* `Kriya KYB Reminder` - Kriya Kyb Reminder
-
-        * `New Quote` - New Quote
-
-        * `New Quote Reminder` - New Quote Reminder
-
-        * `New Request` - New Request
-
-        * `New Request Reminder` - New Request Reminder
-
-        * `New Samples Request` - New Samples Request
-
-        * `Samples Request Reminder` - Samples Request Reminder
-
-        * `Samples Dispatched` - Samples Dispatched
-
-        * `Samples Received Reminder` - Samples Received Reminder
-
-        * `Samples Approved` - Samples Approved
-
-        * `Samples Not Approved` - Samples Not Approved
-
-        * `Buyer Started Negotiation` - Buyer Started Negotiation
-
-        * `Supplier Negotiation Response` - Supplier Negotiation Response
-
-        * `Quote updated` - Quote Updated
-
-        * `New Order` - New Order
-
-        * `Order Dispatched` - Order Dispatched
-
-        * `Payment Due` - Payment Due
-
-        * `Quote Proceeded` - Quote Proceeded
-
-        * `Create Contract Reminder` - Create Contract Reminder
-
-        * `Proceed with Contract` - Proceed With Contract
-
-        * `Reminder: Proceed with Contract` - Reminder Proceed With Contract
-
-        * `Confirm Contract` - Confirm Contract
-
-        * `Contract Created` - Contract Created
-
-        * `New Purchase Request` - New Purchase Request
-
-        * `New Purchase Request Reminder` - New Purchase Request Reminder
-
-        * `Response to Purchase Request` - Response To Purchase Request
-
-        * `Purchase Request Cancelled` - Purchase Request Cancelled
-
-        * `Quote Expiring` - Quote Expiring
-
-        * `Request Expiring` - Request Expiring
-
-        * `New Message` - New Message
-
-        * `New User` - New User
-
-        * `Contract Renewal Declined` - Contract Renewal Declined
-
-        * `Supplier Accepts Contract Renewal` - Contract Renewal Accepted
-
-        * `Sign New Contract Purchase Agreement` - Contract Renewal Accepted With Agreement
-
-        * `Contract Renewal Requested` - Contract Renewal Requested
-
-        * `Contract Renewal Terms accepted` - Contract Renewal Terms Accepted
-
-        * `Supplier Negotiates Contract Renewal` - Supplier Negotiates Contract Renewal
-
-        * `Re-order` - Reorder
-
-        * `Request for Re-order Declined` - Reorder Declined
-
-        * `Supplier change payment terms` - Supplier Updated Payment Terms'
-    BlankEnum:
-      enum:
-      - ''
-    MarkRelatedRead:
-      type: object
-      properties:
-        related_object_uuid:
-          type: string
-          format: uuid
-        related_object_type:
-          type: string
-      required:
-      - related_object_type
-      - related_object_uuid
-    MarkRelatedCleared:
-      type: object
-      properties:
-        related_object_uuid:
-          type: string
-          format: uuid
-        related_object_type:
-          type: string
-        action_clear_trigger:
-          $ref: '#/components/schemas/ActionClearTriggerEnum'
-      required:
-      - action_clear_trigger
-      - related_object_type
-      - related_object_uuid
-    PaginatedNotificationList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Notification'
-        unread_count:
-          type: integer
-          example: 123
-    EmailNotifications:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        title:
-          type: string
-          nullable: true
-          maxLength: 255
-        type:
-          $ref: '#/components/schemas/EmailNotificationsTypeEnum'
-        description:
-          type: string
-          nullable: true
-          maxLength: 255
-        is_activated_for_user:
-          type: boolean
-      required:
-      - is_activated_for_user
-      - type
-      - uuid
-    ShortUser:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        first_name:
-          type: string
-          maxLength: 150
-        last_name_short:
-          type: string
-          readOnly: true
-      required:
-      - last_name_short
-      - uuid
-    ActionClearTriggerEnum:
-      enum:
-      - Mark samples as dispatched
-      - Reject samples request
-      - Buyer marks samples as delivered
-      - Order is marked as dispatched or Buyer marks order as delivered
-      - Order has been delivered
-      - Purchase Order is Accepted or Declined
-      - Clear Time to Order Action
-      - Payment has been received
-      - Signed Agreement Uploaded
-      - Purchase Order is placed
-      - Update quote or reject negotiation
-      - One or more ingredients are created
-      - One of more products are created
-      - Samples are marked as received
-      - Marked as delivered
-      - Quote for request or decline request
-      - Product list is uploaded
-      - Respond to Request
-      - Respond to negotiations
-      - Contract is created
-      - Buyer has created a request
-      - Order or decline quote
-      - Open contract details page
-      - Accept contract renewal
-      - Decline contract renewal
-      - Negotiate contract renewal
-      - Place first request
-      - Feedback has been given for a sample
-      - 5 or more ingredients are created
-      - 2 or more products are created
-      type: string
-      description: '* `Mark samples as dispatched` - Mark Samples Dispatched
-
-        * `Reject samples request` - Reject Samples Request
-
-        * `Buyer marks samples as delivered` - Buyer Marks Samples Delivered
-
-        * `Order is marked as dispatched or Buyer marks order as delivered` - Order Marked As Dispatched Or Buyer Marks Order Delivered
-
-        * `Order has been delivered` - Order Delivered
-
-        * `Purchase Order is Accepted or Declined` - Purchase Order Accepted Or Declined
-
-        * `Clear Time to Order Action` - Clear Time To Order Action
-
-        * `Payment has been received` - Payment Received
-
-        * `Signed Agreement Uploaded` - Signed Agreement Uploaded
-
-        * `Purchase Order is placed` - Purchase Order Placed
-
-        * `Update quote or reject negotiation` - Update Quote Or Reject Negotiation
-
-        * `One or more ingredients are created` - Ingredients Created
-
-        * `One of more products are created` - Products Created
-
-        * `Samples are marked as received` - Samples Marked As Received
-
-        * `Marked as delivered` - Marked As Delivered
-
-        * `Quote for request or decline request` - Quote For Request Or Decline
-
-        * `Product list is uploaded` - Product List Uploaded
-
-        * `Respond to Request` - Respond To Request
-
-        * `Respond to negotiations` - Respond To Negotiations
-
-        * `Contract is created` - Contract Created
-
-        * `Buyer has created a request` - Buyer Created Request
-
-        * `Order or decline quote` - Order Or Decline Quote
-
-        * `Open contract details page` - Open Contract Details Page
-
-        * `Accept contract renewal` - Accept Contract Renewal
-
-        * `Decline contract renewal` - Decline Contract Renewal
-
-        * `Negotiate contract renewal` - Negotiate Contract Renewal
-
-        * `Place first request` - Place First Request
-
-        * `Feedback has been given for a sample` - Feedback Given For Sample
-
-        * `5 or more ingredients are created` - Upload Ingredient List
-
-        * `2 or more products are created` - Upload Product List'
     EmailNotificationsTypeEnum:
       enum:
       - b_s_new_message
@@ -796,108 +469,278 @@ components:
         * `b_grouped_statement_due_today` - b_grouped_statement_due_today
 
         * `b_grouped_statement_overdue` - b_grouped_statement_overdue'
-    UsedForEnum:
+    MarkRelatedRead:
+      type: object
+      properties:
+        related_object_uuid:
+          type: string
+          format: uuid
+        related_object_type:
+          type: string
+      required:
+      - related_object_type
+      - related_object_uuid
+    TitleEnum:
       enum:
-      - general_notifications
-      - actions
+      - Kriya KYB Reminder
+      - New Quote
+      - New Quote Reminder
+      - New Request
+      - New Request Reminder
+      - New Samples Request
+      - Samples Request Reminder
+      - Samples Dispatched
+      - Samples Received Reminder
+      - Samples Approved
+      - Samples Not Approved
+      - Buyer Started Negotiation
+      - Supplier Negotiation Response
+      - Quote updated
+      - New Order
+      - Order Dispatched
+      - Payment Due
+      - Quote Proceeded
+      - Create Contract Reminder
+      - Proceed with Contract
+      - 'Reminder: Proceed with Contract'
+      - Confirm Contract
+      - Contract Created
+      - New Purchase Request
+      - New Purchase Request Reminder
+      - Response to Purchase Request
+      - Purchase Request Cancelled
+      - Quote Expiring
+      - Request Expiring
+      - New Message
+      - New User
+      - Contract Renewal Declined
+      - Supplier Accepts Contract Renewal
+      - Sign New Contract Purchase Agreement
+      - Contract Renewal Requested
+      - Contract Renewal Terms accepted
+      - Supplier Negotiates Contract Renewal
+      - Re-order
+      - Request for Re-order Declined
+      - Supplier change payment terms
       type: string
-      description: '* `general_notifications` - General Notifications
+      description: '* `Kriya KYB Reminder` - Kriya Kyb Reminder
 
-        * `actions` - Actions'
-    NotificationTypeEnum:
+        * `New Quote` - New Quote
+
+        * `New Quote Reminder` - New Quote Reminder
+
+        * `New Request` - New Request
+
+        * `New Request Reminder` - New Request Reminder
+
+        * `New Samples Request` - New Samples Request
+
+        * `Samples Request Reminder` - Samples Request Reminder
+
+        * `Samples Dispatched` - Samples Dispatched
+
+        * `Samples Received Reminder` - Samples Received Reminder
+
+        * `Samples Approved` - Samples Approved
+
+        * `Samples Not Approved` - Samples Not Approved
+
+        * `Buyer Started Negotiation` - Buyer Started Negotiation
+
+        * `Supplier Negotiation Response` - Supplier Negotiation Response
+
+        * `Quote updated` - Quote Updated
+
+        * `New Order` - New Order
+
+        * `Order Dispatched` - Order Dispatched
+
+        * `Payment Due` - Payment Due
+
+        * `Quote Proceeded` - Quote Proceeded
+
+        * `Create Contract Reminder` - Create Contract Reminder
+
+        * `Proceed with Contract` - Proceed With Contract
+
+        * `Reminder: Proceed with Contract` - Reminder Proceed With Contract
+
+        * `Confirm Contract` - Confirm Contract
+
+        * `Contract Created` - Contract Created
+
+        * `New Purchase Request` - New Purchase Request
+
+        * `New Purchase Request Reminder` - New Purchase Request Reminder
+
+        * `Response to Purchase Request` - Response To Purchase Request
+
+        * `Purchase Request Cancelled` - Purchase Request Cancelled
+
+        * `Quote Expiring` - Quote Expiring
+
+        * `Request Expiring` - Request Expiring
+
+        * `New Message` - New Message
+
+        * `New User` - New User
+
+        * `Contract Renewal Declined` - Contract Renewal Declined
+
+        * `Supplier Accepts Contract Renewal` - Contract Renewal Accepted
+
+        * `Sign New Contract Purchase Agreement` - Contract Renewal Accepted With Agreement
+
+        * `Contract Renewal Requested` - Contract Renewal Requested
+
+        * `Contract Renewal Terms accepted` - Contract Renewal Terms Accepted
+
+        * `Supplier Negotiates Contract Renewal` - Supplier Negotiates Contract Renewal
+
+        * `Re-order` - Reorder
+
+        * `Request for Re-order Declined` - Reorder Declined
+
+        * `Supplier change payment terms` - Supplier Updated Payment Terms'
+    PaginatedNotificationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+        unread_count:
+          type: integer
+          example: 123
+    ActionClearTriggerEnum:
       enum:
-      - trigger-based
-      - time-based
-      - user-specific
-      - global
+      - Mark samples as dispatched
+      - Reject samples request
+      - Buyer marks samples as delivered
+      - Order is marked as dispatched or Buyer marks order as delivered
+      - Order has been delivered
+      - Purchase Order is Accepted or Declined
+      - Clear Time to Order Action
+      - Payment has been received
+      - Signed Agreement Uploaded
+      - Purchase Order is placed
+      - Update quote or reject negotiation
+      - One or more ingredients are created
+      - One of more products are created
+      - Samples are marked as received
+      - Marked as delivered
+      - Quote for request or decline request
+      - Product list is uploaded
+      - Respond to Request
+      - Respond to negotiations
+      - Contract is created
+      - Buyer has created a request
+      - Order or decline quote
+      - Open contract details page
+      - Accept contract renewal
+      - Decline contract renewal
+      - Negotiate contract renewal
+      - Place first request
+      - Feedback has been given for a sample
+      - 5 or more ingredients are created
+      - 2 or more products are created
       type: string
-      description: '* `trigger-based` - Triggerbased
+      description: '* `Mark samples as dispatched` - Mark Samples Dispatched
 
-        * `time-based` - Timebased
+        * `Reject samples request` - Reject Samples Request
 
-        * `user-specific` - Userspecific
+        * `Buyer marks samples as delivered` - Buyer Marks Samples Delivered
 
-        * `global` - Global'
-    Notification:
+        * `Order is marked as dispatched or Buyer marks order as delivered` - Order Marked As Dispatched Or Buyer Marks Order Delivered
+
+        * `Order has been delivered` - Order Delivered
+
+        * `Purchase Order is Accepted or Declined` - Purchase Order Accepted Or Declined
+
+        * `Clear Time to Order Action` - Clear Time To Order Action
+
+        * `Payment has been received` - Payment Received
+
+        * `Signed Agreement Uploaded` - Signed Agreement Uploaded
+
+        * `Purchase Order is placed` - Purchase Order Placed
+
+        * `Update quote or reject negotiation` - Update Quote Or Reject Negotiation
+
+        * `One or more ingredients are created` - Ingredients Created
+
+        * `One of more products are created` - Products Created
+
+        * `Samples are marked as received` - Samples Marked As Received
+
+        * `Marked as delivered` - Marked As Delivered
+
+        * `Quote for request or decline request` - Quote For Request Or Decline
+
+        * `Product list is uploaded` - Product List Uploaded
+
+        * `Respond to Request` - Respond To Request
+
+        * `Respond to negotiations` - Respond To Negotiations
+
+        * `Contract is created` - Contract Created
+
+        * `Buyer has created a request` - Buyer Created Request
+
+        * `Order or decline quote` - Order Or Decline Quote
+
+        * `Open contract details page` - Open Contract Details Page
+
+        * `Accept contract renewal` - Accept Contract Renewal
+
+        * `Decline contract renewal` - Decline Contract Renewal
+
+        * `Negotiate contract renewal` - Negotiate Contract Renewal
+
+        * `Place first request` - Place First Request
+
+        * `Feedback has been given for a sample` - Feedback Given For Sample
+
+        * `5 or more ingredients are created` - Upload Ingredient List
+
+        * `2 or more products are created` - Upload Product List'
+    ShortUser:
       type: object
       properties:
         uuid:
           type: string
           format: uuid
           readOnly: true
-        title:
-          $ref: '#/components/schemas/TitleEnum'
-        description:
+        first_name:
           type: string
-        content:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        read_at:
-          type: string
-          format: date-time
-          nullable: true
-        type:
-          $ref: '#/components/schemas/NotificationTypeEnum'
-        category:
-          $ref: '#/components/schemas/NotificationCategoryEnum'
-        priority:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        duration:
-          type: string
-          nullable: true
-        location:
-          type: string
-          nullable: true
-          maxLength: 255
-        receiver:
-          allOf:
-          - $ref: '#/components/schemas/ShortUser'
-          readOnly: true
-        sender:
-          allOf:
-          - $ref: '#/components/schemas/ShortUser'
-          readOnly: true
-        related_object_type:
+          maxLength: 150
+        last_name_short:
           type: string
           readOnly: true
-        related_object_uuid:
-          type: string
-          readOnly: true
-        is_read:
-          type: string
-          readOnly: true
-        used_for:
-          $ref: '#/components/schemas/UsedForEnum'
-        action_type:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/ActionTypeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        action_clear_trigger:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/ActionClearTriggerEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
       required:
-      - category
-      - content
-      - created_at
-      - description
-      - is_read
-      - receiver
-      - related_object_type
-      - related_object_uuid
-      - sender
-      - title
-      - type
+      - last_name_short
       - uuid
+    NullEnum:
+      enum:
+      - null
     AllEmailNotifications:
       type: object
       properties:
@@ -919,9 +762,171 @@ components:
         * `updates` - Updates
 
         * `system` - System'
-    NullEnum:
+    NotificationTypeEnum:
       enum:
-      - null
+      - trigger-based
+      - time-based
+      - user-specific
+      - global
+      type: string
+      description: '* `trigger-based` - Triggerbased
+
+        * `time-based` - Timebased
+
+        * `user-specific` - Userspecific
+
+        * `global` - Global'
+    MarkRelatedCleared:
+      type: object
+      properties:
+        related_object_uuid:
+          type: string
+          format: uuid
+        related_object_type:
+          type: string
+        action_clear_trigger:
+          $ref: '#/components/schemas/ActionClearTriggerEnum'
+      required:
+      - action_clear_trigger
+      - related_object_type
+      - related_object_uuid
+    UsedForEnum:
+      enum:
+      - general_notifications
+      - actions
+      type: string
+      description: '* `general_notifications` - General Notifications
+
+        * `actions` - Actions'
+    BlankEnum:
+      enum:
+      - ''
+    Notification:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          $ref: '#/components/schemas/TitleEnum'
+        description:
+          type: string
+        content:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        read_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        type:
+          $ref: '#/components/schemas/NotificationTypeEnum'
+        category:
+          $ref: '#/components/schemas/NotificationCategoryEnum'
+        priority:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        duration:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        receiver:
+          allOf:
+          - $ref: '#/components/schemas/ShortUser'
+          readOnly: true
+        sender:
+          allOf:
+          - $ref: '#/components/schemas/ShortUser'
+          readOnly: true
+        related_object_type:
+          type: string
+          readOnly: true
+        related_object_uuid:
+          type: string
+          readOnly: true
+        is_read:
+          type: string
+          readOnly: true
+        used_for:
+          $ref: '#/components/schemas/UsedForEnum'
+        action_type:
+          oneOf:
+          - $ref: '#/components/schemas/ActionTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        action_clear_trigger:
+          oneOf:
+          - $ref: '#/components/schemas/ActionClearTriggerEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+      required:
+      - category
+      - content
+      - created_at
+      - description
+      - is_read
+      - receiver
+      - related_object_type
+      - related_object_uuid
+      - sender
+      - title
+      - type
+      - uuid
+    EmailNotifications:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        type:
+          $ref: '#/components/schemas/EmailNotificationsTypeEnum'
+        description:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        is_activated_for_user:
+          type: boolean
+      required:
+      - is_activated_for_user
+      - type
+      - uuid
+    ActionTypeEnum:
+      enum:
+      - order
+      - request
+      - contracts
+      - onboarding
+      - samples
+      - quotes
+      type: string
+      description: '* `order` - Order
+
+        * `request` - Request
+
+        * `contracts` - Contracts
+
+        * `onboarding` - Onboarding
+
+        * `samples` - Samples
+
+        * `quotes` - Quotes'
   securitySchemes:
     cookieAuth:
       type: apiKey

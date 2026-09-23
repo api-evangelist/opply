@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Opply Activity Feed Brain API
+  title: Opply Brain API
   version: 0.0.0
 tags:
 - name: Brain
@@ -8,7 +8,52 @@ paths:
   /api/v1/brain/observe-progress/:
     post:
       operationId: api_v1_brain_observe_progress_create
-      description: "Single endpoint driving the brain unlock celebration lifecycle.\n\nThe FE POSTs the current per-sector \"above threshold?\" map on\nevery progress change. The BE compares each sector against the\nstored row in ``BrainSectorUnlockSeen`` and returns the list of\nsectors whose modal should now fire:\n\n- **No row exists yet** — first observation of this sector for\n  this user. Create the row with ``resolved`` set to the current\n  ``above_threshold``. If above on first observation we suppress\n  the modal (resolved=True), because we have no way to know\n  whether the buyer just crossed or has been above for months.\n  No celebration in either case.\n- **Existing row, resolved=True** — done. Either we celebrated\n  previously or we suppressed on first observation. Skip.\n- **Existing row, resolved=False, above_threshold=True** — the\n  buyer was observed below threshold last time and is now above.\n  THIS is the real crossing. Flip ``resolved`` to True and\n  return the sector in ``celebrate``.\n- **Existing row, resolved=False, above_threshold=False** —\n  still below. No state change.\n\nThe whole thing runs in a savepoint so the unique-constraint\nrace (two concurrent POSTs trying to create the same row)\nfails cleanly and we re-read the row on the second attempt."
+      description: 'Single endpoint driving the brain unlock celebration lifecycle.
+
+
+        The FE POSTs the current per-sector "above threshold?" map on
+
+        every progress change. The BE compares each sector against the
+
+        stored row in ``BrainSectorUnlockSeen`` and returns the list of
+
+        sectors whose modal should now fire:
+
+
+        - **No row exists yet** — first observation of this sector for
+
+        this user. Create the row with ``resolved`` set to the current
+
+        ``above_threshold``. If above on first observation we suppress
+
+        the modal (resolved=True), because we have no way to know
+
+        whether the buyer just crossed or has been above for months.
+
+        No celebration in either case.
+
+        - **Existing row, resolved=True** — done. Either we celebrated
+
+        previously or we suppressed on first observation. Skip.
+
+        - **Existing row, resolved=False, above_threshold=True** — the
+
+        buyer was observed below threshold last time and is now above.
+
+        THIS is the real crossing. Flip ``resolved`` to True and
+
+        return the sector in ``celebrate``.
+
+        - **Existing row, resolved=False, above_threshold=False** —
+
+        still below. No state change.
+
+
+        The whole thing runs in a savepoint so the unique-constraint
+
+        race (two concurrent POSTs trying to create the same row)
+
+        fails cleanly and we re-read the row on the second attempt.'
       summary: Observe per-sector progress and return sectors to celebrate
       tags:
       - Brain

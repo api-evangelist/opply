@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Opply Activity Feed Public Buyer Onboarding API
+  title: Opply Public Buyer Onboarding API
   version: 0.0.0
 tags:
 - name: Public Buyer Onboarding
@@ -934,26 +934,200 @@ paths:
           description: Buyer onboarding not found
 components:
   schemas:
-    BuyerOnboardingDocument:
+    BuyerOnboardingDeliveryAddress:
       type: object
-      description: Serializer for BuyerOnboardingDocument model.
+      description: 'Serializer for BuyerOnboardingDeliveryAddress model.
+
+        Includes all BaseAddress fields plus delivery-specific fields.'
       properties:
         uuid:
           type: string
           format: uuid
           readOnly: true
-          description: Unique identifier for document lookup
-        document:
+        name:
           type: string
-          format: uri
-          description: Uploaded document
-        document_url:
+          maxLength: 255
+        address_type:
+          $ref: '#/components/schemas/AddressTypeEnum'
+        contact_full_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        contact_phone:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        building:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        street_1:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        street_2:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        town:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        region:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        postcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        place_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        latitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        longitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        vat_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        vat_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        vat_exempt:
+          type: boolean
+        phone_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        delivery_instructions:
+          type:
+          - string
+          - 'null'
+        collection_instructions:
+          type:
+          - string
+          - 'null'
+        country_type:
+          $ref: '#/components/schemas/CountryTypeEnum'
+        eori_number:
+          type: string
+          maxLength: 20
+        ein_number:
+          type: string
+          maxLength: 20
+        delivery_location_type:
+          description: 'Type of delivery location
+
+
+            * `warehouse` - Warehouse
+
+            * `factory` - Factory
+
+            * `distribution_center` - Distribution Center
+
+            * `retail_location` - Retail Location
+
+            * `other` - Other'
+          oneOf:
+          - $ref: '#/components/schemas/DeliveryLocationTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        delivery_location_type_display:
           type: string
           readOnly: true
-        description:
+        delivery_location_type_other:
           type: string
-          nullable: true
-          description: Optional description of the document
+          description: Specify delivery location type when 'Other' is selected
+          maxLength: 255
+        warehouse_receiving_hours:
+          type: string
+          description: Warehouse receiving hours
+          maxLength: 255
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created
+      - delivery_location_type_display
+      - modified
+      - name
+      - uuid
+    PaginatedBuyerOnboardingDeliveryAddressList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerOnboardingDeliveryAddress'
+    AccountEmail:
+      type: object
+      description: Serializer for AccountEmail model.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unique identifier for account email lookup
+        label:
+          type: string
+          description: Label for this contact (e.g. 'Accounts Payable')
+          maxLength: 255
+        email_address:
+          type: string
+          format: email
+          description: Contact email address
+          maxLength: 255
         created_at:
           type: string
           format: date-time
@@ -964,10 +1138,798 @@ components:
           readOnly: true
       required:
       - created_at
-      - document
-      - document_url
+      - email_address
+      - label
       - modified_at
       - uuid
+    AccountDetail:
+      type: object
+      description: "Serializer for account details with country-specific validation.\nSupports DUNS field and AccountEmail management.\n\nUK buyers require: company_name, vat_number, company_registration_number,\n                  registered_address, contact_name, contact_phone_number,\n                  contact_email_address\n\nUS buyers require: company_name, vat_number (as EIN), registered_address,\n                  contact_name, contact_phone_number, contact_email_address"
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        company_name:
+          type: string
+          description: Company name
+          maxLength: 255
+        vat_number:
+          type: string
+          description: VAT number
+          maxLength: 100
+        duns:
+          type:
+          - string
+          - 'null'
+        company_registration_number:
+          type: string
+          description: Company Registration Number (UK only)
+          maxLength: 100
+        registered_address:
+          type: string
+          description: Registered company address
+        contact_name:
+          type: string
+          maxLength: 255
+        contact_phone_number:
+          type: string
+          maxLength: 50
+        contact_email_address:
+          type: string
+          format: email
+          description: 'Contact email address (DEPRECATED: Use account_emails relationship instead)'
+          maxLength: 255
+        tax_exemption_certificate:
+          type: boolean
+          description: Tax exemption certificate (US only)
+        account_emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountEmail'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - account_emails
+      - company_name
+      - contact_name
+      - contact_phone_number
+      - created_at
+      - id
+      - modified_at
+      - registered_address
+      - vat_number
+    PaginatedDeliveryEmailList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeliveryEmail'
+    PhoneCountryCodeEnum:
+      enum:
+      - '+376'
+      - '+971'
+      - '+93'
+      - '+1268'
+      - '+1264'
+      - '+355'
+      - '+374'
+      - '+244'
+      - '+672'
+      - '+54'
+      - '+1684'
+      - '+43'
+      - '+61'
+      - '+297'
+      - '+994'
+      - '+387'
+      - '+1246'
+      - '+880'
+      - '+32'
+      - '+226'
+      - '+359'
+      - '+973'
+      - '+257'
+      - '+229'
+      - '+590'
+      - '+1441'
+      - '+673'
+      - '+591'
+      - '+55'
+      - '+1242'
+      - '+975'
+      - '+267'
+      - '+375'
+      - '+501'
+      - '+1'
+      - '+243'
+      - '+236'
+      - '+242'
+      - '+41'
+      - '+225'
+      - '+682'
+      - '+56'
+      - '+237'
+      - '+86'
+      - '+57'
+      - '+506'
+      - '+53'
+      - '+238'
+      - '+357'
+      - '+420'
+      - '+49'
+      - '+253'
+      - '+45'
+      - '+1767'
+      - '+1809'
+      - '+213'
+      - '+593'
+      - '+372'
+      - '+20'
+      - '+212'
+      - '+291'
+      - '+34'
+      - '+251'
+      - '+358'
+      - '+679'
+      - '+500'
+      - '+691'
+      - '+298'
+      - '+33'
+      - '+241'
+      - '+44'
+      - '+1473'
+      - '+995'
+      - '+594'
+      - '+441481'
+      - '+233'
+      - '+350'
+      - '+299'
+      - '+220'
+      - '+224'
+      - '+240'
+      - '+30'
+      - '+502'
+      - '+1671'
+      - '+245'
+      - '+595'
+      - '+852'
+      - '+504'
+      - '+385'
+      - '+509'
+      - '+36'
+      - '+62'
+      - '+353'
+      - '+972'
+      - '+441624'
+      - '+91'
+      - '+246'
+      - '+964'
+      - '+98'
+      - '+354'
+      - '+39'
+      - '+441534'
+      - '+1876'
+      - '+962'
+      - '+81'
+      - '+254'
+      - '+996'
+      - '+855'
+      - '+686'
+      - '+269'
+      - '+1869'
+      - '+850'
+      - '+82'
+      - '+965'
+      - '+345'
+      - '+7'
+      - '+856'
+      - '+961'
+      - '+1758'
+      - '+423'
+      - '+94'
+      - '+231'
+      - '+266'
+      - '+370'
+      - '+352'
+      - '+371'
+      - '+218'
+      - '+377'
+      - '+373'
+      - '+382'
+      - '+261'
+      - '+692'
+      - '+389'
+      - '+223'
+      - '+95'
+      - '+976'
+      - '+853'
+      - '+1670'
+      - '+596'
+      - '+222'
+      - '+1664'
+      - '+356'
+      - '+230'
+      - '+960'
+      - '+265'
+      - '+52'
+      - '+60'
+      - '+258'
+      - '+264'
+      - '+687'
+      - '+227'
+      - '+234'
+      - '+505'
+      - '+31'
+      - '+47'
+      - '+977'
+      - '+674'
+      - '+683'
+      - '+64'
+      - '+968'
+      - '+507'
+      - '+51'
+      - '+689'
+      - '+675'
+      - '+63'
+      - '+92'
+      - '+48'
+      - '+508'
+      - '+1787'
+      - '+970'
+      - '+351'
+      - '+680'
+      - '+974'
+      - '+262'
+      - '+40'
+      - '+381'
+      - '+250'
+      - '+966'
+      - '+677'
+      - '+248'
+      - '+249'
+      - '+46'
+      - '+65'
+      - '+290'
+      - '+386'
+      - '+421'
+      - '+232'
+      - '+378'
+      - '+221'
+      - '+252'
+      - '+597'
+      - '+239'
+      - '+503'
+      - '+963'
+      - '+268'
+      - '+1649'
+      - '+235'
+      - '+228'
+      - '+66'
+      - '+992'
+      - '+690'
+      - '+670'
+      - '+993'
+      - '+216'
+      - '+676'
+      - '+90'
+      - '+1868'
+      - '+688'
+      - '+886'
+      - '+255'
+      - '+380'
+      - '+256'
+      - '+598'
+      - '+998'
+      - '+379'
+      - '+1784'
+      - '+58'
+      - '+1284'
+      - '+1340'
+      - '+84'
+      - '+678'
+      - '+681'
+      - '+685'
+      - '+967'
+      - '+27'
+      - '+260'
+      - '+263'
+      type: string
+      description: '* `+376` - +376
+
+        * `+971` - +971
+
+        * `+93` - +93
+
+        * `+1268` - +1268
+
+        * `+1264` - +1264
+
+        * `+355` - +355
+
+        * `+374` - +374
+
+        * `+244` - +244
+
+        * `+672` - +672
+
+        * `+54` - +54
+
+        * `+1684` - +1684
+
+        * `+43` - +43
+
+        * `+61` - +61
+
+        * `+297` - +297
+
+        * `+994` - +994
+
+        * `+387` - +387
+
+        * `+1246` - +1246
+
+        * `+880` - +880
+
+        * `+32` - +32
+
+        * `+226` - +226
+
+        * `+359` - +359
+
+        * `+973` - +973
+
+        * `+257` - +257
+
+        * `+229` - +229
+
+        * `+590` - +590
+
+        * `+1441` - +1441
+
+        * `+673` - +673
+
+        * `+591` - +591
+
+        * `+55` - +55
+
+        * `+1242` - +1242
+
+        * `+975` - +975
+
+        * `+267` - +267
+
+        * `+375` - +375
+
+        * `+501` - +501
+
+        * `+1` - +1
+
+        * `+243` - +243
+
+        * `+236` - +236
+
+        * `+242` - +242
+
+        * `+41` - +41
+
+        * `+225` - +225
+
+        * `+682` - +682
+
+        * `+56` - +56
+
+        * `+237` - +237
+
+        * `+86` - +86
+
+        * `+57` - +57
+
+        * `+506` - +506
+
+        * `+53` - +53
+
+        * `+238` - +238
+
+        * `+357` - +357
+
+        * `+420` - +420
+
+        * `+49` - +49
+
+        * `+253` - +253
+
+        * `+45` - +45
+
+        * `+1767` - +1767
+
+        * `+1809` - +1809
+
+        * `+213` - +213
+
+        * `+593` - +593
+
+        * `+372` - +372
+
+        * `+20` - +20
+
+        * `+212` - +212
+
+        * `+291` - +291
+
+        * `+34` - +34
+
+        * `+251` - +251
+
+        * `+358` - +358
+
+        * `+679` - +679
+
+        * `+500` - +500
+
+        * `+691` - +691
+
+        * `+298` - +298
+
+        * `+33` - +33
+
+        * `+241` - +241
+
+        * `+44` - +44
+
+        * `+1473` - +1473
+
+        * `+995` - +995
+
+        * `+594` - +594
+
+        * `+441481` - +441481
+
+        * `+233` - +233
+
+        * `+350` - +350
+
+        * `+299` - +299
+
+        * `+220` - +220
+
+        * `+224` - +224
+
+        * `+240` - +240
+
+        * `+30` - +30
+
+        * `+502` - +502
+
+        * `+1671` - +1671
+
+        * `+245` - +245
+
+        * `+595` - +595
+
+        * `+852` - +852
+
+        * `+504` - +504
+
+        * `+385` - +385
+
+        * `+509` - +509
+
+        * `+36` - +36
+
+        * `+62` - +62
+
+        * `+353` - +353
+
+        * `+972` - +972
+
+        * `+441624` - +441624
+
+        * `+91` - +91
+
+        * `+246` - +246
+
+        * `+964` - +964
+
+        * `+98` - +98
+
+        * `+354` - +354
+
+        * `+39` - +39
+
+        * `+441534` - +441534
+
+        * `+1876` - +1876
+
+        * `+962` - +962
+
+        * `+81` - +81
+
+        * `+254` - +254
+
+        * `+996` - +996
+
+        * `+855` - +855
+
+        * `+686` - +686
+
+        * `+269` - +269
+
+        * `+1869` - +1869
+
+        * `+850` - +850
+
+        * `+82` - +82
+
+        * `+965` - +965
+
+        * `+345` - +345
+
+        * `+7` - +7
+
+        * `+856` - +856
+
+        * `+961` - +961
+
+        * `+1758` - +1758
+
+        * `+423` - +423
+
+        * `+94` - +94
+
+        * `+231` - +231
+
+        * `+266` - +266
+
+        * `+370` - +370
+
+        * `+352` - +352
+
+        * `+371` - +371
+
+        * `+218` - +218
+
+        * `+377` - +377
+
+        * `+373` - +373
+
+        * `+382` - +382
+
+        * `+261` - +261
+
+        * `+692` - +692
+
+        * `+389` - +389
+
+        * `+223` - +223
+
+        * `+95` - +95
+
+        * `+976` - +976
+
+        * `+853` - +853
+
+        * `+1670` - +1670
+
+        * `+596` - +596
+
+        * `+222` - +222
+
+        * `+1664` - +1664
+
+        * `+356` - +356
+
+        * `+230` - +230
+
+        * `+960` - +960
+
+        * `+265` - +265
+
+        * `+52` - +52
+
+        * `+60` - +60
+
+        * `+258` - +258
+
+        * `+264` - +264
+
+        * `+687` - +687
+
+        * `+227` - +227
+
+        * `+234` - +234
+
+        * `+505` - +505
+
+        * `+31` - +31
+
+        * `+47` - +47
+
+        * `+977` - +977
+
+        * `+674` - +674
+
+        * `+683` - +683
+
+        * `+64` - +64
+
+        * `+968` - +968
+
+        * `+507` - +507
+
+        * `+51` - +51
+
+        * `+689` - +689
+
+        * `+675` - +675
+
+        * `+63` - +63
+
+        * `+92` - +92
+
+        * `+48` - +48
+
+        * `+508` - +508
+
+        * `+1787` - +1787
+
+        * `+970` - +970
+
+        * `+351` - +351
+
+        * `+680` - +680
+
+        * `+974` - +974
+
+        * `+262` - +262
+
+        * `+40` - +40
+
+        * `+381` - +381
+
+        * `+250` - +250
+
+        * `+966` - +966
+
+        * `+677` - +677
+
+        * `+248` - +248
+
+        * `+249` - +249
+
+        * `+46` - +46
+
+        * `+65` - +65
+
+        * `+290` - +290
+
+        * `+386` - +386
+
+        * `+421` - +421
+
+        * `+232` - +232
+
+        * `+378` - +378
+
+        * `+221` - +221
+
+        * `+252` - +252
+
+        * `+597` - +597
+
+        * `+239` - +239
+
+        * `+503` - +503
+
+        * `+963` - +963
+
+        * `+268` - +268
+
+        * `+1649` - +1649
+
+        * `+235` - +235
+
+        * `+228` - +228
+
+        * `+66` - +66
+
+        * `+992` - +992
+
+        * `+690` - +690
+
+        * `+670` - +670
+
+        * `+993` - +993
+
+        * `+216` - +216
+
+        * `+676` - +676
+
+        * `+90` - +90
+
+        * `+1868` - +1868
+
+        * `+688` - +688
+
+        * `+886` - +886
+
+        * `+255` - +255
+
+        * `+380` - +380
+
+        * `+256` - +256
+
+        * `+598` - +598
+
+        * `+998` - +998
+
+        * `+379` - +379
+
+        * `+1784` - +1784
+
+        * `+58` - +58
+
+        * `+1284` - +1284
+
+        * `+1340` - +1340
+
+        * `+84` - +84
+
+        * `+678` - +678
+
+        * `+681` - +681
+
+        * `+685` - +685
+
+        * `+967` - +967
+
+        * `+27` - +27
+
+        * `+260` - +260
+
+        * `+263` - +263'
+    DeliveryLocationTypeEnum:
+      enum:
+      - warehouse
+      - factory
+      - distribution_center
+      - retail_location
+      - other
+      type: string
+      description: '* `warehouse` - Warehouse
+
+        * `factory` - Factory
+
+        * `distribution_center` - Distribution Center
+
+        * `retail_location` - Retail Location
+
+        * `other` - Other'
     Country:
       enum:
       - AF
@@ -1720,963 +2682,17 @@ components:
         * `ZM` - Zambia
 
         * `ZW` - Zimbabwe'
-    PriorityEnum:
+    AccessRequirementsEnum:
       enum:
-      - high
-      - medium
-      - low
+      - delivery_appointment
+      - inside_delivery
+      - lift_gate
       type: string
-      description: '* `high` - High
+      description: '* `delivery_appointment` - Delivery appointment requirement
 
-        * `medium` - Medium
+        * `inside_delivery` - Inside delivery Required
 
-        * `low` - Low'
-    PaginatedBuyerOnboardingDocumentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerOnboardingDocument'
-    PatchedDeliveryDetails:
-      type: object
-      description: Serializer for delivery details.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        delivery_address:
-          type: string
-          description: 'Delivery address (DEPRECATED: Use buyer_onboarding_delivery_address instead)'
-        delivery_location_type:
-          $ref: '#/components/schemas/DeliveryLocationTypeEnum'
-        delivery_location_type_display:
-          type: string
-          readOnly: true
-        delivery_location_type_other:
-          type: string
-          description: Specify delivery location type when 'Other' is selected
-          maxLength: 255
-        delivery_instructions:
-          type: string
-          description: Delivery instructions
-        delivery_contact_name:
-          type: string
-          description: 'Delivery contact name (DEPRECATED: Use delivery_address relationship instead)'
-          maxLength: 255
-        delivery_contact_phone_number:
-          type: string
-          description: 'Delivery contact phone number (DEPRECATED: Use delivery_address relationship instead)'
-          maxLength: 50
-        delivery_contact_email:
-          type: string
-          format: email
-          description: 'Delivery contact email (DEPRECATED: Use delivery_emails relationship instead)'
-          maxLength: 255
-        warehouse_receiving_hours:
-          type: string
-          description: Warehouse receiving hours
-          maxLength: 255
-        storage_capacity:
-          type: string
-          description: Storage capacity
-          maxLength: 255
-        access_requirements:
-          description: 'Access requirements
-
-
-            * `delivery_appointment` - Delivery appointment requirement
-
-            * `inside_delivery` - Inside delivery Required
-
-            * `lift_gate` - Lift gate required'
-          oneOf:
-          - $ref: '#/components/schemas/AccessRequirementsEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-        is_sample_required:
-          type: boolean
-          description: Is a sample required?
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-    BuyerOnboardingStep:
-      type: object
-      description: Serializer for buyer onboarding step with template information.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        template_step:
-          type: integer
-          description: The template this step is based on
-        template_phase:
-          type: string
-          readOnly: true
-        template_phase_display:
-          type: string
-          readOnly: true
-        process_description:
-          type: string
-          readOnly: true
-        template_step_order:
-          type: integer
-          readOnly: true
-        notes:
-          type: string
-          description: Buyer-specific notes for this step
-        is_completed:
-          type: boolean
-          description: Whether this step is completed
-        completed_at:
-          type: string
-          format: date-time
-          readOnly: true
-          nullable: true
-          description: When this step was completed
-        completed_by:
-          type: integer
-          readOnly: true
-          nullable: true
-          description: Who completed this step
-        completed_by_email:
-          type: string
-          format: email
-          readOnly: true
-        custom_step_order:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          nullable: true
-          description: Custom order for this buyer (overrides template step order)
-        is_step_visible:
-          type: boolean
-          description: Whether this step is visible for this buyer
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - completed_at
-      - completed_by
-      - completed_by_email
-      - created_at
-      - id
-      - modified_at
-      - process_description
-      - template_phase
-      - template_phase_display
-      - template_step
-      - template_step_order
-    NullEnum:
-      enum:
-      - null
-    PhoneCountryCodeEnum:
-      enum:
-      - '+376'
-      - '+971'
-      - '+93'
-      - '+1268'
-      - '+1264'
-      - '+355'
-      - '+374'
-      - '+244'
-      - '+672'
-      - '+54'
-      - '+1684'
-      - '+43'
-      - '+61'
-      - '+297'
-      - '+994'
-      - '+387'
-      - '+1246'
-      - '+880'
-      - '+32'
-      - '+226'
-      - '+359'
-      - '+973'
-      - '+257'
-      - '+229'
-      - '+590'
-      - '+1441'
-      - '+673'
-      - '+591'
-      - '+55'
-      - '+1242'
-      - '+975'
-      - '+267'
-      - '+375'
-      - '+501'
-      - '+1'
-      - '+243'
-      - '+236'
-      - '+242'
-      - '+41'
-      - '+225'
-      - '+682'
-      - '+56'
-      - '+237'
-      - '+86'
-      - '+57'
-      - '+506'
-      - '+53'
-      - '+238'
-      - '+357'
-      - '+420'
-      - '+49'
-      - '+253'
-      - '+45'
-      - '+1767'
-      - '+1809'
-      - '+213'
-      - '+593'
-      - '+372'
-      - '+20'
-      - '+212'
-      - '+291'
-      - '+34'
-      - '+251'
-      - '+358'
-      - '+679'
-      - '+500'
-      - '+691'
-      - '+298'
-      - '+33'
-      - '+241'
-      - '+44'
-      - '+1473'
-      - '+995'
-      - '+594'
-      - '+441481'
-      - '+233'
-      - '+350'
-      - '+299'
-      - '+220'
-      - '+224'
-      - '+240'
-      - '+30'
-      - '+502'
-      - '+1671'
-      - '+245'
-      - '+595'
-      - '+852'
-      - '+504'
-      - '+385'
-      - '+509'
-      - '+36'
-      - '+62'
-      - '+353'
-      - '+972'
-      - '+441624'
-      - '+91'
-      - '+246'
-      - '+964'
-      - '+98'
-      - '+354'
-      - '+39'
-      - '+441534'
-      - '+1876'
-      - '+962'
-      - '+81'
-      - '+254'
-      - '+996'
-      - '+855'
-      - '+686'
-      - '+269'
-      - '+1869'
-      - '+850'
-      - '+82'
-      - '+965'
-      - '+345'
-      - '+7'
-      - '+856'
-      - '+961'
-      - '+1758'
-      - '+423'
-      - '+94'
-      - '+231'
-      - '+266'
-      - '+370'
-      - '+352'
-      - '+371'
-      - '+218'
-      - '+377'
-      - '+373'
-      - '+382'
-      - '+261'
-      - '+692'
-      - '+389'
-      - '+223'
-      - '+95'
-      - '+976'
-      - '+853'
-      - '+1670'
-      - '+596'
-      - '+222'
-      - '+1664'
-      - '+356'
-      - '+230'
-      - '+960'
-      - '+265'
-      - '+52'
-      - '+60'
-      - '+258'
-      - '+264'
-      - '+687'
-      - '+227'
-      - '+234'
-      - '+505'
-      - '+31'
-      - '+47'
-      - '+977'
-      - '+674'
-      - '+683'
-      - '+64'
-      - '+968'
-      - '+507'
-      - '+51'
-      - '+689'
-      - '+675'
-      - '+63'
-      - '+92'
-      - '+48'
-      - '+508'
-      - '+1787'
-      - '+970'
-      - '+351'
-      - '+680'
-      - '+974'
-      - '+262'
-      - '+40'
-      - '+381'
-      - '+250'
-      - '+966'
-      - '+677'
-      - '+248'
-      - '+249'
-      - '+46'
-      - '+65'
-      - '+290'
-      - '+386'
-      - '+421'
-      - '+232'
-      - '+378'
-      - '+221'
-      - '+252'
-      - '+597'
-      - '+239'
-      - '+503'
-      - '+963'
-      - '+268'
-      - '+1649'
-      - '+235'
-      - '+228'
-      - '+66'
-      - '+992'
-      - '+690'
-      - '+670'
-      - '+993'
-      - '+216'
-      - '+676'
-      - '+90'
-      - '+1868'
-      - '+688'
-      - '+886'
-      - '+255'
-      - '+380'
-      - '+256'
-      - '+598'
-      - '+998'
-      - '+379'
-      - '+1784'
-      - '+58'
-      - '+1284'
-      - '+1340'
-      - '+84'
-      - '+678'
-      - '+681'
-      - '+685'
-      - '+967'
-      - '+27'
-      - '+260'
-      - '+263'
-      type: string
-      description: '* `+376` - +376
-
-        * `+971` - +971
-
-        * `+93` - +93
-
-        * `+1268` - +1268
-
-        * `+1264` - +1264
-
-        * `+355` - +355
-
-        * `+374` - +374
-
-        * `+244` - +244
-
-        * `+672` - +672
-
-        * `+54` - +54
-
-        * `+1684` - +1684
-
-        * `+43` - +43
-
-        * `+61` - +61
-
-        * `+297` - +297
-
-        * `+994` - +994
-
-        * `+387` - +387
-
-        * `+1246` - +1246
-
-        * `+880` - +880
-
-        * `+32` - +32
-
-        * `+226` - +226
-
-        * `+359` - +359
-
-        * `+973` - +973
-
-        * `+257` - +257
-
-        * `+229` - +229
-
-        * `+590` - +590
-
-        * `+1441` - +1441
-
-        * `+673` - +673
-
-        * `+591` - +591
-
-        * `+55` - +55
-
-        * `+1242` - +1242
-
-        * `+975` - +975
-
-        * `+267` - +267
-
-        * `+375` - +375
-
-        * `+501` - +501
-
-        * `+1` - +1
-
-        * `+243` - +243
-
-        * `+236` - +236
-
-        * `+242` - +242
-
-        * `+41` - +41
-
-        * `+225` - +225
-
-        * `+682` - +682
-
-        * `+56` - +56
-
-        * `+237` - +237
-
-        * `+86` - +86
-
-        * `+57` - +57
-
-        * `+506` - +506
-
-        * `+53` - +53
-
-        * `+238` - +238
-
-        * `+357` - +357
-
-        * `+420` - +420
-
-        * `+49` - +49
-
-        * `+253` - +253
-
-        * `+45` - +45
-
-        * `+1767` - +1767
-
-        * `+1809` - +1809
-
-        * `+213` - +213
-
-        * `+593` - +593
-
-        * `+372` - +372
-
-        * `+20` - +20
-
-        * `+212` - +212
-
-        * `+291` - +291
-
-        * `+34` - +34
-
-        * `+251` - +251
-
-        * `+358` - +358
-
-        * `+679` - +679
-
-        * `+500` - +500
-
-        * `+691` - +691
-
-        * `+298` - +298
-
-        * `+33` - +33
-
-        * `+241` - +241
-
-        * `+44` - +44
-
-        * `+1473` - +1473
-
-        * `+995` - +995
-
-        * `+594` - +594
-
-        * `+441481` - +441481
-
-        * `+233` - +233
-
-        * `+350` - +350
-
-        * `+299` - +299
-
-        * `+220` - +220
-
-        * `+224` - +224
-
-        * `+240` - +240
-
-        * `+30` - +30
-
-        * `+502` - +502
-
-        * `+1671` - +1671
-
-        * `+245` - +245
-
-        * `+595` - +595
-
-        * `+852` - +852
-
-        * `+504` - +504
-
-        * `+385` - +385
-
-        * `+509` - +509
-
-        * `+36` - +36
-
-        * `+62` - +62
-
-        * `+353` - +353
-
-        * `+972` - +972
-
-        * `+441624` - +441624
-
-        * `+91` - +91
-
-        * `+246` - +246
-
-        * `+964` - +964
-
-        * `+98` - +98
-
-        * `+354` - +354
-
-        * `+39` - +39
-
-        * `+441534` - +441534
-
-        * `+1876` - +1876
-
-        * `+962` - +962
-
-        * `+81` - +81
-
-        * `+254` - +254
-
-        * `+996` - +996
-
-        * `+855` - +855
-
-        * `+686` - +686
-
-        * `+269` - +269
-
-        * `+1869` - +1869
-
-        * `+850` - +850
-
-        * `+82` - +82
-
-        * `+965` - +965
-
-        * `+345` - +345
-
-        * `+7` - +7
-
-        * `+856` - +856
-
-        * `+961` - +961
-
-        * `+1758` - +1758
-
-        * `+423` - +423
-
-        * `+94` - +94
-
-        * `+231` - +231
-
-        * `+266` - +266
-
-        * `+370` - +370
-
-        * `+352` - +352
-
-        * `+371` - +371
-
-        * `+218` - +218
-
-        * `+377` - +377
-
-        * `+373` - +373
-
-        * `+382` - +382
-
-        * `+261` - +261
-
-        * `+692` - +692
-
-        * `+389` - +389
-
-        * `+223` - +223
-
-        * `+95` - +95
-
-        * `+976` - +976
-
-        * `+853` - +853
-
-        * `+1670` - +1670
-
-        * `+596` - +596
-
-        * `+222` - +222
-
-        * `+1664` - +1664
-
-        * `+356` - +356
-
-        * `+230` - +230
-
-        * `+960` - +960
-
-        * `+265` - +265
-
-        * `+52` - +52
-
-        * `+60` - +60
-
-        * `+258` - +258
-
-        * `+264` - +264
-
-        * `+687` - +687
-
-        * `+227` - +227
-
-        * `+234` - +234
-
-        * `+505` - +505
-
-        * `+31` - +31
-
-        * `+47` - +47
-
-        * `+977` - +977
-
-        * `+674` - +674
-
-        * `+683` - +683
-
-        * `+64` - +64
-
-        * `+968` - +968
-
-        * `+507` - +507
-
-        * `+51` - +51
-
-        * `+689` - +689
-
-        * `+675` - +675
-
-        * `+63` - +63
-
-        * `+92` - +92
-
-        * `+48` - +48
-
-        * `+508` - +508
-
-        * `+1787` - +1787
-
-        * `+970` - +970
-
-        * `+351` - +351
-
-        * `+680` - +680
-
-        * `+974` - +974
-
-        * `+262` - +262
-
-        * `+40` - +40
-
-        * `+381` - +381
-
-        * `+250` - +250
-
-        * `+966` - +966
-
-        * `+677` - +677
-
-        * `+248` - +248
-
-        * `+249` - +249
-
-        * `+46` - +46
-
-        * `+65` - +65
-
-        * `+290` - +290
-
-        * `+386` - +386
-
-        * `+421` - +421
-
-        * `+232` - +232
-
-        * `+378` - +378
-
-        * `+221` - +221
-
-        * `+252` - +252
-
-        * `+597` - +597
-
-        * `+239` - +239
-
-        * `+503` - +503
-
-        * `+963` - +963
-
-        * `+268` - +268
-
-        * `+1649` - +1649
-
-        * `+235` - +235
-
-        * `+228` - +228
-
-        * `+66` - +66
-
-        * `+992` - +992
-
-        * `+690` - +690
-
-        * `+670` - +670
-
-        * `+993` - +993
-
-        * `+216` - +216
-
-        * `+676` - +676
-
-        * `+90` - +90
-
-        * `+1868` - +1868
-
-        * `+688` - +688
-
-        * `+886` - +886
-
-        * `+255` - +255
-
-        * `+380` - +380
-
-        * `+256` - +256
-
-        * `+598` - +598
-
-        * `+998` - +998
-
-        * `+379` - +379
-
-        * `+1784` - +1784
-
-        * `+58` - +58
-
-        * `+1284` - +1284
-
-        * `+1340` - +1340
-
-        * `+84` - +84
-
-        * `+678` - +678
-
-        * `+681` - +681
-
-        * `+685` - +685
-
-        * `+967` - +967
-
-        * `+27` - +27
-
-        * `+260` - +260
-
-        * `+263` - +263'
-    DeliveryEmailList:
-      type: object
-      description: 'Serializer for handling create/update/delete operations on a list of delivery emails.
-
-        Accepts a list of delivery email objects and handles validation, creation, updates, and deletions.'
-      properties:
-        delivery_emails:
-          type: array
-          items:
-            type: object
-            additionalProperties: {}
-          description: List of delivery email objects with 'uuid' (optional), 'label', and 'email_address'
-      required:
-      - delivery_emails
-    AccountDetail:
-      type: object
-      description: "Serializer for account details with country-specific validation.\nSupports DUNS field and AccountEmail management.\n\nUK buyers require: company_name, vat_number, company_registration_number,\n                  registered_address, contact_name, contact_phone_number,\n                  contact_email_address\n\nUS buyers require: company_name, vat_number (as EIN), registered_address,\n                  contact_name, contact_phone_number, contact_email_address"
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        company_name:
-          type: string
-          description: Company name
-          maxLength: 255
-        vat_number:
-          type: string
-          description: VAT number
-          maxLength: 100
-        duns:
-          type: string
-          nullable: true
-        company_registration_number:
-          type: string
-          description: Company Registration Number (UK only)
-          maxLength: 100
-        registered_address:
-          type: string
-          description: Registered company address
-        contact_name:
-          type: string
-          maxLength: 255
-        contact_phone_number:
-          type: string
-          maxLength: 50
-        contact_email_address:
-          type: string
-          format: email
-          description: 'Contact email address (DEPRECATED: Use account_emails relationship instead)'
-          maxLength: 255
-        tax_exemption_certificate:
-          type: boolean
-          description: Tax exemption certificate (US only)
-        account_emails:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccountEmail'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - account_emails
-      - company_name
-      - contact_name
-      - contact_phone_number
-      - created_at
-      - id
-      - modified_at
-      - registered_address
-      - vat_number
-    PaginatedSupplierList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Supplier'
+        * `lift_gate` - Lift gate required'
     CountryTypeEnum:
       enum:
       - EU
@@ -2688,313 +2704,9 @@ components:
         * `GB` - Gb
 
         * `Other` - Other'
-    DeliveryEmail:
-      type: object
-      description: Serializer for DeliveryEmail model.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-          description: Unique identifier for delivery email lookup
-        label:
-          type: string
-          description: Label for this delivery contact (e.g. 'Goods In')
-          maxLength: 255
-        email_address:
-          type: string
-          format: email
-          description: Delivery contact email
-          maxLength: 255
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - email_address
-      - label
-      - modified_at
-      - uuid
-    DeliveryLocationTypeEnum:
+    BlankEnum:
       enum:
-      - warehouse
-      - factory
-      - distribution_center
-      - retail_location
-      - other
-      type: string
-      description: '* `warehouse` - Warehouse
-
-        * `factory` - Factory
-
-        * `distribution_center` - Distribution Center
-
-        * `retail_location` - Retail Location
-
-        * `other` - Other'
-    AddressTypeEnum:
-      enum:
-      - billing_address
-      - delivery_address
-      - dispatch_address
-      - company_address
-      type: string
-      description: '* `billing_address` - Billing address
-
-        * `delivery_address` - Delivery address
-
-        * `dispatch_address` - Dispatch address
-
-        * `company_address` - Company address'
-    BuyerOnboardingCountry:
-      enum:
-      - us
-      - uk
-      type: string
-      description: '* `us` - United States
-
-        * `uk` - United Kingdom'
-    BuyerOnboardingDetail:
-      type: object
-      description: 'Detailed serializer for buyer onboarding.
-
-        Includes all related information.
-
-
-        For self-onboarded buyers (`buyer_onboarding.company` is set), the
-
-        name / email fields are derived from the canonical `Company` /
-
-        `User`, and `has_account_details` / `has_delivery_details` consider
-
-        Company columns alongside the legacy AccountDetail/DeliveryDetails
-
-        tables.'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-          description: Unique identifier for sharing the onboarding form
-        name:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          readOnly: true
-        country:
-          $ref: '#/components/schemas/BuyerOnboardingCountry'
-        company_uuid:
-          type: string
-          readOnly: true
-        company_name:
-          type: string
-          readOnly: true
-        notes:
-          type: string
-          description: Internal notes
-        submitted_at:
-          type: string
-          format: date-time
-          readOnly: true
-          nullable: true
-          description: When the buyer submitted the form
-        is_submitted:
-          type: string
-          readOnly: true
-        total_steps:
-          type: string
-          readOnly: true
-        completed_steps:
-          type: string
-          readOnly: true
-        has_account_details:
-          type: string
-          readOnly: true
-        has_delivery_details:
-          type: string
-          readOnly: true
-        suppliers_count:
-          type: string
-          readOnly: true
-        suppliers_pending_review_count:
-          type: string
-          readOnly: true
-        suppliers_completed:
-          type: string
-          readOnly: true
-        suppliers_completed_at:
-          type: string
-          format: date-time
-          readOnly: true
-          nullable: true
-          description: When the supplier section was marked as complete
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - company_name
-      - company_uuid
-      - completed_steps
-      - country
-      - created_at
-      - email
-      - has_account_details
-      - has_delivery_details
-      - is_submitted
-      - modified_at
-      - name
-      - submitted_at
-      - suppliers_completed
-      - suppliers_completed_at
-      - suppliers_count
-      - suppliers_pending_review_count
-      - total_steps
-      - uuid
-    PatchedBuyerOnboardingDeliveryAddress:
-      type: object
-      description: 'Serializer for BuyerOnboardingDeliveryAddress model.
-
-        Includes all BaseAddress fields plus delivery-specific fields.'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        address_type:
-          $ref: '#/components/schemas/AddressTypeEnum'
-        contact_full_name:
-          type: string
-          nullable: true
-          maxLength: 255
-        contact_phone:
-          type: string
-          nullable: true
-          maxLength: 50
-        building:
-          type: string
-          nullable: true
-          maxLength: 100
-        street_1:
-          type: string
-          nullable: true
-          maxLength: 255
-        street_2:
-          type: string
-          nullable: true
-          maxLength: 255
-        town:
-          type: string
-          nullable: true
-          maxLength: 100
-        region:
-          type: string
-          nullable: true
-          maxLength: 100
-        postcode:
-          type: string
-          nullable: true
-          maxLength: 100
-        country:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        place_id:
-          type: string
-          nullable: true
-          maxLength: 100
-        latitude:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-          nullable: true
-        longitude:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-          nullable: true
-        vat_number:
-          type: string
-          nullable: true
-          maxLength: 50
-        vat_country_code:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        vat_exempt:
-          type: boolean
-        phone_country_code:
-          nullable: true
-          oneOf:
-          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        delivery_instructions:
-          type: string
-          nullable: true
-        collection_instructions:
-          type: string
-          nullable: true
-        country_type:
-          $ref: '#/components/schemas/CountryTypeEnum'
-        eori_number:
-          type: string
-          maxLength: 20
-        ein_number:
-          type: string
-          maxLength: 20
-        delivery_location_type:
-          description: 'Type of delivery location
-
-
-            * `warehouse` - Warehouse
-
-            * `factory` - Factory
-
-            * `distribution_center` - Distribution Center
-
-            * `retail_location` - Retail Location
-
-            * `other` - Other'
-          oneOf:
-          - $ref: '#/components/schemas/DeliveryLocationTypeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-        delivery_location_type_display:
-          type: string
-          readOnly: true
-        delivery_location_type_other:
-          type: string
-          description: Specify delivery location type when 'Other' is selected
-          maxLength: 255
-        warehouse_receiving_hours:
-          type: string
-          description: Warehouse receiving hours
-          maxLength: 255
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
+      - ''
     DeliveryDetails:
       type: object
       description: Serializer for delivery details.
@@ -3067,90 +2779,294 @@ components:
       - delivery_location_type_display
       - id
       - modified_at
-    AccessRequirementsEnum:
+    Supplier:
+      type: object
+      description: 'Serializer for supplier information.
+
+
+        Only includes fields that are actively used in the public buyer onboarding form.
+
+        Other model fields are kept for backward compatibility but not exposed in the API.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        supplier_name:
+          type: string
+          description: Supplier name
+          maxLength: 255
+        average_monthly_spend:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          description: Average monthly spend with this supplier
+        invoice_currency:
+          type: string
+          description: Invoice/Payment currency (e.g., USD, GBP, EUR)
+          maxLength: 3
+        payment_terms:
+          type: string
+          description: Supplier payment terms
+        priority:
+          description: 'Priority to onboard this supplier
+
+
+            * `high` - High
+
+            * `medium` - Medium
+
+            * `low` - Low'
+          oneOf:
+          - $ref: '#/components/schemas/PriorityEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        supplier_country:
+          type: string
+          description: Supplier country
+          maxLength: 100
+        arranges_delivery:
+          type: boolean
+          description: Does the supplier arrange delivery?
+        lead_time:
+          type: string
+          description: Agreed lead time
+          maxLength: 255
+        is_organic:
+          type: boolean
+          description: Is this an organic supplier?
+        relationship_notes:
+          type: string
+          description: Any noteworthy information about your trading relationship
+        supplier_spreadsheet:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Supplier spreadsheet
+        supplier_spreadsheet_url:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - modified_at
+      - supplier_name
+      - supplier_spreadsheet_url
+    BuyerOnboardingDocument:
+      type: object
+      description: Serializer for BuyerOnboardingDocument model.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unique identifier for document lookup
+        document:
+          type: string
+          format: uri
+          description: Uploaded document
+        document_url:
+          type: string
+          readOnly: true
+        description:
+          type:
+          - string
+          - 'null'
+          description: Optional description of the document
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - document
+      - document_url
+      - modified_at
+      - uuid
+    PatchedAccountDetail:
+      type: object
+      description: "Serializer for account details with country-specific validation.\nSupports DUNS field and AccountEmail management.\n\nUK buyers require: company_name, vat_number, company_registration_number,\n                  registered_address, contact_name, contact_phone_number,\n                  contact_email_address\n\nUS buyers require: company_name, vat_number (as EIN), registered_address,\n                  contact_name, contact_phone_number, contact_email_address"
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        company_name:
+          type: string
+          description: Company name
+          maxLength: 255
+        vat_number:
+          type: string
+          description: VAT number
+          maxLength: 100
+        duns:
+          type:
+          - string
+          - 'null'
+        company_registration_number:
+          type: string
+          description: Company Registration Number (UK only)
+          maxLength: 100
+        registered_address:
+          type: string
+          description: Registered company address
+        contact_name:
+          type: string
+          maxLength: 255
+        contact_phone_number:
+          type: string
+          maxLength: 50
+        contact_email_address:
+          type: string
+          format: email
+          description: 'Contact email address (DEPRECATED: Use account_emails relationship instead)'
+          maxLength: 255
+        tax_exemption_certificate:
+          type: boolean
+          description: Tax exemption certificate (US only)
+        account_emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountEmail'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+    NullEnum:
       enum:
-      - delivery_appointment
-      - inside_delivery
-      - lift_gate
+      - null
+    BuyerOnboardingStep:
+      type: object
+      description: Serializer for buyer onboarding step with template information.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        template_step:
+          type: integer
+          description: The template this step is based on
+        template_phase:
+          type: string
+          readOnly: true
+        template_phase_display:
+          type: string
+          readOnly: true
+        process_description:
+          type: string
+          readOnly: true
+        template_step_order:
+          type: integer
+          readOnly: true
+        notes:
+          type: string
+          description: Buyer-specific notes for this step
+        is_completed:
+          type: boolean
+          description: Whether this step is completed
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: When this step was completed
+        completed_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Who completed this step
+        completed_by_email:
+          type: string
+          format: email
+          readOnly: true
+        custom_step_order:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          description: Custom order for this buyer (overrides template step order)
+        is_step_visible:
+          type: boolean
+          description: Whether this step is visible for this buyer
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - completed_at
+      - completed_by
+      - completed_by_email
+      - created_at
+      - id
+      - modified_at
+      - process_description
+      - template_phase
+      - template_phase_display
+      - template_step
+      - template_step_order
+    PriorityEnum:
+      enum:
+      - high
+      - medium
+      - low
       type: string
-      description: '* `delivery_appointment` - Delivery appointment requirement
+      description: '* `high` - High
 
-        * `inside_delivery` - Inside delivery Required
+        * `medium` - Medium
 
-        * `lift_gate` - Lift gate required'
-    PaginatedBuyerOnboardingStepList:
+        * `low` - Low'
+    OnboardingStepTemplate:
       type: object
-      required:
-      - count
-      - results
+      description: Serializer for onboarding step template.
       properties:
-        count:
+        id:
           type: integer
-          example: 123
-        next:
+          readOnly: true
+        phase:
+          $ref: '#/components/schemas/PhaseEnum'
+        phase_display:
           type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
+          readOnly: true
+        process_description:
           type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerOnboardingStep'
-    PaginatedOnboardingStepTemplateList:
-      type: object
+          description: Description of the process step
+        step_order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Order in which steps should appear within the phase
+        is_template_active:
+          type: boolean
+          description: Whether this step is active and will be included for new buyers
       required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/OnboardingStepTemplate'
-    PaginatedDeliveryEmailList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/DeliveryEmail'
-    BlankEnum:
-      enum:
-      - ''
-    BuyerOnboardingDeliveryAddress:
+      - id
+      - phase
+      - phase_display
+      - process_description
+    PatchedBuyerOnboardingDeliveryAddress:
       type: object
       description: 'Serializer for BuyerOnboardingDeliveryAddress model.
 
@@ -3166,63 +3082,73 @@ components:
         address_type:
           $ref: '#/components/schemas/AddressTypeEnum'
         contact_full_name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           maxLength: 255
         contact_phone:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           maxLength: 50
         building:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           maxLength: 100
         street_1:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           maxLength: 255
         street_2:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           maxLength: 255
         town:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           maxLength: 100
         region:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           maxLength: 100
         postcode:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           maxLength: 100
         country:
-          nullable: true
           oneOf:
           - $ref: '#/components/schemas/Country'
           - $ref: '#/components/schemas/BlankEnum'
           - $ref: '#/components/schemas/NullEnum'
         place_id:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           maxLength: 100
         latitude:
-          type: string
+          type:
+          - string
+          - 'null'
           format: decimal
           pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-          nullable: true
         longitude:
-          type: string
+          type:
+          - string
+          - 'null'
           format: decimal
           pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-          nullable: true
         vat_number:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           maxLength: 50
         vat_country_code:
-          nullable: true
           oneOf:
           - $ref: '#/components/schemas/Country'
           - $ref: '#/components/schemas/BlankEnum'
@@ -3230,17 +3156,18 @@ components:
         vat_exempt:
           type: boolean
         phone_country_code:
-          nullable: true
           oneOf:
           - $ref: '#/components/schemas/PhoneCountryCodeEnum'
           - $ref: '#/components/schemas/BlankEnum'
           - $ref: '#/components/schemas/NullEnum'
         delivery_instructions:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         collection_instructions:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         country_type:
           $ref: '#/components/schemas/CountryTypeEnum'
         eori_number:
@@ -3284,120 +3211,64 @@ components:
           type: string
           format: date-time
           readOnly: true
-      required:
-      - created
-      - delivery_location_type_display
-      - modified
-      - name
-      - uuid
-    OnboardingStepTemplate:
+    PatchedDeliveryDetails:
       type: object
-      description: Serializer for onboarding step template.
+      description: Serializer for delivery details.
       properties:
         id:
           type: integer
           readOnly: true
-        phase:
-          $ref: '#/components/schemas/PhaseEnum'
-        phase_display:
+        delivery_address:
+          type: string
+          description: 'Delivery address (DEPRECATED: Use buyer_onboarding_delivery_address instead)'
+        delivery_location_type:
+          $ref: '#/components/schemas/DeliveryLocationTypeEnum'
+        delivery_location_type_display:
           type: string
           readOnly: true
-        process_description:
+        delivery_location_type_other:
           type: string
-          description: Description of the process step
-        step_order:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          description: Order in which steps should appear within the phase
-        is_template_active:
-          type: boolean
-          description: Whether this step is active and will be included for new buyers
-      required:
-      - id
-      - phase
-      - phase_display
-      - process_description
-    PhaseEnum:
-      enum:
-      - phase_1
-      - phase_2
-      - phase_3
-      - phase_4
-      type: string
-      description: '* `phase_1` - Phase 1
-
-        * `phase_2` - Phase 2
-
-        * `phase_3` - Phase 3
-
-        * `phase_4` - Phase 4'
-    Supplier:
-      type: object
-      description: 'Serializer for supplier information.
-
-
-        Only includes fields that are actively used in the public buyer onboarding form.
-
-        Other model fields are kept for backward compatibility but not exposed in the API.'
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        supplier_name:
-          type: string
-          description: Supplier name
+          description: Specify delivery location type when 'Other' is selected
           maxLength: 255
-        average_monthly_spend:
+        delivery_instructions:
           type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-          nullable: true
-          description: Average monthly spend with this supplier
-        invoice_currency:
+          description: Delivery instructions
+        delivery_contact_name:
           type: string
-          description: Invoice/Payment currency (e.g., USD, GBP, EUR)
-          maxLength: 3
-        payment_terms:
+          description: 'Delivery contact name (DEPRECATED: Use delivery_address relationship instead)'
+          maxLength: 255
+        delivery_contact_phone_number:
           type: string
-          description: Supplier payment terms
-        priority:
-          description: 'Priority to onboard this supplier
+          description: 'Delivery contact phone number (DEPRECATED: Use delivery_address relationship instead)'
+          maxLength: 50
+        delivery_contact_email:
+          type: string
+          format: email
+          description: 'Delivery contact email (DEPRECATED: Use delivery_emails relationship instead)'
+          maxLength: 255
+        warehouse_receiving_hours:
+          type: string
+          description: Warehouse receiving hours
+          maxLength: 255
+        storage_capacity:
+          type: string
+          description: Storage capacity
+          maxLength: 255
+        access_requirements:
+          description: 'Access requirements
 
 
-            * `high` - High
+            * `delivery_appointment` - Delivery appointment requirement
 
-            * `medium` - Medium
+            * `inside_delivery` - Inside delivery Required
 
-            * `low` - Low'
+            * `lift_gate` - Lift gate required'
           oneOf:
-          - $ref: '#/components/schemas/PriorityEnum'
+          - $ref: '#/components/schemas/AccessRequirementsEnum'
           - $ref: '#/components/schemas/BlankEnum'
-        supplier_country:
-          type: string
-          description: Supplier country
-          maxLength: 100
-        arranges_delivery:
+        is_sample_required:
           type: boolean
-          description: Does the supplier arrange delivery?
-        lead_time:
-          type: string
-          description: Agreed lead time
-          maxLength: 255
-        is_organic:
-          type: boolean
-          description: Is this an organic supplier?
-        relationship_notes:
-          type: string
-          description: Any noteworthy information about your trading relationship
-        supplier_spreadsheet:
-          type: string
-          format: uri
-          nullable: true
-          description: Supplier spreadsheet
-        supplier_spreadsheet_url:
-          type: string
-          readOnly: true
+          description: Is a sample required?
         created_at:
           type: string
           format: date-time
@@ -3406,12 +3277,6 @@ components:
           type: string
           format: date-time
           readOnly: true
-      required:
-      - created_at
-      - id
-      - modified_at
-      - supplier_name
-      - supplier_spreadsheet_url
     PatchedSupplier:
       type: object
       description: 'Serializer for supplier information.
@@ -3429,10 +3294,11 @@ components:
           description: Supplier name
           maxLength: 255
         average_monthly_spend:
-          type: string
+          type:
+          - string
+          - 'null'
           format: decimal
           pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-          nullable: true
           description: Average monthly spend with this supplier
         invoice_currency:
           type: string
@@ -3471,9 +3337,10 @@ components:
           type: string
           description: Any noteworthy information about your trading relationship
         supplier_spreadsheet:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
-          nullable: true
           description: Supplier spreadsheet
         supplier_spreadsheet_url:
           type: string
@@ -3486,7 +3353,7 @@ components:
           type: string
           format: date-time
           readOnly: true
-    PaginatedBuyerOnboardingDeliveryAddressList:
+    PaginatedSupplierList:
       type: object
       required:
       - count
@@ -3496,36 +3363,141 @@ components:
           type: integer
           example: 123
         next:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           format: uri
           example: http://api.example.org/accounts/?page=4
         previous:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           format: uri
           example: http://api.example.org/accounts/?page=2
         results:
           type: array
           items:
-            $ref: '#/components/schemas/BuyerOnboardingDeliveryAddress'
-    AccountEmail:
+            $ref: '#/components/schemas/Supplier'
+    PaginatedBuyerOnboardingDocumentList:
       type: object
-      description: Serializer for AccountEmail model.
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerOnboardingDocument'
+    AddressTypeEnum:
+      enum:
+      - billing_address
+      - delivery_address
+      - dispatch_address
+      - company_address
+      type: string
+      description: '* `billing_address` - Billing address
+
+        * `delivery_address` - Delivery address
+
+        * `dispatch_address` - Dispatch address
+
+        * `company_address` - Company address'
+    PaginatedBuyerOnboardingStepList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerOnboardingStep'
+    PaginatedOnboardingStepTemplateList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OnboardingStepTemplate'
+    DeliveryEmailList:
+      type: object
+      description: 'Serializer for handling create/update/delete operations on a list of delivery emails.
+
+        Accepts a list of delivery email objects and handles validation, creation, updates, and deletions.'
+      properties:
+        delivery_emails:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          description: List of delivery email objects with 'uuid' (optional), 'label', and 'email_address'
+      required:
+      - delivery_emails
+    DeliveryEmail:
+      type: object
+      description: Serializer for DeliveryEmail model.
       properties:
         uuid:
           type: string
           format: uuid
           readOnly: true
-          description: Unique identifier for account email lookup
+          description: Unique identifier for delivery email lookup
         label:
           type: string
-          description: Label for this contact (e.g. 'Accounts Payable')
+          description: Label for this delivery contact (e.g. 'Goods In')
           maxLength: 255
         email_address:
           type: string
           format: email
-          description: Contact email address
+          description: Delivery contact email
           maxLength: 255
         created_at:
           type: string
@@ -3541,50 +3513,83 @@ components:
       - label
       - modified_at
       - uuid
-    PatchedAccountDetail:
+    BuyerOnboardingDetail:
       type: object
-      description: "Serializer for account details with country-specific validation.\nSupports DUNS field and AccountEmail management.\n\nUK buyers require: company_name, vat_number, company_registration_number,\n                  registered_address, contact_name, contact_phone_number,\n                  contact_email_address\n\nUS buyers require: company_name, vat_number (as EIN), registered_address,\n                  contact_name, contact_phone_number, contact_email_address"
+      description: 'Detailed serializer for buyer onboarding.
+
+        Includes all related information.
+
+
+        For self-onboarded buyers (`buyer_onboarding.company` is set), the
+
+        name / email fields are derived from the canonical `Company` /
+
+        `User`, and `has_account_details` / `has_delivery_details` consider
+
+        Company columns alongside the legacy AccountDetail/DeliveryDetails
+
+        tables.'
       properties:
-        id:
-          type: integer
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unique identifier for sharing the onboarding form
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          readOnly: true
+        country:
+          $ref: '#/components/schemas/BuyerOnboardingCountry'
+        company_uuid:
+          type: string
           readOnly: true
         company_name:
           type: string
-          description: Company name
-          maxLength: 255
-        vat_number:
-          type: string
-          description: VAT number
-          maxLength: 100
-        duns:
-          type: string
-          nullable: true
-        company_registration_number:
-          type: string
-          description: Company Registration Number (UK only)
-          maxLength: 100
-        registered_address:
-          type: string
-          description: Registered company address
-        contact_name:
-          type: string
-          maxLength: 255
-        contact_phone_number:
-          type: string
-          maxLength: 50
-        contact_email_address:
-          type: string
-          format: email
-          description: 'Contact email address (DEPRECATED: Use account_emails relationship instead)'
-          maxLength: 255
-        tax_exemption_certificate:
-          type: boolean
-          description: Tax exemption certificate (US only)
-        account_emails:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccountEmail'
           readOnly: true
+        notes:
+          type: string
+          description: Internal notes
+        submitted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: When the buyer submitted the form
+        is_submitted:
+          type: string
+          readOnly: true
+        total_steps:
+          type: string
+          readOnly: true
+        completed_steps:
+          type: string
+          readOnly: true
+        has_account_details:
+          type: string
+          readOnly: true
+        has_delivery_details:
+          type: string
+          readOnly: true
+        suppliers_count:
+          type: string
+          readOnly: true
+        suppliers_pending_review_count:
+          type: string
+          readOnly: true
+        suppliers_completed:
+          type: string
+          readOnly: true
+        suppliers_completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: When the supplier section was marked as complete
         created_at:
           type: string
           format: date-time
@@ -3593,6 +3598,47 @@ components:
           type: string
           format: date-time
           readOnly: true
+      required:
+      - company_name
+      - company_uuid
+      - completed_steps
+      - country
+      - created_at
+      - email
+      - has_account_details
+      - has_delivery_details
+      - is_submitted
+      - modified_at
+      - name
+      - submitted_at
+      - suppliers_completed
+      - suppliers_completed_at
+      - suppliers_count
+      - suppliers_pending_review_count
+      - total_steps
+      - uuid
+    BuyerOnboardingCountry:
+      enum:
+      - us
+      - uk
+      type: string
+      description: '* `us` - United States
+
+        * `uk` - United Kingdom'
+    PhaseEnum:
+      enum:
+      - phase_1
+      - phase_2
+      - phase_3
+      - phase_4
+      type: string
+      description: '* `phase_1` - Phase 1
+
+        * `phase_2` - Phase 2
+
+        * `phase_3` - Phase 3
+
+        * `phase_4` - Phase 4'
   securitySchemes:
     cookieAuth:
       type: apiKey

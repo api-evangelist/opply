@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Opply Activity Feed Deals API
+  title: Opply Deals API
   version: 0.0.0
 tags:
 - name: Deals
@@ -8,7 +8,7 @@ paths:
   /api/v1/deals/:
     get:
       operationId: api_v1_deals_list
-      summary: Deal endpoints.
+      summary: Deal endpoints
       parameters:
       - name: ordering
         required: false
@@ -29,7 +29,7 @@ paths:
           description: ''
     post:
       operationId: api_v1_deals_create
-      summary: Deal endpoints.
+      summary: Deal endpoints
       tags:
       - Deals
       requestBody:
@@ -54,7 +54,7 @@ paths:
   /api/v1/deals/{deal_uuid}/notes/:
     get:
       operationId: api_v1_deals_notes_list
-      summary: Deal Notes endpoints.
+      summary: Deal Notes endpoints
       parameters:
       - in: path
         name: deal_uuid
@@ -80,7 +80,7 @@ paths:
           description: ''
     post:
       operationId: api_v1_deals_notes_create
-      summary: Endpoint to create a note for a deal.
+      summary: Endpoint to create a note for a deal
       parameters:
       - in: path
         name: deal_uuid
@@ -111,7 +111,7 @@ paths:
   /api/v1/deals/{deal_uuid}/notes/{uuid}/:
     get:
       operationId: api_v1_deals_notes_retrieve
-      summary: Deal Notes endpoints.
+      summary: Deal Notes endpoints
       parameters:
       - in: path
         name: deal_uuid
@@ -135,7 +135,7 @@ paths:
   /api/v1/deals/{uuid}/:
     get:
       operationId: api_v1_deals_retrieve
-      summary: Deal endpoints.
+      summary: Deal endpoints
       parameters:
       - in: path
         name: uuid
@@ -187,7 +187,7 @@ paths:
   /api/v1/deals/get-deal-from-thread/{thread_id}/:
     get:
       operationId: api_v1_deals_get_deal_from_thread_retrieve
-      summary: Get the deal associated with the thread.
+      summary: Get the deal associated with the thread
       parameters:
       - in: path
         name: thread_id
@@ -216,6 +216,29 @@ components:
           maxLength: 100
       required:
       - external_id
+    Deals:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 100
+        notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notes'
+          readOnly: true
+      required:
+      - id
+      - notes
+      - title
+      - uuid
     Notes:
       type: object
       properties:
@@ -246,29 +269,6 @@ components:
       - created_by_uuid
       - deal_uuid
       - external_user_identifier
-      - uuid
-    Deals:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        title:
-          type: string
-          maxLength: 100
-        notes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Notes'
-          readOnly: true
-      required:
-      - id
-      - notes
-      - title
       - uuid
   securitySchemes:
     cookieAuth:
