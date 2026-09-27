@@ -93,6 +93,42 @@ paths:
           description: Document deleted
 components:
   schemas:
+    BuyerFinancialDocumentTypeEnum:
+      enum:
+      - management_accounts
+      - audited_accounts
+      - balance_sheet
+      - profit_and_loss
+      - cashflow_forecast
+      - sales_tax_exemption
+      - other
+      type: string
+      description: '* `management_accounts` - Management Accounts
+
+        * `audited_accounts` - Audited Accounts
+
+        * `balance_sheet` - Balance Sheet
+
+        * `profit_and_loss` - Profit and Loss
+
+        * `cashflow_forecast` - Cashflow Forecast
+
+        * `sales_tax_exemption` - Sales Tax Exemption
+
+        * `other` - Other'
+    BuyerFinancialDocumentUpload:
+      type: object
+      description: Write serializer for multipart uploads.
+      properties:
+        file:
+          type: string
+          format: binary
+        type:
+          allOf:
+          - $ref: '#/components/schemas/BuyerFinancialDocumentTypeEnum'
+          default: management_accounts
+      required:
+      - file
     BuyerFinancialDocument:
       type: object
       description: Read serializer returned for list/create responses.
@@ -217,42 +253,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BuyerFinancialDocument'
-    BuyerFinancialDocumentTypeEnum:
-      enum:
-      - management_accounts
-      - audited_accounts
-      - balance_sheet
-      - profit_and_loss
-      - cashflow_forecast
-      - sales_tax_exemption
-      - other
-      type: string
-      description: '* `management_accounts` - Management Accounts
-
-        * `audited_accounts` - Audited Accounts
-
-        * `balance_sheet` - Balance Sheet
-
-        * `profit_and_loss` - Profit and Loss
-
-        * `cashflow_forecast` - Cashflow Forecast
-
-        * `sales_tax_exemption` - Sales Tax Exemption
-
-        * `other` - Other'
-    BuyerFinancialDocumentUpload:
-      type: object
-      description: Write serializer for multipart uploads.
-      properties:
-        file:
-          type: string
-          format: binary
-        type:
-          allOf:
-          - $ref: '#/components/schemas/BuyerFinancialDocumentTypeEnum'
-          default: management_accounts
-      required:
-      - file
   securitySchemes:
     cookieAuth:
       type: apiKey

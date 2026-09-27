@@ -1,0 +1,1207 @@
+openapi: 3.2.0
+info:
+  title: Opply MCP API
+  version: 0.0.0
+tags:
+- name: MCP
+paths:
+  /api/v1/mcp:
+    post:
+      operationId: api_v1_mcp_create
+      description: 'MCP HTTP transport endpoint.
+
+
+        Mounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,
+
+        ``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the
+
+        ``server`` attribute set via ``as_view(server=...)`` selects which registry
+
+        the route scopes tools to.
+
+
+        POST — JSON-RPC request (initialize / tools/list / tools/call)
+
+        DELETE — terminate session
+
+
+        GET is intentionally not implemented (SSE streaming is not supported in PR 2).'
+      tags:
+      - MCP
+      responses:
+        '200':
+          description: No response body
+      summary: Api v1 mcp create
+      x-summary-source: derived
+    delete:
+      operationId: api_v1_mcp_destroy
+      description: 'MCP HTTP transport endpoint.
+
+
+        Mounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,
+
+        ``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the
+
+        ``server`` attribute set via ``as_view(server=...)`` selects which registry
+
+        the route scopes tools to.
+
+
+        POST — JSON-RPC request (initialize / tools/list / tools/call)
+
+        DELETE — terminate session
+
+
+        GET is intentionally not implemented (SSE streaming is not supported in PR 2).'
+      tags:
+      - MCP
+      responses:
+        '204':
+          description: No response body
+      summary: Api v1 mcp destroy
+      x-summary-source: derived
+  /api/v1/mcp/:
+    post:
+      operationId: api_v1_mcp_create_2
+      description: 'MCP HTTP transport endpoint.
+
+
+        Mounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,
+
+        ``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the
+
+        ``server`` attribute set via ``as_view(server=...)`` selects which registry
+
+        the route scopes tools to.
+
+
+        POST — JSON-RPC request (initialize / tools/list / tools/call)
+
+        DELETE — terminate session
+
+
+        GET is intentionally not implemented (SSE streaming is not supported in PR 2).'
+      tags:
+      - MCP
+      responses:
+        '200':
+          description: No response body
+      summary: Api v1 mcp create 2
+      x-summary-source: derived
+    delete:
+      operationId: api_v1_mcp_destroy_2
+      description: 'MCP HTTP transport endpoint.
+
+
+        Mounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,
+
+        ``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the
+
+        ``server`` attribute set via ``as_view(server=...)`` selects which registry
+
+        the route scopes tools to.
+
+
+        POST — JSON-RPC request (initialize / tools/list / tools/call)
+
+        DELETE — terminate session
+
+
+        GET is intentionally not implemented (SSE streaming is not supported in PR 2).'
+      tags:
+      - MCP
+      responses:
+        '204':
+          description: No response body
+      summary: Api v1 mcp destroy 2
+      x-summary-source: derived
+  /api/v1/mcp/access-requests/:
+    get:
+      operationId: api_v1_mcp_access_requests_list
+      description: 'Access request workflow.
+
+
+        Admin:
+
+        GET /api/v1/mcp/access-requests/ → pending requests for the company
+
+        PATCH /api/v1/mcp/access-requests/{uuid}/ → approve or deny
+
+
+        Member:
+
+        POST /api/v1/mcp/access-requests/ → submit a request
+
+        GET /api/v1/mcp/access-requests/ → own requests'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - MCP
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMcpAccessRequestList'
+          description: ''
+      summary: Api v1 mcp access requests list
+      x-summary-source: derived
+    post:
+      operationId: api_v1_mcp_access_requests_create
+      description: 'Access request workflow.
+
+
+        Admin:
+
+        GET /api/v1/mcp/access-requests/ → pending requests for the company
+
+        PATCH /api/v1/mcp/access-requests/{uuid}/ → approve or deny
+
+
+        Member:
+
+        POST /api/v1/mcp/access-requests/ → submit a request
+
+        GET /api/v1/mcp/access-requests/ → own requests'
+      tags:
+      - MCP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/McpAccessRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/McpAccessRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/McpAccessRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/McpAccessRequest'
+          description: ''
+      summary: Api v1 mcp access requests create
+      x-summary-source: derived
+  /api/v1/mcp/access-requests/{uuid}/review/:
+    patch:
+      operationId: api_v1_mcp_access_requests_review_partial_update
+      description: Admin approves or denies an access request.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - MCP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMcpAccessRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMcpAccessRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMcpAccessRequest'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/McpAccessRequest'
+          description: ''
+      summary: Api v1 mcp access requests review partial update
+      x-summary-source: derived
+  /api/v1/mcp/audit-log/:
+    get:
+      operationId: api_v1_mcp_audit_log_list
+      description: 'Read-only audit log.
+
+
+        Admin: all entries for the company, filterable.
+
+        Member: own entries only.
+
+
+        GET /api/v1/mcp/audit-log/?tool_name=&status=&date_from=&date_to='
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - MCP
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMcpAuditLogList'
+          description: ''
+      summary: Api v1 mcp audit log list
+      x-summary-source: derived
+  /api/v1/mcp/tools/:
+    get:
+      operationId: api_v1_mcp_tools_retrieve
+      description: 'GET /api/v1/mcp/tools/ — list available MCP tools.
+
+
+        Returns tools filtered by the caller''s token scopes (if OAuth Bearer),
+
+        or all tools for Token-auth users (admin/staff).'
+      tags:
+      - MCP
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+      summary: Api v1 mcp tools retrieve
+      x-summary-source: derived
+  /api/v1/mcp/unleashed:
+    post:
+      operationId: api_v1_mcp_unleashed_create
+      description: 'MCP HTTP transport endpoint.
+
+
+        Mounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,
+
+        ``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the
+
+        ``server`` attribute set via ``as_view(server=...)`` selects which registry
+
+        the route scopes tools to.
+
+
+        POST — JSON-RPC request (initialize / tools/list / tools/call)
+
+        DELETE — terminate session
+
+
+        GET is intentionally not implemented (SSE streaming is not supported in PR 2).'
+      tags:
+      - MCP
+      responses:
+        '200':
+          description: No response body
+      summary: Api v1 mcp unleashed create
+      x-summary-source: derived
+    delete:
+      operationId: api_v1_mcp_unleashed_destroy
+      description: 'MCP HTTP transport endpoint.
+
+
+        Mounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,
+
+        ``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the
+
+        ``server`` attribute set via ``as_view(server=...)`` selects which registry
+
+        the route scopes tools to.
+
+
+        POST — JSON-RPC request (initialize / tools/list / tools/call)
+
+        DELETE — terminate session
+
+
+        GET is intentionally not implemented (SSE streaming is not supported in PR 2).'
+      tags:
+      - MCP
+      responses:
+        '204':
+          description: No response body
+      summary: Api v1 mcp unleashed destroy
+      x-summary-source: derived
+  /api/v1/mcp/unleashed/:
+    post:
+      operationId: api_v1_mcp_unleashed_create_2
+      description: 'MCP HTTP transport endpoint.
+
+
+        Mounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,
+
+        ``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the
+
+        ``server`` attribute set via ``as_view(server=...)`` selects which registry
+
+        the route scopes tools to.
+
+
+        POST — JSON-RPC request (initialize / tools/list / tools/call)
+
+        DELETE — terminate session
+
+
+        GET is intentionally not implemented (SSE streaming is not supported in PR 2).'
+      tags:
+      - MCP
+      responses:
+        '200':
+          description: No response body
+      summary: Api v1 mcp unleashed create 2
+      x-summary-source: derived
+    delete:
+      operationId: api_v1_mcp_unleashed_destroy_2
+      description: 'MCP HTTP transport endpoint.
+
+
+        Mounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,
+
+        ``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the
+
+        ``server`` attribute set via ``as_view(server=...)`` selects which registry
+
+        the route scopes tools to.
+
+
+        POST — JSON-RPC request (initialize / tools/list / tools/call)
+
+        DELETE — terminate session
+
+
+        GET is intentionally not implemented (SSE streaming is not supported in PR 2).'
+      tags:
+      - MCP
+      responses:
+        '204':
+          description: No response body
+      summary: Api v1 mcp unleashed destroy 2
+      x-summary-source: derived
+  /api/v1/mcp/user-access/:
+    get:
+      operationId: api_v1_mcp_user_access_list
+      description: 'Admin-only management of per-user MCP access records.
+
+
+        GET /api/v1/mcp/user-access/ → list all access records for the company
+
+        POST /api/v1/mcp/user-access/ → grant access to a user
+
+        PATCH /api/v1/mcp/user-access/{uuid}/ → update scopes/enabled
+
+        DELETE /api/v1/mcp/user-access/{uuid}/ → revoke access
+
+
+        GET /api/v1/mcp/user-access/me/ → any authenticated user''s own record'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - MCP
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMcpUserAccessList'
+          description: ''
+      summary: Api v1 mcp user access list
+      x-summary-source: derived
+    post:
+      operationId: api_v1_mcp_user_access_create
+      description: 'Admin-only management of per-user MCP access records.
+
+
+        GET /api/v1/mcp/user-access/ → list all access records for the company
+
+        POST /api/v1/mcp/user-access/ → grant access to a user
+
+        PATCH /api/v1/mcp/user-access/{uuid}/ → update scopes/enabled
+
+        DELETE /api/v1/mcp/user-access/{uuid}/ → revoke access
+
+
+        GET /api/v1/mcp/user-access/me/ → any authenticated user''s own record'
+      tags:
+      - MCP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/McpUserAccess'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/McpUserAccess'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/McpUserAccess'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/McpUserAccess'
+          description: ''
+      summary: Api v1 mcp user access create
+      x-summary-source: derived
+  /api/v1/mcp/user-access/{uuid}/:
+    patch:
+      operationId: api_v1_mcp_user_access_partial_update
+      description: 'Admin-only management of per-user MCP access records.
+
+
+        GET /api/v1/mcp/user-access/ → list all access records for the company
+
+        POST /api/v1/mcp/user-access/ → grant access to a user
+
+        PATCH /api/v1/mcp/user-access/{uuid}/ → update scopes/enabled
+
+        DELETE /api/v1/mcp/user-access/{uuid}/ → revoke access
+
+
+        GET /api/v1/mcp/user-access/me/ → any authenticated user''s own record'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Public identifier for this access record
+        required: true
+      tags:
+      - MCP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMcpUserAccess'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMcpUserAccess'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMcpUserAccess'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/McpUserAccess'
+          description: ''
+      summary: Api v1 mcp user access partial update
+      x-summary-source: derived
+    delete:
+      operationId: api_v1_mcp_user_access_destroy
+      description: 'Admin-only management of per-user MCP access records.
+
+
+        GET /api/v1/mcp/user-access/ → list all access records for the company
+
+        POST /api/v1/mcp/user-access/ → grant access to a user
+
+        PATCH /api/v1/mcp/user-access/{uuid}/ → update scopes/enabled
+
+        DELETE /api/v1/mcp/user-access/{uuid}/ → revoke access
+
+
+        GET /api/v1/mcp/user-access/me/ → any authenticated user''s own record'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+          description: Public identifier for this access record
+        required: true
+      tags:
+      - MCP
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api v1 mcp user access destroy
+      x-summary-source: derived
+  /api/v1/mcp/user-access/me/:
+    get:
+      operationId: api_v1_mcp_user_access_me_retrieve
+      description: Return the current user's own MCP access record.
+      tags:
+      - MCP
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/McpUserAccess'
+          description: ''
+      summary: Api v1 mcp user access me retrieve
+      x-summary-source: derived
+  /api/v1/mcp/zendesk:
+    post:
+      operationId: api_v1_mcp_zendesk_create
+      description: 'MCP HTTP transport endpoint.
+
+
+        Mounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,
+
+        ``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the
+
+        ``server`` attribute set via ``as_view(server=...)`` selects which registry
+
+        the route scopes tools to.
+
+
+        POST — JSON-RPC request (initialize / tools/list / tools/call)
+
+        DELETE — terminate session
+
+
+        GET is intentionally not implemented (SSE streaming is not supported in PR 2).'
+      tags:
+      - MCP
+      responses:
+        '200':
+          description: No response body
+      summary: Api v1 mcp zendesk create
+      x-summary-source: derived
+    delete:
+      operationId: api_v1_mcp_zendesk_destroy
+      description: 'MCP HTTP transport endpoint.
+
+
+        Mounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,
+
+        ``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the
+
+        ``server`` attribute set via ``as_view(server=...)`` selects which registry
+
+        the route scopes tools to.
+
+
+        POST — JSON-RPC request (initialize / tools/list / tools/call)
+
+        DELETE — terminate session
+
+
+        GET is intentionally not implemented (SSE streaming is not supported in PR 2).'
+      tags:
+      - MCP
+      responses:
+        '204':
+          description: No response body
+      summary: Api v1 mcp zendesk destroy
+      x-summary-source: derived
+  /api/v1/mcp/zendesk/:
+    post:
+      operationId: api_v1_mcp_zendesk_create_2
+      description: 'MCP HTTP transport endpoint.
+
+
+        Mounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,
+
+        ``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the
+
+        ``server`` attribute set via ``as_view(server=...)`` selects which registry
+
+        the route scopes tools to.
+
+
+        POST — JSON-RPC request (initialize / tools/list / tools/call)
+
+        DELETE — terminate session
+
+
+        GET is intentionally not implemented (SSE streaming is not supported in PR 2).'
+      tags:
+      - MCP
+      responses:
+        '200':
+          description: No response body
+      summary: Api v1 mcp zendesk create 2
+      x-summary-source: derived
+    delete:
+      operationId: api_v1_mcp_zendesk_destroy_2
+      description: 'MCP HTTP transport endpoint.
+
+
+        Mounted at one path per server (``/api/v1/mcp/`` for the main Opply MCP,
+
+        ``/api/v1/mcp/zendesk/``, ``/api/v1/mcp/unleashed/`` — see ``urls.py``); the
+
+        ``server`` attribute set via ``as_view(server=...)`` selects which registry
+
+        the route scopes tools to.
+
+
+        POST — JSON-RPC request (initialize / tools/list / tools/call)
+
+        DELETE — terminate session
+
+
+        GET is intentionally not implemented (SSE streaming is not supported in PR 2).'
+      tags:
+      - MCP
+      responses:
+        '204':
+          description: No response body
+      summary: Api v1 mcp zendesk destroy 2
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedMcpAuditLogList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/McpAuditLog'
+    PatchedMcpUserAccess:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Public identifier for this access record
+        user_uuid:
+          type: string
+          format: uuid
+        user_email:
+          type: string
+          format: email
+          readOnly: true
+        is_enabled:
+          type: boolean
+          description: Whether MCP access is currently active for this user
+        allowed_scopes:
+          description: OAuth scopes this user is permitted to use, e.g. ['orders:read', 'orders:write']
+        allowed_tools:
+          description: Specific tool names this user may call. Empty list means all tools within the allowed scopes are permitted.
+        granted_by_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          readOnly: true
+        last_used:
+          type: string
+          readOnly: true
+        last_reason:
+          type: string
+          readOnly: true
+        last_tool:
+          type: string
+          readOnly: true
+        total_calls_30d:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+    McpAccessRequest:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Public identifier for this access request
+        user_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        user_email:
+          type: string
+          format: email
+          readOnly: true
+        requested_scopes:
+          type: array
+          items:
+            $ref: '#/components/schemas/McpScopeKeyEnum'
+        justification:
+          type: string
+          description: Brief explanation from the user of why they need MCP access
+          maxLength: 500
+        status:
+          allOf:
+          - $ref: '#/components/schemas/McpAccessRequestStatusEnum'
+          readOnly: true
+        review_note:
+          type: string
+          default: ''
+        reviewed_by_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          readOnly: true
+        reviewed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: When the admin reviewed this request
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created
+      - justification
+      - requested_scopes
+      - reviewed_at
+      - reviewed_by_email
+      - status
+      - user_email
+      - user_uuid
+      - uuid
+    McpScopeKeyEnum:
+      enum:
+      - all:read
+      - all:write
+      - orders:read
+      - orders:write
+      - companies:read
+      - companies:write
+      - crm:read
+      - crm:write
+      - catalog:read
+      - catalog:write
+      - activities:read
+      - activities:write
+      - tasks:read
+      - tasks:write
+      - payments:read
+      - payments:write
+      - agreements:read
+      - agreements:write
+      - onboarding:read
+      - onboarding:write
+      - agents:read
+      - agents:write
+      - files:read
+      - insights:read
+      - recommendations:read
+      - recommendations:write
+      - zendesk:read
+      - zendesk:write
+      - unleashed:read
+      type: string
+      description: '* `all:read` - Read access to all MCP tools
+
+        * `all:write` - Write access to all MCP tools
+
+        * `orders:read` - Read order data
+
+        * `orders:write` - Create and modify orders
+
+        * `companies:read` - Read company and supplier data
+
+        * `companies:write` - Modify company data
+
+        * `crm:read` - Read CRM contacts and companies
+
+        * `crm:write` - Modify CRM data
+
+        * `catalog:read` - Read product catalog
+
+        * `catalog:write` - Modify product catalog
+
+        * `activities:read` - Read tasks and notes
+
+        * `activities:write` - Create and modify tasks and notes
+
+        * `tasks:read` - Read tasks assigned to the calling user
+
+        * `tasks:write` - Update tasks, create subtasks, upload plans, complete agent runs
+
+        * `payments:read` - Read payments and statements
+
+        * `payments:write` - Record payments, payouts, refunds
+
+        * `agreements:read` - Read agreements
+
+        * `agreements:write` - Create and modify agreements
+
+        * `onboarding:read` - Read onboarding workflows
+
+        * `onboarding:write` - Modify onboarding workflows
+
+        * `agents:read` - Read installable agents and their installation status
+
+        * `agents:write` - Activate, pause, or revoke agent installations
+
+        * `files:read` - Read tenant files the caller can already access via REST
+
+        * `insights:read` - Read derived insight facts
+
+        * `recommendations:read` - Read recommendations (nudges) and recent recipient actions
+
+        * `recommendations:write` - Create, supersede, and retire recommendations
+
+        * `zendesk:read` - Read Zendesk tickets, users, and search
+
+        * `zendesk:write` - Create and update Zendesk tickets, comments, and tags
+
+        * `unleashed:read` - Read Unleashed company, suppliers, warehouses, and purchase orders'
+    McpUserAccess:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Public identifier for this access record
+        user_uuid:
+          type: string
+          format: uuid
+        user_email:
+          type: string
+          format: email
+          readOnly: true
+        is_enabled:
+          type: boolean
+          description: Whether MCP access is currently active for this user
+        allowed_scopes:
+          description: OAuth scopes this user is permitted to use, e.g. ['orders:read', 'orders:write']
+        allowed_tools:
+          description: Specific tool names this user may call. Empty list means all tools within the allowed scopes are permitted.
+        granted_by_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          readOnly: true
+        last_used:
+          type: string
+          readOnly: true
+        last_reason:
+          type: string
+          readOnly: true
+        last_tool:
+          type: string
+          readOnly: true
+        total_calls_30d:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created
+      - granted_by_email
+      - last_reason
+      - last_tool
+      - last_used
+      - modified
+      - total_calls_30d
+      - user_email
+      - user_uuid
+      - uuid
+    PaginatedMcpAccessRequestList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/McpAccessRequest'
+    PaginatedMcpUserAccessList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/McpUserAccess'
+    McpAuditLog:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Public identifier for this audit entry
+        user_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          readOnly: true
+        tool_name:
+          type: string
+          readOnly: true
+          description: Name of the MCP tool that was called, e.g. 'list_orders'
+        tool_category:
+          type: string
+          readOnly: true
+          description: Tool category derived from its scope, e.g. 'orders'
+        reason:
+          type: string
+          readOnly: true
+          description: LLM's explanation of why this tool was called (max 280 chars, tweet-length)
+        scopes_used:
+          readOnly: true
+          description: OAuth scopes active on the token used for this call
+        status:
+          allOf:
+          - $ref: '#/components/schemas/McpAuditStatusEnum'
+          readOnly: true
+          description: 'Outcome of the tool call: success, error, or denied
+
+
+            * `success` - Success
+
+            * `error` - Error
+
+            * `denied` - Denied'
+        error_message:
+          type: string
+          readOnly: true
+          description: Error detail when status is 'error'
+        duration_ms:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Elapsed milliseconds for tool execution
+        oauth_application_name:
+          type: string
+          readOnly: true
+          description: Denormalized name of the OAuth application at the time of the call. Preserved even if the application is later deleted or renamed.
+        ip_address:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: Client IP address from the request
+        session_id:
+          type: string
+          readOnly: true
+          description: MCP session ID from the Mcp-Session-Id header
+        user_agent:
+          type: string
+          readOnly: true
+          description: User-Agent header — identifies the MCP client (Cursor, VS Code, Claude Desktop, etc.)
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created
+      - duration_ms
+      - error_message
+      - ip_address
+      - oauth_application_name
+      - reason
+      - scopes_used
+      - session_id
+      - status
+      - tool_category
+      - tool_name
+      - user_agent
+      - user_email
+      - uuid
+    McpAuditStatusEnum:
+      enum:
+      - success
+      - error
+      - denied
+      type: string
+      description: '* `success` - Success
+
+        * `error` - Error
+
+        * `denied` - Denied'
+    PatchedMcpAccessRequest:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Public identifier for this access request
+        user_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        user_email:
+          type: string
+          format: email
+          readOnly: true
+        requested_scopes:
+          type: array
+          items:
+            $ref: '#/components/schemas/McpScopeKeyEnum'
+        justification:
+          type: string
+          description: Brief explanation from the user of why they need MCP access
+          maxLength: 500
+        status:
+          allOf:
+          - $ref: '#/components/schemas/McpAccessRequestStatusEnum'
+          readOnly: true
+        review_note:
+          type: string
+          default: ''
+        reviewed_by_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          readOnly: true
+        reviewed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: When the admin reviewed this request
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+    McpAccessRequestStatusEnum:
+      enum:
+      - pending
+      - approved
+      - denied
+      type: string
+      description: '* `pending` - Pending
+
+        * `approved` - Approved
+
+        * `denied` - Denied'
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

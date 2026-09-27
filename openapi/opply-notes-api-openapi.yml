@@ -315,6 +315,17 @@ paths:
           description: No response body
 components:
   schemas:
+    MessageAttachmentDispositionEnum:
+      enum:
+      - sent
+      - suspicious
+      - skipped_timeout
+      type: string
+      description: '* `sent` - Sent
+
+        * `suspicious` - Suspicious
+
+        * `skipped_timeout` - Not used (scan pending)'
     Target:
       type: object
       description: 'Serialize a model''s ``target`` GenericForeignKey to ``{type, uuid, name}``.
@@ -338,128 +349,6 @@ components:
       - name
       - type
       - uuid
-    PaginatedNoteList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Note'
-    NoteCreate:
-      type: object
-      description: 'Request-body schema for creating a note (drf-spectacular only).
-
-
-        Declares just the writable fields so the generated OpenAPI request type
-
-        doesn''t advertise the read serializer''s read-only fields (uuid, created_by,
-
-        company_uuid, target, timestamps). The viewset handles the two create shapes
-
-        (``task_uuid`` → company-private task note; ``target_type``/``target_uuid`` →
-
-        legacy company-CRM note) — see ``NoteViewSet.create``.'
-      properties:
-        body:
-          type: string
-        task_uuid:
-          type: string
-          format: uuid
-        target_type:
-          type: string
-        target_uuid:
-          type: string
-          format: uuid
-        is_pinned:
-          type: boolean
-        attachment_uuids:
-          type: array
-          items:
-            type: string
-            format: uuid
-          maxItems: 100
-      required:
-      - body
-    MessageAttachmentDispositionEnum:
-      enum:
-      - sent
-      - suspicious
-      - skipped_timeout
-      type: string
-      description: '* `sent` - Sent
-
-        * `suspicious` - Suspicious
-
-        * `skipped_timeout` - Not used (scan pending)'
-    PatchedNote:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        body:
-          type: string
-          description: Note content
-        is_pinned:
-          type: boolean
-          description: Whether this note should be pinned to the top
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/UserMinimal'
-          readOnly: true
-        company_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          readOnly: true
-        target:
-          allOf:
-          - $ref: '#/components/schemas/Target'
-          readOnly: true
-        target_type:
-          type: string
-          writeOnly: true
-        target_uuid:
-          type: string
-          format: uuid
-          writeOnly: true
-        task_uuid:
-          type: string
-          format: uuid
-          writeOnly: true
-        attachments:
-          type: array
-          items:
-            $ref: '#/components/schemas/MessageAttachmentRef'
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
     Note:
       type: object
       properties:
@@ -520,6 +409,116 @@ components:
       - modified
       - target
       - uuid
+    UserMinimal:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+        is_agent:
+          type: boolean
+          readOnly: true
+        is_mor_router:
+          type: boolean
+          readOnly: true
+      required:
+      - email
+      - is_agent
+      - is_mor_router
+      - name
+      - uuid
+    NoteCreate:
+      type: object
+      description: 'Request-body schema for creating a note (drf-spectacular only).
+
+
+        Declares just the writable fields so the generated OpenAPI request type
+
+        doesn''t advertise the read serializer''s read-only fields (uuid, created_by,
+
+        company_uuid, target, timestamps). The viewset handles the two create shapes
+
+        (``task_uuid`` → company-private task note; ``target_type``/``target_uuid`` →
+
+        legacy company-CRM note) — see ``NoteViewSet.create``.'
+      properties:
+        body:
+          type: string
+        task_uuid:
+          type: string
+          format: uuid
+        target_type:
+          type: string
+        target_uuid:
+          type: string
+          format: uuid
+        is_pinned:
+          type: boolean
+        attachment_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 100
+      required:
+      - body
+    PatchedNote:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        body:
+          type: string
+          description: Note content
+        is_pinned:
+          type: boolean
+          description: Whether this note should be pinned to the top
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/UserMinimal'
+          readOnly: true
+        company_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          readOnly: true
+        target:
+          allOf:
+          - $ref: '#/components/schemas/Target'
+          readOnly: true
+        target_type:
+          type: string
+          writeOnly: true
+        target_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        task_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageAttachmentRef'
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
     MessageAttachmentRef:
       type: object
       description: 'One attachment ref carried on a message''s ``metadata["attachments"]``
@@ -562,30 +561,31 @@ components:
       - filename
       - mime
       - uuid
-    UserMinimal:
+    PaginatedNoteList:
       type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        name:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          format: email
-        is_agent:
-          type: boolean
-          readOnly: true
-        is_mor_router:
-          type: boolean
-          readOnly: true
       required:
-      - email
-      - is_agent
-      - is_mor_router
-      - name
-      - uuid
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Note'
   securitySchemes:
     cookieAuth:
       type: apiKey

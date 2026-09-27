@@ -100,6 +100,9 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    NullEnum:
+      enum:
+      - null
     PatchedQuoteDispatchAddress:
       type: object
       properties:
@@ -208,6 +211,17 @@ components:
           allOf:
           - $ref: '#/components/schemas/CountryTypeEnum'
           readOnly: true
+    CountryTypeEnum:
+      enum:
+      - EU
+      - GB
+      - Other
+      type: string
+      description: '* `EU` - Eu
+
+        * `GB` - Gb
+
+        * `Other` - Other'
     QuoteDispatchAddress:
       type: object
       properties:
@@ -326,6 +340,9 @@ components:
       - vat_country_code
       - vat_exempt
       - vat_number
+    BlankEnum:
+      enum:
+      - ''
     Country:
       enum:
       - AF
@@ -1078,23 +1095,6 @@ components:
         * `ZM` - Zambia
 
         * `ZW` - Zimbabwe'
-    NullEnum:
-      enum:
-      - null
-    CountryTypeEnum:
-      enum:
-      - EU
-      - GB
-      - Other
-      type: string
-      description: '* `EU` - Eu
-
-        * `GB` - Gb
-
-        * `Other` - Other'
-    BlankEnum:
-      enum:
-      - ''
     PhoneCountryCodeEnum:
       enum:
       - '+376'

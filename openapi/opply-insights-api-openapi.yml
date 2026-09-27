@@ -58,6 +58,44 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedInsightReadList'
           description: ''
+  /api/v1/insights/{uuid}/:
+    get:
+      operationId: api_v1_insights_retrieve
+      description: 'Buyer-scoped insights feed.
+
+
+        Returns cursor-paginated insights, newest first. The queryset surfaces both
+
+        insights bound to the authenticated user''s company AND cross-portfolio
+
+        insights with ``company IS NULL`` (e.g. industry trends, investor signals).
+
+        ``retrieve`` (by ``uuid``) backs the insights-recommender''s ``get_insight`` MCP
+
+        tool; it stays scoped by the same ``get_queryset``.
+
+
+        Filter params: ``insight_type``, ``source``, ``sector``.'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Insights
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsightRead'
+          description: ''
+      summary: Api v1 insights retrieve
+      x-summary-source: derived
   /api/v1/insights/debug/seed/:
     post:
       operationId: api_v1_insights_debug_seed_create
@@ -96,6 +134,22 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    _SeedInsightsRequest:
+      type: object
+      properties:
+        company_uuid:
+          type: string
+          format: uuid
+    SeedSampleInsightsResponse:
+      type: object
+      properties:
+        insight_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+      required:
+      - insight_uuids
     InsightRead:
       type: object
       description: 'Read view of an Insight for the buyer-facing rail.
@@ -185,22 +239,6 @@ components:
       - source
       - title
       - uuid
-    SeedSampleInsightsResponse:
-      type: object
-      properties:
-        insight_uuids:
-          type: array
-          items:
-            type: string
-            format: uuid
-      required:
-      - insight_uuids
-    _SeedInsightsRequest:
-      type: object
-      properties:
-        company_uuid:
-          type: string
-          format: uuid
     PaginatedInsightReadList:
       type: object
       required:

@@ -1,0 +1,58 @@
+openapi: 3.2.0
+info:
+  title: Opply Taxonomy API
+  version: 0.0.0
+tags:
+- name: Taxonomy
+paths:
+  /api/v1/taxonomy/get-tree/:
+    get:
+      operationId: api_v1_taxonomy_get_tree_list
+      description: Returns the full taxonomy as a nested tree
+      summary: Get category taxonomy
+      tags:
+      - Taxonomy
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecursiveTaxonomy'
+          description: ''
+components:
+  schemas:
+    RecursiveTaxonomy:
+      type: object
+      description: 'Recursive serializer for a taxonomy node:'
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        reporting_unit_type:
+          type: string
+        children:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+      required:
+      - children
+      - id
+      - name
+      - reporting_unit_type
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

@@ -1,0 +1,419 @@
+openapi: 3.2.0
+info:
+  title: Opply Research API
+  version: 0.0.0
+tags:
+- name: Research
+paths:
+  /api/v1/research/feedbacks/:
+    get:
+      operationId: api_v1_research_feedbacks_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Research
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAgentFeedbackList'
+          description: ''
+      summary: Api v1 research feedbacks list
+      x-summary-source: derived
+    post:
+      operationId: api_v1_research_feedbacks_create
+      tags:
+      - Research
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentFeedbackCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AgentFeedbackCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AgentFeedbackCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentFeedbackCreate'
+          description: ''
+      summary: Api v1 research feedbacks create
+      x-summary-source: derived
+  /api/v1/research/feedbacks/{uuid}/:
+    get:
+      operationId: api_v1_research_feedbacks_retrieve
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Research
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentFeedback'
+          description: ''
+      summary: Api v1 research feedbacks retrieve
+      x-summary-source: derived
+    put:
+      operationId: api_v1_research_feedbacks_update
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Research
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentFeedback'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AgentFeedback'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AgentFeedback'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentFeedback'
+          description: ''
+      summary: Api v1 research feedbacks update
+      x-summary-source: derived
+    patch:
+      operationId: api_v1_research_feedbacks_partial_update
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Research
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAgentFeedback'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAgentFeedback'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAgentFeedback'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentFeedback'
+          description: ''
+      summary: Api v1 research feedbacks partial update
+      x-summary-source: derived
+    delete:
+      operationId: api_v1_research_feedbacks_destroy
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Research
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api v1 research feedbacks destroy
+      x-summary-source: derived
+components:
+  schemas:
+    NullEnum:
+      enum:
+      - null
+    PaginatedAgentFeedbackList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentFeedback'
+    BlankEnum:
+      enum:
+      - ''
+    IssueTypeEnum:
+      enum:
+      - INCORRECT_OUTPUT
+      - INCOMPLETE
+      - SLOW
+      - HALLUCINATION
+      - FORMATTING_ISSUE
+      - UX_ISSUE
+      - SECURITY_RISK
+      - OTHER
+      type: string
+      description: '* `INCORRECT_OUTPUT` - Incorrect Output
+
+        * `INCOMPLETE` - Incomplete
+
+        * `SLOW` - Slow
+
+        * `HALLUCINATION` - Hallucination
+
+        * `FORMATTING_ISSUE` - Formatting Issue
+
+        * `UX_ISSUE` - UX Issue
+
+        * `SECURITY_RISK` - Security/Risk
+
+        * `OTHER` - Other'
+    AgentFeedback:
+      type: object
+      description: Used for reading feedbacks.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        workflow_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        workflow_type:
+          type: string
+          readOnly: true
+        feedback_rating:
+          $ref: '#/components/schemas/FeedbackRatingEnum'
+        issue_type:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/IssueTypeEnum'
+        confidence_level:
+          oneOf:
+          - $ref: '#/components/schemas/ConfidenceLevelEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        action_preference:
+          $ref: '#/components/schemas/ActionPreferenceEnum'
+        comment:
+          type: string
+          maxLength: 200
+        created_by_email:
+          type: string
+          format: email
+          readOnly: true
+        metadata: {}
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - action_preference
+      - created
+      - created_by_email
+      - feedback_rating
+      - modified
+      - uuid
+      - workflow_type
+      - workflow_uuid
+    ConfidenceLevelEnum:
+      enum:
+      - CONFIDENT
+      - UNSURE
+      - NOT_CONFIDENT
+      type: string
+      description: '* `CONFIDENT` - Confident
+
+        * `UNSURE` - Unsure
+
+        * `NOT_CONFIDENT` - Not Confident'
+    PatchedAgentFeedback:
+      type: object
+      description: Used for reading feedbacks.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        workflow_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        workflow_type:
+          type: string
+          readOnly: true
+        feedback_rating:
+          $ref: '#/components/schemas/FeedbackRatingEnum'
+        issue_type:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/IssueTypeEnum'
+        confidence_level:
+          oneOf:
+          - $ref: '#/components/schemas/ConfidenceLevelEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        action_preference:
+          $ref: '#/components/schemas/ActionPreferenceEnum'
+        comment:
+          type: string
+          maxLength: 200
+        created_by_email:
+          type: string
+          format: email
+          readOnly: true
+        metadata: {}
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+    AgentFeedbackCreate:
+      type: object
+      description: Accepts a workflow by UUID for creation convenience.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        workflow_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        feedback_rating:
+          $ref: '#/components/schemas/FeedbackRatingEnum'
+        issue_type:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/IssueTypeEnum'
+        confidence_level:
+          oneOf:
+          - $ref: '#/components/schemas/ConfidenceLevelEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        action_preference:
+          $ref: '#/components/schemas/ActionPreferenceEnum'
+        comment:
+          type: string
+          maxLength: 200
+        metadata: {}
+      required:
+      - action_preference
+      - feedback_rating
+      - uuid
+      - workflow_uuid
+    ActionPreferenceEnum:
+      enum:
+      - ACCEPT_FINAL
+      - NEEDS_REVIEW
+      - RERUN
+      - ESCALATE
+      - DISCARD
+      type: string
+      description: '* `ACCEPT_FINAL` - Accept as Final
+
+        * `NEEDS_REVIEW` - Needs Manual Review
+
+        * `RERUN` - Rerun
+
+        * `ESCALATE` - Escalate to Human
+
+        * `DISCARD` - Discard'
+    FeedbackRatingEnum:
+      enum:
+      - GOOD
+      - BAD
+      type: string
+      description: '* `GOOD` - Good
+
+        * `BAD` - Bad'
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

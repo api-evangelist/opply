@@ -309,8 +309,886 @@ paths:
           description: No response body
         '404':
           description: No response body
+  /api/v2/notifications/company-overrides/:
+    get:
+      operationId: api_v2_notifications_company_overrides_list
+      description: 'Company-wide overrides set by company admins.
+
+
+        Querysets are scoped to ``request.user_company`` (set by ``CompanyValidationMiddleware``)
+
+        so an admin in one company can''t read or modify another''s overrides.'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Notifications
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCompanyNotificationOverrideList'
+          description: ''
+      summary: Api v2 notifications company overrides list
+      x-summary-source: derived
+    post:
+      operationId: api_v2_notifications_company_overrides_create
+      description: 'Company-wide overrides set by company admins.
+
+
+        Querysets are scoped to ``request.user_company`` (set by ``CompanyValidationMiddleware``)
+
+        so an admin in one company can''t read or modify another''s overrides.'
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyNotificationOverride'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CompanyNotificationOverride'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CompanyNotificationOverride'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyNotificationOverride'
+          description: ''
+      summary: Api v2 notifications company overrides create
+      x-summary-source: derived
+  /api/v2/notifications/company-overrides/{id}/:
+    get:
+      operationId: api_v2_notifications_company_overrides_retrieve
+      description: 'Company-wide overrides set by company admins.
+
+
+        Querysets are scoped to ``request.user_company`` (set by ``CompanyValidationMiddleware``)
+
+        so an admin in one company can''t read or modify another''s overrides.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company notification override.
+        required: true
+      tags:
+      - Notifications
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyNotificationOverride'
+          description: ''
+      summary: Api v2 notifications company overrides retrieve
+      x-summary-source: derived
+    patch:
+      operationId: api_v2_notifications_company_overrides_partial_update
+      description: 'Company-wide overrides set by company admins.
+
+
+        Querysets are scoped to ``request.user_company`` (set by ``CompanyValidationMiddleware``)
+
+        so an admin in one company can''t read or modify another''s overrides.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company notification override.
+        required: true
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCompanyNotificationOverride'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCompanyNotificationOverride'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCompanyNotificationOverride'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyNotificationOverride'
+          description: ''
+      summary: Api v2 notifications company overrides partial update
+      x-summary-source: derived
+    delete:
+      operationId: api_v2_notifications_company_overrides_destroy
+      description: 'Company-wide overrides set by company admins.
+
+
+        Querysets are scoped to ``request.user_company`` (set by ``CompanyValidationMiddleware``)
+
+        so an admin in one company can''t read or modify another''s overrides.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company notification override.
+        required: true
+      tags:
+      - Notifications
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api v2 notifications company overrides destroy
+      x-summary-source: derived
+  /api/v2/notifications/debug-dispatch/:
+    post:
+      operationId: api_v2_notifications_debug_dispatch_create
+      description: '``POST /api/v2/notifications/debug-dispatch/``
+
+
+        Body fields:
+
+        - ``audience_type``: one of ``user`` / ``company`` / ``user_type`` / ``all``.
+
+        - ``target_user_email`` (USER): the recipient''s email. Defaults to the caller.
+
+        - ``target_company_uuid`` (COMPANY): the company to broadcast to. Defaults
+
+        to the caller''s company.
+
+        - ``user_type`` (USER_TYPE): brand / supplier / merchant_of_record.
+
+        - ``kind_code``: NotificationKind to dispatch. Defaults to ``order_created``.
+
+        - ``title_override``: optional string that the seeded kind''s title template
+
+        renders in place of the order number — handy for spotting the row in the
+
+        bell.'
+      tags:
+      - Notifications
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+      summary: Api v2 notifications debug dispatch create
+      x-summary-source: derived
+  /api/v2/notifications/me/:
+    get:
+      operationId: api_v2_notifications_me_list
+      description: 'In-app inbox for the authenticated user.
+
+
+        ``GET /api/v2/notifications/me/`` — paginated list of the user''s notifications.
+
+        ``GET /api/v2/notifications/me/unread-count/`` — bell-badge count.
+
+        ``POST /api/v2/notifications/me/{uuid}/read/`` — mark one as read.
+
+        ``POST /api/v2/notifications/me/{uuid}/archive/`` — dismiss one.
+
+        ``POST /api/v2/notifications/me/mark-all-read/`` — bulk-read every unread row.'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: state
+        schema:
+          type: string
+          enum:
+          - all
+          - unread
+        description: '``unread`` hides READ rows (used by the bell popover); ``all`` (the default) returns both READ and unread rows for the full /notifications page. ARCHIVED rows are always excluded.'
+      tags:
+      - Notifications
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationRecipientList'
+          description: ''
+      summary: Api v2 notifications me list
+      x-summary-source: derived
+  /api/v2/notifications/me/{uuid}/:
+    get:
+      operationId: api_v2_notifications_me_retrieve
+      description: 'In-app inbox for the authenticated user.
+
+
+        ``GET /api/v2/notifications/me/`` — paginated list of the user''s notifications.
+
+        ``GET /api/v2/notifications/me/unread-count/`` — bell-badge count.
+
+        ``POST /api/v2/notifications/me/{uuid}/read/`` — mark one as read.
+
+        ``POST /api/v2/notifications/me/{uuid}/archive/`` — dismiss one.
+
+        ``POST /api/v2/notifications/me/mark-all-read/`` — bulk-read every unread row.'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Notifications
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationRecipient'
+          description: ''
+      summary: Api v2 notifications me retrieve
+      x-summary-source: derived
+  /api/v2/notifications/me/{uuid}/archive/:
+    post:
+      operationId: api_v2_notifications_me_archive_create
+      description: 'In-app inbox for the authenticated user.
+
+
+        ``GET /api/v2/notifications/me/`` — paginated list of the user''s notifications.
+
+        ``GET /api/v2/notifications/me/unread-count/`` — bell-badge count.
+
+        ``POST /api/v2/notifications/me/{uuid}/read/`` — mark one as read.
+
+        ``POST /api/v2/notifications/me/{uuid}/archive/`` — dismiss one.
+
+        ``POST /api/v2/notifications/me/mark-all-read/`` — bulk-read every unread row.'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationRecipient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NotificationRecipient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NotificationRecipient'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationRecipient'
+          description: ''
+      summary: Api v2 notifications me archive create
+      x-summary-source: derived
+  /api/v2/notifications/me/{uuid}/read/:
+    post:
+      operationId: api_v2_notifications_me_read_create
+      description: 'In-app inbox for the authenticated user.
+
+
+        ``GET /api/v2/notifications/me/`` — paginated list of the user''s notifications.
+
+        ``GET /api/v2/notifications/me/unread-count/`` — bell-badge count.
+
+        ``POST /api/v2/notifications/me/{uuid}/read/`` — mark one as read.
+
+        ``POST /api/v2/notifications/me/{uuid}/archive/`` — dismiss one.
+
+        ``POST /api/v2/notifications/me/mark-all-read/`` — bulk-read every unread row.'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationRecipient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NotificationRecipient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NotificationRecipient'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationRecipient'
+          description: ''
+      summary: Api v2 notifications me read create
+      x-summary-source: derived
+  /api/v2/notifications/me/mark-all-read/:
+    post:
+      operationId: api_v2_notifications_me_mark_all_read_create
+      description: 'In-app inbox for the authenticated user.
+
+
+        ``GET /api/v2/notifications/me/`` — paginated list of the user''s notifications.
+
+        ``GET /api/v2/notifications/me/unread-count/`` — bell-badge count.
+
+        ``POST /api/v2/notifications/me/{uuid}/read/`` — mark one as read.
+
+        ``POST /api/v2/notifications/me/{uuid}/archive/`` — dismiss one.
+
+        ``POST /api/v2/notifications/me/mark-all-read/`` — bulk-read every unread row.'
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationRecipient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NotificationRecipient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NotificationRecipient'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationRecipient'
+          description: ''
+      summary: Api v2 notifications me mark all read create
+      x-summary-source: derived
+  /api/v2/notifications/me/unread-count/:
+    get:
+      operationId: api_v2_notifications_me_unread_count_retrieve
+      description: 'In-app inbox for the authenticated user.
+
+
+        ``GET /api/v2/notifications/me/`` — paginated list of the user''s notifications.
+
+        ``GET /api/v2/notifications/me/unread-count/`` — bell-badge count.
+
+        ``POST /api/v2/notifications/me/{uuid}/read/`` — mark one as read.
+
+        ``POST /api/v2/notifications/me/{uuid}/archive/`` — dismiss one.
+
+        ``POST /api/v2/notifications/me/mark-all-read/`` — bulk-read every unread row.'
+      tags:
+      - Notifications
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationRecipient'
+          description: ''
+      summary: Api v2 notifications me unread count retrieve
+      x-summary-source: derived
+  /api/v2/notifications/preferences/:
+    get:
+      operationId: api_v2_notifications_preferences_list
+      description: 'Per-user opt-outs.
+
+
+        Listed and mutated only by the owner. Mandatory kinds are accepted at the
+
+        serializer layer but ignored at dispatch time.'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Notifications
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationPreferenceList'
+          description: ''
+      summary: Api v2 notifications preferences list
+      x-summary-source: derived
+    post:
+      operationId: api_v2_notifications_preferences_create
+      description: 'Per-user opt-outs.
+
+
+        Listed and mutated only by the owner. Mandatory kinds are accepted at the
+
+        serializer layer but ignored at dispatch time.'
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationPreference'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NotificationPreference'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NotificationPreference'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreference'
+          description: ''
+      summary: Api v2 notifications preferences create
+      x-summary-source: derived
+  /api/v2/notifications/preferences/{id}/:
+    get:
+      operationId: api_v2_notifications_preferences_retrieve
+      description: 'Per-user opt-outs.
+
+
+        Listed and mutated only by the owner. Mandatory kinds are accepted at the
+
+        serializer layer but ignored at dispatch time.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Notifications
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreference'
+          description: ''
+      summary: Api v2 notifications preferences retrieve
+      x-summary-source: derived
+    put:
+      operationId: api_v2_notifications_preferences_update
+      description: 'Per-user opt-outs.
+
+
+        Listed and mutated only by the owner. Mandatory kinds are accepted at the
+
+        serializer layer but ignored at dispatch time.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationPreference'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NotificationPreference'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NotificationPreference'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreference'
+          description: ''
+      summary: Api v2 notifications preferences update
+      x-summary-source: derived
+    patch:
+      operationId: api_v2_notifications_preferences_partial_update
+      description: 'Per-user opt-outs.
+
+
+        Listed and mutated only by the owner. Mandatory kinds are accepted at the
+
+        serializer layer but ignored at dispatch time.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedNotificationPreference'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedNotificationPreference'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedNotificationPreference'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreference'
+          description: ''
+      summary: Api v2 notifications preferences partial update
+      x-summary-source: derived
+    delete:
+      operationId: api_v2_notifications_preferences_destroy
+      description: 'Per-user opt-outs.
+
+
+        Listed and mutated only by the owner. Mandatory kinds are accepted at the
+
+        serializer layer but ignored at dispatch time.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Notifications
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api v2 notifications preferences destroy
+      x-summary-source: derived
+  /api/v2/notifications/preferences/categories/:
+    get:
+      operationId: api_v2_notifications_preferences_categories_list
+      description: 'User-facing list of toggleable notification categories.
+
+
+        Returns every non-``SYSTEM`` category that has at least one
+
+        ``NotificationKind`` (registered in :data:`ALL_KINDS`) **relevant to
+
+        the caller''s company type** — so the Settings page never renders a
+
+        toggle the backend can''t act on, and never one for notifications the
+
+        caller can''t receive. ``SYSTEM`` is always excluded: those kinds are
+
+        mandatory and render as the FE''s "always-on" row, not a toggle.
+
+
+        Company-type scoping is driven by ``NotificationKind.company_types``
+
+        via ``applies_to_company_type``. Concretely today: a Merchant-of-Record
+
+        caller sees ``TASKS`` and ``TASK_MENTIONS`` (the Tasks substrate is
+
+        cross-company-type) but not ``UPDATES`` (ingredient uploads, supplier
+
+        readiness, contract notices are buyer-only). A brand caller sees all
+
+        three. Future MoR-only categories surface here for MoR callers the
+
+        moment a kind scoped to them is registered.
+
+
+        Each entry carries the user''s current per-channel state, derived from
+
+        ``NotificationPreference`` rows (absent row = enabled).'
+      tags:
+      - Notifications
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryPreference'
+          description: ''
+      summary: Api v2 notifications preferences categories list
+      x-summary-source: derived
+  /api/v2/notifications/preferences/upsert/:
+    put:
+      operationId: api_v2_notifications_preferences_upsert_update
+      description: 'Idempotent write for a single ``(category, channel)`` preference row.
+
+
+        The viewset''s POST/PATCH pair require the caller to know the row''s
+
+        primary key. The Settings UI doesn''t — it just wants "set EMAIL for
+
+        ORDERS to disabled". This action collapses the lookup+write into one
+
+        call and keeps the API surface clean on the FE side.'
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationPreferenceUpsert'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NotificationPreferenceUpsert'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NotificationPreferenceUpsert'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreference'
+          description: ''
+      summary: Api v2 notifications preferences upsert update
+      x-summary-source: derived
 components:
   schemas:
+    ShortUser:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name_short:
+          type: string
+          readOnly: true
+      required:
+      - last_name_short
+      - uuid
+    UsedForEnum:
+      enum:
+      - general_notifications
+      - actions
+      type: string
+      description: '* `general_notifications` - General Notifications
+
+        * `actions` - Actions'
+    PaginatedCompanyNotificationOverrideList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyNotificationOverride'
+    EmailNotifications:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        type:
+          $ref: '#/components/schemas/EmailNotificationsTypeEnum'
+        description:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        is_activated_for_user:
+          type: boolean
+      required:
+      - is_activated_for_user
+      - type
+      - uuid
+    MarkRelatedRead:
+      type: object
+      properties:
+        related_object_uuid:
+          type: string
+          format: uuid
+        related_object_type:
+          type: string
+      required:
+      - related_object_type
+      - related_object_uuid
+    PatchedNotificationPreference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        category:
+          $ref: '#/components/schemas/NotificationCategoryEnum'
+        channel:
+          $ref: '#/components/schemas/ChannelEnum'
+        enabled:
+          type: boolean
+    PaginatedNotificationPreferenceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationPreference'
+    NotificationPreference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        category:
+          $ref: '#/components/schemas/NotificationCategoryEnum'
+        channel:
+          $ref: '#/components/schemas/ChannelEnum'
+        enabled:
+          type: boolean
+      required:
+      - category
+      - channel
+      - id
     EmailNotificationsTypeEnum:
       enum:
       - b_s_new_message
@@ -469,17 +1347,6 @@ components:
         * `b_grouped_statement_due_today` - b_grouped_statement_due_today
 
         * `b_grouped_statement_overdue` - b_grouped_statement_overdue'
-    MarkRelatedRead:
-      type: object
-      properties:
-        related_object_uuid:
-          type: string
-          format: uuid
-        related_object_type:
-          type: string
-      required:
-      - related_object_type
-      - related_object_uuid
     TitleEnum:
       enum:
       - Kriya KYB Reminder
@@ -602,34 +1469,23 @@ components:
         * `Request for Re-order Declined` - Reorder Declined
 
         * `Supplier change payment terms` - Supplier Updated Payment Terms'
-    PaginatedNotificationList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Notification'
-        unread_count:
-          type: integer
-          example: 123
+    NotificationCategoryEnum:
+      enum:
+      - tasks
+      - task_mentions
+      - updates
+      - system
+      type: string
+      description: '* `tasks` - Tasks
+
+        * `task_mentions` - Task Mentions
+
+        * `updates` - Updates
+
+        * `system` - System'
+    NullEnum:
+      enum:
+      - null
     ActionClearTriggerEnum:
       enum:
       - Mark samples as dispatched
@@ -722,25 +1578,98 @@ components:
         * `5 or more ingredients are created` - Upload Ingredient List
 
         * `2 or more products are created` - Upload Product List'
-    ShortUser:
+    NotificationPreferenceUpsert:
       type: object
+      description: 'Write-only payload for ``PUT /preferences/upsert/``.
+
+
+        Declared as a plain ``Serializer`` (not a ``ModelSerializer``) so the
+
+        generated TS schema doesn''t carry the read-only ``id`` field on the
+
+        request body. The FE just sends ``(category, channel, enabled)`` and the
+
+        BE resolves the row via ``update_or_create``.'
+      properties:
+        category:
+          $ref: '#/components/schemas/NotificationCategoryEnum'
+        channel:
+          $ref: '#/components/schemas/ChannelEnum'
+        enabled:
+          type: boolean
+      required:
+      - category
+      - channel
+      - enabled
+    NotificationRecipient:
+      type: object
+      description: One in-app inbox row from the recipient's perspective.
       properties:
         uuid:
           type: string
           format: uuid
           readOnly: true
-        first_name:
+        notification_uuid:
           type: string
-          maxLength: 150
-        last_name_short:
+          format: uuid
+          readOnly: true
+        kind:
           type: string
           readOnly: true
+        category:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          readOnly: true
+        body:
+          type: string
+          readOnly: true
+        context:
+          readOnly: true
+        state:
+          allOf:
+          - $ref: '#/components/schemas/NotificationRecipientStateEnum'
+          readOnly: true
+        is_read:
+          type: boolean
+          readOnly: true
+        is_archived:
+          type: boolean
+          readOnly: true
+        read_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        archived_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
       required:
-      - last_name_short
+      - archived_at
+      - body
+      - category
+      - context
+      - created_at
+      - is_archived
+      - is_read
+      - kind
+      - notification_uuid
+      - read_at
+      - state
+      - title
       - uuid
-    NullEnum:
+    BlankEnum:
       enum:
-      - null
+      - ''
     AllEmailNotifications:
       type: object
       properties:
@@ -748,34 +1677,27 @@ components:
           type: boolean
       required:
       - all_emails
-    NotificationCategoryEnum:
-      enum:
-      - tasks
-      - task_mentions
-      - updates
-      - system
-      type: string
-      description: '* `tasks` - Tasks
-
-        * `task_mentions` - Task Mentions
-
-        * `updates` - Updates
-
-        * `system` - System'
-    NotificationTypeEnum:
-      enum:
-      - trigger-based
-      - time-based
-      - user-specific
-      - global
-      type: string
-      description: '* `trigger-based` - Triggerbased
-
-        * `time-based` - Timebased
-
-        * `user-specific` - Userspecific
-
-        * `global` - Global'
+    PatchedCompanyNotificationOverride:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        category:
+          $ref: '#/components/schemas/NotificationCategoryEnum'
+        enabled:
+          type: boolean
+    CategoryPreference:
+      type: object
+      description: One row in the ``GET /preferences/categories/`` response.
+      properties:
+        category:
+          $ref: '#/components/schemas/NotificationCategoryEnum'
+        channels:
+          $ref: '#/components/schemas/CategoryChannelState'
+      required:
+      - category
+      - channels
     MarkRelatedCleared:
       type: object
       properties:
@@ -790,17 +1712,67 @@ components:
       - action_clear_trigger
       - related_object_type
       - related_object_uuid
-    UsedForEnum:
+    PaginatedNotificationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+        unread_count:
+          type: integer
+          example: 123
+    PaginatedNotificationRecipientList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationRecipient'
+    ChannelEnum:
       enum:
-      - general_notifications
-      - actions
+      - email
+      - in_app
       type: string
-      description: '* `general_notifications` - General Notifications
+      description: '* `email` - Email
 
-        * `actions` - Actions'
-    BlankEnum:
-      enum:
-      - ''
+        * `in_app` - In App'
     Notification:
       type: object
       properties:
@@ -882,31 +1854,71 @@ components:
       - title
       - type
       - uuid
-    EmailNotifications:
+    NotificationTypeEnum:
+      enum:
+      - trigger-based
+      - time-based
+      - user-specific
+      - global
+      type: string
+      description: '* `trigger-based` - Triggerbased
+
+        * `time-based` - Timebased
+
+        * `user-specific` - Userspecific
+
+        * `global` - Global'
+    CategoryChannelState:
       type: object
+      description: 'Per-channel boolean map returned by ``GET /preferences/categories/``.
+
+
+        Declared explicitly so drf-spectacular knows the response shape — the
+
+        in-line dict the action builds is otherwise inferred as the ModelViewSet''s
+
+        default serializer.'
       properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        title:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        type:
-          $ref: '#/components/schemas/EmailNotificationsTypeEnum'
-        description:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        is_activated_for_user:
+        email:
+          type: boolean
+        in_app:
           type: boolean
       required:
-      - is_activated_for_user
-      - type
-      - uuid
+      - email
+      - in_app
+    CompanyNotificationOverride:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        category:
+          $ref: '#/components/schemas/NotificationCategoryEnum'
+        enabled:
+          type: boolean
+      required:
+      - category
+      - id
+    NotificationRecipientStateEnum:
+      enum:
+      - queued
+      - sent
+      - delivered
+      - read
+      - archived
+      - failed
+      type: string
+      description: '* `queued` - Queued
+
+        * `sent` - Sent
+
+        * `delivered` - Delivered
+
+        * `read` - Read
+
+        * `archived` - Archived
+
+        * `failed` - Failed'
     ActionTypeEnum:
       enum:
       - order

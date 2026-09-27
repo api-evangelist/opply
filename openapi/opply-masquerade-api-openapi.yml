@@ -75,15 +75,6 @@ paths:
           description: No response body
 components:
   schemas:
-    MasqueradeTargetUser:
-      type: object
-      description: Request serializer for masquerade target user.
-      properties:
-        user_uuid:
-          type: string
-          format: uuid
-      required:
-      - user_uuid
     MasqueradeTokenResponse:
       type: object
       description: Response serializer containing the temporary token and target user/company info.
@@ -105,22 +96,6 @@ components:
       - target_user_email
       - target_user_name
       - token
-    MasqueradeableUser:
-      type: object
-      description: Serializer for listing users that can be masqueraded.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        email:
-          type: string
-          format: email
-        full_name:
-          type: string
-      required:
-      - email
-      - full_name
-      - uuid
     PaginatedMasqueradeableUserList:
       type: object
       required:
@@ -146,6 +121,31 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MasqueradeableUser'
+    MasqueradeTargetUser:
+      type: object
+      description: Request serializer for masquerade target user.
+      properties:
+        user_uuid:
+          type: string
+          format: uuid
+      required:
+      - user_uuid
+    MasqueradeableUser:
+      type: object
+      description: Serializer for listing users that can be masqueraded.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        full_name:
+          type: string
+      required:
+      - email
+      - full_name
+      - uuid
     CompanyTypeEnum:
       enum:
       - brand

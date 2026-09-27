@@ -1,0 +1,229 @@
+openapi: 3.2.0
+info:
+  title: Opply OAuth API
+  version: 0.0.0
+tags:
+- name: OAuth
+paths:
+  /api/v1/oauth/applications/:
+    get:
+      operationId: api_v1_oauth_applications_list
+      description: 'Admin-only management of OAuth2 Applications (django-oauth-toolkit).
+
+
+        GET /api/v1/oauth/applications/ → list applications owned by the requesting user''s company
+
+        POST /api/v1/oauth/applications/ → register a new application
+
+        DELETE /api/v1/oauth/applications/{pk}/ → revoke (delete) an application'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - OAuth
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOAuthApplicationList'
+          description: ''
+      summary: Api v1 oauth applications list
+      x-summary-source: derived
+    post:
+      operationId: api_v1_oauth_applications_create
+      description: 'Admin-only management of OAuth2 Applications (django-oauth-toolkit).
+
+
+        GET /api/v1/oauth/applications/ → list applications owned by the requesting user''s company
+
+        POST /api/v1/oauth/applications/ → register a new application
+
+        DELETE /api/v1/oauth/applications/{pk}/ → revoke (delete) an application'
+      tags:
+      - OAuth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OAuthApplication'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OAuthApplication'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OAuthApplication'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthApplication'
+          description: ''
+      summary: Api v1 oauth applications create
+      x-summary-source: derived
+  /api/v1/oauth/applications/{id}/:
+    delete:
+      operationId: api_v1_oauth_applications_destroy
+      description: 'Admin-only management of OAuth2 Applications (django-oauth-toolkit).
+
+
+        GET /api/v1/oauth/applications/ → list applications owned by the requesting user''s company
+
+        POST /api/v1/oauth/applications/ → register a new application
+
+        DELETE /api/v1/oauth/applications/{pk}/ → revoke (delete) an application'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this application.
+        required: true
+      tags:
+      - OAuth
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+      summary: Api v1 oauth applications destroy
+      x-summary-source: derived
+  /api/v1/oauth/register/:
+    post:
+      operationId: api_v1_oauth_register_create
+      description: 'RFC 7591 Dynamic Client Registration endpoint.
+
+
+        Accepts client metadata and creates a DOT Application. Only localhost
+
+        redirect URIs are permitted (MCP clients run on the user''s machine).'
+      tags:
+      - OAuth
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+      summary: Api v1 oauth register create
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedOAuthApplicationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OAuthApplication'
+    AuthorizationGrantTypeEnum:
+      enum:
+      - authorization-code
+      - urn:ietf:params:oauth:grant-type:device_code
+      - implicit
+      - password
+      - client-credentials
+      - openid-hybrid
+      type: string
+      description: '* `authorization-code` - Authorization code
+
+        * `urn:ietf:params:oauth:grant-type:device_code` - Device Code
+
+        * `implicit` - Implicit
+
+        * `password` - Resource owner password-based
+
+        * `client-credentials` - Client credentials
+
+        * `openid-hybrid` - OpenID connect hybrid'
+    ClientTypeEnum:
+      enum:
+      - confidential
+      - public
+      type: string
+      description: '* `confidential` - Confidential
+
+        * `public` - Public'
+    OAuthApplication:
+      type: object
+      description: Serializer for OAuth Application management (admin-only).
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        client_id:
+          type: string
+          readOnly: true
+        client_type:
+          $ref: '#/components/schemas/ClientTypeEnum'
+        authorization_grant_type:
+          $ref: '#/components/schemas/AuthorizationGrantTypeEnum'
+        redirect_uris:
+          type: string
+          description: Allowed URIs list, space separated
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        updated:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - authorization_grant_type
+      - client_id
+      - client_type
+      - created
+      - id
+      - updated
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

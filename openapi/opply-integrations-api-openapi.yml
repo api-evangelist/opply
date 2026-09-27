@@ -5,6 +5,464 @@ info:
 tags:
 - name: Integrations
 paths:
+  /api/v1/integrations/:
+    get:
+      operationId: api_v1_integrations_list
+      description: 'Surface for third-party connector listing, connect-initiation, and revoke.
+
+
+        Tokens are brokered by AgentCore Identity; this viewset only manages the
+
+        ConnectorConnection mirror table and the audit trail.'
+      tags:
+      - Integrations
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Connector'
+          description: ''
+      summary: Api v1 integrations list
+      x-summary-source: derived
+  /api/v1/integrations/{provider}/:
+    get:
+      operationId: api_v1_integrations_retrieve
+      description: 'Surface for third-party connector listing, connect-initiation, and revoke.
+
+
+        Tokens are brokered by AgentCore Identity; this viewset only manages the
+
+        ConnectorConnection mirror table and the audit trail.'
+      parameters:
+      - in: path
+        name: provider
+        schema:
+          type: string
+          pattern: ^[a-z0-9_-]+$
+        required: true
+      tags:
+      - Integrations
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Connector'
+          description: ''
+      summary: Api v1 integrations retrieve
+      x-summary-source: derived
+    delete:
+      operationId: api_v1_integrations_destroy
+      description: 'Surface for third-party connector listing, connect-initiation, and revoke.
+
+
+        Tokens are brokered by AgentCore Identity; this viewset only manages the
+
+        ConnectorConnection mirror table and the audit trail.'
+      parameters:
+      - in: path
+        name: provider
+        schema:
+          type: string
+          pattern: ^[a-z0-9_-]+$
+        required: true
+      tags:
+      - Integrations
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: Connector revoked or already disconnected.
+        '403':
+          description: Caller is not allowed to revoke this connector.
+        '405':
+          description: Connector is admin-managed (DB-backed); OAuth lifecycle is disabled.
+        '502':
+          description: Upstream identity broker error.
+      summary: Api v1 integrations destroy
+      x-summary-source: derived
+  /api/v1/integrations/{provider}/agent-token/:
+    post:
+      operationId: api_v1_integrations_agent_token_create
+      description: 'Resolve a third-party access token for an agent runtime.
+
+
+        Authenticated via the inbound agent JWT (audience
+
+        ``opply-agents``). The subject (user vs company) is derived
+
+        from ``ConnectorDefinition.kind`` — callers never specify it.
+
+
+        The caller MAY send ``company_uuid`` in the JSON body; if so,
+
+        we use that company after verifying the JWT user is an employee
+
+        of it. If absent, we fall back to ``user.get_company()`` — the
+
+        single-company case Opply assumes today. The check keeps the
+
+        endpoint safe the day multi-company users return.
+
+
+        Returns a structured ``status`` so the runtime can skip
+
+        gracefully on missing / stale connections without parsing
+
+        HTTP error codes. The token itself is never logged.'
+      parameters:
+      - in: path
+        name: provider
+        schema:
+          type: string
+          pattern: ^[a-z0-9_-]+$
+        required: true
+      tags:
+      - Integrations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentTokenRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentTokenResponse'
+          description: ''
+        '401':
+          description: Agent JWT present but invalid or expired.
+        '403':
+          description: Missing or malformed Authorization header (unauthenticated agent request).
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentTokenErrorResponse'
+          description: ''
+      summary: Api v1 integrations agent token create
+      x-summary-source: derived
+  /api/v1/integrations/{provider}/callback/:
+    get:
+      operationId: integrations_callback
+      description: OAuth callback. AgentCore Identity redirects the user's browser here after they complete consent on the third-party provider; we finalize the ConnectorConnection by calling verify and bounce the browser back to the FE settings page with a `result=` query string.
+      parameters:
+      - in: path
+        name: provider
+        schema:
+          type: string
+          pattern: ^[a-z0-9_-]+$
+        required: true
+      - in: query
+        name: session_id
+        schema:
+          type: string
+        description: The `sessionUri` returned by AgentCore Identity on initiate, sent back as a query param after consent.
+        required: true
+      tags:
+      - Integrations
+      security:
+      - {}
+      responses:
+        '302':
+          description: Redirect to the FE integrations page.
+        '405':
+          description: Connector is admin-managed (DB-backed); OAuth lifecycle is disabled.
+      summary: Integrations callback
+      x-summary-source: derived
+  /api/v1/integrations/{provider}/connect/:
+    post:
+      operationId: api_v1_integrations_connect_create
+      description: 'Surface for third-party connector listing, connect-initiation, and revoke.
+
+
+        Tokens are brokered by AgentCore Identity; this viewset only manages the
+
+        ConnectorConnection mirror table and the audit trail.'
+      parameters:
+      - in: path
+        name: provider
+        schema:
+          type: string
+          pattern: ^[a-z0-9_-]+$
+        required: true
+      tags:
+      - Integrations
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiateResponse'
+          description: ''
+        '403':
+          description: Caller is not allowed to connect this connector.
+        '405':
+          description: Connector is admin-managed (DB-backed); OAuth lifecycle is disabled.
+        '502':
+          description: Upstream identity broker error.
+      summary: Api v1 integrations connect create
+      x-summary-source: derived
+  /api/v1/integrations/{provider}/verify/:
+    post:
+      operationId: api_v1_integrations_verify_create
+      description: 'Probe whether this connector''s stored token is still usable for the
+
+        caller''s company, self-healing the row in both directions: a stale
+
+        ``CONNECTED`` row is downgraded to ``NEEDS_RECONNECT`` when the broker
+
+        can no longer resolve a token, and a ``NEEDS_RECONNECT`` row is lifted
+
+        back to ``CONNECTED`` when the broker resolves a live token again.
+
+
+        The FE calls this before kicking off a connector-driven flow (e.g. the
+
+        onboarding Xero import) so a dead/expired token surfaces a "reconnect"
+
+        CTA up front instead of failing mid-import with a 502. Returns only a
+
+        coarse ``status`` — never the token itself. Resolves the token the same
+
+        way the import does, so this catches exactly what the import would hit.
+
+
+        Per-tenant connectors are admin-gated (same ``_can_user_act`` rule as
+
+        ``connect`` / ``destroy``) because the probe can mutate the shared
+
+        connection row.'
+      parameters:
+      - in: path
+        name: provider
+        schema:
+          type: string
+          pattern: ^[a-z0-9_-]+$
+        required: true
+      tags:
+      - Integrations
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectorVerifyResponse'
+          description: ''
+        '403':
+          description: Caller is not allowed to verify this connector.
+        '502':
+          description: Connector credential resolver failed.
+      summary: Api v1 integrations verify create
+      x-summary-source: derived
+  /api/v1/integrations/plaid/disconnect/:
+    post:
+      operationId: api_v1_integrations_plaid_disconnect_create
+      description: 'Disconnect Plaid entirely — revoke every Item and the parent connection.
+
+
+        Backs the single per-provider "Disconnect" CTA on the connector card
+
+        (the generic ``DELETE /integrations/plaid/`` returns 405 for resolver-backed
+
+        connectors). Per-Item revoke lives at ``plaid/items//``.'
+      tags:
+      - Integrations
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: All Items revoked (idempotent).
+        '403':
+          description: Caller is not a company admin.
+      summary: Api v1 integrations plaid disconnect create
+      x-summary-source: derived
+  /api/v1/integrations/plaid/exchange/:
+    post:
+      operationId: api_v1_integrations_plaid_exchange_create
+      description: Shared admin gate for the per-tenant Plaid lifecycle endpoints.
+      tags:
+      - Integrations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaidExchangeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PlaidExchangeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PlaidExchangeRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaidExchangeResponse'
+          description: ''
+        '403':
+          description: Caller is not a company admin.
+        '502':
+          description: Plaid rejected the exchange, or the secret could not be stored.
+      summary: Api v1 integrations plaid exchange create
+      x-summary-source: derived
+  /api/v1/integrations/plaid/items/{item_uuid}/:
+    delete:
+      operationId: api_v1_integrations_plaid_items_destroy
+      description: Shared admin gate for the per-tenant Plaid lifecycle endpoints.
+      parameters:
+      - in: path
+        name: item_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Integrations
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: Item revoked or already gone.
+        '403':
+          description: Caller is not a company admin.
+      summary: Api v1 integrations plaid items destroy
+      x-summary-source: derived
+  /api/v1/integrations/plaid/link-token/:
+    post:
+      operationId: api_v1_integrations_plaid_link_token_create
+      description: Shared admin gate for the per-tenant Plaid lifecycle endpoints.
+      tags:
+      - Integrations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaidLinkTokenRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PlaidLinkTokenRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PlaidLinkTokenRequest'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaidLinkTokenResponse'
+          description: ''
+        '403':
+          description: Caller is not a company admin.
+        '404':
+          description: Item for update mode not found.
+        '502':
+          description: Plaid rejected the link-token request.
+      summary: Api v1 integrations plaid link token create
+      x-summary-source: derived
+  /api/v1/integrations/plaid/webhook/:
+    post:
+      operationId: api_v1_integrations_plaid_webhook_create
+      description: 'Unauthenticated Plaid webhook sink. Identity comes from the verified JWT,
+
+        never from ``request.user`` (Plaid carries no session).'
+      tags:
+      - Integrations
+      security:
+      - {}
+      responses:
+        '200':
+          description: Webhook accepted (verified).
+        '400':
+          description: Verification failed — webhook rejected.
+      summary: Api v1 integrations plaid webhook create
+      x-summary-source: derived
+  /api/v1/integrations/unleashed/connect/:
+    post:
+      operationId: api_v1_integrations_unleashed_connect_create
+      description: Shared admin gate for the per-tenant Unleashed lifecycle endpoints.
+      tags:
+      - Integrations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnleashedConnectRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UnleashedConnectRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UnleashedConnectRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnleashedConnectResponse'
+          description: ''
+        '400':
+          description: The supplied API credentials were rejected by Unleashed.
+        '403':
+          description: Caller is not a company admin.
+        '502':
+          description: Unleashed is unreachable, or the secret could not be stored.
+      summary: Api v1 integrations unleashed connect create
+      x-summary-source: derived
+  /api/v1/integrations/unleashed/disconnect/:
+    post:
+      operationId: api_v1_integrations_unleashed_disconnect_create
+      description: 'Disconnect Unleashed — delete the stored credentials and revoke the connection.
+
+
+        Backs the single per-provider "Disconnect" CTA on the connector card (the
+
+        generic ``DELETE /integrations/unleashed/`` returns 405 for resolver-backed
+
+        connectors).'
+      tags:
+      - Integrations
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: Connection revoked (idempotent).
+        '403':
+          description: Caller is not a company admin.
+      summary: Api v1 integrations unleashed disconnect create
+      x-summary-source: derived
   /api/v1/integrations/xero/supplier-spend/:
     get:
       operationId: api_v1_integrations_xero_supplier_spend_list
@@ -34,6 +492,244 @@ paths:
           description: ''
 components:
   schemas:
+    ConnectorKindEnum:
+      enum:
+      - per_user
+      - per_tenant
+      type: string
+      description: '* `per_user` - Per user
+
+        * `per_tenant` - Per tenant'
+    _CategorySpendRow:
+      type: object
+      properties:
+        account_code:
+          type: string
+        spend:
+          type: string
+        supplier_count:
+          type: integer
+        supplier_names:
+          type: array
+          items:
+            type: string
+      required:
+      - account_code
+      - spend
+      - supplier_count
+      - supplier_names
+    AgentTokenResponse:
+      type: object
+      description: "Token-resolution outcome surfaced to the agent runtime.\n\n``status``:\n- ``ok`` — connection found and the vault returned a usable token.\n  ``access_token`` and ``expires_in`` are populated.\n- ``not_connected`` — no active connection exists for this\n  user/company. Token fields are absent.\n- ``needs_reconnect`` — there is an active row but the vault has no\n  usable token (revoked, expired, or never stored). Token fields are\n  absent."
+      properties:
+        status:
+          $ref: '#/components/schemas/AgentTokenResponseStatusEnum'
+        access_token:
+          type: string
+        expires_in:
+          type: integer
+      required:
+      - status
+    PlaidExchangeRequest:
+      type: object
+      description: Body for ``plaid/exchange/`` — the Link ``onSuccess`` payload.
+      properties:
+        public_token:
+          type: string
+        institution_id:
+          type: string
+          default: ''
+        institution_name:
+          type: string
+          default: ''
+      required:
+      - public_token
+    AgentTokenResponseStatusEnum:
+      enum:
+      - ok
+      - not_connected
+      - needs_reconnect
+      type: string
+      description: '* `ok` - ok
+
+        * `not_connected` - not_connected
+
+        * `needs_reconnect` - needs_reconnect'
+    Connector:
+      type: object
+      description: Read-only view of a connector definition merged with its connection state.
+      properties:
+        provider:
+          type: string
+        display_name:
+          type: string
+        description:
+          type: string
+        icon_key:
+          type: string
+        kind:
+          $ref: '#/components/schemas/ConnectorKindEnum'
+        tenant_mode:
+          $ref: '#/components/schemas/ConnectorTenantModeEnum'
+        required_scopes:
+          type: array
+          items:
+            type: string
+        feature_flag:
+          type: string
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/ConnectorConnectionStatusEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        connected_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        last_verified_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        connected_by_name:
+          type:
+          - string
+          - 'null'
+        connected_organisation_name:
+          type:
+          - string
+          - 'null'
+          description: Human-readable name of the connected third-party organisation (e.g. the Xero organisation the token is bound to). Null when the connector exposes no such name or there is no active connection.
+        is_connected_by_admin:
+          type: boolean
+        can_user_act:
+          type: boolean
+          description: True when the requesting user can connect/disconnect this connector.
+      required:
+      - can_user_act
+      - connected_at
+      - connected_by_name
+      - description
+      - display_name
+      - feature_flag
+      - icon_key
+      - is_connected_by_admin
+      - kind
+      - last_verified_at
+      - provider
+      - required_scopes
+      - status
+      - tenant_mode
+    PlaidLinkTokenRequest:
+      type: object
+      description: 'Body for ``plaid/link-token/``.
+
+
+        ``item_uuid`` puts Link into **update mode** to re-auth an existing Item
+
+        (e.g. after ITEM_LOGIN_REQUIRED); omit it to link a new bank.'
+      properties:
+        item_uuid:
+          type: string
+          format: uuid
+    NullEnum:
+      enum:
+      - null
+    InitiateResponse:
+      type: object
+      properties:
+        authorization_url:
+          type: string
+          format: uri
+        provider:
+          type: string
+      required:
+      - authorization_url
+      - provider
+    AgentTokenErrorResponse:
+      type: object
+      description: Stable client message surfaced on upstream identity-broker failures.
+      properties:
+        error:
+          type: string
+      required:
+      - error
+    PlaidExchangeResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/PlaidExchangeResponseStatusEnum'
+        item:
+          $ref: '#/components/schemas/PlaidItem'
+      required:
+      - item
+      - status
+    PlaidItemStatusEnum:
+      enum:
+      - good
+      - login_required
+      - pending_expiration
+      - revoked
+      - error
+      type: string
+      description: '* `good` - Good
+
+        * `login_required` - Login required
+
+        * `pending_expiration` - Pending expiration
+
+        * `revoked` - Revoked
+
+        * `error` - Error'
+    ConnectorTenantModeEnum:
+      enum:
+      - none
+      - shared_token
+      - admin_consent
+      type: string
+      description: '* `none` - None (per-user connector)
+
+        * `shared_token` - Shared admin token
+
+        * `admin_consent` - Provider admin-consent'
+    PlaidItem:
+      type: object
+      description: Read-only view of one linked Plaid Item (bank connection).
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        item_id:
+          type: string
+        institution_id:
+          type: string
+        institution_name:
+          type: string
+        status:
+          $ref: '#/components/schemas/PlaidItemStatusEnum'
+        last_synced_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      required:
+      - institution_id
+      - institution_name
+      - item_id
+      - last_synced_at
+      - status
+      - uuid
+    ConnectorVerifyResponseStatusEnum:
+      enum:
+      - connected
+      - needs_reconnect
+      - not_connected
+      type: string
+      description: '* `connected` - connected
+
+        * `needs_reconnect` - needs_reconnect
+
+        * `not_connected` - not_connected'
     XeroSupplierSpend:
       type: object
       description: Response shape for the supplier-spend aggregation (schema only).
@@ -67,24 +763,33 @@ components:
       - suppliers
       - total_spend
       - window_months
-    _CategorySpendRow:
+    PlaidLinkTokenResponse:
       type: object
       properties:
-        account_code:
+        link_token:
           type: string
-        spend:
-          type: string
-        supplier_count:
-          type: integer
-        supplier_names:
-          type: array
-          items:
-            type: string
+        expiration:
+          type:
+          - string
+          - 'null'
+          format: date-time
       required:
-      - account_code
-      - spend
-      - supplier_count
-      - supplier_names
+      - link_token
+    UnleashedConnectResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        provider:
+          type: string
+      required:
+      - provider
+      - status
+    PlaidExchangeResponseStatusEnum:
+      enum:
+      - ok
+      type: string
+      description: '* `ok` - ok'
     _SupplierSpendRow:
       type: object
       properties:
@@ -112,6 +817,76 @@ components:
       - name
       - spend
       - spend_share
+    ConnectorVerifyResponse:
+      type: object
+      description: 'Coarse, closed-union result of the pre-flight token probe.
+
+
+        Deliberately NOT the full ``ConnectorConnectionStatus`` set — the FE only
+
+        needs to know whether the connection is usable, needs a reconnect, or is
+
+        absent. Non-probed states (``pending`` / ``revoked`` / ``error``) are
+
+        collapsed into one of these three before they leave the endpoint.'
+      properties:
+        status:
+          $ref: '#/components/schemas/ConnectorVerifyResponseStatusEnum'
+      required:
+      - status
+    AgentTokenRequest:
+      type: object
+      description: 'JSON body the agent runtime POSTs to ``agent-token``.
+
+
+        The runtime passes the active turn''s ``company_uuid`` so the lookup
+
+        targets the right tenant for multi-company users; absent means fall
+
+        back to ``user.get_company()`` (the single-company case Opply assumes
+
+        today).'
+      properties:
+        company_uuid:
+          type: string
+          format: uuid
+    UnleashedConnectRequest:
+      type: object
+      description: 'Body for ``unleashed/connect/`` — the API credentials the user pastes.
+
+
+        Same endpoint backs both first connect and reconnect (re-pasting rotated
+
+        credentials). Values are trimmed and validated with a live signed probe
+
+        before anything is persisted.'
+      properties:
+        api_id:
+          type: string
+          maxLength: 255
+        api_key:
+          type: string
+          maxLength: 1024
+      required:
+      - api_id
+      - api_key
+    ConnectorConnectionStatusEnum:
+      enum:
+      - pending
+      - connected
+      - needs_reconnect
+      - revoked
+      - error
+      type: string
+      description: '* `pending` - Pending OAuth completion
+
+        * `connected` - Connected
+
+        * `needs_reconnect` - Needs reconnect
+
+        * `revoked` - Revoked
+
+        * `error` - Error'
   securitySchemes:
     cookieAuth:
       type: apiKey

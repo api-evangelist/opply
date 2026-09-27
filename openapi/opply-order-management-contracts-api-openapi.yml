@@ -246,14 +246,28 @@ paths:
           description: No response body
 components:
   schemas:
-    ServiceFeeTypeEnum:
+    BuyerCurrentOrderManagementContractStateEnum:
       enum:
-      - order_management_only
-      - order_management_with_payment_support
+      - active
+      - empty
       type: string
-      description: '* `order_management_only` - Order Management Only
+      description: '* `active` - Active
 
-        * `order_management_with_payment_support` - Order Management with Payment Support'
+        * `empty` - Empty'
+    BuyerCurrentOrderManagementContract:
+      type: object
+      description: 'Wraps the active OMC with a `state` discriminator so the FE can render
+
+        an empty card when the buyer has no current contract.'
+      properties:
+        state:
+          $ref: '#/components/schemas/BuyerCurrentOrderManagementContractStateEnum'
+        data:
+          allOf:
+          - $ref: '#/components/schemas/BuyerOrderManagementContractActiveData'
+      required:
+      - data
+      - state
     OrderManagementContractDetail:
       type: object
       properties:
@@ -334,17 +348,6 @@ components:
       - start_date
       - total_contract_value
       - uuid
-    AvailableCurrenciesEnum:
-      enum:
-      - EUR
-      - GBP
-      - USD
-      type: string
-      description: '* `EUR` - EUR
-
-        * `GBP` - GBP
-
-        * `USD` - USD'
     PaginatedOrderManagementContractListList:
       type: object
       required:
@@ -370,60 +373,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrderManagementContractList'
-    OrderManagementContractServiceFeeCreate:
-      type: object
-      description: Write serializer for service fees - no uuid needed on create/update
-      properties:
-        service_fee_type:
-          $ref: '#/components/schemas/ServiceFeeTypeEnum'
-        service_fee_percentage:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
-      required:
-      - service_fee_percentage
-      - service_fee_type
-    PatchedOrderManagementContractUpdate:
-      type: object
-      properties:
-        currency:
-          $ref: '#/components/schemas/AvailableCurrenciesEnum'
-        start_date:
-          type: string
-          format: date
-        signed_date:
-          type: string
-          format: date
-        period_in_months:
-          type: integer
-          minimum: 1
-        total_contract_value:
-          type: integer
-          minimum: 0
-        service_fee_percentage:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
-        service_fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrderManagementContractServiceFeeCreate'
-    OrderManagementContractServiceFee:
-      type: object
-      description: Read serializer for service fees - includes uuid for identification
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        service_fee_type:
-          $ref: '#/components/schemas/ServiceFeeTypeEnum'
-        service_fee_percentage:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
-      required:
-      - uuid
     CompanyNameAndId:
       type: object
       properties:
@@ -441,65 +390,22 @@ components:
       - id
       - name
       - uuid
-    BuyerCurrentOrderManagementContractStateEnum:
-      enum:
-      - active
-      - empty
-      type: string
-      description: '* `active` - Active
-
-        * `empty` - Empty'
-    BuyerOrderManagementContractActiveData:
+    OrderManagementContractServiceFee:
       type: object
-      description: "Active Order Management Contract data shaped for the contracts page card.\n\nAll money is emitted as integer cents. The FE mapper divides by 100 to\nrender major units for display.\n\n`OrderManagementContract.total_contract_value` is stored in **micro-units**\non the model (1 GBP = 1,000,000) — the same convention as every per-unit\nprice in `BuyerPriceCalculatorService`. We convert it to cents in\n`get_total_in_cents` so the API contract is uniformly cents and the FE\ncan apply its single `/100` major-unit conversion without knowing about\nmicro-units. Utilised already comes out of the price calculator as cents.\n\nThe card surfaces two parallel notions of elapsed time:\n\n* `months_elapsed` / `months_total` — drive the friendly\n  \"X of N months\" label only. Whole calendar months since `start_date`.\n* `days_elapsed` / `contract_duration_days` — drive the \"X% vs pace\"\n  indicator. Day-granularity, aligned with the same calculation\n  Metabase uses for internal reporting so account managers and buyers\n  see the same number. Start day counts as day 1 (inclusive math),\n  clamped to `[0, contract_duration_days]`."
+      description: Read serializer for service fees - includes uuid for identification
       properties:
-        total_in_cents:
-          type: integer
-          description: 'Convert the model''s micro-unit storage to cents for the API contract.
-
-
-            `total_contract_value` is stored in micro-units (1 GBP = 1,000,000).
-
-            Dividing by 10,000 yields cents, matching `utilised_in_cents` and the
-
-            rest of the monetary surface.'
-          readOnly: true
-        utilised_in_cents:
-          type: integer
-          readOnly: true
-        months_elapsed:
-          type: integer
-          readOnly: true
-        months_total:
-          type: integer
-        days_elapsed:
-          type: integer
-          readOnly: true
-        contract_duration_days:
-          type: integer
-          readOnly: true
-        signed:
+        uuid:
           type: string
+          format: uuid
           readOnly: true
-        renews:
+        service_fee_type:
+          $ref: '#/components/schemas/ServiceFeeTypeEnum'
+        service_fee_percentage:
           type: string
-          readOnly: true
-        avg_monthly_in_cents:
-          type: integer
-          readOnly: true
-        currency:
-          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
       required:
-      - avg_monthly_in_cents
-      - contract_duration_days
-      - currency
-      - days_elapsed
-      - months_elapsed
-      - months_total
-      - renews
-      - signed
-      - total_in_cents
-      - utilised_in_cents
+      - uuid
     OrderManagementContractList:
       type: object
       properties:
@@ -565,48 +471,25 @@ components:
       - start_date
       - total_contract_value
       - uuid
-    BuyerCurrentOrderManagementContract:
-      type: object
-      description: 'Wraps the active OMC with a `state` discriminator so the FE can render
+    AvailableCurrenciesEnum:
+      enum:
+      - EUR
+      - GBP
+      - USD
+      type: string
+      description: '* `EUR` - EUR
 
-        an empty card when the buyer has no current contract.'
-      properties:
-        state:
-          $ref: '#/components/schemas/BuyerCurrentOrderManagementContractStateEnum'
-        data:
-          allOf:
-          - $ref: '#/components/schemas/BuyerOrderManagementContractActiveData'
-      required:
-      - data
-      - state
-    OrderManagementContractUpdate:
-      type: object
-      properties:
-        currency:
-          $ref: '#/components/schemas/AvailableCurrenciesEnum'
-        start_date:
-          type: string
-          format: date
-        signed_date:
-          type: string
-          format: date
-        period_in_months:
-          type: integer
-          minimum: 1
-        total_contract_value:
-          type: integer
-          minimum: 0
-        service_fee_percentage:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
-        service_fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrderManagementContractServiceFeeCreate'
-      required:
-      - signed_date
-      - start_date
+        * `GBP` - GBP
+
+        * `USD` - USD'
+    ServiceFeeTypeEnum:
+      enum:
+      - order_management_only
+      - order_management_with_payment_support
+      type: string
+      description: '* `order_management_only` - Order Management Only
+
+        * `order_management_with_payment_support` - Order Management with Payment Support'
     OrderManagementContractCreate:
       type: object
       properties:
@@ -641,6 +524,123 @@ components:
       - signed_date
       - start_date
       - total_contract_value
+    OrderManagementContractUpdate:
+      type: object
+      properties:
+        currency:
+          $ref: '#/components/schemas/AvailableCurrenciesEnum'
+        start_date:
+          type: string
+          format: date
+        signed_date:
+          type: string
+          format: date
+        period_in_months:
+          type: integer
+          minimum: 1
+        total_contract_value:
+          type: integer
+          minimum: 0
+        service_fee_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+        service_fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderManagementContractServiceFeeCreate'
+      required:
+      - signed_date
+      - start_date
+    OrderManagementContractServiceFeeCreate:
+      type: object
+      description: Write serializer for service fees - no uuid needed on create/update
+      properties:
+        service_fee_type:
+          $ref: '#/components/schemas/ServiceFeeTypeEnum'
+        service_fee_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+      required:
+      - service_fee_percentage
+      - service_fee_type
+    PatchedOrderManagementContractUpdate:
+      type: object
+      properties:
+        currency:
+          $ref: '#/components/schemas/AvailableCurrenciesEnum'
+        start_date:
+          type: string
+          format: date
+        signed_date:
+          type: string
+          format: date
+        period_in_months:
+          type: integer
+          minimum: 1
+        total_contract_value:
+          type: integer
+          minimum: 0
+        service_fee_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+        service_fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderManagementContractServiceFeeCreate'
+    BuyerOrderManagementContractActiveData:
+      type: object
+      description: "Active Order Management Contract data shaped for the contracts page card.\n\nAll money is emitted as integer cents. The FE mapper divides by 100 to\nrender major units for display.\n\n`OrderManagementContract.total_contract_value` is stored in **micro-units**\non the model (1 GBP = 1,000,000) — the same convention as every per-unit\nprice in `BuyerPriceCalculatorService`. We convert it to cents in\n`get_total_in_cents` so the API contract is uniformly cents and the FE\ncan apply its single `/100` major-unit conversion without knowing about\nmicro-units. Utilised already comes out of the price calculator as cents.\n\nThe card surfaces two parallel notions of elapsed time:\n\n* `months_elapsed` / `months_total` — drive the friendly\n  \"X of N months\" label only. Whole calendar months since `start_date`.\n* `days_elapsed` / `contract_duration_days` — drive the \"X% vs pace\"\n  indicator. Day-granularity, aligned with the same calculation\n  Metabase uses for internal reporting so account managers and buyers\n  see the same number. Start day counts as day 1 (inclusive math),\n  clamped to `[0, contract_duration_days]`."
+      properties:
+        total_in_cents:
+          type: integer
+          description: 'Convert the model''s micro-unit storage to cents for the API contract.
+
+
+            `total_contract_value` is stored in micro-units (1 GBP = 1,000,000).
+
+            Dividing by 10,000 yields cents, matching `utilised_in_cents` and the
+
+            rest of the monetary surface.'
+          readOnly: true
+        utilised_in_cents:
+          type: integer
+          readOnly: true
+        months_elapsed:
+          type: integer
+          readOnly: true
+        months_total:
+          type: integer
+        days_elapsed:
+          type: integer
+          readOnly: true
+        contract_duration_days:
+          type: integer
+          readOnly: true
+        signed:
+          type: string
+          readOnly: true
+        renews:
+          type: string
+          readOnly: true
+        avg_monthly_in_cents:
+          type: integer
+          readOnly: true
+        currency:
+          type: string
+      required:
+      - avg_monthly_in_cents
+      - contract_duration_days
+      - currency
+      - days_elapsed
+      - months_elapsed
+      - months_total
+      - renews
+      - signed
+      - total_in_cents
+      - utilised_in_cents
   securitySchemes:
     cookieAuth:
       type: apiKey

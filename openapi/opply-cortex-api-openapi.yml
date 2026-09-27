@@ -1,0 +1,719 @@
+openapi: 3.2.0
+info:
+  title: Opply Cortex API
+  version: 0.0.0
+tags:
+- name: Cortex
+paths:
+  /api/v1/cortex/jobs/:
+    get:
+      operationId: api_v1_cortex_jobs_list
+      description: 'Endpoints:
+
+        - POST /jobs/ -> create job (return UUID only)
+
+        - PATCH /jobs// -> update agent_name, description, or status
+
+        - GET /jobs/executing/ -> list all jobs where status == EXECUTING'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Cortex
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCortexJobList'
+          description: ''
+      summary: Api v1 cortex jobs list
+      x-summary-source: derived
+    post:
+      operationId: api_v1_cortex_jobs_create
+      description: 'Endpoints:
+
+        - POST /jobs/ -> create job (return UUID only)
+
+        - PATCH /jobs// -> update agent_name, description, or status
+
+        - GET /jobs/executing/ -> list all jobs where status == EXECUTING'
+      tags:
+      - Cortex
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CortexJobCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CortexJobCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CortexJobCreate'
+        required: true
+      security:
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CortexJobCreate'
+          description: ''
+      summary: Api v1 cortex jobs create
+      x-summary-source: derived
+  /api/v1/cortex/jobs/{uuid}/:
+    get:
+      operationId: api_v1_cortex_jobs_retrieve
+      description: 'Endpoints:
+
+        - POST /jobs/ -> create job (return UUID only)
+
+        - PATCH /jobs// -> update agent_name, description, or status
+
+        - GET /jobs/executing/ -> list all jobs where status == EXECUTING'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Cortex
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CortexJob'
+          description: ''
+      summary: Api v1 cortex jobs retrieve
+      x-summary-source: derived
+    put:
+      operationId: api_v1_cortex_jobs_update
+      description: 'Endpoints:
+
+        - POST /jobs/ -> create job (return UUID only)
+
+        - PATCH /jobs// -> update agent_name, description, or status
+
+        - GET /jobs/executing/ -> list all jobs where status == EXECUTING'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Cortex
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CortexJobUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CortexJobUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CortexJobUpdate'
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CortexJobUpdate'
+          description: ''
+      summary: Api v1 cortex jobs update
+      x-summary-source: derived
+    patch:
+      operationId: api_v1_cortex_jobs_partial_update
+      description: 'Endpoints:
+
+        - POST /jobs/ -> create job (return UUID only)
+
+        - PATCH /jobs// -> update agent_name, description, or status
+
+        - GET /jobs/executing/ -> list all jobs where status == EXECUTING'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Cortex
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCortexJobUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCortexJobUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCortexJobUpdate'
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CortexJobUpdate'
+          description: ''
+      summary: Api v1 cortex jobs partial update
+      x-summary-source: derived
+    delete:
+      operationId: api_v1_cortex_jobs_destroy
+      description: 'Endpoints:
+
+        - POST /jobs/ -> create job (return UUID only)
+
+        - PATCH /jobs// -> update agent_name, description, or status
+
+        - GET /jobs/executing/ -> list all jobs where status == EXECUTING'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Cortex
+      security:
+      - {}
+      responses:
+        '204':
+          description: No response body
+      summary: Api v1 cortex jobs destroy
+      x-summary-source: derived
+  /api/v1/cortex/jobs/executing/:
+    get:
+      operationId: api_v1_cortex_jobs_executing_retrieve
+      description: 'Endpoints:
+
+        - POST /jobs/ -> create job (return UUID only)
+
+        - PATCH /jobs// -> update agent_name, description, or status
+
+        - GET /jobs/executing/ -> list all jobs where status == EXECUTING'
+      tags:
+      - Cortex
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CortexJob'
+          description: ''
+      summary: Api v1 cortex jobs executing retrieve
+      x-summary-source: derived
+  /api/v1/cortex/workflows/:
+    get:
+      operationId: api_v1_cortex_workflows_list
+      description: 'Endpoints:
+
+        - POST /workflows/ -> create workflow (return UUID only)
+
+        - GET /workflows/ -> list workflows, each with associated jobs'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Cortex
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCortexWorkflowWithJobsList'
+          description: ''
+      summary: Api v1 cortex workflows list
+      x-summary-source: derived
+    post:
+      operationId: api_v1_cortex_workflows_create
+      description: 'Endpoints:
+
+        - POST /workflows/ -> create workflow (return UUID only)
+
+        - GET /workflows/ -> list workflows, each with associated jobs'
+      tags:
+      - Cortex
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CortexWorkflowCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CortexWorkflowCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CortexWorkflowCreate'
+        required: true
+      security:
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CortexWorkflowCreate'
+          description: ''
+      summary: Api v1 cortex workflows create
+      x-summary-source: derived
+  /api/v1/cortex/workflows/{uuid}/:
+    get:
+      operationId: api_v1_cortex_workflows_retrieve
+      description: 'Endpoints:
+
+        - POST /workflows/ -> create workflow (return UUID only)
+
+        - GET /workflows/ -> list workflows, each with associated jobs'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Cortex
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CortexWorkflowWithJobs'
+          description: ''
+      summary: Api v1 cortex workflows retrieve
+      x-summary-source: derived
+    put:
+      operationId: api_v1_cortex_workflows_update
+      description: 'Endpoints:
+
+        - POST /workflows/ -> create workflow (return UUID only)
+
+        - GET /workflows/ -> list workflows, each with associated jobs'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Cortex
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CortexWorkflowWithJobs'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CortexWorkflowWithJobs'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CortexWorkflowWithJobs'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CortexWorkflowWithJobs'
+          description: ''
+      summary: Api v1 cortex workflows update
+      x-summary-source: derived
+    patch:
+      operationId: api_v1_cortex_workflows_partial_update
+      description: 'Endpoints:
+
+        - POST /workflows/ -> create workflow (return UUID only)
+
+        - GET /workflows/ -> list workflows, each with associated jobs'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Cortex
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCortexWorkflowWithJobs'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCortexWorkflowWithJobs'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCortexWorkflowWithJobs'
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CortexWorkflowWithJobs'
+          description: ''
+      summary: Api v1 cortex workflows partial update
+      x-summary-source: derived
+    delete:
+      operationId: api_v1_cortex_workflows_destroy
+      description: 'Endpoints:
+
+        - POST /workflows/ -> create workflow (return UUID only)
+
+        - GET /workflows/ -> list workflows, each with associated jobs'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Cortex
+      security:
+      - {}
+      responses:
+        '204':
+          description: No response body
+      summary: Api v1 cortex workflows destroy
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedCortexWorkflowWithJobsList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CortexWorkflowWithJobs'
+    CortexJobCreate:
+      type: object
+      description: Accepts a workflow by UUID for creation convenience.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        workflow_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        agent_name:
+          type: string
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/CortexJobStatusEnum'
+        job_index:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+      required:
+      - agent_name
+      - description
+      - status
+      - uuid
+      - workflow_uuid
+    PatchedCortexWorkflowWithJobs:
+      type: object
+      description: List all workflows with their associated jobs.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        input:
+          type: string
+        type:
+          $ref: '#/components/schemas/CortexWorkflowTypeEnum'
+        zendesk_ticket_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/CortexJob'
+          readOnly: true
+        workFlowAlreadyHasFeedback:
+          type: string
+          readOnly: true
+    CortexJobUpdate:
+      type: object
+      description: 'Partial updates: agent_name, description, status.'
+      properties:
+        agent_name:
+          type: string
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/CortexJobStatusEnum'
+        job_index:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+    CortexWorkflowCreate:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        input:
+          type: string
+        type:
+          $ref: '#/components/schemas/CortexWorkflowTypeEnum'
+        zendesk_ticket_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+      required:
+      - input
+      - type
+      - uuid
+    PaginatedCortexJobList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CortexJob'
+    PatchedCortexJobUpdate:
+      type: object
+      description: 'Partial updates: agent_name, description, status.'
+      properties:
+        agent_name:
+          type: string
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/CortexJobStatusEnum'
+        job_index:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+    CortexJobStatusEnum:
+      enum:
+      - PENDING
+      - EXECUTING
+      - COMPLETED
+      - AWAITING_HUMAN
+      type: string
+      description: '* `PENDING` - Pending
+
+        * `EXECUTING` - Executing
+
+        * `COMPLETED` - Completed
+
+        * `AWAITING_HUMAN` - Awaiting Human'
+    CortexWorkflowTypeEnum:
+      enum:
+      - FINANCE
+      - PREDICTIONS
+      - COMPLIANCE
+      - LOGISTICS
+      - ORDERS
+      type: string
+      description: '* `FINANCE` - Finance
+
+        * `PREDICTIONS` - Predictions
+
+        * `COMPLIANCE` - Compliance
+
+        * `LOGISTICS` - Logistics
+
+        * `ORDERS` - Orders'
+    CortexWorkflowWithJobs:
+      type: object
+      description: List all workflows with their associated jobs.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        input:
+          type: string
+        type:
+          $ref: '#/components/schemas/CortexWorkflowTypeEnum'
+        zendesk_ticket_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/CortexJob'
+          readOnly: true
+        workFlowAlreadyHasFeedback:
+          type: string
+          readOnly: true
+      required:
+      - created
+      - input
+      - jobs
+      - modified
+      - type
+      - uuid
+      - workFlowAlreadyHasFeedback
+    CortexJob:
+      type: object
+      description: Used for reading jobs (and nested under workflows).
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        workflow_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        workflow_type:
+          type: string
+          readOnly: true
+        agent_name:
+          type: string
+        description:
+          type: string
+        job_index:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        status:
+          $ref: '#/components/schemas/CortexJobStatusEnum'
+        status_last_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - agent_name
+      - created
+      - description
+      - modified
+      - status
+      - uuid
+      - workflow_type
+      - workflow_uuid
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

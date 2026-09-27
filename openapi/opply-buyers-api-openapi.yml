@@ -83,63 +83,9 @@ paths:
           description: ''
 components:
   schemas:
-    StaffUser:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        email:
-          type: string
-          format: email
-          readOnly: true
-        first_name:
-          type: string
-          readOnly: true
-        last_name:
-          type: string
-          readOnly: true
-        is_staff:
-          type: boolean
-          readOnly: true
-          title: Staff status
-          description: Designates whether the user can log into this admin site.
-      required:
-      - email
-      - first_name
-      - id
-      - is_staff
-      - last_name
-      - uuid
-    BuyerSummary:
-      type: object
-      description: Serializer for buyer summary information
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-      required:
-      - name
-      - uuid
-    AvailableCurrenciesEnum:
+    NullEnum:
       enum:
-      - EUR
-      - GBP
-      - USD
-      type: string
-      description: '* `EUR` - EUR
-
-        * `GBP` - GBP
-
-        * `USD` - USD'
+      - null
     BuyerOnboardingSupplierSubmission:
       type: object
       description: 'Buyer Suppliers section. The agent commit POSTs one row per extracted
@@ -283,6 +229,218 @@ components:
       - matched_supplier_name
       - review_status
       - supplier_name
+    PaginatedOnboardingSupplierListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OnboardingSupplierList'
+    StaffUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+      required:
+      - email
+      - first_name
+      - id
+      - is_staff
+      - last_name
+      - uuid
+    OnboardingSupplierList:
+      type: object
+      description: Lightweight serializer for list views
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        company_name:
+          type: string
+          readOnly: true
+        status:
+          type: string
+          readOnly: true
+        buyer_name:
+          type: string
+          readOnly: true
+        is_archived:
+          type: boolean
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - buyer_name
+      - company_name
+      - created
+      - is_archived
+      - status
+      - uuid
+    BlankEnum:
+      enum:
+      - ''
+    SupplierRequest:
+      type: object
+      description: 'Serializer for buyer supplier requests submitted from the portal
+
+        "Request Supplier" form.
+
+
+        Creates a ``buyer_onboarding.Supplier`` submission (default
+
+        ``review_status=PENDING_REVIEW``) bound to the buyer''s ``BuyerOnboarding``
+
+        so it lands in the MoR supplier-submissions review queue, where the MoR can
+
+        match it to an existing supplier or onboard it. The view fires a Zendesk
+
+        ticket on commit. The owning ``BuyerOnboarding`` is resolved by the view and
+
+        passed via ``save(buyer_onboarding=...)``.'
+      properties:
+        supplier_name:
+          type: string
+          description: Supplier name
+          maxLength: 255
+        average_monthly_spend:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          description: Average monthly spend
+        invoice_currency:
+          description: 'Invoice/Payment currency (e.g., USD, GBP, EUR)
+
+
+            * `EUR` - EUR
+
+            * `GBP` - GBP
+
+            * `USD` - USD'
+          oneOf:
+          - $ref: '#/components/schemas/AvailableCurrenciesEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        payment_terms:
+          type: string
+          description: Supplier payment terms
+        priority:
+          description: 'Priority to onboard this supplier
+
+
+            * `high` - High
+
+            * `medium` - Medium
+
+            * `low` - Low'
+          oneOf:
+          - $ref: '#/components/schemas/PriorityEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        supplier_country:
+          type: string
+          description: Supplier country
+          maxLength: 100
+        arranges_delivery:
+          type: boolean
+          default: false
+          description: Does the supplier arrange delivery?
+        lead_time:
+          type: string
+          description: Agreed lead time
+          maxLength: 255
+        is_organic:
+          type: boolean
+          default: false
+          description: Is this an organic supplier?
+        relationship_notes:
+          type: string
+          description: Any noteworthy information about your trading relationship
+        duns:
+          type:
+          - string
+          - 'null'
+          description: DUNS number for US suppliers
+          maxLength: 50
+        vat_number:
+          type: string
+          description: Supplier VAT number
+          maxLength: 64
+        registration_number:
+          type: string
+          description: Supplier company registration number
+          maxLength: 64
+        contact_name:
+          type: string
+          description: Supplier contact name
+          maxLength: 255
+        contact_email:
+          type: string
+          format: email
+          description: Supplier contact email
+        contact_phone:
+          type: string
+          description: Supplier contact phone
+          maxLength: 64
+        supplier_address:
+          type: string
+          description: Supplier address
+      required:
+      - supplier_name
+    SupplierReviewStatusEnum:
+      enum:
+      - pending_review
+      - matched
+      - onboarding
+      - rejected
+      type: string
+      description: '* `pending_review` - Pending review
+
+        * `matched` - Matched to existing supplier
+
+        * `onboarding` - Onboarding new supplier
+
+        * `rejected` - Rejected'
     Country:
       enum:
       - AF
@@ -1035,34 +1193,20 @@ components:
         * `ZM` - Zambia
 
         * `ZW` - Zimbabwe'
-    PaginatedOnboardingSupplierListList:
+    BuyerSummary:
       type: object
-      required:
-      - count
-      - results
+      description: Serializer for buyer summary information
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/OnboardingSupplierList'
-    NullEnum:
-      enum:
-      - null
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+      required:
+      - name
+      - uuid
     PriorityEnum:
       enum:
       - high
@@ -1074,40 +1218,17 @@ components:
         * `medium` - Medium
 
         * `low` - Low'
-    OnboardingSupplierList:
-      type: object
-      description: Lightweight serializer for list views
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        company_name:
-          type: string
-          readOnly: true
-        status:
-          type: string
-          readOnly: true
-        buyer_name:
-          type: string
-          readOnly: true
-        is_archived:
-          type: boolean
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - buyer_name
-      - company_name
-      - created
-      - is_archived
-      - status
-      - uuid
-    BlankEnum:
+    AvailableCurrenciesEnum:
       enum:
-      - ''
+      - EUR
+      - GBP
+      - USD
+      type: string
+      description: '* `EUR` - EUR
+
+        * `GBP` - GBP
+
+        * `USD` - USD'
     OnboardingSupplier:
       type: object
       description: Serializer for OnboardingSupplier model
@@ -1312,127 +1433,6 @@ components:
       - registration_number
       - status
       - uuid
-    SupplierReviewStatusEnum:
-      enum:
-      - pending_review
-      - matched
-      - onboarding
-      - rejected
-      type: string
-      description: '* `pending_review` - Pending review
-
-        * `matched` - Matched to existing supplier
-
-        * `onboarding` - Onboarding new supplier
-
-        * `rejected` - Rejected'
-    SupplierRequest:
-      type: object
-      description: 'Serializer for buyer supplier requests submitted from the portal
-
-        "Request Supplier" form.
-
-
-        Creates a ``buyer_onboarding.Supplier`` submission (default
-
-        ``review_status=PENDING_REVIEW``) bound to the buyer''s ``BuyerOnboarding``
-
-        so it lands in the MoR supplier-submissions review queue, where the MoR can
-
-        match it to an existing supplier or onboard it. The view fires a Zendesk
-
-        ticket on commit. The owning ``BuyerOnboarding`` is resolved by the view and
-
-        passed via ``save(buyer_onboarding=...)``.'
-      properties:
-        supplier_name:
-          type: string
-          description: Supplier name
-          maxLength: 255
-        average_monthly_spend:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-          description: Average monthly spend
-        invoice_currency:
-          description: 'Invoice/Payment currency (e.g., USD, GBP, EUR)
-
-
-            * `EUR` - EUR
-
-            * `GBP` - GBP
-
-            * `USD` - USD'
-          oneOf:
-          - $ref: '#/components/schemas/AvailableCurrenciesEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-        payment_terms:
-          type: string
-          description: Supplier payment terms
-        priority:
-          description: 'Priority to onboard this supplier
-
-
-            * `high` - High
-
-            * `medium` - Medium
-
-            * `low` - Low'
-          oneOf:
-          - $ref: '#/components/schemas/PriorityEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-        supplier_country:
-          type: string
-          description: Supplier country
-          maxLength: 100
-        arranges_delivery:
-          type: boolean
-          default: false
-          description: Does the supplier arrange delivery?
-        lead_time:
-          type: string
-          description: Agreed lead time
-          maxLength: 255
-        is_organic:
-          type: boolean
-          default: false
-          description: Is this an organic supplier?
-        relationship_notes:
-          type: string
-          description: Any noteworthy information about your trading relationship
-        duns:
-          type:
-          - string
-          - 'null'
-          description: DUNS number for US suppliers
-          maxLength: 50
-        vat_number:
-          type: string
-          description: Supplier VAT number
-          maxLength: 64
-        registration_number:
-          type: string
-          description: Supplier company registration number
-          maxLength: 64
-        contact_name:
-          type: string
-          description: Supplier contact name
-          maxLength: 255
-        contact_email:
-          type: string
-          format: email
-          description: Supplier contact email
-        contact_phone:
-          type: string
-          description: Supplier contact phone
-          maxLength: 64
-        supplier_address:
-          type: string
-          description: Supplier address
-      required:
-      - supplier_name
     AddressContactPhoneCountryCodeEnum:
       enum:
       - '+376'

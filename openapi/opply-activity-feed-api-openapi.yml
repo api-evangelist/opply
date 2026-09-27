@@ -156,6 +156,20 @@ paths:
           description: ''
 components:
   schemas:
+    FeedItemStatusEnum:
+      enum:
+      - queued
+      - processing
+      - integrating
+      - processed
+      type: string
+      description: '* `queued` - Queued
+
+        * `processing` - Processing
+
+        * `integrating` - Integrating
+
+        * `processed` - Processed'
     FeedItemRead:
       type: object
       properties:
@@ -216,20 +230,6 @@ components:
       - status
       - summary
       - uuid
-    FeedItemStatusEnum:
-      enum:
-      - queued
-      - processing
-      - integrating
-      - processed
-      type: string
-      description: '* `queued` - Queued
-
-        * `processing` - Processing
-
-        * `integrating` - Integrating
-
-        * `processed` - Processed'
     PaginatedFeedItemReadList:
       type: object
       required:

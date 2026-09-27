@@ -346,6 +346,9 @@ paths:
           description: ''
 components:
   schemas:
+    NullEnum:
+      enum:
+      - null
     Currencies:
       enum:
       - EUR
@@ -360,31 +363,14 @@ components:
         * `GBP` - GBP
 
         * `CAD` - CAD'
-    PaginatedIngredientList:
+    ProcessCSV:
       type: object
-      required:
-      - count
-      - results
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Ingredient'
+        company_document_uuid:
+          type: string
+          format: uuid
+      required:
+      - company_document_uuid
     TaskResult:
       type: object
       properties:
@@ -420,6 +406,54 @@ components:
           readOnly: true
       required:
       - result
+      - task_id
+    FrequencyEnum:
+      enum:
+      - weekly
+      - monthly
+      - quarterly
+      - annually
+      type: string
+      description: '* `weekly` - Weekly
+
+        * `monthly` - Monthly
+
+        * `quarterly` - Quarterly
+
+        * `annually` - Annually'
+    TaskResultStatusEnum:
+      enum:
+      - FAILURE
+      - PENDING
+      - RECEIVED
+      - RETRY
+      - REVOKED
+      - STARTED
+      - SUCCESS
+      type: string
+      description: '* `FAILURE` - FAILURE
+
+        * `PENDING` - PENDING
+
+        * `RECEIVED` - RECEIVED
+
+        * `RETRY` - RETRY
+
+        * `REVOKED` - REVOKED
+
+        * `STARTED` - STARTED
+
+        * `SUCCESS` - SUCCESS'
+    BlankEnum:
+      enum:
+      - ''
+    TaskCreated:
+      type: object
+      properties:
+        task_id:
+          type: string
+          format: uuid
+      required:
       - task_id
     Ingredient:
       type: object
@@ -509,6 +543,48 @@ components:
       - id
       - name
       - uuid
+    PaginatedInquiryDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InquiryDocument'
+    InquiryDocument:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        document:
+          type: string
+          format: uri
+        description:
+          type:
+          - string
+          - 'null'
+      required:
+      - document
+      - uuid
     AllergenRequirementsEnum:
       enum:
       - celery
@@ -553,183 +629,6 @@ components:
         * `soya` - Soya
 
         * `sulphur_dioxide` - Sulphur Dioxide'
-    PaginatedInquiryDocumentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/InquiryDocument'
-    UnitOfMeasurementEnum:
-      enum:
-      - fl oz
-      - g
-      - mg
-      - gals
-      - kg
-      - L
-      - tons
-      - oz
-      - lbs
-      - pcs
-      - pt
-      - ml
-      - boxes
-      - pallets
-      - tsp
-      - tbsp
-      - units
-      - cases
-      - trays
-      type: string
-      description: '* `fl oz` - Fluid Ounces
-
-        * `g` - Grams
-
-        * `mg` - milligrams
-
-        * `gals` - Gallons
-
-        * `kg` - Kilograms
-
-        * `L` - Liters
-
-        * `tons` - Metric Tons
-
-        * `oz` - Ounces
-
-        * `lbs` - Pounds
-
-        * `pcs` - Pieces
-
-        * `pt` - Pints
-
-        * `ml` - Milliliter
-
-        * `boxes` - Boxes
-
-        * `pallets` - Pallets
-
-        * `tsp` - Teaspoons
-
-        * `tbsp` - Tablespoons
-
-        * `units` - Units
-
-        * `cases` - Cases
-
-        * `trays` - Trays'
-    DietRequirementsEnum:
-      enum:
-      - kosher
-      - halal
-      - organic
-      - vegan
-      - vegetarian
-      type: string
-      description: '* `kosher` - Kosher
-
-        * `halal` - Halal
-
-        * `organic` - Organic
-
-        * `vegan` - Vegan
-
-        * `vegetarian` - Vegetarian'
-    NullEnum:
-      enum:
-      - null
-    FrequencyEnum:
-      enum:
-      - weekly
-      - monthly
-      - quarterly
-      - annually
-      type: string
-      description: '* `weekly` - Weekly
-
-        * `monthly` - Monthly
-
-        * `quarterly` - Quarterly
-
-        * `annually` - Annually'
-    TaskCreated:
-      type: object
-      properties:
-        task_id:
-          type: string
-          format: uuid
-      required:
-      - task_id
-    InquiryDocument:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        document:
-          type: string
-          format: uri
-        description:
-          type:
-          - string
-          - 'null'
-      required:
-      - document
-      - uuid
-    BlankEnum:
-      enum:
-      - ''
-    ProcessCSV:
-      type: object
-      properties:
-        company_document_uuid:
-          type: string
-          format: uuid
-      required:
-      - company_document_uuid
-    TaskResultStatusEnum:
-      enum:
-      - FAILURE
-      - PENDING
-      - RECEIVED
-      - RETRY
-      - REVOKED
-      - STARTED
-      - SUCCESS
-      type: string
-      description: '* `FAILURE` - FAILURE
-
-        * `PENDING` - PENDING
-
-        * `RECEIVED` - RECEIVED
-
-        * `RETRY` - RETRY
-
-        * `REVOKED` - REVOKED
-
-        * `STARTED` - STARTED
-
-        * `SUCCESS` - SUCCESS'
     PatchedIngredient:
       type: object
       properties:
@@ -812,6 +711,107 @@ components:
           - string
           - 'null'
           format: uuid
+    UnitOfMeasurementEnum:
+      enum:
+      - fl oz
+      - g
+      - mg
+      - gals
+      - kg
+      - L
+      - tons
+      - oz
+      - lbs
+      - pcs
+      - pt
+      - ml
+      - boxes
+      - pallets
+      - tsp
+      - tbsp
+      - units
+      - cases
+      - trays
+      type: string
+      description: '* `fl oz` - Fluid Ounces
+
+        * `g` - Grams
+
+        * `mg` - milligrams
+
+        * `gals` - Gallons
+
+        * `kg` - Kilograms
+
+        * `L` - Liters
+
+        * `tons` - Metric Tons
+
+        * `oz` - Ounces
+
+        * `lbs` - Pounds
+
+        * `pcs` - Pieces
+
+        * `pt` - Pints
+
+        * `ml` - Milliliter
+
+        * `boxes` - Boxes
+
+        * `pallets` - Pallets
+
+        * `tsp` - Teaspoons
+
+        * `tbsp` - Tablespoons
+
+        * `units` - Units
+
+        * `cases` - Cases
+
+        * `trays` - Trays'
+    PaginatedIngredientList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+    DietRequirementsEnum:
+      enum:
+      - kosher
+      - halal
+      - organic
+      - vegan
+      - vegetarian
+      type: string
+      description: '* `kosher` - Kosher
+
+        * `halal` - Halal
+
+        * `organic` - Organic
+
+        * `vegan` - Vegan
+
+        * `vegetarian` - Vegetarian'
   securitySchemes:
     cookieAuth:
       type: apiKey
