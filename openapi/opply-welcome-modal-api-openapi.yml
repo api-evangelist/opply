@@ -54,9 +54,25 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    NullEnum:
+    WelcomeModalDismissalRequest:
+      type: object
+      description: Inbound payload for `POST /users/welcome-modal/me/`.
+      properties:
+        action:
+          $ref: '#/components/schemas/WelcomeModalActionEnum'
+      required:
+      - action
+    WelcomeModalActionEnum:
       enum:
-      - null
+      - place_an_order
+      - payments
+      - explore
+      type: string
+      description: '* `place_an_order` - Place an order
+
+        * `payments` - Payments
+
+        * `explore` - Explore'
     WelcomeModalDismissal:
       type: object
       properties:
@@ -78,25 +94,6 @@ components:
       required:
       - action
       - dismissed_at
-    WelcomeModalDismissalRequest:
-      type: object
-      description: Inbound payload for `POST /users/welcome-modal/me/`.
-      properties:
-        action:
-          $ref: '#/components/schemas/WelcomeModalActionEnum'
-      required:
-      - action
-    WelcomeModalActionEnum:
-      enum:
-      - place_an_order
-      - payments
-      - explore
-      type: string
-      description: '* `place_an_order` - Place an order
-
-        * `payments` - Payments
-
-        * `explore` - Explore'
     WelcomeModalState:
       type: object
       description: Response shape for `GET /users/welcome-modal/me/`.
@@ -116,6 +113,9 @@ components:
       - action
       - dismissed
       - dismissed_at
+    NullEnum:
+      enum:
+      - null
   securitySchemes:
     cookieAuth:
       type: apiKey

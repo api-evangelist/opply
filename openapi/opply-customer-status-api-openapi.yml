@@ -117,61 +117,49 @@ paths:
           description: ''
 components:
   schemas:
-    CustomerHealthStatusEnum:
-      enum:
-      - healthy
-      - average
-      - at_risk
-      - new
-      - churned
-      - on_hold
-      type: string
-      description: '* `healthy` - Healthy
-
-        * `average` - Average
-
-        * `at_risk` - At Risk
-
-        * `new` - New
-
-        * `churned` - Churned
-
-        * `on_hold` - On Hold'
-    BlankEnum:
-      enum:
-      - ''
-    UpdatedBy:
+    CustomerStatusUpdate:
       type: object
+      description: Serializer for updating a customer's status.
       properties:
-        uuid:
+        status:
+          allOf:
+          - $ref: '#/components/schemas/CustomerHealthStatusEnum'
+          description: 'New health status for the customer
+
+
+            * `healthy` - Healthy
+
+            * `average` - Average
+
+            * `at_risk` - At Risk
+
+            * `new` - New
+
+            * `churned` - Churned
+
+            * `on_hold` - On Hold'
+        on_hold_reason_category:
+          default: ''
+          description: 'Buyer-facing reason category (dropdown). Only stored when status is ON_HOLD.
+
+
+            * `overdue_payments` - Overdue Payments
+
+            * `new_contract_required` - New Contract Required
+
+            * `verification_needed` - Verification Needed
+
+            * `other` - Other'
+          oneOf:
+          - $ref: '#/components/schemas/CustomerHoldReasonEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        on_hold_public_reason:
           type: string
-          format: uuid
-        name:
-          type: string
+          default: ''
+          description: Free-text reason, only stored when status is ON_HOLD and the category is OTHER.
+          maxLength: 1000
       required:
-      - name
-      - uuid
-    CustomerHoldReasonEnum:
-      enum:
-      - overdue_payments
-      - new_contract_required
-      - verification_needed
-      - other
-      type: string
-      description: '* `overdue_payments` - Overdue Payments
-
-        * `new_contract_required` - New Contract Required
-
-        * `verification_needed` - Verification Needed
-
-        * `other` - Other'
-    CustomerStatusNotFoundResponse:
-      type: object
-      properties:
-        detail:
-          type: string
-      required:
-      - detail
+      - status
     CustomerStatus:
       type: object
       description: Serializer for reading CustomerStatus records.
@@ -231,6 +219,40 @@ components:
       - status
       - updated_by
       - uuid
+    BlankEnum:
+      enum:
+      - ''
+    CustomerHealthStatusEnum:
+      enum:
+      - healthy
+      - average
+      - at_risk
+      - new
+      - churned
+      - on_hold
+      type: string
+      description: '* `healthy` - Healthy
+
+        * `average` - Average
+
+        * `at_risk` - At Risk
+
+        * `new` - New
+
+        * `churned` - Churned
+
+        * `on_hold` - On Hold'
+    UpdatedBy:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - uuid
     PaginatedCustomerStatusList:
       type: object
       required:
@@ -256,49 +278,27 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CustomerStatus'
-    CustomerStatusUpdate:
+    CustomerHoldReasonEnum:
+      enum:
+      - overdue_payments
+      - new_contract_required
+      - verification_needed
+      - other
+      type: string
+      description: '* `overdue_payments` - Overdue Payments
+
+        * `new_contract_required` - New Contract Required
+
+        * `verification_needed` - Verification Needed
+
+        * `other` - Other'
+    CustomerStatusNotFoundResponse:
       type: object
-      description: Serializer for updating a customer's status.
       properties:
-        status:
-          allOf:
-          - $ref: '#/components/schemas/CustomerHealthStatusEnum'
-          description: 'New health status for the customer
-
-
-            * `healthy` - Healthy
-
-            * `average` - Average
-
-            * `at_risk` - At Risk
-
-            * `new` - New
-
-            * `churned` - Churned
-
-            * `on_hold` - On Hold'
-        on_hold_reason_category:
-          default: ''
-          description: 'Buyer-facing reason category (dropdown). Only stored when status is ON_HOLD.
-
-
-            * `overdue_payments` - Overdue Payments
-
-            * `new_contract_required` - New Contract Required
-
-            * `verification_needed` - Verification Needed
-
-            * `other` - Other'
-          oneOf:
-          - $ref: '#/components/schemas/CustomerHoldReasonEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-        on_hold_public_reason:
+        detail:
           type: string
-          default: ''
-          description: Free-text reason, only stored when status is ON_HOLD and the category is OTHER.
-          maxLength: 1000
       required:
-      - status
+      - detail
   securitySchemes:
     cookieAuth:
       type: apiKey

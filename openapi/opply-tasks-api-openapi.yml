@@ -892,20 +892,113 @@ paths:
           description: ''
 components:
   schemas:
-    TaskStatusEnum:
+    RelatedTarget:
+      type: object
+      description: 'A single hit in the task "Related to" search — an order, supplier, buyer,
+
+        contract, ingredient or another task the caller can link a task to. (`buyer`
+
+        is only emitted for Merchant-of-Record callers.)'
+      properties:
+        type:
+          $ref: '#/components/schemas/RelatedTargetTypeEnum'
+        uuid:
+          type: string
+          format: uuid
+        id_label:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+        sub:
+          type:
+          - string
+          - 'null'
+      required:
+      - id_label
+      - name
+      - sub
+      - type
+      - uuid
+    RelatedTargetTypeEnum:
       enum:
-      - open
-      - in_progress
-      - waiting_approval
-      - done
+      - order
+      - supplier
+      - buyer
+      - contract
+      - ingredient
+      - task
       type: string
-      description: '* `open` - Open
+      description: '* `order` - order
 
-        * `in_progress` - In Progress
+        * `supplier` - supplier
 
-        * `waiting_approval` - Waiting Approval
+        * `buyer` - buyer
 
-        * `done` - Done'
+        * `contract` - contract
+
+        * `ingredient` - ingredient
+
+        * `task` - task'
+    TaskPlanApprove:
+      type: object
+      description: 'Request body for ``POST /tasks/{uuid}/plan/approve/``.
+
+
+        ``plan_version`` pins the version the user actually reviewed — a revision
+
+        landing mid-review makes the approve 409 instead of silently committing a
+
+        plan the user never saw.'
+      properties:
+        plan_version:
+          type: integer
+          minimum: 1
+      required:
+      - plan_version
+    _RouteTargetAccountManager:
+      type: object
+      description: Account-manager availability only — the AM's identity is never exposed.
+      properties:
+        available:
+          type: boolean
+      required:
+      - available
+    TaskPriorityEnum:
+      enum:
+      - low
+      - medium
+      - high
+      - urgent
+      type: string
+      description: '* `low` - Low
+
+        * `medium` - Medium
+
+        * `high` - High
+
+        * `urgent` - Urgent'
+    MessageReactionEmojiEnum:
+      enum:
+      - 👍
+      - 👀
+      - ✅
+      - ❤️
+      - 😂
+      - 🎉
+      type: string
+      description: '* `👍` - Thumbs up
+
+        * `👀` - Eyes
+
+        * `✅` - Check mark
+
+        * `❤️` - Heart
+
+        * `😂` - Tears of joy
+
+        * `🎉` - Party'
     TaskRecurrenceFrequencyEnum:
       enum:
       - daily
@@ -923,42 +1016,889 @@ components:
         * `yearly` - Yearly
 
         * `cron` - Cron'
-    MessageWrite:
+    TaskStatusEnum:
+      enum:
+      - open
+      - in_progress
+      - waiting_approval
+      - done
+      type: string
+      description: '* `open` - Open
+
+        * `in_progress` - In Progress
+
+        * `waiting_approval` - Waiting Approval
+
+        * `done` - Done'
+    TaskRecurrenceOverlapPolicyEnum:
+      enum:
+      - skip
+      - allow
+      - replace
+      type: string
+      description: '* `skip` - Skip
+
+        * `allow` - Allow
+
+        * `replace` - Replace'
+    TaskRecurrenceWeekdayEnum:
+      enum:
+      - MO
+      - TU
+      - WE
+      - TH
+      - FR
+      - SA
+      - SU
+      type: string
+      description: '* `MO` - Monday
+
+        * `TU` - Tuesday
+
+        * `WE` - Wednesday
+
+        * `TH` - Thursday
+
+        * `FR` - Friday
+
+        * `SA` - Saturday
+
+        * `SU` - Sunday'
+    TaskPlanReject:
       type: object
-      description: Validates chat message create input. The viewset drives the write.
+      description: 'Request body for ``POST /tasks/{uuid}/plan/reject/``.
+
+
+        ``plan_version`` pins the version the user actually reviewed (same
+
+        contract as approve): a revision landing mid-review — possibly with a
+
+        different approver — makes the reject 409 instead of silently killing a
+
+        version the user never saw. Required: rejection is destructive, so a
+
+        stale client failing closed (400 → reload) beats an unpinned reject of
+
+        whichever version happens to be pending.'
       properties:
-        task_uuid:
+        feedback:
+          type: string
+          default: ''
+          maxLength: 2000
+        plan_version:
+          type: integer
+          minimum: 1
+      required:
+      - plan_version
+    ChatThreadEnum:
+      enum:
+      - main
+      - plan
+      type: string
+      description: '* `main` - Main
+
+        * `plan` - Plan'
+    TaskAttachmentFileRef:
+      type: object
+      description: 'Stable handle the agent feeds to ``get_file`` MCP tool.
+
+
+        Same uuid as ``TaskAttachment.uuid``; the dedicated nested type just
+
+        keeps the generated FE schema strongly-typed (otherwise drf-spectacular
+
+        falls back to ``additionalProperties: {}`` on the parent serializer).'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+      required:
+      - uuid
+    MessageAttachmentDispositionEnum:
+      enum:
+      - sent
+      - suspicious
+      - skipped_timeout
+      type: string
+      description: '* `sent` - Sent
+
+        * `suspicious` - Suspicious
+
+        * `skipped_timeout` - Not used (scan pending)'
+    TargetEnum:
+      enum:
+      - account_manager
+      - buyer_agent
+      - mor_agent
+      - return_to_buyer
+      type: string
+      description: '* `account_manager` - account_manager
+
+        * `buyer_agent` - buyer_agent
+
+        * `mor_agent` - mor_agent
+
+        * `return_to_buyer` - return_to_buyer'
+    UserMinimal:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+        is_agent:
+          type: boolean
+          readOnly: true
+        is_mor_router:
+          type: boolean
+          readOnly: true
+      required:
+      - email
+      - is_agent
+      - is_mor_router
+      - name
+      - uuid
+    PaginatedTaskList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+    TaskRecurrenceEndsModeEnum:
+      enum:
+      - never
+      - on_date
+      - after_count
+      type: string
+      description: '* `never` - Never
+
+        * `on_date` - On date
+
+        * `after_count` - After count'
+    RouteTargetsResponse:
+      type: object
+      description: 'Response shape for ``GET /tasks/{uuid}/route-targets/`` — gives the FE/agent
+
+        a concrete contract instead of an untyped object (mirrors
+
+        ``mor_routing.route_targets_for_task``).'
+      properties:
+        account_manager:
+          $ref: '#/components/schemas/_RouteTargetAccountManager'
+        mor_agents:
+          type: array
+          items:
+            $ref: '#/components/schemas/_RouteTargetAgent'
+        buyer_agents:
+          type: array
+          items:
+            $ref: '#/components/schemas/_RouteTargetAgent'
+      required:
+      - account_manager
+      - buyer_agents
+      - mor_agents
+    PatchedTask:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        number:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: 'Per-company task number (human-facing id, e.g. #12).'
+        title:
+          type: string
+          maxLength: 512
+        description:
+          type: string
+        due_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        status:
+          $ref: '#/components/schemas/TaskStatusEnum'
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        priority:
+          $ref: '#/components/schemas/TaskPriorityEnum'
+        is_private:
+          type: boolean
+        assignee:
+          allOf:
+          - $ref: '#/components/schemas/UserMinimal'
+          readOnly: true
+        assignee_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          writeOnly: true
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/UserMinimal'
+          readOnly: true
+        watchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserMinimal'
+          readOnly: true
+        watcher_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          writeOnly: true
+        show_buyer_chat_notice:
+          type: boolean
+          description: 'True only for a MoR-side viewer of a buyer task routed to "Opply".
+
+
+            The MoR handler needs to know the task chat is cross-tenant: the buyer
+
+            can read it (MoR authors are masked as "Opply" on the buyer side, but the
+
+            messages themselves are visible). Buyer-side viewers get ``False`` — the
+
+            task is already theirs and the notice would be meaningless to them. Keyed
+
+            off the same ``viewer_is_buyer_side`` helper the assignee/watcher masking
+
+            uses, so the notice and the masking never disagree.'
+          readOnly: true
+        requester:
+          type:
+          - object
+          - 'null'
+          properties:
+            uuid:
+              type: string
+              format: uuid
+            name:
+              type: string
+          readOnly: true
+        targets:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        target_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedItemInput'
+          writeOnly: true
+        parent_task:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+        parent_task_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          writeOnly: true
+        subtasks:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        attachments:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+          description: List of task attachments
+        unread_chat_count:
+          type: integer
+          description: 'Caller''s unread in-app chat count — present only when the queryset was
+
+            annotated (list / `/me`); 0 on retrieve / create responses.'
+          readOnly: true
+        unread_mention_count:
+          type: integer
+          description: 'How many of the caller''s unread messages @-mention them — drives the
+
+            red attention badge. Annotated on list / `/me`; 0 elsewhere.'
+          readOnly: true
+        plan_awaiting_revision:
+          type: boolean
+          description: 'True while the task waits for plan approval AND the newest
+
+            post-version plan-thread message is human-authored — i.e. a human
+
+            requested changes and the chat-dispatch hook guarantees the agent
+
+            answers, so "action required" attention cues can pause. Mirrors the
+
+            detail panel''s ``awaitingRevision`` derivation (an agent reply — even
+
+            without a revision — hands the turn back). Annotated on list / `/me`;
+
+            False elsewhere.'
+          readOnly: true
+        status_locked:
+          type: boolean
+          description: 'True while the DB status is ``waiting_approval`` — server-managed
+
+            by the plan gate. Clients key status-control read-only-ness on THIS
+
+            (not on the rendered ``status``, which is masked to ``in_progress``
+
+            for viewers without decision rights and would otherwise re-enable
+
+            controls whose PATCH the gate rejects).'
+          readOnly: true
+        recurrence_summary:
+          type:
+          - object
+          - 'null'
+          properties:
+            uuid:
+              type: string
+              format: uuid
+            is_template:
+              type: boolean
+            is_enabled:
+              type: boolean
+            frequency:
+              type: string
+            interval:
+              type: integer
+            weekdays:
+              type: array
+              items:
+                type: string
+            monthly_mode:
+              type: string
+            weekday_ordinal:
+              type:
+              - integer
+              - 'null'
+            cron_expression:
+              type:
+              - string
+              - 'null'
+            starts_at:
+              type:
+              - string
+              - 'null'
+              format: date-time
+            ends_mode:
+              type: string
+            ends_on:
+              type:
+              - string
+              - 'null'
+              format: date
+            ends_after_count:
+              type:
+              - integer
+              - 'null'
+            overlap_policy:
+              type: string
+            next_run_at:
+              type:
+              - string
+              - 'null'
+              format: date-time
+            last_run_at:
+              type:
+              - string
+              - 'null'
+              format: date-time
+            occurrences_created:
+              type: integer
+          readOnly: true
+        plan:
+          type:
+          - object
+          - 'null'
+          properties:
+            uuid:
+              type: string
+              format: uuid
+            version:
+              type: integer
+            status:
+              type: string
+              enum:
+              - pending_approval
+              - approved
+              - rejected
+              - superseded
+            body:
+              type: string
+            feedback:
+              type: string
+            approver_kind:
+              type: string
+              enum:
+              - task_participants
+              - merchant_of_record
+            decided_by_name:
+              type:
+              - string
+              - 'null'
+            decided_at:
+              type:
+              - string
+              - 'null'
+              format: date-time
+            created:
+              type: string
+              format: date-time
+            viewer_can_decide:
+              type: boolean
+            versions:
+              type: array
+              items:
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    format: uuid
+                  version:
+                    type: integer
+                  status:
+                    type: string
+                    enum:
+                    - pending_approval
+                    - approved
+                    - rejected
+                    - superseded
+                  body:
+                    type: string
+                  feedback:
+                    type: string
+                  approver_kind:
+                    type: string
+                    enum:
+                    - task_participants
+                    - merchant_of_record
+                  decided_by_name:
+                    type:
+                    - string
+                    - 'null'
+                  decided_at:
+                    type:
+                    - string
+                    - 'null'
+                    format: date-time
+                  created:
+                    type: string
+                    format: date-time
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+    PaginatedMessageReadList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageRead'
+    TaskPlanApproverKindEnum:
+      enum:
+      - task_participants
+      - merchant_of_record
+      type: string
+      description: '* `task_participants` - Task Participants
+
+        * `merchant_of_record` - Merchant of Record'
+    BlankEnum:
+      enum:
+      - ''
+    TaskPlan:
+      type: object
+      description: 'Read shape of one plan version for the task envelope + decision responses.
+
+
+        Deliberately author-less: the plan is presented as authored by the task''s
+
+        assignee, which every surface already renders masked ("Opply") on a
+
+        MoR-routed task — exposing the authoring run/agent here would re-open the
+
+        masking problem for zero FE value. ``decided_by_name`` follows the routed
+
+        masking rules: a ``merchant_of_record`` plan is decided by an MoR-side
+
+        human, so a buyer-side reader sees "Opply", never the individual
+
+        (``task_participants`` deciders are the task''s own participants — no mask
+
+        needed). Pass ``task`` (and ``request``) in the context to enable the
+
+        mask without a per-plan ``plan.task`` re-fetch.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        version:
+          type: integer
+          readOnly: true
+          description: 1-based, monotonic per task. A revision after chat feedback is version + 1.
+        status:
+          allOf:
+          - $ref: '#/components/schemas/TaskPlanStatusEnum'
+          readOnly: true
+          description: 'Approval lifecycle of this version. Only server-side plan endpoints transition it.
+
+
+            * `pending_approval` - Pending Approval
+
+            * `approved` - Approved
+
+            * `rejected` - Rejected
+
+            * `superseded` - Superseded'
+        body:
+          type: string
+          readOnly: true
+          description: The plan itself, as agent-authored markdown. Rendered directly by the FE Plan tab.
+        feedback:
+          type: string
+          readOnly: true
+          description: Optional human feedback recorded with a reject decision.
+        approver_kind:
+          allOf:
+          - $ref: '#/components/schemas/TaskPlanApproverKindEnum'
+          readOnly: true
+          description: 'Who holds decision rights over this version: the task''s participants (creator + human watchers — the default) or the Merchant of Record (the buyer''s account manager, falling back to MoR admins). Stamped at submission from the agent''s declaration; only honored on MoR-routed tasks.
+
+
+            * `task_participants` - Task Participants
+
+            * `merchant_of_record` - Merchant of Record'
+        decided_by_name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        decided_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: When the approve/reject decision was made. Null while pending / when superseded.
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - approver_kind
+      - body
+      - created
+      - decided_at
+      - decided_by_name
+      - feedback
+      - status
+      - uuid
+      - version
+    _RouteTargetAgent:
+      type: object
+      description: One installed worker agent option (slug + display name).
+      properties:
+        slug:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+      required:
+      - name
+      - slug
+    TaskRecurrenceMonthlyModeEnum:
+      enum:
+      - day_of_month
+      - nth_weekday
+      type: string
+      description: '* `day_of_month` - Day of month
+
+        * `nth_weekday` - Nth weekday'
+    MessageReactionSummary:
+      type: object
+      description: One emoji's aggregated reaction state on a message, for the caller.
+      properties:
+        emoji:
+          $ref: '#/components/schemas/MessageReactionEmojiEnum'
+        count:
+          type: integer
+        reacted_by_me:
+          type: boolean
+        users:
+          type: array
+          items:
+            type: string
+      required:
+      - count
+      - emoji
+      - reacted_by_me
+      - users
+    PatchedTaskRecurrence:
+      type: object
+      description: Read/update surface for an existing series (the template's recurrence).
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        task:
+          type: string
+          readOnly: true
+        is_enabled:
+          type: boolean
+          readOnly: true
+          description: When false the series is paused — the beat skips it ('Turn off repeat').
+        frequency:
+          $ref: '#/components/schemas/TaskRecurrenceFrequencyEnum'
+        interval:
+          type: integer
+          minimum: 1
+        weekdays:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskRecurrenceWeekdayEnum'
+          description: 'Weekly recurrences only: weekdays the series fires on (iCal codes MO..SU).'
+        day_of_month:
+          type:
+          - integer
+          - 'null'
+          maximum: 31
+          minimum: 1
+        monthly_mode:
+          allOf:
+          - $ref: '#/components/schemas/TaskRecurrenceMonthlyModeEnum'
+          description: 'Monthly recurrences: fire on a fixed day-of-month, or on the Nth weekday.
+
+
+            * `day_of_month` - Day of month
+
+            * `nth_weekday` - Nth weekday'
+        weekday_ordinal:
+          type:
+          - integer
+          - 'null'
+          maximum: 32767
+          minimum: -32768
+          description: 'Monthly nth_weekday mode: which occurrence of weekdays[0] to fire on (1-4, or -1 for the last). Signed, so -1 fits.'
+        cron_expression:
+          type:
+          - string
+          - 'null'
+          description: 'frequency=cron: standard 5-field cron expression (min hour dom mon dow). Evaluated with croniter in the recurrence timezone; the interval/weekday/day-of-month fields are ignored. Materialised by the every-minute materialize_due_cron_recurrences beat (~1-min effective granularity).'
+          maxLength: 120
+        starts_at:
+          type: string
+          format: date-time
+          description: rrule dtstart anchor. The first slot is the first occurrence >= this moment.
+        timezone:
+          type: string
+        ends_mode:
+          $ref: '#/components/schemas/TaskRecurrenceEndsModeEnum'
+        ends_on:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: 'ends_mode=on_date: no occurrence is materialised after this date.'
+        ends_after_count:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          description: 'ends_mode=after_count: stop after this many occurrences have been materialised.'
+        occurrences_created:
+          type: integer
+          readOnly: true
+          description: Occurrences materialised so far (enforces ends_after_count).
+        next_run_at:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Next slot the beat will materialise. The beat's hot-query column.
+        last_run_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        overlap_policy:
+          allOf:
+          - $ref: '#/components/schemas/TaskRecurrenceOverlapPolicyEnum'
+          description: 'What to do at a new slot when a prior occurrence is still open.
+
+
+            * `skip` - Skip
+
+            * `allow` - Allow
+
+            * `replace` - Replace'
+        assignee:
+          allOf:
+          - $ref: '#/components/schemas/UserMinimal'
+          readOnly: true
+        assignee_uuid:
           type: string
           format: uuid
           writeOnly: true
-        body:
-          type: string
-          writeOnly: true
-        mentioned_user_uuids:
-          type: array
-          items:
-            type: string
-            format: uuid
-          writeOnly: true
-          maxItems: 50
-        attachment_uuids:
-          type: array
-          items:
-            type: string
-            format: uuid
-          writeOnly: true
-          maxItems: 100
-        add_nonparticipant_watchers:
-          type: boolean
-          writeOnly: true
-          default: false
-        thread:
-          allOf:
-          - $ref: '#/components/schemas/ChatThreadEnum'
-          writeOnly: true
-          default: main
+    TaskAttachmentKindEnum:
+      enum:
+      - general
+      - plan
+      type: string
+      description: '* `general` - General
+
+        * `plan` - Plan'
+    RouteTaskInput:
+      type: object
+      description: 'Body for ``POST /tasks/{uuid}/route/`` — role-based routing intent.
+
+
+        The router agent expresses *which role* to route to; the backend resolves the
+
+        concrete user. ``slug`` is required for ``mor_agent`` / ``buyer_agent``.'
+      properties:
+        target:
+          $ref: '#/components/schemas/TargetEnum'
+        slug:
+          type:
+          - string
+          - 'null'
+          pattern: ^[-a-zA-Z0-9_]+$
       required:
-      - body
+      - target
+    RelatedItemInput:
+      type: object
+      description: 'One write-side related-item: a target ``type`` + entity ``uuid``.'
+      properties:
+        type:
+          type: string
+        uuid:
+          type: string
+          format: uuid
+      required:
+      - type
+      - uuid
+    TaskPlanStatusEnum:
+      enum:
+      - pending_approval
+      - approved
+      - rejected
+      - superseded
+      type: string
+      description: '* `pending_approval` - Pending Approval
+
+        * `approved` - Approved
+
+        * `rejected` - Rejected
+
+        * `superseded` - Superseded'
+    MessageAttachmentRef:
+      type: object
+      description: 'One attachment ref carried on a message''s ``metadata["attachments"]``
+
+        (SC-4146). Channel-neutral and reusable by **any** message serializer (agent
+
+        chat today; task chat / private notes next) — nest it with ``many=True,
+
+        required=False`` so a message that carried no attachments omits the key.
+
+
+        Read-only projection of the dicts written by
+
+        :func:`~apps.files.services.message_attachments.resolve_and_gate_attachments`;
+
+        carries no bytes / URL — the FE mints a short-TTL presigned URL from ``uuid``
+
+        when it renders a preview. ``disposition``''s enum name is pinned via
+
+        ``ENUM_NAME_OVERRIDES`` (``MessageAttachmentDispositionEnum``) so the shared
+
+        component doesn''t collide in the generated OpenAPI schema.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        filename:
+          type: string
+          readOnly: true
+        mime:
+          type: string
+          readOnly: true
+        disposition:
+          allOf:
+          - $ref: '#/components/schemas/MessageAttachmentDispositionEnum'
+          readOnly: true
+      required:
+      - disposition
+      - filename
+      - mime
+      - uuid
     TaskRecurrence:
       type: object
       description: Read/update surface for an existing series (the template's recurrence).
@@ -1077,6 +2017,42 @@ components:
       - starts_at
       - task
       - uuid
+    MessageWrite:
+      type: object
+      description: Validates chat message create input. The viewset drives the write.
+      properties:
+        task_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        body:
+          type: string
+          writeOnly: true
+        mentioned_user_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          writeOnly: true
+          maxItems: 50
+        attachment_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          writeOnly: true
+          maxItems: 100
+        add_nonparticipant_watchers:
+          type: boolean
+          writeOnly: true
+          default: false
+        thread:
+          allOf:
+          - $ref: '#/components/schemas/ChatThreadEnum'
+          writeOnly: true
+          default: main
+      required:
+      - body
     Task:
       type: object
       properties:
@@ -1411,461 +2387,6 @@ components:
       - unread_mention_count
       - uuid
       - watchers
-    RelatedItemInput:
-      type: object
-      description: 'One write-side related-item: a target ``type`` + entity ``uuid``.'
-      properties:
-        type:
-          type: string
-        uuid:
-          type: string
-          format: uuid
-      required:
-      - type
-      - uuid
-    _RouteTargetAccountManager:
-      type: object
-      description: Account-manager availability only — the AM's identity is never exposed.
-      properties:
-        available:
-          type: boolean
-      required:
-      - available
-    MessageAttachmentRef:
-      type: object
-      description: 'One attachment ref carried on a message''s ``metadata["attachments"]``
-
-        (SC-4146). Channel-neutral and reusable by **any** message serializer (agent
-
-        chat today; task chat / private notes next) — nest it with ``many=True,
-
-        required=False`` so a message that carried no attachments omits the key.
-
-
-        Read-only projection of the dicts written by
-
-        :func:`~apps.files.services.message_attachments.resolve_and_gate_attachments`;
-
-        carries no bytes / URL — the FE mints a short-TTL presigned URL from ``uuid``
-
-        when it renders a preview. ``disposition``''s enum name is pinned via
-
-        ``ENUM_NAME_OVERRIDES`` (``MessageAttachmentDispositionEnum``) so the shared
-
-        component doesn''t collide in the generated OpenAPI schema.'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        filename:
-          type: string
-          readOnly: true
-        mime:
-          type: string
-          readOnly: true
-        disposition:
-          allOf:
-          - $ref: '#/components/schemas/MessageAttachmentDispositionEnum'
-          readOnly: true
-      required:
-      - disposition
-      - filename
-      - mime
-      - uuid
-    TaskRecurrenceEndsModeEnum:
-      enum:
-      - never
-      - on_date
-      - after_count
-      type: string
-      description: '* `never` - Never
-
-        * `on_date` - On date
-
-        * `after_count` - After count'
-    MessageReactionSummary:
-      type: object
-      description: One emoji's aggregated reaction state on a message, for the caller.
-      properties:
-        emoji:
-          $ref: '#/components/schemas/MessageReactionEmojiEnum'
-        count:
-          type: integer
-        reacted_by_me:
-          type: boolean
-        users:
-          type: array
-          items:
-            type: string
-      required:
-      - count
-      - emoji
-      - reacted_by_me
-      - users
-    TaskPlan:
-      type: object
-      description: 'Read shape of one plan version for the task envelope + decision responses.
-
-
-        Deliberately author-less: the plan is presented as authored by the task''s
-
-        assignee, which every surface already renders masked ("Opply") on a
-
-        MoR-routed task — exposing the authoring run/agent here would re-open the
-
-        masking problem for zero FE value. ``decided_by_name`` follows the routed
-
-        masking rules: a ``merchant_of_record`` plan is decided by an MoR-side
-
-        human, so a buyer-side reader sees "Opply", never the individual
-
-        (``task_participants`` deciders are the task''s own participants — no mask
-
-        needed). Pass ``task`` (and ``request``) in the context to enable the
-
-        mask without a per-plan ``plan.task`` re-fetch.'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        version:
-          type: integer
-          readOnly: true
-          description: 1-based, monotonic per task. A revision after chat feedback is version + 1.
-        status:
-          allOf:
-          - $ref: '#/components/schemas/TaskPlanStatusEnum'
-          readOnly: true
-          description: 'Approval lifecycle of this version. Only server-side plan endpoints transition it.
-
-
-            * `pending_approval` - Pending Approval
-
-            * `approved` - Approved
-
-            * `rejected` - Rejected
-
-            * `superseded` - Superseded'
-        body:
-          type: string
-          readOnly: true
-          description: The plan itself, as agent-authored markdown. Rendered directly by the FE Plan tab.
-        feedback:
-          type: string
-          readOnly: true
-          description: Optional human feedback recorded with a reject decision.
-        approver_kind:
-          allOf:
-          - $ref: '#/components/schemas/TaskPlanApproverKindEnum'
-          readOnly: true
-          description: 'Who holds decision rights over this version: the task''s participants (creator + human watchers — the default) or the Merchant of Record (the buyer''s account manager, falling back to MoR admins). Stamped at submission from the agent''s declaration; only honored on MoR-routed tasks.
-
-
-            * `task_participants` - Task Participants
-
-            * `merchant_of_record` - Merchant of Record'
-        decided_by_name:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        decided_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: When the approve/reject decision was made. Null while pending / when superseded.
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - approver_kind
-      - body
-      - created
-      - decided_at
-      - decided_by_name
-      - feedback
-      - status
-      - uuid
-      - version
-    TargetEnum:
-      enum:
-      - account_manager
-      - buyer_agent
-      - mor_agent
-      - return_to_buyer
-      type: string
-      description: '* `account_manager` - account_manager
-
-        * `buyer_agent` - buyer_agent
-
-        * `mor_agent` - mor_agent
-
-        * `return_to_buyer` - return_to_buyer'
-    MessageReactionEmojiEnum:
-      enum:
-      - 👍
-      - 👀
-      - ✅
-      - ❤️
-      - 😂
-      - 🎉
-      type: string
-      description: '* `👍` - Thumbs up
-
-        * `👀` - Eyes
-
-        * `✅` - Check mark
-
-        * `❤️` - Heart
-
-        * `😂` - Tears of joy
-
-        * `🎉` - Party'
-    ChatThreadEnum:
-      enum:
-      - main
-      - plan
-      type: string
-      description: '* `main` - Main
-
-        * `plan` - Plan'
-    BlankEnum:
-      enum:
-      - ''
-    TaskRecurrenceMonthlyModeEnum:
-      enum:
-      - day_of_month
-      - nth_weekday
-      type: string
-      description: '* `day_of_month` - Day of month
-
-        * `nth_weekday` - Nth weekday'
-    RelatedTargetTypeEnum:
-      enum:
-      - order
-      - supplier
-      - buyer
-      - contract
-      - ingredient
-      - task
-      type: string
-      description: '* `order` - order
-
-        * `supplier` - supplier
-
-        * `buyer` - buyer
-
-        * `contract` - contract
-
-        * `ingredient` - ingredient
-
-        * `task` - task'
-    MessageAttachmentDispositionEnum:
-      enum:
-      - sent
-      - suspicious
-      - skipped_timeout
-      type: string
-      description: '* `sent` - Sent
-
-        * `suspicious` - Suspicious
-
-        * `skipped_timeout` - Not used (scan pending)'
-    TaskPlanStatusEnum:
-      enum:
-      - pending_approval
-      - approved
-      - rejected
-      - superseded
-      type: string
-      description: '* `pending_approval` - Pending Approval
-
-        * `approved` - Approved
-
-        * `rejected` - Rejected
-
-        * `superseded` - Superseded'
-    UserMinimal:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        name:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          format: email
-        is_agent:
-          type: boolean
-          readOnly: true
-        is_mor_router:
-          type: boolean
-          readOnly: true
-      required:
-      - email
-      - is_agent
-      - is_mor_router
-      - name
-      - uuid
-    RouteTargetsResponse:
-      type: object
-      description: 'Response shape for ``GET /tasks/{uuid}/route-targets/`` — gives the FE/agent
-
-        a concrete contract instead of an untyped object (mirrors
-
-        ``mor_routing.route_targets_for_task``).'
-      properties:
-        account_manager:
-          $ref: '#/components/schemas/_RouteTargetAccountManager'
-        mor_agents:
-          type: array
-          items:
-            $ref: '#/components/schemas/_RouteTargetAgent'
-        buyer_agents:
-          type: array
-          items:
-            $ref: '#/components/schemas/_RouteTargetAgent'
-      required:
-      - account_manager
-      - buyer_agents
-      - mor_agents
-    TaskPriorityEnum:
-      enum:
-      - low
-      - medium
-      - high
-      - urgent
-      type: string
-      description: '* `low` - Low
-
-        * `medium` - Medium
-
-        * `high` - High
-
-        * `urgent` - Urgent'
-    PatchedTaskRecurrence:
-      type: object
-      description: Read/update surface for an existing series (the template's recurrence).
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        task:
-          type: string
-          readOnly: true
-        is_enabled:
-          type: boolean
-          readOnly: true
-          description: When false the series is paused — the beat skips it ('Turn off repeat').
-        frequency:
-          $ref: '#/components/schemas/TaskRecurrenceFrequencyEnum'
-        interval:
-          type: integer
-          minimum: 1
-        weekdays:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaskRecurrenceWeekdayEnum'
-          description: 'Weekly recurrences only: weekdays the series fires on (iCal codes MO..SU).'
-        day_of_month:
-          type:
-          - integer
-          - 'null'
-          maximum: 31
-          minimum: 1
-        monthly_mode:
-          allOf:
-          - $ref: '#/components/schemas/TaskRecurrenceMonthlyModeEnum'
-          description: 'Monthly recurrences: fire on a fixed day-of-month, or on the Nth weekday.
-
-
-            * `day_of_month` - Day of month
-
-            * `nth_weekday` - Nth weekday'
-        weekday_ordinal:
-          type:
-          - integer
-          - 'null'
-          maximum: 32767
-          minimum: -32768
-          description: 'Monthly nth_weekday mode: which occurrence of weekdays[0] to fire on (1-4, or -1 for the last). Signed, so -1 fits.'
-        cron_expression:
-          type:
-          - string
-          - 'null'
-          description: 'frequency=cron: standard 5-field cron expression (min hour dom mon dow). Evaluated with croniter in the recurrence timezone; the interval/weekday/day-of-month fields are ignored. Materialised by the every-minute materialize_due_cron_recurrences beat (~1-min effective granularity).'
-          maxLength: 120
-        starts_at:
-          type: string
-          format: date-time
-          description: rrule dtstart anchor. The first slot is the first occurrence >= this moment.
-        timezone:
-          type: string
-        ends_mode:
-          $ref: '#/components/schemas/TaskRecurrenceEndsModeEnum'
-        ends_on:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: 'ends_mode=on_date: no occurrence is materialised after this date.'
-        ends_after_count:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-          description: 'ends_mode=after_count: stop after this many occurrences have been materialised.'
-        occurrences_created:
-          type: integer
-          readOnly: true
-          description: Occurrences materialised so far (enforces ends_after_count).
-        next_run_at:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Next slot the beat will materialise. The beat's hot-query column.
-        last_run_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-        overlap_policy:
-          allOf:
-          - $ref: '#/components/schemas/TaskRecurrenceOverlapPolicyEnum'
-          description: 'What to do at a new slot when a prior occurrence is still open.
-
-
-            * `skip` - Skip
-
-            * `allow` - Allow
-
-            * `replace` - Replace'
-        assignee:
-          allOf:
-          - $ref: '#/components/schemas/UserMinimal'
-          readOnly: true
-        assignee_uuid:
-          type: string
-          format: uuid
-          writeOnly: true
-    TaskPlanApproverKindEnum:
-      enum:
-      - task_participants
-      - merchant_of_record
-      type: string
-      description: '* `task_participants` - Task Participants
-
-        * `merchant_of_record` - Merchant of Record'
     TaskAttachment:
       type: object
       properties:
@@ -1920,486 +2441,6 @@ components:
       - file_ref
       - filename
       - uploaded_by
-      - uuid
-    RelatedTarget:
-      type: object
-      description: 'A single hit in the task "Related to" search — an order, supplier, buyer,
-
-        contract, ingredient or another task the caller can link a task to. (`buyer`
-
-        is only emitted for Merchant-of-Record callers.)'
-      properties:
-        type:
-          $ref: '#/components/schemas/RelatedTargetTypeEnum'
-        uuid:
-          type: string
-          format: uuid
-        id_label:
-          type:
-          - string
-          - 'null'
-        name:
-          type: string
-        sub:
-          type:
-          - string
-          - 'null'
-      required:
-      - id_label
-      - name
-      - sub
-      - type
-      - uuid
-    TaskPlanApprove:
-      type: object
-      description: 'Request body for ``POST /tasks/{uuid}/plan/approve/``.
-
-
-        ``plan_version`` pins the version the user actually reviewed — a revision
-
-        landing mid-review makes the approve 409 instead of silently committing a
-
-        plan the user never saw.'
-      properties:
-        plan_version:
-          type: integer
-          minimum: 1
-      required:
-      - plan_version
-    PatchedTask:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        number:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: 'Per-company task number (human-facing id, e.g. #12).'
-        title:
-          type: string
-          maxLength: 512
-        description:
-          type: string
-        due_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        status:
-          $ref: '#/components/schemas/TaskStatusEnum'
-        completed_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-        priority:
-          $ref: '#/components/schemas/TaskPriorityEnum'
-        is_private:
-          type: boolean
-        assignee:
-          allOf:
-          - $ref: '#/components/schemas/UserMinimal'
-          readOnly: true
-        assignee_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          writeOnly: true
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/UserMinimal'
-          readOnly: true
-        watchers:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserMinimal'
-          readOnly: true
-        watcher_uuids:
-          type: array
-          items:
-            type: string
-            format: uuid
-          writeOnly: true
-        show_buyer_chat_notice:
-          type: boolean
-          description: 'True only for a MoR-side viewer of a buyer task routed to "Opply".
-
-
-            The MoR handler needs to know the task chat is cross-tenant: the buyer
-
-            can read it (MoR authors are masked as "Opply" on the buyer side, but the
-
-            messages themselves are visible). Buyer-side viewers get ``False`` — the
-
-            task is already theirs and the notice would be meaningless to them. Keyed
-
-            off the same ``viewer_is_buyer_side`` helper the assignee/watcher masking
-
-            uses, so the notice and the masking never disagree.'
-          readOnly: true
-        requester:
-          type:
-          - object
-          - 'null'
-          properties:
-            uuid:
-              type: string
-              format: uuid
-            name:
-              type: string
-          readOnly: true
-        targets:
-          type: array
-          items:
-            type: object
-            additionalProperties: {}
-          readOnly: true
-        target_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/RelatedItemInput'
-          writeOnly: true
-        parent_task:
-          type:
-          - object
-          - 'null'
-          additionalProperties: {}
-          readOnly: true
-        parent_task_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          writeOnly: true
-        subtasks:
-          type: array
-          items:
-            type: object
-            additionalProperties: {}
-          readOnly: true
-        attachments:
-          type: array
-          items:
-            type: object
-            additionalProperties: {}
-          readOnly: true
-          description: List of task attachments
-        unread_chat_count:
-          type: integer
-          description: 'Caller''s unread in-app chat count — present only when the queryset was
-
-            annotated (list / `/me`); 0 on retrieve / create responses.'
-          readOnly: true
-        unread_mention_count:
-          type: integer
-          description: 'How many of the caller''s unread messages @-mention them — drives the
-
-            red attention badge. Annotated on list / `/me`; 0 elsewhere.'
-          readOnly: true
-        plan_awaiting_revision:
-          type: boolean
-          description: 'True while the task waits for plan approval AND the newest
-
-            post-version plan-thread message is human-authored — i.e. a human
-
-            requested changes and the chat-dispatch hook guarantees the agent
-
-            answers, so "action required" attention cues can pause. Mirrors the
-
-            detail panel''s ``awaitingRevision`` derivation (an agent reply — even
-
-            without a revision — hands the turn back). Annotated on list / `/me`;
-
-            False elsewhere.'
-          readOnly: true
-        status_locked:
-          type: boolean
-          description: 'True while the DB status is ``waiting_approval`` — server-managed
-
-            by the plan gate. Clients key status-control read-only-ness on THIS
-
-            (not on the rendered ``status``, which is masked to ``in_progress``
-
-            for viewers without decision rights and would otherwise re-enable
-
-            controls whose PATCH the gate rejects).'
-          readOnly: true
-        recurrence_summary:
-          type:
-          - object
-          - 'null'
-          properties:
-            uuid:
-              type: string
-              format: uuid
-            is_template:
-              type: boolean
-            is_enabled:
-              type: boolean
-            frequency:
-              type: string
-            interval:
-              type: integer
-            weekdays:
-              type: array
-              items:
-                type: string
-            monthly_mode:
-              type: string
-            weekday_ordinal:
-              type:
-              - integer
-              - 'null'
-            cron_expression:
-              type:
-              - string
-              - 'null'
-            starts_at:
-              type:
-              - string
-              - 'null'
-              format: date-time
-            ends_mode:
-              type: string
-            ends_on:
-              type:
-              - string
-              - 'null'
-              format: date
-            ends_after_count:
-              type:
-              - integer
-              - 'null'
-            overlap_policy:
-              type: string
-            next_run_at:
-              type:
-              - string
-              - 'null'
-              format: date-time
-            last_run_at:
-              type:
-              - string
-              - 'null'
-              format: date-time
-            occurrences_created:
-              type: integer
-          readOnly: true
-        plan:
-          type:
-          - object
-          - 'null'
-          properties:
-            uuid:
-              type: string
-              format: uuid
-            version:
-              type: integer
-            status:
-              type: string
-              enum:
-              - pending_approval
-              - approved
-              - rejected
-              - superseded
-            body:
-              type: string
-            feedback:
-              type: string
-            approver_kind:
-              type: string
-              enum:
-              - task_participants
-              - merchant_of_record
-            decided_by_name:
-              type:
-              - string
-              - 'null'
-            decided_at:
-              type:
-              - string
-              - 'null'
-              format: date-time
-            created:
-              type: string
-              format: date-time
-            viewer_can_decide:
-              type: boolean
-            versions:
-              type: array
-              items:
-                type: object
-                properties:
-                  uuid:
-                    type: string
-                    format: uuid
-                  version:
-                    type: integer
-                  status:
-                    type: string
-                    enum:
-                    - pending_approval
-                    - approved
-                    - rejected
-                    - superseded
-                  body:
-                    type: string
-                  feedback:
-                    type: string
-                  approver_kind:
-                    type: string
-                    enum:
-                    - task_participants
-                    - merchant_of_record
-                  decided_by_name:
-                    type:
-                    - string
-                    - 'null'
-                  decided_at:
-                    type:
-                    - string
-                    - 'null'
-                    format: date-time
-                  created:
-                    type: string
-                    format: date-time
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-    PaginatedTaskList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Task'
-    TaskPlanReject:
-      type: object
-      description: 'Request body for ``POST /tasks/{uuid}/plan/reject/``.
-
-
-        ``plan_version`` pins the version the user actually reviewed (same
-
-        contract as approve): a revision landing mid-review — possibly with a
-
-        different approver — makes the reject 409 instead of silently killing a
-
-        version the user never saw. Required: rejection is destructive, so a
-
-        stale client failing closed (400 → reload) beats an unpinned reject of
-
-        whichever version happens to be pending.'
-      properties:
-        feedback:
-          type: string
-          default: ''
-          maxLength: 2000
-        plan_version:
-          type: integer
-          minimum: 1
-      required:
-      - plan_version
-    TaskAttachmentKindEnum:
-      enum:
-      - general
-      - plan
-      type: string
-      description: '* `general` - General
-
-        * `plan` - Plan'
-    PaginatedMessageReadList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/MessageRead'
-    TaskRecurrenceWeekdayEnum:
-      enum:
-      - MO
-      - TU
-      - WE
-      - TH
-      - FR
-      - SA
-      - SU
-      type: string
-      description: '* `MO` - Monday
-
-        * `TU` - Tuesday
-
-        * `WE` - Wednesday
-
-        * `TH` - Thursday
-
-        * `FR` - Friday
-
-        * `SA` - Saturday
-
-        * `SU` - Sunday'
-    TaskAttachmentFileRef:
-      type: object
-      description: 'Stable handle the agent feeds to ``get_file`` MCP tool.
-
-
-        Same uuid as ``TaskAttachment.uuid``; the dedicated nested type just
-
-        keeps the generated FE schema strongly-typed (otherwise drf-spectacular
-
-        falls back to ``additionalProperties: {}`` on the parent serializer).'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-      required:
       - uuid
     MessageRead:
       type: object
@@ -2491,47 +2532,6 @@ components:
       - modified
       - reactions
       - uuid
-    TaskRecurrenceOverlapPolicyEnum:
-      enum:
-      - skip
-      - allow
-      - replace
-      type: string
-      description: '* `skip` - Skip
-
-        * `allow` - Allow
-
-        * `replace` - Replace'
-    _RouteTargetAgent:
-      type: object
-      description: One installed worker agent option (slug + display name).
-      properties:
-        slug:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        name:
-          type: string
-      required:
-      - name
-      - slug
-    RouteTaskInput:
-      type: object
-      description: 'Body for ``POST /tasks/{uuid}/route/`` — role-based routing intent.
-
-
-        The router agent expresses *which role* to route to; the backend resolves the
-
-        concrete user. ``slug`` is required for ``mor_agent`` / ``buyer_agent``.'
-      properties:
-        target:
-          $ref: '#/components/schemas/TargetEnum'
-        slug:
-          type:
-          - string
-          - 'null'
-          pattern: ^[-a-zA-Z0-9_]+$
-      required:
-      - target
   securitySchemes:
     cookieAuth:
       type: apiKey

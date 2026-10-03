@@ -531,6 +531,43 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginatedRecommendationReadList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecommendationRead'
+    SeedRecommendationResponse:
+      type: object
+      properties:
+        recommendation_uuid:
+          type: string
+          format: uuid
+      required:
+      - recommendation_uuid
+    RecommendationInsightRoleEnum:
+      enum:
+      - primary
+      - supporting
+      type: string
+      description: '* `primary` - Primary
+
+        * `supporting` - Supporting'
     RecommendationSeverityEnum:
       enum:
       - 1
@@ -545,43 +582,6 @@ components:
         * `3` - High
 
         * `4` - Critical'
-    _RecommendationInsightWrite:
-      type: object
-      properties:
-        insight_uuid:
-          type: string
-          format: uuid
-        role:
-          allOf:
-          - $ref: '#/components/schemas/RecommendationInsightRoleEnum'
-          default: primary
-      required:
-      - insight_uuid
-    RecommendationInsightRoleEnum:
-      enum:
-      - primary
-      - supporting
-      type: string
-      description: '* `primary` - Primary
-
-        * `supporting` - Supporting'
-    RecommendationAudienceEnum:
-      enum:
-      - buyer
-      - mor
-      - supplier
-      type: string
-      description: '* `buyer` - Buyer
-
-        * `mor` - Merchant of Record
-
-        * `supplier` - Supplier'
-    _DebugCompanyTargetRequest:
-      type: object
-      properties:
-        company_uuid:
-          type: string
-          format: uuid
     RecommendationStateEnum:
       enum:
       - active
@@ -616,14 +616,33 @@ components:
       required:
       - run_uuid
       - task_uuid
-    SeedRecommendationResponse:
+    RecommendationAudienceEnum:
+      enum:
+      - buyer
+      - mor
+      - supplier
+      type: string
+      description: '* `buyer` - Buyer
+
+        * `mor` - Merchant of Record
+
+        * `supplier` - Supplier'
+    SupersedeRequest:
       type: object
       properties:
-        recommendation_uuid:
+        new_recommendation_uuid:
           type: string
           format: uuid
       required:
-      - recommendation_uuid
+      - new_recommendation_uuid
+    SnoozeRequest:
+      type: object
+      properties:
+        until:
+          type: string
+          format: date-time
+      required:
+      - until
     MarkStaleRequest:
       type: object
       properties:
@@ -631,104 +650,6 @@ components:
           type: string
           default: ''
           maxLength: 512
-    RecommendationCreate:
-      type: object
-      description: 'Agent write-path serializer (behind the ``create_recommendation`` MCP tool).
-
-
-        **No ``impact_*`` field exists here** — impact is read from the cited insight
-
-        at render time, so the agent can never write a money figure. The agent supplies
-
-        ``kind`` (stored loosely; catalog lives in ``@opply/agent-protocol``) and
-
-        ``audience`` (validated against the enum so the buyer feed''s audience filter is
-
-        a real boundary). ``subject_company`` is stamped from ``request.user_company``.'
-      properties:
-        kind:
-          type: string
-          description: Recommendation type code (e.g. `supplier_concentration`). The catalog of kinds + their templates lives in `@opply/agent-protocol`; this column stores whatever the agent emits.
-          maxLength: 64
-        audience:
-          allOf:
-          - $ref: '#/components/schemas/RecommendationAudienceEnum'
-          default: buyer
-        title:
-          type: string
-          description: Agent-phrased headline.
-          maxLength: 512
-        description:
-          type: string
-          description: Agent-phrased body. No $ figure is stored here.
-        evidence:
-          type: string
-          default: ''
-          maxLength: 4000
-        visual:
-          oneOf:
-          - type: object
-            title: ShareVisual
-            properties:
-              type:
-                type: string
-                enum:
-                - share
-              a:
-                type: number
-                minimum: 0
-                maximum: 100
-              left:
-                type: string
-              right:
-                type: string
-            required:
-            - type
-            - a
-            - left
-            - right
-          - type: object
-            title: PairVisual
-            properties:
-              type:
-                type: string
-                enum:
-                - pair
-              a:
-                type: object
-                additionalProperties: true
-              b:
-                type: object
-                additionalProperties: true
-            required:
-            - type
-            - a
-            - b
-          - type: object
-            title: NoVisual
-            description: Empty object when the kind has no visual (visualType 'none').
-            additionalProperties: false
-        severity:
-          allOf:
-          - $ref: '#/components/schemas/RecommendationSeverityEnum'
-          default: 1
-        cta_label:
-          type: string
-          description: Optional CTA button label (agent-phrased).
-          maxLength: 64
-        cta_target:
-          type: string
-          description: Optional internal route the CTA navigates to (`/`-prefixed; validated FE-side).
-          maxLength: 512
-        rec_insights:
-          type: array
-          items:
-            $ref: '#/components/schemas/_RecommendationInsightWrite'
-      required:
-      - description
-      - kind
-      - rec_insights
-      - title
     RecommendationActResponse:
       type: object
       description: 'The ``act`` response: the read view plus the uuid of the follow-up task the
@@ -886,14 +807,12 @@ components:
       - title
       - uuid
       - visual
-    SnoozeRequest:
+    _DebugCompanyTargetRequest:
       type: object
       properties:
-        until:
+        company_uuid:
           type: string
-          format: date-time
-      required:
-      - until
+          format: uuid
     RecommendationRead:
       type: object
       description: 'Buyer-facing read view of a recommendation, with its cited insights.
@@ -1047,35 +966,116 @@ components:
       - title
       - uuid
       - visual
-    PaginatedRecommendationReadList:
-      type: object
-      required:
-      - results
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecommendationRead'
-    SupersedeRequest:
+    _RecommendationInsightWrite:
       type: object
       properties:
-        new_recommendation_uuid:
+        insight_uuid:
           type: string
           format: uuid
+        role:
+          allOf:
+          - $ref: '#/components/schemas/RecommendationInsightRoleEnum'
+          default: primary
       required:
-      - new_recommendation_uuid
+      - insight_uuid
+    RecommendationCreate:
+      type: object
+      description: 'Agent write-path serializer (behind the ``create_recommendation`` MCP tool).
+
+
+        **No ``impact_*`` field exists here** — impact is read from the cited insight
+
+        at render time, so the agent can never write a money figure. The agent supplies
+
+        ``kind`` (stored loosely; catalog lives in ``@opply/agent-protocol``) and
+
+        ``audience`` (validated against the enum so the buyer feed''s audience filter is
+
+        a real boundary). ``subject_company`` is stamped from ``request.user_company``.'
+      properties:
+        kind:
+          type: string
+          description: Recommendation type code (e.g. `supplier_concentration`). The catalog of kinds + their templates lives in `@opply/agent-protocol`; this column stores whatever the agent emits.
+          maxLength: 64
+        audience:
+          allOf:
+          - $ref: '#/components/schemas/RecommendationAudienceEnum'
+          default: buyer
+        title:
+          type: string
+          description: Agent-phrased headline.
+          maxLength: 512
+        description:
+          type: string
+          description: Agent-phrased body. No $ figure is stored here.
+        evidence:
+          type: string
+          default: ''
+          maxLength: 4000
+        visual:
+          oneOf:
+          - type: object
+            title: ShareVisual
+            properties:
+              type:
+                type: string
+                enum:
+                - share
+              a:
+                type: number
+                minimum: 0
+                maximum: 100
+              left:
+                type: string
+              right:
+                type: string
+            required:
+            - type
+            - a
+            - left
+            - right
+          - type: object
+            title: PairVisual
+            properties:
+              type:
+                type: string
+                enum:
+                - pair
+              a:
+                type: object
+                additionalProperties: true
+              b:
+                type: object
+                additionalProperties: true
+            required:
+            - type
+            - a
+            - b
+          - type: object
+            title: NoVisual
+            description: Empty object when the kind has no visual (visualType 'none').
+            additionalProperties: false
+        severity:
+          allOf:
+          - $ref: '#/components/schemas/RecommendationSeverityEnum'
+          default: 1
+        cta_label:
+          type: string
+          description: Optional CTA button label (agent-phrased).
+          maxLength: 64
+        cta_target:
+          type: string
+          description: Optional internal route the CTA navigates to (`/`-prefixed; validated FE-side).
+          maxLength: 512
+        rec_insights:
+          type: array
+          items:
+            $ref: '#/components/schemas/_RecommendationInsightWrite'
+      required:
+      - description
+      - kind
+      - rec_insights
+      - title
   securitySchemes:
     cookieAuth:
       type: apiKey

@@ -370,9 +370,6 @@ paths:
           description: ''
 components:
   schemas:
-    BlankEnum:
-      enum:
-      - ''
     PatchedBuyerDocument:
       type: object
       description: 'Serializer for BuyerDocument — buyer certification and compliance documents.
@@ -585,20 +582,176 @@ components:
           type: string
           format: date-time
           readOnly: true
-    DocumentLifecycleStatusEnum:
+    USStateEnum:
       enum:
-      - valid
-      - expired
-      - expiring_soon
-      - renewed
+      - AL
+      - AK
+      - AZ
+      - AR
+      - CA
+      - CO
+      - CT
+      - DE
+      - FL
+      - GA
+      - HI
+      - ID
+      - IL
+      - IN
+      - IA
+      - KS
+      - KY
+      - LA
+      - ME
+      - MD
+      - MA
+      - MI
+      - MN
+      - MS
+      - MO
+      - MT
+      - NE
+      - NV
+      - NH
+      - NJ
+      - NM
+      - NY
+      - NC
+      - ND
+      - OH
+      - OK
+      - OR
+      - PA
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VT
+      - VA
+      - WA
+      - WV
+      - WI
+      - WY
+      - DC
+      - PR
+      - GU
+      - VI
+      - AS
+      - MP
       type: string
-      description: '* `valid` - Valid
+      description: '* `AL` - Alabama
 
-        * `expired` - Expired
+        * `AK` - Alaska
 
-        * `expiring_soon` - Expiring Soon
+        * `AZ` - Arizona
 
-        * `renewed` - Renewed'
+        * `AR` - Arkansas
+
+        * `CA` - California
+
+        * `CO` - Colorado
+
+        * `CT` - Connecticut
+
+        * `DE` - Delaware
+
+        * `FL` - Florida
+
+        * `GA` - Georgia
+
+        * `HI` - Hawaii
+
+        * `ID` - Idaho
+
+        * `IL` - Illinois
+
+        * `IN` - Indiana
+
+        * `IA` - Iowa
+
+        * `KS` - Kansas
+
+        * `KY` - Kentucky
+
+        * `LA` - Louisiana
+
+        * `ME` - Maine
+
+        * `MD` - Maryland
+
+        * `MA` - Massachusetts
+
+        * `MI` - Michigan
+
+        * `MN` - Minnesota
+
+        * `MS` - Mississippi
+
+        * `MO` - Missouri
+
+        * `MT` - Montana
+
+        * `NE` - Nebraska
+
+        * `NV` - Nevada
+
+        * `NH` - New Hampshire
+
+        * `NJ` - New Jersey
+
+        * `NM` - New Mexico
+
+        * `NY` - New York
+
+        * `NC` - North Carolina
+
+        * `ND` - North Dakota
+
+        * `OH` - Ohio
+
+        * `OK` - Oklahoma
+
+        * `OR` - Oregon
+
+        * `PA` - Pennsylvania
+
+        * `RI` - Rhode Island
+
+        * `SC` - South Carolina
+
+        * `SD` - South Dakota
+
+        * `TN` - Tennessee
+
+        * `TX` - Texas
+
+        * `UT` - Utah
+
+        * `VT` - Vermont
+
+        * `VA` - Virginia
+
+        * `WA` - Washington
+
+        * `WV` - West Virginia
+
+        * `WI` - Wisconsin
+
+        * `WY` - Wyoming
+
+        * `DC` - District of Columbia
+
+        * `PR` - Puerto Rico
+
+        * `GU` - Guam
+
+        * `VI` - U.S. Virgin Islands
+
+        * `AS` - American Samoa
+
+        * `MP` - Northern Mariana Islands'
     Country:
       enum:
       - AF
@@ -1351,22 +1504,31 @@ components:
         * `ZM` - Zambia
 
         * `ZW` - Zimbabwe'
-    SupplierSite:
+    PaginatedBuyerDocumentList:
       type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        company:
-          type: integer
       required:
-      - company
-      - name
-      - uuid
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerDocument'
     SupplierDocument:
       type: object
       properties:
@@ -1469,201 +1631,39 @@ components:
       - type
       - url
       - uuid
-    USStateEnum:
+    BlankEnum:
       enum:
-      - AL
-      - AK
-      - AZ
-      - AR
-      - CA
-      - CO
-      - CT
-      - DE
-      - FL
-      - GA
-      - HI
-      - ID
-      - IL
-      - IN
-      - IA
-      - KS
-      - KY
-      - LA
-      - ME
-      - MD
-      - MA
-      - MI
-      - MN
-      - MS
-      - MO
-      - MT
-      - NE
-      - NV
-      - NH
-      - NJ
-      - NM
-      - NY
-      - NC
-      - ND
-      - OH
-      - OK
-      - OR
-      - PA
-      - RI
-      - SC
-      - SD
-      - TN
-      - TX
-      - UT
-      - VT
-      - VA
-      - WA
-      - WV
-      - WI
-      - WY
-      - DC
-      - PR
-      - GU
-      - VI
-      - AS
-      - MP
+      - ''
+    DocumentLifecycleStatusEnum:
+      enum:
+      - valid
+      - expired
+      - expiring_soon
+      - renewed
       type: string
-      description: '* `AL` - Alabama
+      description: '* `valid` - Valid
 
-        * `AK` - Alaska
+        * `expired` - Expired
 
-        * `AZ` - Arizona
+        * `expiring_soon` - Expiring Soon
 
-        * `AR` - Arkansas
-
-        * `CA` - California
-
-        * `CO` - Colorado
-
-        * `CT` - Connecticut
-
-        * `DE` - Delaware
-
-        * `FL` - Florida
-
-        * `GA` - Georgia
-
-        * `HI` - Hawaii
-
-        * `ID` - Idaho
-
-        * `IL` - Illinois
-
-        * `IN` - Indiana
-
-        * `IA` - Iowa
-
-        * `KS` - Kansas
-
-        * `KY` - Kentucky
-
-        * `LA` - Louisiana
-
-        * `ME` - Maine
-
-        * `MD` - Maryland
-
-        * `MA` - Massachusetts
-
-        * `MI` - Michigan
-
-        * `MN` - Minnesota
-
-        * `MS` - Mississippi
-
-        * `MO` - Missouri
-
-        * `MT` - Montana
-
-        * `NE` - Nebraska
-
-        * `NV` - Nevada
-
-        * `NH` - New Hampshire
-
-        * `NJ` - New Jersey
-
-        * `NM` - New Mexico
-
-        * `NY` - New York
-
-        * `NC` - North Carolina
-
-        * `ND` - North Dakota
-
-        * `OH` - Ohio
-
-        * `OK` - Oklahoma
-
-        * `OR` - Oregon
-
-        * `PA` - Pennsylvania
-
-        * `RI` - Rhode Island
-
-        * `SC` - South Carolina
-
-        * `SD` - South Dakota
-
-        * `TN` - Tennessee
-
-        * `TX` - Texas
-
-        * `UT` - Utah
-
-        * `VT` - Vermont
-
-        * `VA` - Virginia
-
-        * `WA` - Washington
-
-        * `WV` - West Virginia
-
-        * `WI` - Wisconsin
-
-        * `WY` - Wyoming
-
-        * `DC` - District of Columbia
-
-        * `PR` - Puerto Rico
-
-        * `GU` - Guam
-
-        * `VI` - U.S. Virgin Islands
-
-        * `AS` - American Samoa
-
-        * `MP` - Northern Mariana Islands'
-    PaginatedBuyerDocumentList:
+        * `renewed` - Renewed'
+    DocumentType:
       type: object
-      required:
-      - count
-      - results
+      description: Shared serializer for the DocumentType taxonomy (buyer, supplier, Opply documents).
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerDocument'
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+      required:
+      - name
+      - uuid
     BuyerDocument:
       type: object
       description: 'Serializer for BuyerDocument — buyer certification and compliance documents.
@@ -1886,22 +1886,6 @@ components:
       - superseded_by_uuid
       - type
       - uuid
-    DocumentType:
-      type: object
-      description: Shared serializer for the DocumentType taxonomy (buyer, supplier, Opply documents).
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        description:
-          type: string
-      required:
-      - name
-      - uuid
     PaginatedSupplierDocumentList:
       type: object
       required:
@@ -1927,6 +1911,22 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SupplierDocument'
+    SupplierSite:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        company:
+          type: integer
+      required:
+      - company
+      - name
+      - uuid
   securitySchemes:
     cookieAuth:
       type: apiKey

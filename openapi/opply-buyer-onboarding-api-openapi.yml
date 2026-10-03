@@ -893,154 +893,31 @@ paths:
           description: ''
 components:
   schemas:
-    MoRSupplierMatch:
+    PaginatedMoRSupplierMatchCandidateList:
       type: object
-      description: 'Payload for `POST .../supplier-submissions/{id}/match/`.
-
-
-        The candidate Company is constrained to suppliers scoped to the calling
-
-        MoR (`merchant_of_record=context[''merchant_of_record'']`) so an MoR can
-
-        never match a buyer to another MoR''s supplier.'
-      properties:
-        company_uuid:
-          type: string
-          format: uuid
       required:
-      - company_uuid
-    InviteBuyer:
-      type: object
-      description: "Serializer for inviting a buyer through the new MoR onboarding flow\n(feature flag `isBuyerInvitationFlowEnabled` on).\n\nRequired fields:\n- name: Buyer's trading name (used as Company.name when company_name\n  is not separately provided).\n- email: Buyer contact email (must not already belong to a registered user).\n- country: US or UK.\n\nOptional:\n- company_name: Explicit Company.name override. When omitted the serializer\n  falls back to `name`.\n- first_name / last_name: Contact-person name on the new dialog. When\n  omitted, the trading name is used as first_name so the welcome email\n  greeting stays non-empty.\n- registration_name / registration_number: Legal registration name and\n  registration/incorporation number, stored on the new Company row.\n  `registration_country_code` is not a separate input — it is derived\n  from `country` (us -> US, uk -> GB).\n- is_connected_to_allianz / is_connected_to_two: Integration flags set on\n  the new Company row (default False).\n- allianz_company_id: Allianz company id for the credit-limit\n  integration, stored on the new Company row.\n- two_us_company_id: Two US company id (e.g. DUNS) for US buyers, stored\n  on the new Company row.\n\nCreates, atomically:\n  - User (no password — set via the password-create email link)\n  - Company (brand, onboarding_state=in_progress, scoped to the MoR)\n  - Employee linking the new User to the new Company\n  - BuyerOnboarding row carrying the contact/country fields (form data\n    for Phase 2 will hang off this)\n\nOn commit, dispatches `EmailSender.send_buyer_onboarding_invite` so the\nbuyer receives the `commit-onboarding` link to set their password and log in.\nThe MoR no longer receives a shareable link — the buyer enters the app\nvia the standard authenticated flow."
+      - count
+      - results
       properties:
-        name:
-          type: string
-          description: Buyer contact name
-          maxLength: 255
-        email:
-          type: string
-          format: email
-          description: Buyer contact email
-          maxLength: 255
-        country:
-          $ref: '#/components/schemas/BuyerOnboardingCountry'
-        company_name:
-          type: string
-          writeOnly: true
-          maxLength: 255
-        first_name:
-          type: string
-          writeOnly: true
-          maxLength: 150
-        last_name:
-          type: string
-          writeOnly: true
-          maxLength: 150
-        registration_name:
-          type: string
-          writeOnly: true
-          maxLength: 255
-        registration_number:
-          type: string
-          writeOnly: true
-          maxLength: 255
-        is_connected_to_allianz:
-          type: boolean
-          writeOnly: true
-          default: false
-        allianz_company_id:
-          type: string
-          writeOnly: true
-          maxLength: 255
-        is_connected_to_two:
-          type: boolean
-          writeOnly: true
-          default: false
-        two_us_company_id:
-          type: string
-          writeOnly: true
-          maxLength: 255
-      required:
-      - country
-      - email
-      - name
-    AccountDetail:
-      type: object
-      description: "Serializer for account details with country-specific validation.\nSupports DUNS field and AccountEmail management.\n\nUK buyers require: company_name, vat_number, company_registration_number,\n                  registered_address, contact_name, contact_phone_number,\n                  contact_email_address\n\nUS buyers require: company_name, vat_number (as EIN), registered_address,\n                  contact_name, contact_phone_number, contact_email_address"
-      properties:
-        id:
+        count:
           type: integer
-          readOnly: true
-        company_name:
-          type: string
-          description: Company name
-          maxLength: 255
-        vat_number:
-          type: string
-          description: VAT number
-          maxLength: 100
-        duns:
+          example: 123
+        next:
           type:
           - string
           - 'null'
-        company_registration_number:
-          type: string
-          description: Company Registration Number (UK only)
-          maxLength: 100
-        registered_address:
-          type: string
-          description: Registered company address
-        contact_name:
-          type: string
-          maxLength: 255
-        contact_phone_number:
-          type: string
-          maxLength: 50
-        contact_email_address:
-          type: string
-          format: email
-          description: 'Contact email address (DEPRECATED: Use account_emails relationship instead)'
-          maxLength: 255
-        tax_exemption_certificate:
-          type: boolean
-          description: Tax exemption certificate (US only)
-        account_emails:
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
           type: array
           items:
-            $ref: '#/components/schemas/AccountEmail'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - account_emails
-      - company_name
-      - contact_name
-      - contact_phone_number
-      - created_at
-      - id
-      - modified_at
-      - registered_address
-      - vat_number
-    SupplierReviewStatusEnum:
-      enum:
-      - pending_review
-      - matched
-      - onboarding
-      - rejected
-      type: string
-      description: '* `pending_review` - Pending review
-
-        * `matched` - Matched to existing supplier
-
-        * `onboarding` - Onboarding new supplier
-
-        * `rejected` - Rejected'
+            $ref: '#/components/schemas/MoRSupplierMatchCandidate'
     Country:
       enum:
       - AF
@@ -1793,217 +1670,72 @@ components:
         * `ZM` - Zambia
 
         * `ZW` - Zimbabwe'
-    PatchedBuyerOnboardingStep:
+    Supplier:
       type: object
-      description: Serializer for buyer onboarding step with template information.
+      description: 'Serializer for supplier information.
+
+
+        Only includes fields that are actively used in the public buyer onboarding form.
+
+        Other model fields are kept for backward compatibility but not exposed in the API.'
       properties:
         id:
           type: integer
           readOnly: true
-        template_step:
-          type: integer
-          description: The template this step is based on
-        template_phase:
+        supplier_name:
           type: string
-          readOnly: true
-        template_phase_display:
-          type: string
-          readOnly: true
-        process_description:
-          type: string
-          readOnly: true
-        template_step_order:
-          type: integer
-          readOnly: true
-        notes:
-          type: string
-          description: Buyer-specific notes for this step
-        is_completed:
-          type: boolean
-          description: Whether this step is completed
-        completed_at:
+          description: Supplier name
+          maxLength: 255
+        average_monthly_spend:
           type:
           - string
           - 'null'
-          format: date-time
-          readOnly: true
-          description: When this step was completed
-        completed_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: Who completed this step
-        completed_by_email:
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          description: Average monthly spend with this supplier
+        invoice_currency:
           type: string
-          format: email
-          readOnly: true
-        custom_step_order:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-          description: Custom order for this buyer (overrides template step order)
-        is_step_visible:
+          description: Invoice/Payment currency (e.g., USD, GBP, EUR)
+          maxLength: 3
+        payment_terms:
+          type: string
+          description: Supplier payment terms
+        priority:
+          description: 'Priority to onboard this supplier
+
+
+            * `high` - High
+
+            * `medium` - Medium
+
+            * `low` - Low'
+          oneOf:
+          - $ref: '#/components/schemas/PriorityEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        supplier_country:
+          type: string
+          description: Supplier country
+          maxLength: 100
+        arranges_delivery:
           type: boolean
-          description: Whether this step is visible for this buyer
-        created_at:
+          description: Does the supplier arrange delivery?
+        lead_time:
           type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-    GenerateBuyerLink:
-      type: object
-      description: 'Legacy serializer: creates a `BuyerOnboarding` row and returns a
-
-        UUID-based shareable link the MoR can hand to the buyer. Used by the
-
-        pre-`isBuyerInvitationFlowEnabled` flow.
-
-
-        Required fields:
-
-        - name: Buyer contact name
-
-        - email: Buyer contact email
-
-        - country: US or UK
-
-
-        No User / Company / Employee provisioning happens here — that is the
-
-        new `invite` flow''s job. Keep this lightweight so the legacy FE keeps
-
-        working when the feature flag is off.'
-      properties:
-        name:
-          type: string
-          description: Buyer contact name
+          description: Agreed lead time
           maxLength: 255
-        email:
+        is_organic:
+          type: boolean
+          description: Is this an organic supplier?
+        relationship_notes:
           type: string
-          format: email
-          description: Buyer contact email
-          maxLength: 255
-        country:
-          $ref: '#/components/schemas/BuyerOnboardingCountry'
-      required:
-      - country
-      - email
-      - name
-    InviteBuyerResponse:
-      type: object
-      description: 'Response shape for the new `invite` endpoint.
-
-
-        No `link` field — the buyer is invited via the `commit-onboarding`
-
-        email and enters the app authenticated.'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          format: email
-          readOnly: true
-        country:
-          allOf:
-          - $ref: '#/components/schemas/BuyerOnboardingCountry'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - country
-      - created_at
-      - email
-      - name
-      - uuid
-    PaginatedBuyerOnboardingListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
+          description: Any noteworthy information about your trading relationship
+        supplier_spreadsheet:
           type:
           - string
           - 'null'
           format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerOnboardingList'
-    BuyerOnboardingList:
-      type: object
-      description: 'Serializer for listing buyer onboardings.
-
-        Includes summary information about steps and submission status.
-
-
-        For self-onboarded buyers (`buyer_onboarding.company` is set), the
-
-        name / email / company_uuid / company_name fields are derived from the
-
-        canonical `Company` + `created_by` `User` rather than the mirror fields
-
-        on BuyerOnboarding, which are only seeded at creation time.'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-          description: Unique identifier for sharing the onboarding form
-        name:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          readOnly: true
-        country:
-          $ref: '#/components/schemas/BuyerOnboardingCountry'
-        company_uuid:
-          type: string
-          readOnly: true
-        company_name:
-          type: string
-          readOnly: true
-        notes:
-          type: string
-          description: Internal notes
-        submitted_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the buyer submitted the form
-        is_submitted:
-          type: string
-          readOnly: true
-        total_steps:
-          type: string
-          readOnly: true
-        completed_steps:
+          description: Supplier spreadsheet
+        supplier_spreadsheet_url:
           type: string
           readOnly: true
         created_at:
@@ -2015,18 +1747,44 @@ components:
           format: date-time
           readOnly: true
       required:
-      - company_name
-      - company_uuid
-      - completed_steps
-      - country
       - created_at
-      - email
-      - is_submitted
+      - id
       - modified_at
-      - name
-      - total_steps
+      - supplier_name
+      - supplier_spreadsheet_url
+    DeliveryEmail:
+      type: object
+      description: Serializer for DeliveryEmail model.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unique identifier for delivery email lookup
+        label:
+          type: string
+          description: Label for this delivery contact (e.g. 'Goods In')
+          maxLength: 255
+        email_address:
+          type: string
+          format: email
+          description: Delivery contact email
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - email_address
+      - label
+      - modified_at
       - uuid
-    PaginatedSupplierList:
+    PaginatedBuyerOnboardingDeliveryAddressList:
       type: object
       required:
       - count
@@ -2050,10 +1808,32 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Supplier'
-    NullEnum:
-      enum:
-      - null
+            $ref: '#/components/schemas/BuyerOnboardingDeliveryAddress'
+    PaginatedMoRSupplierSubmissionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MoRSupplierSubmission'
     BuyerOnboardingStep:
       type: object
       description: Serializer for buyer onboarding step with template information.
@@ -2129,42 +1909,7 @@ components:
       - template_phase_display
       - template_step
       - template_step_order
-    BuyerOnboardingDocument:
-      type: object
-      description: Serializer for BuyerOnboardingDocument model.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-          description: Unique identifier for document lookup
-        document:
-          type: string
-          format: uri
-          description: Uploaded document
-        document_url:
-          type: string
-          readOnly: true
-        description:
-          type:
-          - string
-          - 'null'
-          description: Optional description of the document
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - document
-      - document_url
-      - modified_at
-      - uuid
-    PaginatedBuyerOnboardingStepList:
+    PaginatedSupplierList:
       type: object
       required:
       - count
@@ -2188,10 +1933,126 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/BuyerOnboardingStep'
-    BlankEnum:
+            $ref: '#/components/schemas/Supplier'
+    AccountDetail:
+      type: object
+      description: "Serializer for account details with country-specific validation.\nSupports DUNS field and AccountEmail management.\n\nUK buyers require: company_name, vat_number, company_registration_number,\n                  registered_address, contact_name, contact_phone_number,\n                  contact_email_address\n\nUS buyers require: company_name, vat_number (as EIN), registered_address,\n                  contact_name, contact_phone_number, contact_email_address"
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        company_name:
+          type: string
+          description: Company name
+          maxLength: 255
+        vat_number:
+          type: string
+          description: VAT number
+          maxLength: 100
+        duns:
+          type:
+          - string
+          - 'null'
+        company_registration_number:
+          type: string
+          description: Company Registration Number (UK only)
+          maxLength: 100
+        registered_address:
+          type: string
+          description: Registered company address
+        contact_name:
+          type: string
+          maxLength: 255
+        contact_phone_number:
+          type: string
+          maxLength: 50
+        contact_email_address:
+          type: string
+          format: email
+          description: 'Contact email address (DEPRECATED: Use account_emails relationship instead)'
+          maxLength: 255
+        tax_exemption_certificate:
+          type: boolean
+          description: Tax exemption certificate (US only)
+        account_emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountEmail'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - account_emails
+      - company_name
+      - contact_name
+      - contact_phone_number
+      - created_at
+      - id
+      - modified_at
+      - registered_address
+      - vat_number
+    DeliveryLocationTypeEnum:
       enum:
-      - ''
+      - warehouse
+      - factory
+      - distribution_center
+      - retail_location
+      - other
+      type: string
+      description: '* `warehouse` - Warehouse
+
+        * `factory` - Factory
+
+        * `distribution_center` - Distribution Center
+
+        * `retail_location` - Retail Location
+
+        * `other` - Other'
+    GenerateBuyerLink:
+      type: object
+      description: 'Legacy serializer: creates a `BuyerOnboarding` row and returns a
+
+        UUID-based shareable link the MoR can hand to the buyer. Used by the
+
+        pre-`isBuyerInvitationFlowEnabled` flow.
+
+
+        Required fields:
+
+        - name: Buyer contact name
+
+        - email: Buyer contact email
+
+        - country: US or UK
+
+
+        No User / Company / Employee provisioning happens here — that is the
+
+        new `invite` flow''s job. Keep this lightweight so the legacy FE keeps
+
+        working when the feature flag is off.'
+      properties:
+        name:
+          type: string
+          description: Buyer contact name
+          maxLength: 255
+        email:
+          type: string
+          format: email
+          description: Buyer contact email
+          maxLength: 255
+        country:
+          $ref: '#/components/schemas/BuyerOnboardingCountry'
+      required:
+      - country
+      - email
+      - name
     BuyerOnboardingDetail:
       type: object
       description: 'Detailed serializer for buyer onboarding.
@@ -2296,6 +2157,267 @@ components:
       - suppliers_pending_review_count
       - total_steps
       - uuid
+    MoRSupplierReject:
+      type: object
+      description: Payload for `POST .../supplier-submissions/{id}/reject/`.
+      properties:
+        reason:
+          type: string
+          maxLength: 2000
+      required:
+      - reason
+    MoRSupplierSubmission:
+      type: object
+      description: 'MoR-side read of a buyer''s `buyer_onboarding.Supplier` submission.
+
+        Adds buyer context (company + contact) and review-pipeline pointers
+
+        so an operator can decide whether to match the submission to an
+
+        existing supplier company or promote it into the OnboardingSupplier
+
+        pipeline.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        supplier_name:
+          type: string
+          readOnly: true
+          description: Supplier name
+        vat_number:
+          type: string
+          readOnly: true
+          description: Supplier VAT / tax registration number
+        registration_number:
+          type: string
+          readOnly: true
+          description: Business/company registration number (e.g. Companies House number; Xero's Contact.CompanyNumber) — distinct from the VAT number.
+        products_description:
+          type: string
+          readOnly: true
+          description: Description of products purchased from this supplier
+        average_monthly_spend:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+          description: Average monthly spend with this supplier
+        invoice_currency:
+          type: string
+          readOnly: true
+          description: Invoice/Payment currency (e.g., USD, GBP, EUR)
+        payment_terms:
+          type: string
+          readOnly: true
+          description: Supplier payment terms
+        priority:
+          allOf:
+          - $ref: '#/components/schemas/PriorityEnum'
+          readOnly: true
+          description: 'Priority to onboard this supplier
+
+
+            * `high` - High
+
+            * `medium` - Medium
+
+            * `low` - Low'
+        supplier_country:
+          type: string
+          readOnly: true
+          description: Supplier country
+        supplier_state:
+          type: string
+          readOnly: true
+          title: Supplier State/County
+          description: Supplier state or county
+        supplier_address:
+          type: string
+          readOnly: true
+          description: Supplier address
+        contact_name:
+          type: string
+          readOnly: true
+          description: Supplier contact name
+        contact_email:
+          type: string
+          format: email
+          readOnly: true
+          description: Supplier contact email
+        contact_phone:
+          type: string
+          readOnly: true
+          description: Supplier contact phone number
+        arranges_delivery:
+          type: boolean
+          readOnly: true
+          description: Does the supplier arrange delivery?
+        lead_time:
+          type: string
+          readOnly: true
+          description: Agreed lead time
+        is_organic:
+          type: boolean
+          readOnly: true
+          description: Is this an organic supplier?
+        relationship_notes:
+          type: string
+          readOnly: true
+          description: Any noteworthy information about your trading relationship
+        notes:
+          type: string
+          readOnly: true
+          description: Additional notes about the supplier
+        review_status:
+          allOf:
+          - $ref: '#/components/schemas/SupplierReviewStatusEnum'
+          readOnly: true
+          description: 'Where this submission sits in the MoR review queue.
+
+
+            * `pending_review` - Pending review
+
+            * `matched` - Matched to existing supplier
+
+            * `onboarding` - Onboarding new supplier
+
+            * `rejected` - Rejected'
+        review_notes:
+          type: string
+          readOnly: true
+          description: MoR review outcome note. For a rejected submission this is the reason the operator gave when rejecting.
+        reviewed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: Timestamp of the most recent MoR review action.
+        reviewed_by_email:
+          type: string
+          readOnly: true
+        matched_supplier_uuid:
+          type: string
+          readOnly: true
+        matched_supplier_name:
+          type: string
+          readOnly: true
+        suggested_supplier_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          readOnly: true
+        suggested_supplier_name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        suggested_match_ratio:
+          type:
+          - number
+          - 'null'
+          format: double
+          readOnly: true
+          description: Similarity ratio (0-1) of the suggested_supplier_company candidate.
+        onboarding_supplier_uuid:
+          type: string
+          readOnly: true
+        buyer_onboarding_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        buyer_company_uuid:
+          type: string
+          readOnly: true
+        buyer_company_name:
+          type: string
+          readOnly: true
+        buyer_contact_name:
+          type: string
+          readOnly: true
+        buyer_contact_email:
+          type: string
+          format: email
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - arranges_delivery
+      - average_monthly_spend
+      - buyer_company_name
+      - buyer_company_uuid
+      - buyer_contact_email
+      - buyer_contact_name
+      - buyer_onboarding_uuid
+      - contact_email
+      - contact_name
+      - contact_phone
+      - created_at
+      - id
+      - invoice_currency
+      - is_organic
+      - lead_time
+      - matched_supplier_name
+      - matched_supplier_uuid
+      - notes
+      - onboarding_supplier_uuid
+      - payment_terms
+      - priority
+      - products_description
+      - registration_number
+      - relationship_notes
+      - review_notes
+      - review_status
+      - reviewed_at
+      - reviewed_by_email
+      - suggested_match_ratio
+      - suggested_supplier_name
+      - suggested_supplier_uuid
+      - supplier_address
+      - supplier_country
+      - supplier_name
+      - supplier_state
+      - vat_number
+    InviteBuyerResponse:
+      type: object
+      description: 'Response shape for the new `invite` endpoint.
+
+
+        No `link` field — the buyer is invited via the `commit-onboarding`
+
+        email and enters the app authenticated.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        country:
+          allOf:
+          - $ref: '#/components/schemas/BuyerOnboardingCountry'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - country
+      - created_at
+      - email
+      - name
+      - uuid
     PriorityEnum:
       enum:
       - high
@@ -2307,7 +2429,7 @@ components:
         * `medium` - Medium
 
         * `low` - Low'
-    PaginatedBuyerOnboardingDocumentList:
+    PaginatedDeliveryEmailList:
       type: object
       required:
       - count
@@ -2331,25 +2453,62 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/BuyerOnboardingDocument'
-    AccountEmail:
+            $ref: '#/components/schemas/DeliveryEmail'
+    PatchedBuyerOnboardingStep:
       type: object
-      description: Serializer for AccountEmail model.
+      description: Serializer for buyer onboarding step with template information.
       properties:
-        uuid:
-          type: string
-          format: uuid
+        id:
+          type: integer
           readOnly: true
-          description: Unique identifier for account email lookup
-        label:
+        template_step:
+          type: integer
+          description: The template this step is based on
+        template_phase:
           type: string
-          description: Label for this contact (e.g. 'Accounts Payable')
-          maxLength: 255
-        email_address:
+          readOnly: true
+        template_phase_display:
+          type: string
+          readOnly: true
+        process_description:
+          type: string
+          readOnly: true
+        template_step_order:
+          type: integer
+          readOnly: true
+        notes:
+          type: string
+          description: Buyer-specific notes for this step
+        is_completed:
+          type: boolean
+          description: Whether this step is completed
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: When this step was completed
+        completed_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Who completed this step
+        completed_by_email:
           type: string
           format: email
-          description: Contact email address
-          maxLength: 255
+          readOnly: true
+        custom_step_order:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          description: Custom order for this buyer (overrides template step order)
+        is_step_visible:
+          type: boolean
+          description: Whether this step is visible for this buyer
         created_at:
           type: string
           format: date-time
@@ -2358,61 +2517,234 @@ components:
           type: string
           format: date-time
           readOnly: true
-      required:
-      - created_at
-      - email_address
-      - label
-      - modified_at
-      - uuid
-    DeliveryEmail:
-      type: object
-      description: Serializer for DeliveryEmail model.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-          description: Unique identifier for delivery email lookup
-        label:
-          type: string
-          description: Label for this delivery contact (e.g. 'Goods In')
-          maxLength: 255
-        email_address:
-          type: string
-          format: email
-          description: Delivery contact email
-          maxLength: 255
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - email_address
-      - label
-      - modified_at
-      - uuid
-    DeliveryLocationTypeEnum:
+    BlankEnum:
       enum:
-      - warehouse
-      - factory
-      - distribution_center
-      - retail_location
-      - other
+      - ''
+    AccessRequirementsEnum:
+      enum:
+      - delivery_appointment
+      - inside_delivery
+      - lift_gate
       type: string
-      description: '* `warehouse` - Warehouse
+      description: '* `delivery_appointment` - Delivery appointment requirement
 
-        * `factory` - Factory
+        * `inside_delivery` - Inside delivery Required
 
-        * `distribution_center` - Distribution Center
+        * `lift_gate` - Lift gate required'
+    BuyerOnboardingDocument:
+      type: object
+      description: Serializer for BuyerOnboardingDocument model.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unique identifier for document lookup
+        document:
+          type: string
+          format: uri
+          description: Uploaded document
+        document_url:
+          type: string
+          readOnly: true
+        description:
+          type:
+          - string
+          - 'null'
+          description: Optional description of the document
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - document
+      - document_url
+      - modified_at
+      - uuid
+    PaginatedBuyerOnboardingListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerOnboardingList'
+    PaginatedBuyerOnboardingStepList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerOnboardingStep'
+    BuyerOnboardingCountry:
+      enum:
+      - us
+      - uk
+      type: string
+      description: '* `us` - United States
 
-        * `retail_location` - Retail Location
+        * `uk` - United Kingdom'
+    BuyerOnboardingLinkResponse:
+      type: object
+      description: 'Response serializer for the legacy `generate-link` endpoint.
 
-        * `other` - Other'
+        Includes the UUID-based shareable onboarding URL.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        country:
+          allOf:
+          - $ref: '#/components/schemas/BuyerOnboardingCountry'
+          readOnly: true
+        link:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - country
+      - created_at
+      - email
+      - link
+      - name
+      - uuid
+    DeliveryDetails:
+      type: object
+      description: Serializer for delivery details.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        delivery_address:
+          type: string
+          description: 'Delivery address (DEPRECATED: Use buyer_onboarding_delivery_address instead)'
+        delivery_location_type:
+          $ref: '#/components/schemas/DeliveryLocationTypeEnum'
+        delivery_location_type_display:
+          type: string
+          readOnly: true
+        delivery_location_type_other:
+          type: string
+          description: Specify delivery location type when 'Other' is selected
+          maxLength: 255
+        delivery_instructions:
+          type: string
+          description: Delivery instructions
+        delivery_contact_name:
+          type: string
+          description: 'Delivery contact name (DEPRECATED: Use delivery_address relationship instead)'
+          maxLength: 255
+        delivery_contact_phone_number:
+          type: string
+          description: 'Delivery contact phone number (DEPRECATED: Use delivery_address relationship instead)'
+          maxLength: 50
+        delivery_contact_email:
+          type: string
+          format: email
+          description: 'Delivery contact email (DEPRECATED: Use delivery_emails relationship instead)'
+          maxLength: 255
+        warehouse_receiving_hours:
+          type: string
+          description: Warehouse receiving hours
+          maxLength: 255
+        storage_capacity:
+          type: string
+          description: Storage capacity
+          maxLength: 255
+        access_requirements:
+          description: 'Access requirements
+
+
+            * `delivery_appointment` - Delivery appointment requirement
+
+            * `inside_delivery` - Inside delivery Required
+
+            * `lift_gate` - Lift gate required'
+          oneOf:
+          - $ref: '#/components/schemas/AccessRequirementsEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        is_sample_required:
+          type: boolean
+          description: Is a sample required?
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - delivery_location_type
+      - delivery_location_type_display
+      - id
+      - modified_at
+    NullEnum:
+      enum:
+      - null
+    CountryTypeEnum:
+      enum:
+      - EU
+      - GB
+      - Other
+      type: string
+      description: '* `EU` - Eu
+
+        * `GB` - Gb
+
+        * `Other` - Other'
     PhoneCountryCodeEnum:
       enum:
       - '+376'
@@ -3096,7 +3428,7 @@ components:
         * `+260` - +260
 
         * `+263` - +263'
-    PaginatedBuyerOnboardingDeliveryAddressList:
+    PaginatedBuyerOnboardingDocumentList:
       type: object
       required:
       - count
@@ -3120,592 +3452,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/BuyerOnboardingDeliveryAddress'
-    Supplier:
-      type: object
-      description: 'Serializer for supplier information.
-
-
-        Only includes fields that are actively used in the public buyer onboarding form.
-
-        Other model fields are kept for backward compatibility but not exposed in the API.'
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        supplier_name:
-          type: string
-          description: Supplier name
-          maxLength: 255
-        average_monthly_spend:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-          description: Average monthly spend with this supplier
-        invoice_currency:
-          type: string
-          description: Invoice/Payment currency (e.g., USD, GBP, EUR)
-          maxLength: 3
-        payment_terms:
-          type: string
-          description: Supplier payment terms
-        priority:
-          description: 'Priority to onboard this supplier
-
-
-            * `high` - High
-
-            * `medium` - Medium
-
-            * `low` - Low'
-          oneOf:
-          - $ref: '#/components/schemas/PriorityEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-        supplier_country:
-          type: string
-          description: Supplier country
-          maxLength: 100
-        arranges_delivery:
-          type: boolean
-          description: Does the supplier arrange delivery?
-        lead_time:
-          type: string
-          description: Agreed lead time
-          maxLength: 255
-        is_organic:
-          type: boolean
-          description: Is this an organic supplier?
-        relationship_notes:
-          type: string
-          description: Any noteworthy information about your trading relationship
-        supplier_spreadsheet:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: Supplier spreadsheet
-        supplier_spreadsheet_url:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - id
-      - modified_at
-      - supplier_name
-      - supplier_spreadsheet_url
-    DeliveryDetails:
-      type: object
-      description: Serializer for delivery details.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        delivery_address:
-          type: string
-          description: 'Delivery address (DEPRECATED: Use buyer_onboarding_delivery_address instead)'
-        delivery_location_type:
-          $ref: '#/components/schemas/DeliveryLocationTypeEnum'
-        delivery_location_type_display:
-          type: string
-          readOnly: true
-        delivery_location_type_other:
-          type: string
-          description: Specify delivery location type when 'Other' is selected
-          maxLength: 255
-        delivery_instructions:
-          type: string
-          description: Delivery instructions
-        delivery_contact_name:
-          type: string
-          description: 'Delivery contact name (DEPRECATED: Use delivery_address relationship instead)'
-          maxLength: 255
-        delivery_contact_phone_number:
-          type: string
-          description: 'Delivery contact phone number (DEPRECATED: Use delivery_address relationship instead)'
-          maxLength: 50
-        delivery_contact_email:
-          type: string
-          format: email
-          description: 'Delivery contact email (DEPRECATED: Use delivery_emails relationship instead)'
-          maxLength: 255
-        warehouse_receiving_hours:
-          type: string
-          description: Warehouse receiving hours
-          maxLength: 255
-        storage_capacity:
-          type: string
-          description: Storage capacity
-          maxLength: 255
-        access_requirements:
-          description: 'Access requirements
-
-
-            * `delivery_appointment` - Delivery appointment requirement
-
-            * `inside_delivery` - Inside delivery Required
-
-            * `lift_gate` - Lift gate required'
-          oneOf:
-          - $ref: '#/components/schemas/AccessRequirementsEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-        is_sample_required:
-          type: boolean
-          description: Is a sample required?
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - delivery_location_type
-      - delivery_location_type_display
-      - id
-      - modified_at
-    BuyerOnboardingCountry:
-      enum:
-      - us
-      - uk
-      type: string
-      description: '* `us` - United States
-
-        * `uk` - United Kingdom'
-    AddressTypeEnum:
-      enum:
-      - billing_address
-      - delivery_address
-      - dispatch_address
-      - company_address
-      type: string
-      description: '* `billing_address` - Billing address
-
-        * `delivery_address` - Delivery address
-
-        * `dispatch_address` - Dispatch address
-
-        * `company_address` - Company address'
-    AccessRequirementsEnum:
-      enum:
-      - delivery_appointment
-      - inside_delivery
-      - lift_gate
-      type: string
-      description: '* `delivery_appointment` - Delivery appointment requirement
-
-        * `inside_delivery` - Inside delivery Required
-
-        * `lift_gate` - Lift gate required'
-    PatchedBuyerOnboardingDetail:
-      type: object
-      description: 'Detailed serializer for buyer onboarding.
-
-        Includes all related information.
-
-
-        For self-onboarded buyers (`buyer_onboarding.company` is set), the
-
-        name / email fields are derived from the canonical `Company` /
-
-        `User`, and `has_account_details` / `has_delivery_details` consider
-
-        Company columns alongside the legacy AccountDetail/DeliveryDetails
-
-        tables.'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-          description: Unique identifier for sharing the onboarding form
-        name:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          readOnly: true
-        country:
-          $ref: '#/components/schemas/BuyerOnboardingCountry'
-        company_uuid:
-          type: string
-          readOnly: true
-        company_name:
-          type: string
-          readOnly: true
-        notes:
-          type: string
-          description: Internal notes
-        submitted_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: When the buyer submitted the form
-        is_submitted:
-          type: string
-          readOnly: true
-        total_steps:
-          type: string
-          readOnly: true
-        completed_steps:
-          type: string
-          readOnly: true
-        has_account_details:
-          type: string
-          readOnly: true
-        has_delivery_details:
-          type: string
-          readOnly: true
-        suppliers_count:
-          type: string
-          readOnly: true
-        suppliers_pending_review_count:
-          type: string
-          readOnly: true
-        suppliers_completed:
-          type: string
-          readOnly: true
-        suppliers_completed_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: When the supplier section was marked as complete
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-    PaginatedMoRSupplierMatchCandidateList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/MoRSupplierMatchCandidate'
-    PaginatedDeliveryEmailList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/DeliveryEmail'
-    PaginatedMoRSupplierSubmissionList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/MoRSupplierSubmission'
-    MoRSupplierReject:
-      type: object
-      description: Payload for `POST .../supplier-submissions/{id}/reject/`.
-      properties:
-        reason:
-          type: string
-          maxLength: 2000
-      required:
-      - reason
-    MoRSupplierSubmission:
-      type: object
-      description: 'MoR-side read of a buyer''s `buyer_onboarding.Supplier` submission.
-
-        Adds buyer context (company + contact) and review-pipeline pointers
-
-        so an operator can decide whether to match the submission to an
-
-        existing supplier company or promote it into the OnboardingSupplier
-
-        pipeline.'
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        supplier_name:
-          type: string
-          readOnly: true
-          description: Supplier name
-        vat_number:
-          type: string
-          readOnly: true
-          description: Supplier VAT / tax registration number
-        registration_number:
-          type: string
-          readOnly: true
-          description: Business/company registration number (e.g. Companies House number; Xero's Contact.CompanyNumber) — distinct from the VAT number.
-        products_description:
-          type: string
-          readOnly: true
-          description: Description of products purchased from this supplier
-        average_monthly_spend:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-          readOnly: true
-          description: Average monthly spend with this supplier
-        invoice_currency:
-          type: string
-          readOnly: true
-          description: Invoice/Payment currency (e.g., USD, GBP, EUR)
-        payment_terms:
-          type: string
-          readOnly: true
-          description: Supplier payment terms
-        priority:
-          allOf:
-          - $ref: '#/components/schemas/PriorityEnum'
-          readOnly: true
-          description: 'Priority to onboard this supplier
-
-
-            * `high` - High
-
-            * `medium` - Medium
-
-            * `low` - Low'
-        supplier_country:
-          type: string
-          readOnly: true
-          description: Supplier country
-        supplier_state:
-          type: string
-          readOnly: true
-          title: Supplier State/County
-          description: Supplier state or county
-        supplier_address:
-          type: string
-          readOnly: true
-          description: Supplier address
-        contact_name:
-          type: string
-          readOnly: true
-          description: Supplier contact name
-        contact_email:
-          type: string
-          format: email
-          readOnly: true
-          description: Supplier contact email
-        contact_phone:
-          type: string
-          readOnly: true
-          description: Supplier contact phone number
-        arranges_delivery:
-          type: boolean
-          readOnly: true
-          description: Does the supplier arrange delivery?
-        lead_time:
-          type: string
-          readOnly: true
-          description: Agreed lead time
-        is_organic:
-          type: boolean
-          readOnly: true
-          description: Is this an organic supplier?
-        relationship_notes:
-          type: string
-          readOnly: true
-          description: Any noteworthy information about your trading relationship
-        notes:
-          type: string
-          readOnly: true
-          description: Additional notes about the supplier
-        review_status:
-          allOf:
-          - $ref: '#/components/schemas/SupplierReviewStatusEnum'
-          readOnly: true
-          description: 'Where this submission sits in the MoR review queue.
-
-
-            * `pending_review` - Pending review
-
-            * `matched` - Matched to existing supplier
-
-            * `onboarding` - Onboarding new supplier
-
-            * `rejected` - Rejected'
-        review_notes:
-          type: string
-          readOnly: true
-          description: MoR review outcome note. For a rejected submission this is the reason the operator gave when rejecting.
-        reviewed_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: Timestamp of the most recent MoR review action.
-        reviewed_by_email:
-          type: string
-          readOnly: true
-        matched_supplier_uuid:
-          type: string
-          readOnly: true
-        matched_supplier_name:
-          type: string
-          readOnly: true
-        suggested_supplier_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          readOnly: true
-        suggested_supplier_name:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        suggested_match_ratio:
-          type:
-          - number
-          - 'null'
-          format: double
-          readOnly: true
-          description: Similarity ratio (0-1) of the suggested_supplier_company candidate.
-        onboarding_supplier_uuid:
-          type: string
-          readOnly: true
-        buyer_onboarding_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        buyer_company_uuid:
-          type: string
-          readOnly: true
-        buyer_company_name:
-          type: string
-          readOnly: true
-        buyer_contact_name:
-          type: string
-          readOnly: true
-        buyer_contact_email:
-          type: string
-          format: email
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - arranges_delivery
-      - average_monthly_spend
-      - buyer_company_name
-      - buyer_company_uuid
-      - buyer_contact_email
-      - buyer_contact_name
-      - buyer_onboarding_uuid
-      - contact_email
-      - contact_name
-      - contact_phone
-      - created_at
-      - id
-      - invoice_currency
-      - is_organic
-      - lead_time
-      - matched_supplier_name
-      - matched_supplier_uuid
-      - notes
-      - onboarding_supplier_uuid
-      - payment_terms
-      - priority
-      - products_description
-      - registration_number
-      - relationship_notes
-      - review_notes
-      - review_status
-      - reviewed_at
-      - reviewed_by_email
-      - suggested_match_ratio
-      - suggested_supplier_name
-      - suggested_supplier_uuid
-      - supplier_address
-      - supplier_country
-      - supplier_name
-      - supplier_state
-      - vat_number
-    CountryTypeEnum:
-      enum:
-      - EU
-      - GB
-      - Other
-      type: string
-      description: '* `EU` - Eu
-
-        * `GB` - Gb
-
-        * `Other` - Other'
+            $ref: '#/components/schemas/BuyerOnboardingDocument'
     MoRSupplierMatchCandidate:
       type: object
       description: Shape of a single match candidate (existing supplier Company).
@@ -3738,41 +3485,177 @@ components:
       - registration_number
       - uuid
       - website
-    BuyerOnboardingLinkResponse:
+    InviteBuyer:
       type: object
-      description: 'Response serializer for the legacy `generate-link` endpoint.
+      description: "Serializer for inviting a buyer through the new MoR onboarding flow\n(feature flag `isBuyerInvitationFlowEnabled` on).\n\nRequired fields:\n- name: Buyer's trading name (used as Company.name when company_name\n  is not separately provided).\n- email: Buyer contact email (must not already belong to a registered user).\n- country: US or UK.\n\nOptional:\n- company_name: Explicit Company.name override. When omitted the serializer\n  falls back to `name`.\n- first_name / last_name: Contact-person name on the new dialog. When\n  omitted, the trading name is used as first_name so the welcome email\n  greeting stays non-empty.\n- registration_name / registration_number: Legal registration name and\n  registration/incorporation number, stored on the new Company row.\n  `registration_country_code` is not a separate input — it is derived\n  from `country` (us -> US, uk -> GB).\n- is_connected_to_allianz / is_connected_to_two: Integration flags set on\n  the new Company row (default False).\n- allianz_company_id: Allianz company id for the credit-limit\n  integration, stored on the new Company row.\n- two_us_company_id: Two US company id (e.g. DUNS) for US buyers, stored\n  on the new Company row.\n\nCreates, atomically:\n  - User (no password — set via the password-create email link)\n  - Company (brand, onboarding_state=in_progress, scoped to the MoR)\n  - Employee linking the new User to the new Company\n  - BuyerOnboarding row carrying the contact/country fields (form data\n    for Phase 2 will hang off this)\n\nOn commit, dispatches `EmailSender.send_buyer_onboarding_invite` so the\nbuyer receives the `commit-onboarding` link to set their password and log in.\nThe MoR no longer receives a shareable link — the buyer enters the app\nvia the standard authenticated flow."
+      properties:
+        name:
+          type: string
+          description: Buyer contact name
+          maxLength: 255
+        email:
+          type: string
+          format: email
+          description: Buyer contact email
+          maxLength: 255
+        country:
+          $ref: '#/components/schemas/BuyerOnboardingCountry'
+        company_name:
+          type: string
+          writeOnly: true
+          maxLength: 255
+        first_name:
+          type: string
+          writeOnly: true
+          maxLength: 150
+        last_name:
+          type: string
+          writeOnly: true
+          maxLength: 150
+        registration_name:
+          type: string
+          writeOnly: true
+          maxLength: 255
+        registration_number:
+          type: string
+          writeOnly: true
+          maxLength: 255
+        is_connected_to_allianz:
+          type: boolean
+          writeOnly: true
+          default: false
+        allianz_company_id:
+          type: string
+          writeOnly: true
+          maxLength: 255
+        is_connected_to_two:
+          type: boolean
+          writeOnly: true
+          default: false
+        two_us_company_id:
+          type: string
+          writeOnly: true
+          maxLength: 255
+      required:
+      - country
+      - email
+      - name
+    BuyerOnboardingList:
+      type: object
+      description: 'Serializer for listing buyer onboardings.
 
-        Includes the UUID-based shareable onboarding URL.'
+        Includes summary information about steps and submission status.
+
+
+        For self-onboarded buyers (`buyer_onboarding.company` is set), the
+
+        name / email / company_uuid / company_name fields are derived from the
+
+        canonical `Company` + `created_by` `User` rather than the mirror fields
+
+        on BuyerOnboarding, which are only seeded at creation time.'
       properties:
         uuid:
           type: string
           format: uuid
           readOnly: true
+          description: Unique identifier for sharing the onboarding form
         name:
           type: string
           readOnly: true
         email:
           type: string
-          format: email
           readOnly: true
         country:
-          allOf:
-          - $ref: '#/components/schemas/BuyerOnboardingCountry'
+          $ref: '#/components/schemas/BuyerOnboardingCountry'
+        company_uuid:
+          type: string
           readOnly: true
-        link:
+        company_name:
+          type: string
+          readOnly: true
+        notes:
+          type: string
+          description: Internal notes
+        submitted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the buyer submitted the form
+        is_submitted:
+          type: string
+          readOnly: true
+        total_steps:
+          type: string
+          readOnly: true
+        completed_steps:
           type: string
           readOnly: true
         created_at:
           type: string
           format: date-time
           readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
       required:
+      - company_name
+      - company_uuid
+      - completed_steps
       - country
       - created_at
       - email
-      - link
+      - is_submitted
+      - modified_at
       - name
+      - total_steps
       - uuid
+    AddressTypeEnum:
+      enum:
+      - billing_address
+      - delivery_address
+      - dispatch_address
+      - company_address
+      type: string
+      description: '* `billing_address` - Billing address
+
+        * `delivery_address` - Delivery address
+
+        * `dispatch_address` - Dispatch address
+
+        * `company_address` - Company address'
+    MoRSupplierMatch:
+      type: object
+      description: 'Payload for `POST .../supplier-submissions/{id}/match/`.
+
+
+        The candidate Company is constrained to suppliers scoped to the calling
+
+        MoR (`merchant_of_record=context[''merchant_of_record'']`) so an MoR can
+
+        never match a buyer to another MoR''s supplier.'
+      properties:
+        company_uuid:
+          type: string
+          format: uuid
+      required:
+      - company_uuid
+    SupplierReviewStatusEnum:
+      enum:
+      - pending_review
+      - matched
+      - onboarding
+      - rejected
+      type: string
+      description: '* `pending_review` - Pending review
+
+        * `matched` - Matched to existing supplier
+
+        * `onboarding` - Onboarding new supplier
+
+        * `rejected` - Rejected'
     BuyerOnboardingDeliveryAddress:
       type: object
       description: 'Serializer for BuyerOnboardingDeliveryAddress model.
@@ -3923,6 +3806,123 @@ components:
       - delivery_location_type_display
       - modified
       - name
+      - uuid
+    PatchedBuyerOnboardingDetail:
+      type: object
+      description: 'Detailed serializer for buyer onboarding.
+
+        Includes all related information.
+
+
+        For self-onboarded buyers (`buyer_onboarding.company` is set), the
+
+        name / email fields are derived from the canonical `Company` /
+
+        `User`, and `has_account_details` / `has_delivery_details` consider
+
+        Company columns alongside the legacy AccountDetail/DeliveryDetails
+
+        tables.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unique identifier for sharing the onboarding form
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          readOnly: true
+        country:
+          $ref: '#/components/schemas/BuyerOnboardingCountry'
+        company_uuid:
+          type: string
+          readOnly: true
+        company_name:
+          type: string
+          readOnly: true
+        notes:
+          type: string
+          description: Internal notes
+        submitted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: When the buyer submitted the form
+        is_submitted:
+          type: string
+          readOnly: true
+        total_steps:
+          type: string
+          readOnly: true
+        completed_steps:
+          type: string
+          readOnly: true
+        has_account_details:
+          type: string
+          readOnly: true
+        has_delivery_details:
+          type: string
+          readOnly: true
+        suppliers_count:
+          type: string
+          readOnly: true
+        suppliers_pending_review_count:
+          type: string
+          readOnly: true
+        suppliers_completed:
+          type: string
+          readOnly: true
+        suppliers_completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: When the supplier section was marked as complete
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+    AccountEmail:
+      type: object
+      description: Serializer for AccountEmail model.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Unique identifier for account email lookup
+        label:
+          type: string
+          description: Label for this contact (e.g. 'Accounts Payable')
+          maxLength: 255
+        email_address:
+          type: string
+          format: email
+          description: Contact email address
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - email_address
+      - label
+      - modified_at
       - uuid
   securitySchemes:
     cookieAuth:

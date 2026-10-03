@@ -2076,347 +2076,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CompanyDocumentCategory:
-      enum:
-      - ingredients_list
-      - other
-      type: string
-      description: '* `ingredients_list` - Ingredients List
-
-        * `other` - Other'
-    MoRBuyerUserCreate:
-      type: object
-      description: 'Serializer for adding an additional user to an existing Buyer (Brand)
-
-        company by MoR users.
-
-
-        Follows the MoR provisioning paradigm (same as MoRBuyerCreateSerializer
-
-        and the buyer-onboarding invite): the User is created upfront with no
-
-        password, and a set-password link is emailed once the transaction
-
-        commits. Which email depends on the buyer''s onboarding state — see
-
-        `_send_buyer_user_password_email`.'
-      properties:
-        email:
-          type: string
-          format: email
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        is_admin:
-          type: boolean
-          default: false
-      required:
-      - email
-      - first_name
-      - last_name
-    MoRBuyerUserResponse:
-      type: object
-      description: Response shape for `POST /merchant-of-record-buyers/{uuid}/users/`.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        email:
-          type: string
-          format: email
-          readOnly: true
-        first_name:
-          type: string
-          readOnly: true
-        last_name:
-          type: string
-          readOnly: true
-        is_admin:
-          type: boolean
-          readOnly: true
-      required:
-      - email
-      - first_name
-      - is_admin
-      - last_name
-      - uuid
-    MoRBuyerComplianceDocument:
-      type: object
-      description: 'Read shape for the MoR''s view of a buyer''s compliance documents.
-
-
-        Same fields as the buyer-facing serializer (minus the write-only upload
-
-        fields) plus the agent''s structured extraction detail when the document
-
-        came through onboarding. Jurisdiction / certificate number / issuing
-
-        authority are first-class ``BuyerDocument`` columns (also mirrored as
-
-        text in ``notes``); the nested ``extraction`` payload additionally
-
-        surfaces the agent-only fields that have no document column (e.g.
-
-        ``compliance_type``, ``type_hint``, ``us_state``, ``evidence``).'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        type:
-          allOf:
-          - $ref: '#/components/schemas/DocumentType'
-          readOnly: true
-        file:
-          type: string
-          format: uri
-          readOnly: true
-          description: The uploaded document file
-        name:
-          type: string
-          readOnly: true
-          description: Display name for the document
-        start_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          readOnly: true
-          description: Start date of document validity
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          readOnly: true
-          description: End/expiry date of document validity
-        countries:
-          type: array
-          items:
-            $ref: '#/components/schemas/Country'
-          readOnly: true
-          description: ISO country codes this document applies to. Empty = all countries.
-        certificate_number:
-          type: string
-          readOnly: true
-          description: Permit / exemption / certificate number as printed on the document
-        jurisdiction:
-          type: string
-          readOnly: true
-          description: State/region the document applies in, as printed on the document (e.g. 'Michigan'). For US documents the structured counterpart is us_state_jurisdiction.
-        us_state_jurisdiction:
-          readOnly: true
-          oneOf:
-          - $ref: '#/components/schemas/USStateEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-        issuing_authority:
-          type: string
-          readOnly: true
-          description: Body that issued the document (e.g. 'Michigan Department of Treasury')
-        holder_name:
-          type: string
-          readOnly: true
-          description: Entity the document is issued to as printed — normally the buyer company
-        notes:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: Optional notes about this document
-        status:
-          allOf:
-          - $ref: '#/components/schemas/DocumentLifecycleStatusEnum'
-          readOnly: true
-        is_archived:
-          type: boolean
-          description: Return whether the document is archived (expired or renewed).
-          readOnly: true
-        superseded_by_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        extraction:
-          allOf:
-          - $ref: '#/components/schemas/_ComplianceExtractionDetail'
-          readOnly: true
-      required:
-      - certificate_number
-      - countries
-      - created
-      - end_date
-      - extraction
-      - file
-      - holder_name
-      - is_archived
-      - issuing_authority
-      - jurisdiction
-      - modified
-      - name
-      - notes
-      - start_date
-      - status
-      - superseded_by_uuid
-      - type
-      - us_state_jurisdiction
-      - uuid
-    CreateCompanyAddress:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        company_uuid:
-          type: string
-          format: uuid
-          writeOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        address_type:
-          $ref: '#/components/schemas/AddressTypeEnum'
-        contact_full_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        contact_phone:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-        building:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        street_1:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        street_2:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        town:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        region:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        postcode:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        country:
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        place_id:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        latitude:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-        longitude:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-        vat_number:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-        vat_country_code:
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        vat_exempt:
-          type: boolean
-        phone_country_code:
-          oneOf:
-          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        delivery_instructions:
-          type:
-          - string
-          - 'null'
-        collection_instructions:
-          type:
-          - string
-          - 'null'
-        country_type:
-          $ref: '#/components/schemas/CountryTypeEnum'
-        eori_number:
-          type: string
-          maxLength: 20
-        ein_number:
-          type: string
-          maxLength: 20
-        notes:
-          type: string
-        delivery_location_type:
-          type: string
-          description: Type of delivery location (warehouse, factory, distribution_center, retail_location, other).
-          maxLength: 50
-        delivery_location_type_other:
-          type: string
-          description: Free-text description when delivery_location_type == 'other'.
-          maxLength: 255
-        warehouse_receiving_hours:
-          type: string
-          description: Free-text receiving hours (e.g. 'Mon-Fri 9am-5pm').
-          maxLength: 255
-      required:
-      - company_uuid
-      - created
-      - id
-      - modified
-      - name
-      - uuid
-    PaginatedSupplierSiteList:
+    PaginatedMerchantOfRecordCompanyList:
       type: object
       required:
       - count
@@ -2440,21 +2100,224 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/SupplierSite'
-    DocumentLifecycleStatusEnum:
+            $ref: '#/components/schemas/MerchantOfRecordCompany'
+    CompanyTypeEnum:
       enum:
-      - valid
-      - expired
-      - expiring_soon
-      - renewed
+      - brand
+      - supplier
+      - merchant_of_record
       type: string
-      description: '* `valid` - Valid
+      description: '* `brand` - Brand
 
-        * `expired` - Expired
+        * `supplier` - Supplier
 
-        * `expiring_soon` - Expiring Soon
+        * `merchant_of_record` - Merchant of Record'
+    CreatedBy:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - uuid
+    PaginatedCompanyAddressList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyAddress'
+    USStateEnum:
+      enum:
+      - AL
+      - AK
+      - AZ
+      - AR
+      - CA
+      - CO
+      - CT
+      - DE
+      - FL
+      - GA
+      - HI
+      - ID
+      - IL
+      - IN
+      - IA
+      - KS
+      - KY
+      - LA
+      - ME
+      - MD
+      - MA
+      - MI
+      - MN
+      - MS
+      - MO
+      - MT
+      - NE
+      - NV
+      - NH
+      - NJ
+      - NM
+      - NY
+      - NC
+      - ND
+      - OH
+      - OK
+      - OR
+      - PA
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VT
+      - VA
+      - WA
+      - WV
+      - WI
+      - WY
+      - DC
+      - PR
+      - GU
+      - VI
+      - AS
+      - MP
+      type: string
+      description: '* `AL` - Alabama
 
-        * `renewed` - Renewed'
+        * `AK` - Alaska
+
+        * `AZ` - Arizona
+
+        * `AR` - Arkansas
+
+        * `CA` - California
+
+        * `CO` - Colorado
+
+        * `CT` - Connecticut
+
+        * `DE` - Delaware
+
+        * `FL` - Florida
+
+        * `GA` - Georgia
+
+        * `HI` - Hawaii
+
+        * `ID` - Idaho
+
+        * `IL` - Illinois
+
+        * `IN` - Indiana
+
+        * `IA` - Iowa
+
+        * `KS` - Kansas
+
+        * `KY` - Kentucky
+
+        * `LA` - Louisiana
+
+        * `ME` - Maine
+
+        * `MD` - Maryland
+
+        * `MA` - Massachusetts
+
+        * `MI` - Michigan
+
+        * `MN` - Minnesota
+
+        * `MS` - Mississippi
+
+        * `MO` - Missouri
+
+        * `MT` - Montana
+
+        * `NE` - Nebraska
+
+        * `NV` - Nevada
+
+        * `NH` - New Hampshire
+
+        * `NJ` - New Jersey
+
+        * `NM` - New Mexico
+
+        * `NY` - New York
+
+        * `NC` - North Carolina
+
+        * `ND` - North Dakota
+
+        * `OH` - Ohio
+
+        * `OK` - Oklahoma
+
+        * `OR` - Oregon
+
+        * `PA` - Pennsylvania
+
+        * `RI` - Rhode Island
+
+        * `SC` - South Carolina
+
+        * `SD` - South Dakota
+
+        * `TN` - Tennessee
+
+        * `TX` - Texas
+
+        * `UT` - Utah
+
+        * `VT` - Vermont
+
+        * `VA` - Virginia
+
+        * `WA` - Washington
+
+        * `WV` - West Virginia
+
+        * `WI` - Wisconsin
+
+        * `WY` - Wyoming
+
+        * `DC` - District of Columbia
+
+        * `PR` - Puerto Rico
+
+        * `GU` - Guam
+
+        * `VI` - U.S. Virgin Islands
+
+        * `AS` - American Samoa
+
+        * `MP` - Northern Mariana Islands'
     Country:
       enum:
       - AF
@@ -3207,101 +3070,6 @@ components:
         * `ZM` - Zambia
 
         * `ZW` - Zimbabwe'
-    GoogleUploadComplete:
-      type: object
-      properties:
-        token:
-          type: string
-      required:
-      - token
-    MoRBuyerCreate:
-      type: object
-      description: 'Serializer for creating a new Buyer (Brand) company by MoR users.
-
-        Creates the company, user, address, and employee atomically.'
-      properties:
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        email:
-          type: string
-          format: email
-        company_name:
-          type: string
-          maxLength: 255
-        product_type:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductTypeEnum'
-          default:
-          - other
-        registration_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        registration_number:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        website:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        phone_country_code:
-          type:
-          - string
-          - 'null'
-          maxLength: 10
-        phone_number:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-        buyer_accounts_email_address:
-          type:
-          - string
-          - 'null'
-          format: email
-        buyer_delivery_email_address:
-          type:
-          - string
-          - 'null'
-          format: email
-        duns:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-        company_address:
-          $ref: '#/components/schemas/MoRBuyerAddressCreate'
-        send_welcome_email:
-          type: boolean
-          default: true
-        send_contract_ready_email:
-          type: boolean
-          default: false
-      required:
-      - company_address
-      - company_name
-      - email
-      - first_name
-      - last_name
-    SupplierAddBuyer:
-      type: object
-      description: Serializer for adding a buyer to a supplier by creating a referral relationship.
-      properties:
-        buyer_uuid:
-          type: string
-          format: uuid
-          description: UUID of the buyer (brand) company to associate with this supplier
-      required:
-      - buyer_uuid
     MoRBuyerDetailResponse:
       type: object
       description: 'Response serializer for buyer details after create/update.
@@ -3387,25 +3155,111 @@ components:
       - primary_address
       - primary_user
       - uuid
-    GoogleUpload:
+    AppOrderPaymentTermsEnum:
+      enum:
+      - pay_before_dispatch
+      - pay_after_dispatch
+      - pay_on_28th_second_month_after_dispatch
+      - pay_end_of_month_of_dispatch_date
+      type: string
+      description: '* `pay_before_dispatch` - Pay Before Dispatch
+
+        * `pay_after_dispatch` - Pay After Dispatch
+
+        * `pay_on_28th_second_month_after_dispatch` - Pay on 28th second month after dispatch
+
+        * `pay_end_of_month_of_dispatch_date` - Pay End of Month of Dispatch Date'
+    PaginatedBuyerSupplierList:
       type: object
-      properties:
-        file_name:
-          type: string
-          maxLength: 1024
-        size:
-          type: integer
-          minimum: 1
-        content_type:
-          type: string
-          maxLength: 256
-        field_name:
-          type: string
-          maxLength: 256
       required:
-      - field_name
-      - file_name
-      - size
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerSupplier'
+    ComplianceDocumentTypeEnum:
+      enum:
+      - SALES_TAX_EXEMPTION
+      - OTHER
+      type: string
+      description: '* `SALES_TAX_EXEMPTION` - Sales Tax Exemption
+
+        * `OTHER` - Other'
+    _ComplianceExtractionDetail:
+      type: object
+      description: 'Structured certificate detail captured by the onboarding extraction
+
+        agent (`buyer_onboarding.ExtractedComplianceDocument`). Read-only nested
+
+        payload — present only on documents that were filed by the agent;
+
+        manually uploaded documents have no extraction row.'
+      properties:
+        compliance_type:
+          allOf:
+          - $ref: '#/components/schemas/ComplianceDocumentTypeEnum'
+          readOnly: true
+        type_hint:
+          type: string
+          readOnly: true
+        jurisdiction:
+          type: string
+          readOnly: true
+        us_state:
+          type: string
+          readOnly: true
+        country:
+          type: string
+          readOnly: true
+        certificate_number:
+          type: string
+          readOnly: true
+        issuing_authority:
+          type: string
+          readOnly: true
+        holder_name:
+          type: string
+          readOnly: true
+        issue_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+        expiry_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+      required:
+      - certificate_number
+      - compliance_type
+      - country
+      - expiry_date
+      - holder_name
+      - issue_date
+      - issuing_authority
+      - jurisdiction
+      - type_hint
+      - us_state
     MerchantOfRecordSupplier:
       type: object
       properties:
@@ -3454,39 +3308,100 @@ components:
       - name
       - registration_country_code
       - uuid
-    ComplianceDocumentTypeEnum:
-      enum:
-      - SALES_TAX_EXEMPTION
-      - OTHER
-      type: string
-      description: '* `SALES_TAX_EXEMPTION` - Sales Tax Exemption
-
-        * `OTHER` - Other'
-    PaginatedSupplierContactList:
+    MoRBuyerAddressCreate:
       type: object
-      required:
-      - count
-      - results
+      description: Serializer for nested address creation within buyer creation.
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SupplierContact'
+        address_line_1:
+          type: string
+          maxLength: 255
+        address_line_2:
+          type: string
+          maxLength: 255
+        town:
+          type: string
+          maxLength: 100
+        region:
+          type: string
+          maxLength: 100
+        postcode:
+          type: string
+          maxLength: 100
+        country:
+          type: string
+          maxLength: 2
+        vat_country_code:
+          type: string
+          maxLength: 2
+        vat_number:
+          type: string
+          maxLength: 50
+        ein:
+          type: string
+          maxLength: 20
+      required:
+      - address_line_1
+      - country
+      - postcode
+      - town
+    ProductTypeEnum:
+      enum:
+      - confect_snacks
+      - conv_food
+      - bread_cereals
+      - sauces_spices
+      - spreads
+      - tea
+      - coffee
+      - water
+      - carb_drinks
+      - alc_drinks
+      - juice_drinks
+      - energy_drinks
+      - cosmetics
+      - milk_dairy
+      - free_form_alt
+      - other
+      type: string
+      description: '* `confect_snacks` - Confectionery & Snacks
+
+        * `conv_food` - Convenience Food
+
+        * `bread_cereals` - Bread & Cereals
+
+        * `sauces_spices` - Sauces & Spices
+
+        * `spreads` - Spreads
+
+        * `tea` - Tea
+
+        * `coffee` - Coffee
+
+        * `water` - Water
+
+        * `carb_drinks` - Carbonated Drinks
+
+        * `alc_drinks` - Alcoholic Drinks
+
+        * `juice_drinks` - Juice Drinks
+
+        * `energy_drinks` - Energy Drinks
+
+        * `cosmetics` - Cosmetics
+
+        * `milk_dairy` - Milk & Dairy
+
+        * `free_form_alt` - Free Form Alternative
+
+        * `other` - Other'
+    CompanyDocumentCategory:
+      enum:
+      - ingredients_list
+      - other
+      type: string
+      description: '* `ingredients_list` - Ingredients List
+
+        * `other` - Other'
     BuyerSupplierPaymentTerms:
       type: object
       properties:
@@ -3524,6 +3439,20 @@ components:
       - payment_terms
       - supplier_uuid
       - uuid
+    SupplierContactCategoryEnum:
+      enum:
+      - orders
+      - logistics
+      - finance
+      - other
+      type: string
+      description: '* `orders` - Orders
+
+        * `logistics` - Logistics and Supply Chain
+
+        * `finance` - Finance
+
+        * `other` - Other'
     GoogleUploadResponse:
       type: object
       properties:
@@ -3535,151 +3464,43 @@ components:
       required:
       - token
       - url
-    PatchedMoRBuyerUpdate:
+    SupplierRemoveBuyer:
       type: object
-      description: 'Serializer for updating an existing Buyer (Brand) company by MoR users.
-
-        User email is NOT editable after creation.'
+      description: Serializer for removing a buyer from a supplier.
       properties:
-        first_name:
+        buyer_uuid:
           type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        company_name:
-          type: string
-          maxLength: 255
-        product_type:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductTypeEnum'
-        registration_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        registration_number:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        website:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        phone_country_code:
-          type:
-          - string
-          - 'null'
-          maxLength: 10
-        phone_number:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-        buyer_accounts_email_address:
-          type:
-          - string
-          - 'null'
-          format: email
-        buyer_delivery_email_address:
-          type:
-          - string
-          - 'null'
-          format: email
-        duns:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-        sku_ordering_enabled:
-          type: boolean
-        company_address:
-          $ref: '#/components/schemas/MoRBuyerAddressUpdate'
-        two_buyer_config:
-          $ref: '#/components/schemas/TwoBuyerConfigUpdate'
-    MoRBuyerAddressCreate:
-      type: object
-      description: Serializer for nested address creation within buyer creation.
-      properties:
-        address_line_1:
-          type: string
-          maxLength: 255
-        address_line_2:
-          type: string
-          maxLength: 255
-        town:
-          type: string
-          maxLength: 100
-        region:
-          type: string
-          maxLength: 100
-        postcode:
-          type: string
-          maxLength: 100
-        country:
-          type: string
-          maxLength: 2
-        vat_country_code:
-          type: string
-          maxLength: 2
-        vat_number:
-          type: string
-          maxLength: 50
-        ein:
-          type: string
-          maxLength: 20
+          format: uuid
+          description: UUID of the buyer to remove from this supplier
       required:
-      - address_line_1
-      - country
-      - postcode
-      - town
-    PatchedSupplierUpdateBuyers:
+      - buyer_uuid
+    MerchantOfRecordNote:
       type: object
-      description: Serializer for updating the entire list of buyers for a supplier.
       properties:
-        buyer_uuids:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: List of buyer UUIDs to associate with this supplier
-    NullEnum:
-      enum:
-      - null
-    AppOrderPaymentTermsEnum:
-      enum:
-      - pay_before_dispatch
-      - pay_after_dispatch
-      - pay_on_28th_second_month_after_dispatch
-      - pay_end_of_month_of_dispatch_date
-      type: string
-      description: '* `pay_before_dispatch` - Pay Before Dispatch
-
-        * `pay_after_dispatch` - Pay After Dispatch
-
-        * `pay_on_28th_second_month_after_dispatch` - Pay on 28th second month after dispatch
-
-        * `pay_end_of_month_of_dispatch_date` - Pay End of Month of Dispatch Date'
-    SupplierTypeEnum:
-      enum:
-      - producer
-      - manufacturer
-      - broker
-      - other
-      - not_applicable
-      type: string
-      description: '* `producer` - Producer
-
-        * `manufacturer` - Manufacturer
-
-        * `broker` - Broker
-
-        * `other` - Other
-
-        * `not_applicable` - N/A'
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        body:
+          type: string
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/CreatedBy'
+          readOnly: true
+      required:
+      - body
+      - created
+      - created_by
+      - modified
+      - uuid
     PatchedCompanyAddress:
       type: object
       properties:
@@ -3812,6 +3633,395 @@ components:
           type: string
           description: Free-text receiving hours (e.g. 'Mon-Fri 9am-5pm').
           maxLength: 255
+    MerchantOfRecordCompany:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        company_type:
+          $ref: '#/components/schemas/CompanyTypeEnum'
+        supplier_payout_terms:
+          oneOf:
+          - $ref: '#/components/schemas/SupplierPayoutTermsEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        supplier_days_until_payout_due:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        is_on_hold:
+          type: boolean
+          readOnly: true
+        on_hold_reason:
+          type: string
+          readOnly: true
+      required:
+      - is_on_hold
+      - name
+      - on_hold_reason
+      - uuid
+    CreateCompanyAddress:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        company_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        address_type:
+          $ref: '#/components/schemas/AddressTypeEnum'
+        contact_full_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        contact_phone:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        building:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        street_1:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        street_2:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        town:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        region:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        postcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        place_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        latitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        longitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        vat_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        vat_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        vat_exempt:
+          type: boolean
+        phone_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        delivery_instructions:
+          type:
+          - string
+          - 'null'
+        collection_instructions:
+          type:
+          - string
+          - 'null'
+        country_type:
+          $ref: '#/components/schemas/CountryTypeEnum'
+        eori_number:
+          type: string
+          maxLength: 20
+        ein_number:
+          type: string
+          maxLength: 20
+        notes:
+          type: string
+        delivery_location_type:
+          type: string
+          description: Type of delivery location (warehouse, factory, distribution_center, retail_location, other).
+          maxLength: 50
+        delivery_location_type_other:
+          type: string
+          description: Free-text description when delivery_location_type == 'other'.
+          maxLength: 255
+        warehouse_receiving_hours:
+          type: string
+          description: Free-text receiving hours (e.g. 'Mon-Fri 9am-5pm').
+          maxLength: 255
+      required:
+      - company_uuid
+      - created
+      - id
+      - modified
+      - name
+      - uuid
+    DocumentType:
+      type: object
+      description: Shared serializer for the DocumentType taxonomy (buyer, supplier, Opply documents).
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+      required:
+      - name
+      - uuid
+    MoRBuyerCreate:
+      type: object
+      description: 'Serializer for creating a new Buyer (Brand) company by MoR users.
+
+        Creates the company, user, address, and employee atomically.'
+      properties:
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+        company_name:
+          type: string
+          maxLength: 255
+        product_type:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductTypeEnum'
+          default:
+          - other
+        registration_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        registration_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        website:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        phone_country_code:
+          type:
+          - string
+          - 'null'
+          maxLength: 10
+        phone_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        buyer_accounts_email_address:
+          type:
+          - string
+          - 'null'
+          format: email
+        buyer_delivery_email_address:
+          type:
+          - string
+          - 'null'
+          format: email
+        duns:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        company_address:
+          $ref: '#/components/schemas/MoRBuyerAddressCreate'
+        send_welcome_email:
+          type: boolean
+          default: true
+        send_contract_ready_email:
+          type: boolean
+          default: false
+      required:
+      - company_address
+      - company_name
+      - email
+      - first_name
+      - last_name
+    MoRBuyerAddressUpdate:
+      type: object
+      description: Serializer for nested address updates. Country cannot be changed.
+      properties:
+        address_line_1:
+          type: string
+          maxLength: 255
+        address_line_2:
+          type: string
+          maxLength: 255
+        town:
+          type: string
+          maxLength: 100
+        region:
+          type: string
+          maxLength: 100
+        postcode:
+          type: string
+          maxLength: 100
+        vat_country_code:
+          type: string
+          maxLength: 2
+        vat_number:
+          type: string
+          maxLength: 50
+        ein:
+          type: string
+          maxLength: 20
+    PatchedSupplierDocument:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        company:
+          type: integer
+          readOnly: true
+        supplier_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        supplier_name:
+          type: string
+          readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/DocumentType'
+          readOnly: true
+        type_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        renewing_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          writeOnly: true
+        site:
+          allOf:
+          - $ref: '#/components/schemas/SupplierSite'
+          readOnly: true
+        site_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          writeOnly: true
+        site_name:
+          type: string
+          writeOnly: true
+          description: Address/site name - auto-creates SupplierSite if not exists (SC-2293)
+        buyer_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          writeOnly: true
+          description: Buyer company UUID (optional)
+        buyer_name:
+          type:
+          - string
+          - 'null'
+          description: Return the buyer company name if assigned.
+          readOnly: true
+        url:
+          type: string
+          format: uri
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        notes:
+          type:
+          - string
+          - 'null'
+          maxLength: 2048
+        status:
+          allOf:
+          - $ref: '#/components/schemas/DocumentLifecycleStatusEnum'
+          readOnly: true
+        is_archived:
+          type: boolean
+          description: Return whether the document is archived.
+          readOnly: true
+        superseded_by_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          readOnly: true
     AllianzConnect:
       type: object
       description: Serializer for connecting a buyer company to an Allianz company record.
@@ -3825,157 +4035,7 @@ components:
           description: When true, skips the Allianz API validation and saves the company ID directly. Intended for local/staging environments where the Allianz API is unavailable.
       required:
       - allianz_company_id
-    AvailableSitesResponse:
-      type: object
-      properties:
-        available_sites:
-          type: array
-          items:
-            type: string
-          description: Merged list of site names and dispatch address names (deduplicated, sorted)
-        sites:
-          type: array
-          items:
-            $ref: '#/components/schemas/SupplierSite'
-      required:
-      - available_sites
-      - sites
-    PaginatedCompanyAddressList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompanyAddress'
-    ProductTypeEnum:
-      enum:
-      - confect_snacks
-      - conv_food
-      - bread_cereals
-      - sauces_spices
-      - spreads
-      - tea
-      - coffee
-      - water
-      - carb_drinks
-      - alc_drinks
-      - juice_drinks
-      - energy_drinks
-      - cosmetics
-      - milk_dairy
-      - free_form_alt
-      - other
-      type: string
-      description: '* `confect_snacks` - Confectionery & Snacks
-
-        * `conv_food` - Convenience Food
-
-        * `bread_cereals` - Bread & Cereals
-
-        * `sauces_spices` - Sauces & Spices
-
-        * `spreads` - Spreads
-
-        * `tea` - Tea
-
-        * `coffee` - Coffee
-
-        * `water` - Water
-
-        * `carb_drinks` - Carbonated Drinks
-
-        * `alc_drinks` - Alcoholic Drinks
-
-        * `juice_drinks` - Juice Drinks
-
-        * `energy_drinks` - Energy Drinks
-
-        * `cosmetics` - Cosmetics
-
-        * `milk_dairy` - Milk & Dairy
-
-        * `free_form_alt` - Free Form Alternative
-
-        * `other` - Other'
-    BlankEnum:
-      enum:
-      - ''
-    BuyerFinancialDocumentTypeEnum:
-      enum:
-      - management_accounts
-      - audited_accounts
-      - balance_sheet
-      - profit_and_loss
-      - cashflow_forecast
-      - sales_tax_exemption
-      - other
-      type: string
-      description: '* `management_accounts` - Management Accounts
-
-        * `audited_accounts` - Audited Accounts
-
-        * `balance_sheet` - Balance Sheet
-
-        * `profit_and_loss` - Profit and Loss
-
-        * `cashflow_forecast` - Cashflow Forecast
-
-        * `sales_tax_exemption` - Sales Tax Exemption
-
-        * `other` - Other'
-    TwoBuyerConfig:
-      type: object
-      properties:
-        representative_first_name:
-          type: string
-          maxLength: 255
-        representative_last_name:
-          type: string
-          maxLength: 255
-        representative_email:
-          type: string
-          format: email
-          maxLength: 254
-        representative_phone_number:
-          type: string
-          maxLength: 50
-        invoice_emails:
-          description: List of email addresses to receive Two invoices
-    SupplierSite:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        company:
-          type: integer
-      required:
-      - company
-      - name
-      - uuid
-    BuyerSupplierPaymentTermsCreate:
+    PatchedBuyerSupplierPaymentTermsCreate:
       type: object
       properties:
         uuid:
@@ -4005,38 +4065,1009 @@ components:
           type: string
           format: date-time
           readOnly: true
+    GoogleUploadComplete:
+      type: object
+      properties:
+        token:
+          type: string
       required:
-      - buyer_uuid
+      - token
+    PatchedMerchantOfRecordSupplierUpdate:
+      type: object
+      description: Serializer for updating supplier payout terms, days, DUNS, supplier type, and lead time
+      properties:
+        supplier_payout_terms:
+          oneOf:
+          - $ref: '#/components/schemas/SupplierPayoutTermsEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        supplier_days_until_payout_due:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        duns:
+          type:
+          - string
+          - 'null'
+          description: DUNS number for creditworthiness checks and payouts
+          maxLength: 50
+        supplier_type:
+          oneOf:
+          - $ref: '#/components/schemas/SupplierTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        supplier_lead_time_days:
+          type:
+          - integer
+          - 'null'
+          maximum: 365
+          minimum: 0
+          description: Default number of calendar days this supplier needs between order and delivery. Factored into the earliest selectable delivery date on orders.
+    TwoBuyerConfigUpdate:
+      type: object
+      properties:
+        representative_first_name:
+          type: string
+          maxLength: 255
+        representative_last_name:
+          type: string
+          maxLength: 255
+        representative_email:
+          type: string
+          format: email
+        representative_phone_number:
+          type: string
+          maxLength: 50
+        invoice_emails:
+          type: array
+          items:
+            type: string
+            format: email
+    SupplierContact:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phone_number:
+          type: string
+          maxLength: 50
+        category:
+          $ref: '#/components/schemas/SupplierContactCategoryEnum'
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        notes:
+          type: string
+      required:
+      - category
       - created
+      - email
+      - first_name
       - modified
-      - payment_terms
-      - supplier_uuid
       - uuid
-    CompanyTypeEnum:
+    BuyerFinancialDocumentTypeEnum:
       enum:
-      - brand
-      - supplier
-      - merchant_of_record
-      type: string
-      description: '* `brand` - Brand
-
-        * `supplier` - Supplier
-
-        * `merchant_of_record` - Merchant of Record'
-    SupplierContactCategoryEnum:
-      enum:
-      - orders
-      - logistics
-      - finance
+      - management_accounts
+      - audited_accounts
+      - balance_sheet
+      - profit_and_loss
+      - cashflow_forecast
+      - sales_tax_exemption
       - other
       type: string
-      description: '* `orders` - Orders
+      description: '* `management_accounts` - Management Accounts
 
-        * `logistics` - Logistics and Supply Chain
+        * `audited_accounts` - Audited Accounts
 
-        * `finance` - Finance
+        * `balance_sheet` - Balance Sheet
+
+        * `profit_and_loss` - Profit and Loss
+
+        * `cashflow_forecast` - Cashflow Forecast
+
+        * `sales_tax_exemption` - Sales Tax Exemption
 
         * `other` - Other'
+    CompanyDocument:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        document:
+          type: string
+          format: uri
+        description:
+          type:
+          - string
+          - 'null'
+        document_category:
+          $ref: '#/components/schemas/CompanyDocumentCategory'
+      required:
+      - document
+      - uuid
+    SupplierAddBuyer:
+      type: object
+      description: Serializer for adding a buyer to a supplier by creating a referral relationship.
+      properties:
+        buyer_uuid:
+          type: string
+          format: uuid
+          description: UUID of the buyer (brand) company to associate with this supplier
+      required:
+      - buyer_uuid
+    SupplierPayoutTermsEnum:
+      enum:
+      - payout_before_dispatch
+      - payout_after_dispatch
+      type: string
+      description: '* `payout_before_dispatch` - Payout Before Dispatch
+
+        * `payout_after_dispatch` - Payout After Dispatch'
+    PaginatedCompanyDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyDocument'
+    BuyerSupplier:
+      type: object
+      description: 'Serializer for suppliers associated with a buyer.
+
+        Includes payment terms if a BuyerSupplierPaymentTerms record exists for this pair.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        status:
+          type: string
+          readOnly: true
+        supplier_type:
+          oneOf:
+          - $ref: '#/components/schemas/SupplierTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        supplier_lead_time_days:
+          type:
+          - integer
+          - 'null'
+          maximum: 365
+          minimum: 0
+          description: Default number of calendar days this supplier needs between order and delivery. Factored into the earliest selectable delivery date on orders.
+        payment_terms:
+          type: string
+          readOnly: true
+        days_until_payment_due:
+          type: string
+          readOnly: true
+      required:
+      - days_until_payment_due
+      - name
+      - payment_terms
+      - status
+      - uuid
+    BankingCountryTypeEnum:
+      enum:
+      - US
+      - GB
+      - CA
+      - AT
+      - BE
+      - CY
+      - DE
+      - EE
+      - ES
+      - FI
+      - FR
+      - GR
+      - IE
+      - IT
+      - LT
+      - LU
+      - LV
+      - MT
+      - NL
+      - PT
+      - SI
+      - SK
+      - BG
+      - CZ
+      - DK
+      - HR
+      - HU
+      - PL
+      - RO
+      - SE
+      - EU
+      type: string
+      description: '* `US` - Us
+
+        * `GB` - Gb
+
+        * `CA` - Ca
+
+        * `AT` - At
+
+        * `BE` - Be
+
+        * `CY` - Cy
+
+        * `DE` - De
+
+        * `EE` - Ee
+
+        * `ES` - Es
+
+        * `FI` - Fi
+
+        * `FR` - Fr
+
+        * `GR` - Gr
+
+        * `IE` - Ie
+
+        * `IT` - It
+
+        * `LT` - Lt
+
+        * `LU` - Lu
+
+        * `LV` - Lv
+
+        * `MT` - Mt
+
+        * `NL` - Nl
+
+        * `PT` - Pt
+
+        * `SI` - Si
+
+        * `SK` - Sk
+
+        * `BG` - Bg
+
+        * `CZ` - Cz
+
+        * `DK` - Dk
+
+        * `HR` - Hr
+
+        * `HU` - Hu
+
+        * `PL` - Pl
+
+        * `RO` - Ro
+
+        * `SE` - Se
+
+        * `EU` - Eu'
+    PaginatedSupplierSiteList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplierSite'
+    BlankEnum:
+      enum:
+      - ''
+    AvailableSitesResponse:
+      type: object
+      properties:
+        available_sites:
+          type: array
+          items:
+            type: string
+          description: Merged list of site names and dispatch address names (deduplicated, sorted)
+        sites:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplierSite'
+      required:
+      - available_sites
+      - sites
+    DocumentLifecycleStatusEnum:
+      enum:
+      - valid
+      - expired
+      - expiring_soon
+      - renewed
+      type: string
+      description: '* `valid` - Valid
+
+        * `expired` - Expired
+
+        * `expiring_soon` - Expiring Soon
+
+        * `renewed` - Renewed'
+    GoogleUpload:
+      type: object
+      properties:
+        file_name:
+          type: string
+          maxLength: 1024
+        size:
+          type: integer
+          minimum: 1
+        content_type:
+          type: string
+          maxLength: 256
+        field_name:
+          type: string
+          maxLength: 256
+      required:
+      - field_name
+      - file_name
+      - size
+    AccountTypeEnum:
+      enum:
+      - checking
+      - savings
+      type: string
+      description: '* `checking` - Checking
+
+        * `savings` - Savings'
+    SupplierTypeEnum:
+      enum:
+      - producer
+      - manufacturer
+      - broker
+      - other
+      - not_applicable
+      type: string
+      description: '* `producer` - Producer
+
+        * `manufacturer` - Manufacturer
+
+        * `broker` - Broker
+
+        * `other` - Other
+
+        * `not_applicable` - N/A'
+    MerchantOfRecordBuyerDetail:
+      type: object
+      description: Detailed serializer for buyer/brand information for MoR users
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        registration_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        registration_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        website:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        phone_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        phone_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        buyer_accounts_email_address:
+          type:
+          - string
+          - 'null'
+          format: email
+          maxLength: 254
+        buyer_delivery_email_address:
+          type:
+          - string
+          - 'null'
+          format: email
+          maxLength: 254
+        sku_ordering_enabled:
+          type: boolean
+        duns:
+          type:
+          - string
+          - 'null'
+          description: DUNS number for creditworthiness checks and payouts
+          maxLength: 50
+        product_type:
+          $ref: '#/components/schemas/ProductTypeEnum'
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        primary_address:
+          type: string
+          readOnly: true
+        primary_user:
+          type: string
+          readOnly: true
+        is_connected_to_allianz:
+          type: boolean
+          description: Indicates if company is integrated with Allianz credit insurance
+        allianz_company_id:
+          type:
+          - string
+          - 'null'
+          description: Allianz company ID for credit limit integration
+          maxLength: 255
+        two_buyer_config:
+          allOf:
+          - $ref: '#/components/schemas/TwoBuyerConfig'
+          readOnly: true
+      required:
+      - created
+      - name
+      - primary_address
+      - primary_user
+      - two_buyer_config
+      - uuid
+    MerchantOfRecordSupplierSiteCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+      required:
+      - name
+    CompanyAddress:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        address_type:
+          $ref: '#/components/schemas/AddressTypeEnum'
+        contact_full_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        contact_phone:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        building:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        street_1:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        street_2:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        town:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        region:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        postcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        place_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        latitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        longitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        vat_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        vat_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        vat_exempt:
+          type: boolean
+        phone_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        delivery_instructions:
+          type:
+          - string
+          - 'null'
+        collection_instructions:
+          type:
+          - string
+          - 'null'
+        country_type:
+          $ref: '#/components/schemas/CountryTypeEnum'
+        eori_number:
+          type: string
+          maxLength: 20
+        ein_number:
+          type: string
+          maxLength: 20
+        notes:
+          type: string
+        delivery_location_type:
+          type: string
+          description: Type of delivery location (warehouse, factory, distribution_center, retail_location, other).
+          maxLength: 50
+        delivery_location_type_other:
+          type: string
+          description: Free-text description when delivery_location_type == 'other'.
+          maxLength: 255
+        warehouse_receiving_hours:
+          type: string
+          description: Free-text receiving hours (e.g. 'Mon-Fri 9am-5pm').
+          maxLength: 255
+      required:
+      - created
+      - id
+      - modified
+      - name
+      - uuid
+    TwoBuyerConfig:
+      type: object
+      properties:
+        representative_first_name:
+          type: string
+          maxLength: 255
+        representative_last_name:
+          type: string
+          maxLength: 255
+        representative_email:
+          type: string
+          format: email
+          maxLength: 254
+        representative_phone_number:
+          type: string
+          maxLength: 50
+        invoice_emails:
+          description: List of email addresses to receive Two invoices
+    PaginatedSupplierDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplierDocument'
+    PaginatedBuyerFinancialDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerFinancialDocument'
+    MoRBuyerUserResponse:
+      type: object
+      description: Response shape for `POST /merchant-of-record-buyers/{uuid}/users/`.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        is_admin:
+          type: boolean
+          readOnly: true
+      required:
+      - email
+      - first_name
+      - is_admin
+      - last_name
+      - uuid
+    NullEnum:
+      enum:
+      - null
+    SupplierPayoutDetails:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        bank_country:
+          $ref: '#/components/schemas/BankingCountryTypeEnum'
+        bank_name:
+          type: string
+          maxLength: 255
+        account_holder_name:
+          type: string
+          maxLength: 255
+        account_number:
+          type: string
+          maxLength: 64
+        sort_code:
+          type: string
+          maxLength: 16
+        routing_number:
+          type: string
+          maxLength: 32
+        account_type:
+          oneOf:
+          - $ref: '#/components/schemas/AccountTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        iban:
+          type: string
+          maxLength: 64
+        bic:
+          type: string
+          maxLength: 32
+        account_holder_building:
+          type: string
+          maxLength: 100
+        account_holder_street_1:
+          type: string
+          maxLength: 255
+        account_holder_street_2:
+          type: string
+          maxLength: 255
+        account_holder_town:
+          type: string
+          maxLength: 100
+        account_holder_region:
+          type: string
+          maxLength: 100
+        account_holder_postcode:
+          type: string
+          maxLength: 100
+        account_holder_country:
+          $ref: '#/components/schemas/Country'
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        note:
+          type: string
+      required:
+      - account_holder_country
+      - account_holder_name
+      - account_holder_postcode
+      - account_holder_street_1
+      - account_holder_town
+      - account_number
+      - bank_country
+      - bank_name
+      - created
+      - modified
+      - uuid
+    PaginatedMoRBuyerComplianceDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MoRBuyerComplianceDocument'
+    URL:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+      required:
+      - url
+    CountryTypeEnum:
+      enum:
+      - EU
+      - GB
+      - Other
+      type: string
+      description: '* `EU` - Eu
+
+        * `GB` - Gb
+
+        * `Other` - Other'
+    PatchedSupplierContact:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phone_number:
+          type: string
+          maxLength: 50
+        category:
+          $ref: '#/components/schemas/SupplierContactCategoryEnum'
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        notes:
+          type: string
+    BuyerFinancialDocument:
+      type: object
+      description: Read serializer returned for list/create responses.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/BuyerFinancialDocumentTypeEnum'
+          readOnly: true
+          description: 'Category of financial document — drives how the credit team triages the upload.
+
+
+            * `management_accounts` - Management Accounts
+
+            * `audited_accounts` - Audited Accounts
+
+            * `balance_sheet` - Balance Sheet
+
+            * `profit_and_loss` - Profit and Loss
+
+            * `cashflow_forecast` - Cashflow Forecast
+
+            * `sales_tax_exemption` - Sales Tax Exemption
+
+            * `other` - Other'
+        original_filename:
+          type: string
+          readOnly: true
+          description: Filename as supplied by the user at upload time (preserved for display).
+        file_size_bytes:
+          type: integer
+          readOnly: true
+          description: Size of the uploaded file in bytes; capped at the application-level upload limit.
+        file_url:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        uploaded_by_name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+          description: Display name (sales-tax exemptions only; blank for other financial docs).
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+          description: Start date of document validity (sales-tax exemptions only).
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+          description: End/expiry date of document validity (sales-tax exemptions only).
+        certificate_number:
+          type: string
+          readOnly: true
+          description: Permit / exemption / certificate number as printed (sales-tax exemptions only).
+        jurisdiction:
+          type: string
+          readOnly: true
+          description: State/region the document applies in, as printed (e.g. 'Michigan'). For US documents the structured counterpart is us_state_jurisdiction.
+        issuing_authority:
+          type: string
+          readOnly: true
+          description: Body that issued the document (e.g. 'Michigan Department of Treasury').
+        holder_name:
+          type: string
+          readOnly: true
+          description: Entity the document is issued to as printed — normally the buyer company.
+      required:
+      - certificate_number
+      - created_at
+      - end_date
+      - file_size_bytes
+      - file_url
+      - holder_name
+      - issuing_authority
+      - jurisdiction
+      - name
+      - original_filename
+      - start_date
+      - type
+      - uploaded_by_name
+      - uuid
     PhoneCountryCodeEnum:
       enum:
       - '+376'
@@ -4720,545 +5751,6 @@ components:
         * `+260` - +260
 
         * `+263` - +263'
-    MerchantOfRecordSupplierSiteCreate:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 255
-      required:
-      - name
-    PatchedMerchantOfRecordSupplierUpdate:
-      type: object
-      description: Serializer for updating supplier payout terms, days, DUNS, supplier type, and lead time
-      properties:
-        supplier_payout_terms:
-          oneOf:
-          - $ref: '#/components/schemas/SupplierPayoutTermsEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        supplier_days_until_payout_due:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-        duns:
-          type:
-          - string
-          - 'null'
-          description: DUNS number for creditworthiness checks and payouts
-          maxLength: 50
-        supplier_type:
-          oneOf:
-          - $ref: '#/components/schemas/SupplierTypeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        supplier_lead_time_days:
-          type:
-          - integer
-          - 'null'
-          maximum: 365
-          minimum: 0
-          description: Default number of calendar days this supplier needs between order and delivery. Factored into the earliest selectable delivery date on orders.
-    SupplierContact:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        email:
-          type: string
-          format: email
-          maxLength: 254
-        phone_number:
-          type: string
-          maxLength: 50
-        category:
-          $ref: '#/components/schemas/SupplierContactCategoryEnum'
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        notes:
-          type: string
-      required:
-      - category
-      - created
-      - email
-      - first_name
-      - modified
-      - uuid
-    BuyerSupplier:
-      type: object
-      description: 'Serializer for suppliers associated with a buyer.
-
-        Includes payment terms if a BuyerSupplierPaymentTerms record exists for this pair.'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        status:
-          type: string
-          readOnly: true
-        supplier_type:
-          oneOf:
-          - $ref: '#/components/schemas/SupplierTypeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        supplier_lead_time_days:
-          type:
-          - integer
-          - 'null'
-          maximum: 365
-          minimum: 0
-          description: Default number of calendar days this supplier needs between order and delivery. Factored into the earliest selectable delivery date on orders.
-        payment_terms:
-          type: string
-          readOnly: true
-        days_until_payment_due:
-          type: string
-          readOnly: true
-      required:
-      - days_until_payment_due
-      - name
-      - payment_terms
-      - status
-      - uuid
-    PatchedSupplierDocument:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        company:
-          type: integer
-          readOnly: true
-        supplier_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        supplier_name:
-          type: string
-          readOnly: true
-        type:
-          allOf:
-          - $ref: '#/components/schemas/DocumentType'
-          readOnly: true
-        type_uuid:
-          type: string
-          format: uuid
-          writeOnly: true
-        renewing_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          writeOnly: true
-        site:
-          allOf:
-          - $ref: '#/components/schemas/SupplierSite'
-          readOnly: true
-        site_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          writeOnly: true
-        site_name:
-          type: string
-          writeOnly: true
-          description: Address/site name - auto-creates SupplierSite if not exists (SC-2293)
-        buyer_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          writeOnly: true
-          description: Buyer company UUID (optional)
-        buyer_name:
-          type:
-          - string
-          - 'null'
-          description: Return the buyer company name if assigned.
-          readOnly: true
-        url:
-          type: string
-          format: uri
-        start_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        notes:
-          type:
-          - string
-          - 'null'
-          maxLength: 2048
-        status:
-          allOf:
-          - $ref: '#/components/schemas/DocumentLifecycleStatusEnum'
-          readOnly: true
-        is_archived:
-          type: boolean
-          description: Return whether the document is archived.
-          readOnly: true
-        superseded_by_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          readOnly: true
-    MerchantOfRecordNote:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        body:
-          type: string
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/CreatedBy'
-          readOnly: true
-      required:
-      - body
-      - created
-      - created_by
-      - modified
-      - uuid
-    PatchedSupplierContact:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        email:
-          type: string
-          format: email
-          maxLength: 254
-        phone_number:
-          type: string
-          maxLength: 50
-        category:
-          $ref: '#/components/schemas/SupplierContactCategoryEnum'
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        notes:
-          type: string
-    URL:
-      type: object
-      properties:
-        url:
-          type: string
-          format: uri
-      required:
-      - url
-    TwoBuyerConfigUpdate:
-      type: object
-      properties:
-        representative_first_name:
-          type: string
-          maxLength: 255
-        representative_last_name:
-          type: string
-          maxLength: 255
-        representative_email:
-          type: string
-          format: email
-        representative_phone_number:
-          type: string
-          maxLength: 50
-        invoice_emails:
-          type: array
-          items:
-            type: string
-            format: email
-    CompanyDocument:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        document:
-          type: string
-          format: uri
-        description:
-          type:
-          - string
-          - 'null'
-        document_category:
-          $ref: '#/components/schemas/CompanyDocumentCategory'
-      required:
-      - document
-      - uuid
-    AddressTypeEnum:
-      enum:
-      - billing_address
-      - delivery_address
-      - dispatch_address
-      - company_address
-      type: string
-      description: '* `billing_address` - Billing address
-
-        * `delivery_address` - Delivery address
-
-        * `dispatch_address` - Dispatch address
-
-        * `company_address` - Company address'
-    PaginatedBuyerSupplierList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerSupplier'
-    SupplierPayoutTermsEnum:
-      enum:
-      - payout_before_dispatch
-      - payout_after_dispatch
-      type: string
-      description: '* `payout_before_dispatch` - Payout Before Dispatch
-
-        * `payout_after_dispatch` - Payout After Dispatch'
-    AccountTypeEnum:
-      enum:
-      - checking
-      - savings
-      type: string
-      description: '* `checking` - Checking
-
-        * `savings` - Savings'
-    PatchedSupplierPayoutDetails:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        bank_country:
-          $ref: '#/components/schemas/BankingCountryTypeEnum'
-        bank_name:
-          type: string
-          maxLength: 255
-        account_holder_name:
-          type: string
-          maxLength: 255
-        account_number:
-          type: string
-          maxLength: 64
-        sort_code:
-          type: string
-          maxLength: 16
-        routing_number:
-          type: string
-          maxLength: 32
-        account_type:
-          oneOf:
-          - $ref: '#/components/schemas/AccountTypeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-        iban:
-          type: string
-          maxLength: 64
-        bic:
-          type: string
-          maxLength: 32
-        account_holder_building:
-          type: string
-          maxLength: 100
-        account_holder_street_1:
-          type: string
-          maxLength: 255
-        account_holder_street_2:
-          type: string
-          maxLength: 255
-        account_holder_town:
-          type: string
-          maxLength: 100
-        account_holder_region:
-          type: string
-          maxLength: 100
-        account_holder_postcode:
-          type: string
-          maxLength: 100
-        account_holder_country:
-          $ref: '#/components/schemas/Country'
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        note:
-          type: string
-    SupplierRemoveBuyer:
-      type: object
-      description: Serializer for removing a buyer from a supplier.
-      properties:
-        buyer_uuid:
-          type: string
-          format: uuid
-          description: UUID of the buyer to remove from this supplier
-      required:
-      - buyer_uuid
-    PaginatedSupplierBuyerList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SupplierBuyer'
-    CreatedBy:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        name:
-          type: string
-      required:
-      - name
-      - uuid
-    _ComplianceExtractionDetail:
-      type: object
-      description: 'Structured certificate detail captured by the onboarding extraction
-
-        agent (`buyer_onboarding.ExtractedComplianceDocument`). Read-only nested
-
-        payload — present only on documents that were filed by the agent;
-
-        manually uploaded documents have no extraction row.'
-      properties:
-        compliance_type:
-          allOf:
-          - $ref: '#/components/schemas/ComplianceDocumentTypeEnum'
-          readOnly: true
-        type_hint:
-          type: string
-          readOnly: true
-        jurisdiction:
-          type: string
-          readOnly: true
-        us_state:
-          type: string
-          readOnly: true
-        country:
-          type: string
-          readOnly: true
-        certificate_number:
-          type: string
-          readOnly: true
-        issuing_authority:
-          type: string
-          readOnly: true
-        holder_name:
-          type: string
-          readOnly: true
-        issue_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          readOnly: true
-        expiry_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          readOnly: true
-      required:
-      - certificate_number
-      - compliance_type
-      - country
-      - expiry_date
-      - holder_name
-      - issue_date
-      - issuing_authority
-      - jurisdiction
-      - type_hint
-      - us_state
     SupplierBuyer:
       type: object
       description: 'Serializer for buyer information associated with a supplier through referrals.
@@ -5395,246 +5887,258 @@ components:
       - type
       - url
       - uuid
-    PaginatedMoRBuyerComplianceDocumentList:
+    MoRBuyerUserCreate:
       type: object
-      required:
-      - count
-      - results
+      description: 'Serializer for adding an additional user to an existing Buyer (Brand)
+
+        company by MoR users.
+
+
+        Follows the MoR provisioning paradigm (same as MoRBuyerCreateSerializer
+
+        and the buyer-onboarding invite): the User is created upfront with no
+
+        password, and a set-password link is emailed once the transaction
+
+        commits. Which email depends on the buyer''s onboarding state — see
+
+        `_send_buyer_user_password_email`.'
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        is_admin:
+          type: boolean
+          default: false
+      required:
+      - email
+      - first_name
+      - last_name
+    PatchedMoRBuyerUpdate:
+      type: object
+      description: 'Serializer for updating an existing Buyer (Brand) company by MoR users.
+
+        User email is NOT editable after creation.'
+      properties:
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        company_name:
+          type: string
+          maxLength: 255
+        product_type:
           type: array
           items:
-            $ref: '#/components/schemas/MoRBuyerComplianceDocument'
-    USStateEnum:
-      enum:
-      - AL
-      - AK
-      - AZ
-      - AR
-      - CA
-      - CO
-      - CT
-      - DE
-      - FL
-      - GA
-      - HI
-      - ID
-      - IL
-      - IN
-      - IA
-      - KS
-      - KY
-      - LA
-      - ME
-      - MD
-      - MA
-      - MI
-      - MN
-      - MS
-      - MO
-      - MT
-      - NE
-      - NV
-      - NH
-      - NJ
-      - NM
-      - NY
-      - NC
-      - ND
-      - OH
-      - OK
-      - OR
-      - PA
-      - RI
-      - SC
-      - SD
-      - TN
-      - TX
-      - UT
-      - VT
-      - VA
-      - WA
-      - WV
-      - WI
-      - WY
-      - DC
-      - PR
-      - GU
-      - VI
-      - AS
-      - MP
-      type: string
-      description: '* `AL` - Alabama
-
-        * `AK` - Alaska
-
-        * `AZ` - Arizona
-
-        * `AR` - Arkansas
-
-        * `CA` - California
-
-        * `CO` - Colorado
-
-        * `CT` - Connecticut
-
-        * `DE` - Delaware
-
-        * `FL` - Florida
-
-        * `GA` - Georgia
-
-        * `HI` - Hawaii
-
-        * `ID` - Idaho
-
-        * `IL` - Illinois
-
-        * `IN` - Indiana
-
-        * `IA` - Iowa
-
-        * `KS` - Kansas
-
-        * `KY` - Kentucky
-
-        * `LA` - Louisiana
-
-        * `ME` - Maine
-
-        * `MD` - Maryland
-
-        * `MA` - Massachusetts
-
-        * `MI` - Michigan
-
-        * `MN` - Minnesota
-
-        * `MS` - Mississippi
-
-        * `MO` - Missouri
-
-        * `MT` - Montana
-
-        * `NE` - Nebraska
-
-        * `NV` - Nevada
-
-        * `NH` - New Hampshire
-
-        * `NJ` - New Jersey
-
-        * `NM` - New Mexico
-
-        * `NY` - New York
-
-        * `NC` - North Carolina
-
-        * `ND` - North Dakota
-
-        * `OH` - Ohio
-
-        * `OK` - Oklahoma
-
-        * `OR` - Oregon
-
-        * `PA` - Pennsylvania
-
-        * `RI` - Rhode Island
-
-        * `SC` - South Carolina
-
-        * `SD` - South Dakota
-
-        * `TN` - Tennessee
-
-        * `TX` - Texas
-
-        * `UT` - Utah
-
-        * `VT` - Vermont
-
-        * `VA` - Virginia
-
-        * `WA` - Washington
-
-        * `WV` - West Virginia
-
-        * `WI` - Wisconsin
-
-        * `WY` - Wyoming
-
-        * `DC` - District of Columbia
-
-        * `PR` - Puerto Rico
-
-        * `GU` - Guam
-
-        * `VI` - U.S. Virgin Islands
-
-        * `AS` - American Samoa
-
-        * `MP` - Northern Mariana Islands'
-    MoRBuyerAddressUpdate:
-      type: object
-      description: Serializer for nested address updates. Country cannot be changed.
-      properties:
-        address_line_1:
-          type: string
+            $ref: '#/components/schemas/ProductTypeEnum'
+        registration_name:
+          type:
+          - string
+          - 'null'
           maxLength: 255
-        address_line_2:
-          type: string
+        registration_number:
+          type:
+          - string
+          - 'null'
           maxLength: 255
-        town:
-          type: string
-          maxLength: 100
-        region:
-          type: string
-          maxLength: 100
-        postcode:
-          type: string
-          maxLength: 100
-        vat_country_code:
-          type: string
-          maxLength: 2
-        vat_number:
-          type: string
+        website:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        phone_country_code:
+          type:
+          - string
+          - 'null'
+          maxLength: 10
+        phone_number:
+          type:
+          - string
+          - 'null'
           maxLength: 50
-        ein:
-          type: string
-          maxLength: 20
-    DocumentType:
+        buyer_accounts_email_address:
+          type:
+          - string
+          - 'null'
+          format: email
+        buyer_delivery_email_address:
+          type:
+          - string
+          - 'null'
+          format: email
+        duns:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        sku_ordering_enabled:
+          type: boolean
+        company_address:
+          $ref: '#/components/schemas/MoRBuyerAddressUpdate'
+        two_buyer_config:
+          $ref: '#/components/schemas/TwoBuyerConfigUpdate'
+    AddressTypeEnum:
+      enum:
+      - billing_address
+      - delivery_address
+      - dispatch_address
+      - company_address
+      type: string
+      description: '* `billing_address` - Billing address
+
+        * `delivery_address` - Delivery address
+
+        * `dispatch_address` - Dispatch address
+
+        * `company_address` - Company address'
+    MoRBuyerComplianceDocument:
       type: object
-      description: Shared serializer for the DocumentType taxonomy (buyer, supplier, Opply documents).
+      description: 'Read shape for the MoR''s view of a buyer''s compliance documents.
+
+
+        Same fields as the buyer-facing serializer (minus the write-only upload
+
+        fields) plus the agent''s structured extraction detail when the document
+
+        came through onboarding. Jurisdiction / certificate number / issuing
+
+        authority are first-class ``BuyerDocument`` columns (also mirrored as
+
+        text in ``notes``); the nested ``extraction`` payload additionally
+
+        surfaces the agent-only fields that have no document column (e.g.
+
+        ``compliance_type``, ``type_hint``, ``us_state``, ``evidence``).'
       properties:
         uuid:
           type: string
           format: uuid
           readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/DocumentType'
+          readOnly: true
+        file:
+          type: string
+          format: uri
+          readOnly: true
+          description: The uploaded document file
         name:
           type: string
-          maxLength: 255
-        description:
+          readOnly: true
+          description: Display name for the document
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+          description: Start date of document validity
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+          description: End/expiry date of document validity
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
+          readOnly: true
+          description: ISO country codes this document applies to. Empty = all countries.
+        certificate_number:
           type: string
+          readOnly: true
+          description: Permit / exemption / certificate number as printed on the document
+        jurisdiction:
+          type: string
+          readOnly: true
+          description: State/region the document applies in, as printed on the document (e.g. 'Michigan'). For US documents the structured counterpart is us_state_jurisdiction.
+        us_state_jurisdiction:
+          readOnly: true
+          oneOf:
+          - $ref: '#/components/schemas/USStateEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        issuing_authority:
+          type: string
+          readOnly: true
+          description: Body that issued the document (e.g. 'Michigan Department of Treasury')
+        holder_name:
+          type: string
+          readOnly: true
+          description: Entity the document is issued to as printed — normally the buyer company
+        notes:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: Optional notes about this document
+        status:
+          allOf:
+          - $ref: '#/components/schemas/DocumentLifecycleStatusEnum'
+          readOnly: true
+        is_archived:
+          type: boolean
+          description: Return whether the document is archived (expired or renewed).
+          readOnly: true
+        superseded_by_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        extraction:
+          allOf:
+          - $ref: '#/components/schemas/_ComplianceExtractionDetail'
+          readOnly: true
       required:
+      - certificate_number
+      - countries
+      - created
+      - end_date
+      - extraction
+      - file
+      - holder_name
+      - is_archived
+      - issuing_authority
+      - jurisdiction
+      - modified
       - name
+      - notes
+      - start_date
+      - status
+      - superseded_by_uuid
+      - type
+      - us_state_jurisdiction
       - uuid
-    SupplierPayoutDetails:
+    PatchedSupplierUpdateBuyers:
+      type: object
+      description: Serializer for updating the entire list of buyers for a supplier.
+      properties:
+        buyer_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: List of buyer UUIDs to associate with this supplier
+    PatchedSupplierPayoutDetails:
       type: object
       properties:
         uuid:
@@ -5698,193 +6202,7 @@ components:
           readOnly: true
         note:
           type: string
-      required:
-      - account_holder_country
-      - account_holder_name
-      - account_holder_postcode
-      - account_holder_street_1
-      - account_holder_town
-      - account_number
-      - bank_country
-      - bank_name
-      - created
-      - modified
-      - uuid
-    PaginatedSupplierDocumentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SupplierDocument'
-    CompanyAddress:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        address_type:
-          $ref: '#/components/schemas/AddressTypeEnum'
-        contact_full_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        contact_phone:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-        building:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        street_1:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        street_2:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        town:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        region:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        postcode:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        country:
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        place_id:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        latitude:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-        longitude:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-        vat_number:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-        vat_country_code:
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        vat_exempt:
-          type: boolean
-        phone_country_code:
-          oneOf:
-          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        delivery_instructions:
-          type:
-          - string
-          - 'null'
-        collection_instructions:
-          type:
-          - string
-          - 'null'
-        country_type:
-          $ref: '#/components/schemas/CountryTypeEnum'
-        eori_number:
-          type: string
-          maxLength: 20
-        ein_number:
-          type: string
-          maxLength: 20
-        notes:
-          type: string
-        delivery_location_type:
-          type: string
-          description: Type of delivery location (warehouse, factory, distribution_center, retail_location, other).
-          maxLength: 50
-        delivery_location_type_other:
-          type: string
-          description: Free-text description when delivery_location_type == 'other'.
-          maxLength: 255
-        warehouse_receiving_hours:
-          type: string
-          description: Free-text receiving hours (e.g. 'Mon-Fri 9am-5pm').
-          maxLength: 255
-      required:
-      - created
-      - id
-      - modified
-      - name
-      - uuid
-    CountryTypeEnum:
-      enum:
-      - EU
-      - GB
-      - Other
-      type: string
-      description: '* `EU` - Eu
-
-        * `GB` - Gb
-
-        * `Other` - Other'
-    PatchedBuyerSupplierPaymentTermsCreate:
+    BuyerSupplierPaymentTermsCreate:
       type: object
       properties:
         uuid:
@@ -5914,397 +6232,79 @@ components:
           type: string
           format: date-time
           readOnly: true
-    PaginatedMerchantOfRecordCompanyList:
-      type: object
       required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/MerchantOfRecordCompany'
-    MerchantOfRecordCompany:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        company_type:
-          $ref: '#/components/schemas/CompanyTypeEnum'
-        supplier_payout_terms:
-          oneOf:
-          - $ref: '#/components/schemas/SupplierPayoutTermsEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        supplier_days_until_payout_due:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-        is_on_hold:
-          type: boolean
-          readOnly: true
-        on_hold_reason:
-          type: string
-          readOnly: true
-      required:
-      - is_on_hold
-      - name
-      - on_hold_reason
-      - uuid
-    PaginatedBuyerFinancialDocumentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerFinancialDocument'
-    BankingCountryTypeEnum:
-      enum:
-      - US
-      - GB
-      - CA
-      - AT
-      - BE
-      - CY
-      - DE
-      - EE
-      - ES
-      - FI
-      - FR
-      - GR
-      - IE
-      - IT
-      - LT
-      - LU
-      - LV
-      - MT
-      - NL
-      - PT
-      - SI
-      - SK
-      - BG
-      - CZ
-      - DK
-      - HR
-      - HU
-      - PL
-      - RO
-      - SE
-      - EU
-      type: string
-      description: '* `US` - Us
-
-        * `GB` - Gb
-
-        * `CA` - Ca
-
-        * `AT` - At
-
-        * `BE` - Be
-
-        * `CY` - Cy
-
-        * `DE` - De
-
-        * `EE` - Ee
-
-        * `ES` - Es
-
-        * `FI` - Fi
-
-        * `FR` - Fr
-
-        * `GR` - Gr
-
-        * `IE` - Ie
-
-        * `IT` - It
-
-        * `LT` - Lt
-
-        * `LU` - Lu
-
-        * `LV` - Lv
-
-        * `MT` - Mt
-
-        * `NL` - Nl
-
-        * `PT` - Pt
-
-        * `SI` - Si
-
-        * `SK` - Sk
-
-        * `BG` - Bg
-
-        * `CZ` - Cz
-
-        * `DK` - Dk
-
-        * `HR` - Hr
-
-        * `HU` - Hu
-
-        * `PL` - Pl
-
-        * `RO` - Ro
-
-        * `SE` - Se
-
-        * `EU` - Eu'
-    BuyerFinancialDocument:
-      type: object
-      description: Read serializer returned for list/create responses.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        type:
-          allOf:
-          - $ref: '#/components/schemas/BuyerFinancialDocumentTypeEnum'
-          readOnly: true
-          description: 'Category of financial document — drives how the credit team triages the upload.
-
-
-            * `management_accounts` - Management Accounts
-
-            * `audited_accounts` - Audited Accounts
-
-            * `balance_sheet` - Balance Sheet
-
-            * `profit_and_loss` - Profit and Loss
-
-            * `cashflow_forecast` - Cashflow Forecast
-
-            * `sales_tax_exemption` - Sales Tax Exemption
-
-            * `other` - Other'
-        original_filename:
-          type: string
-          readOnly: true
-          description: Filename as supplied by the user at upload time (preserved for display).
-        file_size_bytes:
-          type: integer
-          readOnly: true
-          description: Size of the uploaded file in bytes; capped at the application-level upload limit.
-        file_url:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        uploaded_by_name:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-          description: Display name (sales-tax exemptions only; blank for other financial docs).
-        start_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          readOnly: true
-          description: Start date of document validity (sales-tax exemptions only).
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          readOnly: true
-          description: End/expiry date of document validity (sales-tax exemptions only).
-        certificate_number:
-          type: string
-          readOnly: true
-          description: Permit / exemption / certificate number as printed (sales-tax exemptions only).
-        jurisdiction:
-          type: string
-          readOnly: true
-          description: State/region the document applies in, as printed (e.g. 'Michigan'). For US documents the structured counterpart is us_state_jurisdiction.
-        issuing_authority:
-          type: string
-          readOnly: true
-          description: Body that issued the document (e.g. 'Michigan Department of Treasury').
-        holder_name:
-          type: string
-          readOnly: true
-          description: Entity the document is issued to as printed — normally the buyer company.
-      required:
-      - certificate_number
-      - created_at
-      - end_date
-      - file_size_bytes
-      - file_url
-      - holder_name
-      - issuing_authority
-      - jurisdiction
-      - name
-      - original_filename
-      - start_date
-      - type
-      - uploaded_by_name
-      - uuid
-    PaginatedCompanyDocumentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompanyDocument'
-    MerchantOfRecordBuyerDetail:
-      type: object
-      description: Detailed serializer for buyer/brand information for MoR users
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        registration_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        registration_number:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        website:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        phone_country_code:
-          oneOf:
-          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        phone_number:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-        buyer_accounts_email_address:
-          type:
-          - string
-          - 'null'
-          format: email
-          maxLength: 254
-        buyer_delivery_email_address:
-          type:
-          - string
-          - 'null'
-          format: email
-          maxLength: 254
-        sku_ordering_enabled:
-          type: boolean
-        duns:
-          type:
-          - string
-          - 'null'
-          description: DUNS number for creditworthiness checks and payouts
-          maxLength: 50
-        product_type:
-          $ref: '#/components/schemas/ProductTypeEnum'
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        primary_address:
-          type: string
-          readOnly: true
-        primary_user:
-          type: string
-          readOnly: true
-        is_connected_to_allianz:
-          type: boolean
-          description: Indicates if company is integrated with Allianz credit insurance
-        allianz_company_id:
-          type:
-          - string
-          - 'null'
-          description: Allianz company ID for credit limit integration
-          maxLength: 255
-        two_buyer_config:
-          allOf:
-          - $ref: '#/components/schemas/TwoBuyerConfig'
-          readOnly: true
-      required:
+      - buyer_uuid
       - created
-      - name
-      - primary_address
-      - primary_user
-      - two_buyer_config
+      - modified
+      - payment_terms
+      - supplier_uuid
       - uuid
+    PaginatedSupplierContactList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplierContact'
+    SupplierSite:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        company:
+          type: integer
+      required:
+      - company
+      - name
+      - uuid
+    PaginatedSupplierBuyerList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplierBuyer'
   securitySchemes:
     cookieAuth:
       type: apiKey

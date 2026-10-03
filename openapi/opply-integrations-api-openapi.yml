@@ -492,14 +492,93 @@ paths:
           description: ''
 components:
   schemas:
-    ConnectorKindEnum:
+    XeroSupplierSpend:
+      type: object
+      description: Response shape for the supplier-spend aggregation (schema only).
+      properties:
+        base_currency:
+          type: string
+        window_months:
+          type: integer
+        total_spend:
+          type: string
+        bill_count:
+          type: integer
+        supplier_count:
+          type: integer
+        skipped_bills:
+          type: integer
+        suppliers:
+          type: array
+          items:
+            $ref: '#/components/schemas/_SupplierSpendRow'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/_CategorySpendRow'
+      required:
+      - base_currency
+      - bill_count
+      - categories
+      - skipped_bills
+      - supplier_count
+      - suppliers
+      - total_spend
+      - window_months
+    AgentTokenErrorResponse:
+      type: object
+      description: Stable client message surfaced on upstream identity-broker failures.
+      properties:
+        error:
+          type: string
+      required:
+      - error
+    AgentTokenResponseStatusEnum:
       enum:
-      - per_user
-      - per_tenant
+      - ok
+      - not_connected
+      - needs_reconnect
       type: string
-      description: '* `per_user` - Per user
+      description: '* `ok` - ok
 
-        * `per_tenant` - Per tenant'
+        * `not_connected` - not_connected
+
+        * `needs_reconnect` - needs_reconnect'
+    PlaidLinkTokenResponse:
+      type: object
+      properties:
+        link_token:
+          type: string
+        expiration:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      required:
+      - link_token
+    ConnectorVerifyResponseStatusEnum:
+      enum:
+      - connected
+      - needs_reconnect
+      - not_connected
+      type: string
+      description: '* `connected` - connected
+
+        * `needs_reconnect` - needs_reconnect
+
+        * `not_connected` - not_connected'
+    PlaidLinkTokenRequest:
+      type: object
+      description: 'Body for ``plaid/link-token/``.
+
+
+        ``item_uuid`` puts Link into **update mode** to re-auth an existing Item
+
+        (e.g. after ITEM_LOGIN_REQUIRED); omit it to link a new bank.'
+      properties:
+        item_uuid:
+          type: string
+          format: uuid
     _CategorySpendRow:
       type: object
       properties:
@@ -518,6 +597,116 @@ components:
       - spend
       - supplier_count
       - supplier_names
+    PlaidItem:
+      type: object
+      description: Read-only view of one linked Plaid Item (bank connection).
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        item_id:
+          type: string
+        institution_id:
+          type: string
+        institution_name:
+          type: string
+        status:
+          $ref: '#/components/schemas/PlaidItemStatusEnum'
+        last_synced_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      required:
+      - institution_id
+      - institution_name
+      - item_id
+      - last_synced_at
+      - status
+      - uuid
+    ConnectorKindEnum:
+      enum:
+      - per_user
+      - per_tenant
+      type: string
+      description: '* `per_user` - Per user
+
+        * `per_tenant` - Per tenant'
+    ConnectorVerifyResponse:
+      type: object
+      description: 'Coarse, closed-union result of the pre-flight token probe.
+
+
+        Deliberately NOT the full ``ConnectorConnectionStatus`` set — the FE only
+
+        needs to know whether the connection is usable, needs a reconnect, or is
+
+        absent. Non-probed states (``pending`` / ``revoked`` / ``error``) are
+
+        collapsed into one of these three before they leave the endpoint.'
+      properties:
+        status:
+          $ref: '#/components/schemas/ConnectorVerifyResponseStatusEnum'
+      required:
+      - status
+    AgentTokenRequest:
+      type: object
+      description: 'JSON body the agent runtime POSTs to ``agent-token``.
+
+
+        The runtime passes the active turn''s ``company_uuid`` so the lookup
+
+        targets the right tenant for multi-company users; absent means fall
+
+        back to ``user.get_company()`` (the single-company case Opply assumes
+
+        today).'
+      properties:
+        company_uuid:
+          type: string
+          format: uuid
+    ConnectorTenantModeEnum:
+      enum:
+      - none
+      - shared_token
+      - admin_consent
+      type: string
+      description: '* `none` - None (per-user connector)
+
+        * `shared_token` - Shared admin token
+
+        * `admin_consent` - Provider admin-consent'
+    InitiateResponse:
+      type: object
+      properties:
+        authorization_url:
+          type: string
+          format: uri
+        provider:
+          type: string
+      required:
+      - authorization_url
+      - provider
+    UnleashedConnectRequest:
+      type: object
+      description: 'Body for ``unleashed/connect/`` — the API credentials the user pastes.
+
+
+        Same endpoint backs both first connect and reconnect (re-pasting rotated
+
+        credentials). Values are trimmed and validated with a live signed probe
+
+        before anything is persisted.'
+      properties:
+        api_id:
+          type: string
+          maxLength: 255
+        api_key:
+          type: string
+          maxLength: 1024
+      required:
+      - api_id
+      - api_key
     AgentTokenResponse:
       type: object
       description: "Token-resolution outcome surfaced to the agent runtime.\n\n``status``:\n- ``ok`` — connection found and the vault returned a usable token.\n  ``access_token`` and ``expires_in`` are populated.\n- ``not_connected`` — no active connection exists for this\n  user/company. Token fields are absent.\n- ``needs_reconnect`` — there is an active row but the vault has no\n  usable token (revoked, expired, or never stored). Token fields are\n  absent."
@@ -544,17 +733,95 @@ components:
           default: ''
       required:
       - public_token
-    AgentTokenResponseStatusEnum:
+    NullEnum:
+      enum:
+      - null
+    _SupplierSpendRow:
+      type: object
+      properties:
+        contact_id:
+          type: string
+        name:
+          type: string
+        bill_count:
+          type: integer
+        spend:
+          type: string
+        spend_share:
+          type: number
+          format: double
+        credit_note_total:
+          type: string
+        credit_note_ratio:
+          type: number
+          format: double
+      required:
+      - bill_count
+      - contact_id
+      - credit_note_ratio
+      - credit_note_total
+      - name
+      - spend
+      - spend_share
+    PlaidExchangeResponseStatusEnum:
       enum:
       - ok
-      - not_connected
-      - needs_reconnect
       type: string
-      description: '* `ok` - ok
+      description: '* `ok` - ok'
+    PlaidExchangeResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/PlaidExchangeResponseStatusEnum'
+        item:
+          $ref: '#/components/schemas/PlaidItem'
+      required:
+      - item
+      - status
+    ConnectorConnectionStatusEnum:
+      enum:
+      - pending
+      - connected
+      - needs_reconnect
+      - revoked
+      - error
+      type: string
+      description: '* `pending` - Pending OAuth completion
 
-        * `not_connected` - not_connected
+        * `connected` - Connected
 
-        * `needs_reconnect` - needs_reconnect'
+        * `needs_reconnect` - Needs reconnect
+
+        * `revoked` - Revoked
+
+        * `error` - Error'
+    PlaidItemStatusEnum:
+      enum:
+      - good
+      - login_required
+      - pending_expiration
+      - revoked
+      - error
+      type: string
+      description: '* `good` - Good
+
+        * `login_required` - Login required
+
+        * `pending_expiration` - Pending expiration
+
+        * `revoked` - Revoked
+
+        * `error` - Error'
+    UnleashedConnectResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        provider:
+          type: string
+      required:
+      - provider
+      - status
     Connector:
       type: object
       description: Read-only view of a connector definition merged with its connection state.
@@ -620,273 +887,6 @@ components:
       - required_scopes
       - status
       - tenant_mode
-    PlaidLinkTokenRequest:
-      type: object
-      description: 'Body for ``plaid/link-token/``.
-
-
-        ``item_uuid`` puts Link into **update mode** to re-auth an existing Item
-
-        (e.g. after ITEM_LOGIN_REQUIRED); omit it to link a new bank.'
-      properties:
-        item_uuid:
-          type: string
-          format: uuid
-    NullEnum:
-      enum:
-      - null
-    InitiateResponse:
-      type: object
-      properties:
-        authorization_url:
-          type: string
-          format: uri
-        provider:
-          type: string
-      required:
-      - authorization_url
-      - provider
-    AgentTokenErrorResponse:
-      type: object
-      description: Stable client message surfaced on upstream identity-broker failures.
-      properties:
-        error:
-          type: string
-      required:
-      - error
-    PlaidExchangeResponse:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/PlaidExchangeResponseStatusEnum'
-        item:
-          $ref: '#/components/schemas/PlaidItem'
-      required:
-      - item
-      - status
-    PlaidItemStatusEnum:
-      enum:
-      - good
-      - login_required
-      - pending_expiration
-      - revoked
-      - error
-      type: string
-      description: '* `good` - Good
-
-        * `login_required` - Login required
-
-        * `pending_expiration` - Pending expiration
-
-        * `revoked` - Revoked
-
-        * `error` - Error'
-    ConnectorTenantModeEnum:
-      enum:
-      - none
-      - shared_token
-      - admin_consent
-      type: string
-      description: '* `none` - None (per-user connector)
-
-        * `shared_token` - Shared admin token
-
-        * `admin_consent` - Provider admin-consent'
-    PlaidItem:
-      type: object
-      description: Read-only view of one linked Plaid Item (bank connection).
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        item_id:
-          type: string
-        institution_id:
-          type: string
-        institution_name:
-          type: string
-        status:
-          $ref: '#/components/schemas/PlaidItemStatusEnum'
-        last_synced_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-      required:
-      - institution_id
-      - institution_name
-      - item_id
-      - last_synced_at
-      - status
-      - uuid
-    ConnectorVerifyResponseStatusEnum:
-      enum:
-      - connected
-      - needs_reconnect
-      - not_connected
-      type: string
-      description: '* `connected` - connected
-
-        * `needs_reconnect` - needs_reconnect
-
-        * `not_connected` - not_connected'
-    XeroSupplierSpend:
-      type: object
-      description: Response shape for the supplier-spend aggregation (schema only).
-      properties:
-        base_currency:
-          type: string
-        window_months:
-          type: integer
-        total_spend:
-          type: string
-        bill_count:
-          type: integer
-        supplier_count:
-          type: integer
-        skipped_bills:
-          type: integer
-        suppliers:
-          type: array
-          items:
-            $ref: '#/components/schemas/_SupplierSpendRow'
-        categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/_CategorySpendRow'
-      required:
-      - base_currency
-      - bill_count
-      - categories
-      - skipped_bills
-      - supplier_count
-      - suppliers
-      - total_spend
-      - window_months
-    PlaidLinkTokenResponse:
-      type: object
-      properties:
-        link_token:
-          type: string
-        expiration:
-          type:
-          - string
-          - 'null'
-          format: date-time
-      required:
-      - link_token
-    UnleashedConnectResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        provider:
-          type: string
-      required:
-      - provider
-      - status
-    PlaidExchangeResponseStatusEnum:
-      enum:
-      - ok
-      type: string
-      description: '* `ok` - ok'
-    _SupplierSpendRow:
-      type: object
-      properties:
-        contact_id:
-          type: string
-        name:
-          type: string
-        bill_count:
-          type: integer
-        spend:
-          type: string
-        spend_share:
-          type: number
-          format: double
-        credit_note_total:
-          type: string
-        credit_note_ratio:
-          type: number
-          format: double
-      required:
-      - bill_count
-      - contact_id
-      - credit_note_ratio
-      - credit_note_total
-      - name
-      - spend
-      - spend_share
-    ConnectorVerifyResponse:
-      type: object
-      description: 'Coarse, closed-union result of the pre-flight token probe.
-
-
-        Deliberately NOT the full ``ConnectorConnectionStatus`` set — the FE only
-
-        needs to know whether the connection is usable, needs a reconnect, or is
-
-        absent. Non-probed states (``pending`` / ``revoked`` / ``error``) are
-
-        collapsed into one of these three before they leave the endpoint.'
-      properties:
-        status:
-          $ref: '#/components/schemas/ConnectorVerifyResponseStatusEnum'
-      required:
-      - status
-    AgentTokenRequest:
-      type: object
-      description: 'JSON body the agent runtime POSTs to ``agent-token``.
-
-
-        The runtime passes the active turn''s ``company_uuid`` so the lookup
-
-        targets the right tenant for multi-company users; absent means fall
-
-        back to ``user.get_company()`` (the single-company case Opply assumes
-
-        today).'
-      properties:
-        company_uuid:
-          type: string
-          format: uuid
-    UnleashedConnectRequest:
-      type: object
-      description: 'Body for ``unleashed/connect/`` — the API credentials the user pastes.
-
-
-        Same endpoint backs both first connect and reconnect (re-pasting rotated
-
-        credentials). Values are trimmed and validated with a live signed probe
-
-        before anything is persisted.'
-      properties:
-        api_id:
-          type: string
-          maxLength: 255
-        api_key:
-          type: string
-          maxLength: 1024
-      required:
-      - api_id
-      - api_key
-    ConnectorConnectionStatusEnum:
-      enum:
-      - pending
-      - connected
-      - needs_reconnect
-      - revoked
-      - error
-      type: string
-      description: '* `pending` - Pending OAuth completion
-
-        * `connected` - Connected
-
-        * `needs_reconnect` - Needs reconnect
-
-        * `revoked` - Revoked
-
-        * `error` - Error'
   securitySchemes:
     cookieAuth:
       type: apiKey

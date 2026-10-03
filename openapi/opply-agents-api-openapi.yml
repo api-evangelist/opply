@@ -527,6 +527,235 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    AgentSessionMessageRoleEnum:
+      enum:
+      - user
+      - assistant
+      type: string
+      description: '* `user` - user
+
+        * `assistant` - assistant'
+    AgentDetailError:
+      type: object
+      description: 'Common error envelope for the agents session endpoints — returns
+
+        ``{"detail": "..."}`` on every non-2xx response.'
+      properties:
+        detail:
+          type: string
+      required:
+      - detail
+    AgentSession:
+      type: object
+      description: 'Read shape for the active AgentCore session pointer.
+
+
+        Surfaces ``session_id`` plus ``last_used_at`` so the FE can decide
+
+        whether a hydrated value is stale enough to warrant a fresh chat. We
+
+        intentionally do not expose the row''s primary key — callers always
+
+        address "the session for the current ``(user, company, agent_name)``"
+
+        via the ``/me/`` endpoint, so a UUID lookup field would be dead weight.'
+      properties:
+        session_id:
+          type: string
+          readOnly: true
+          description: Opaque AgentCore session id. Conversation pointer, not a secret — AgentCore enforces auth via the runtime JWT. Min length 33 chars (AgentCore SDK requirement); we mint as 'opply-{uuid4().hex}'.
+        agent_name:
+          type: string
+          readOnly: true
+          description: AgentCore runtime name (e.g. 'buyer-assistant').
+        agent_version:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Concrete AgentCore runtime version (integer) this session last ran on, resolved from the version channel at invoke time. null = legacy row, local dev, or a channel with no CDK-published version. Kept for later session cleanup/repair (e.g. drop sessions from a bad version).
+        last_used_at:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Bumped on every invocation; lets us garbage-collect stale rows later.
+      required:
+      - agent_name
+      - agent_version
+      - last_used_at
+      - session_id
+    AgentInstallationStatusEnum:
+      enum:
+      - active
+      - paused
+      - revoked
+      type: string
+      description: '* `active` - Active
+
+        * `paused` - Paused
+
+        * `revoked` - Revoked'
+    _RunStats:
+      type: object
+      properties:
+        latest_run_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        succeeded:
+          type: integer
+        failed:
+          type: integer
+        running:
+          type: integer
+        total:
+          type: integer
+      required:
+      - failed
+      - latest_run_at
+      - running
+      - succeeded
+      - total
+    _ShadowUserRef:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - uuid
+    TaskPriorityEnum:
+      enum:
+      - low
+      - medium
+      - high
+      - urgent
+      type: string
+      description: '* `low` - Low
+
+        * `medium` - Medium
+
+        * `high` - High
+
+        * `urgent` - Urgent'
+    _InstallationRef:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/AgentInstallationStatusEnum'
+        installed_by:
+          allOf:
+          - $ref: '#/components/schemas/_InstalledBy'
+        installed_at:
+          type: string
+          format: date-time
+      required:
+      - installed_at
+      - installed_by
+      - status
+      - uuid
+    AgentSessionMessages:
+      type: object
+      description: 'Envelope returned by ``GET /sessions/me/events/`` carrying the
+
+        user''s chat transcript projected from the agent''s snapshot.'
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentSessionMessage'
+      required:
+      - messages
+    AgentResponseFeedbackRequest:
+      type: object
+      description: 'Inbound shape for ``POST /api/v1/agents/feedback/``.
+
+
+        Polarity validation enforces that a positive ``rating_value`` only
+
+        carries positive tags and a negative one only carries negative tags.
+
+        Polarity sets live alongside the enum in ``apps.agents.enums``.'
+      properties:
+        agent_name:
+          type: string
+          maxLength: 64
+        invocation_id:
+          type: string
+          maxLength: 64
+        session_id:
+          type: string
+          default: ''
+          maxLength: 128
+        agentcore_request_id:
+          type: string
+          default: ''
+          maxLength: 128
+        client_message_id:
+          type: string
+          default: ''
+          maxLength: 64
+        agent_version:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        rating_value:
+          type: number
+          format: double
+          maximum: 1.0
+          minimum: 0.0
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeedbackTagEnum'
+          maxItems: 7
+      required:
+      - agent_name
+      - invocation_id
+      - rating_value
+    _FleetInstallation:
+      type: object
+      properties:
+        company:
+          allOf:
+          - $ref: '#/components/schemas/_CompanyRef'
+        status:
+          type: string
+        installed_by:
+          allOf:
+          - $ref: '#/components/schemas/_UserRef'
+        installed_at:
+          type: string
+          format: date-time
+        shadow_user:
+          allOf:
+          - $ref: '#/components/schemas/_UserRef'
+      required:
+      - company
+      - installed_at
+      - installed_by
+      - shadow_user
+      - status
+    MorRouterMe:
+      type: object
+      description: Whether the caller's MoR exposes an "Opply" tasks-router, and how to address it.
+      properties:
+        available:
+          type: boolean
+        shadow_user:
+          allOf:
+          - $ref: '#/components/schemas/_ShadowUserRef'
+      required:
+      - available
+      - shadow_user
     TaskStatusEnum:
       enum:
       - open
@@ -541,6 +770,212 @@ components:
         * `waiting_approval` - Waiting Approval
 
         * `done` - Done'
+    _InstallCounts:
+      type: object
+      properties:
+        active:
+          type: integer
+        paused:
+          type: integer
+        revoked:
+          type: integer
+        total:
+          type: integer
+      required:
+      - active
+      - paused
+      - revoked
+      - total
+    FleetAgent:
+      type: object
+      description: One agent row on the fleet overview.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        slug:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+        description:
+          type: string
+        is_taskable:
+          type: boolean
+        is_router:
+          type: boolean
+        is_enabled:
+          type: boolean
+        scope_kind:
+          type: string
+        installable_by_company_types:
+          type: array
+          items:
+            type: string
+        installs:
+          $ref: '#/components/schemas/_InstallCounts'
+      required:
+      - description
+      - installable_by_company_types
+      - installs
+      - is_enabled
+      - is_router
+      - is_taskable
+      - name
+      - scope_kind
+      - slug
+      - uuid
+    _FleetAgentDetailAgent:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        slug:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+        description:
+          type: string
+        is_taskable:
+          type: boolean
+        is_router:
+          type: boolean
+        is_enabled:
+          type: boolean
+        scope_kind:
+          type: string
+        installable_by_company_types:
+          type: array
+          items:
+            type: string
+        has_runtime:
+          type: boolean
+        default_allowed_tools:
+          type: array
+          items:
+            type: string
+      required:
+      - default_allowed_tools
+      - description
+      - has_runtime
+      - installable_by_company_types
+      - is_enabled
+      - is_router
+      - is_taskable
+      - name
+      - scope_kind
+      - slug
+      - uuid
+    MessageAttachmentDispositionEnum:
+      enum:
+      - sent
+      - suspicious
+      - skipped_timeout
+      type: string
+      description: '* `sent` - Sent
+
+        * `suspicious` - Suspicious
+
+        * `skipped_timeout` - Not used (scan pending)'
+    UserMinimal:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+        is_agent:
+          type: boolean
+          readOnly: true
+        is_mor_router:
+          type: boolean
+          readOnly: true
+      required:
+      - email
+      - is_agent
+      - is_mor_router
+      - name
+      - uuid
+    AgentResponseFeedback:
+      type: object
+      description: Outbound shape — returned by ``POST /api/v1/agents/feedback/``.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        agent_name:
+          type: string
+        invocation_id:
+          type: string
+        session_id:
+          type: string
+        agentcore_request_id:
+          type: string
+        client_message_id:
+          type: string
+        agent_version:
+          type:
+          - integer
+          - 'null'
+        rating_value:
+          type: number
+          format: double
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeedbackTagEnum'
+      required:
+      - agent_name
+      - agent_version
+      - agentcore_request_id
+      - client_message_id
+      - invocation_id
+      - rating_value
+      - session_id
+      - tags
+      - uuid
+    _InstalledBy:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - uuid
+    AgentInstallationAdminRow:
+      type: object
+      properties:
+        agent:
+          $ref: '#/components/schemas/_AgentRef'
+        installation:
+          allOf:
+          - $ref: '#/components/schemas/_InstallationRef'
+      required:
+      - agent
+      - installation
+    RelatedItemInput:
+      type: object
+      description: 'One write-side related-item: a target ``type`` + entity ``uuid``.'
+      properties:
+        type:
+          type: string
+        uuid:
+          type: string
+          format: uuid
+      required:
+      - type
+      - uuid
     AgentSessionMessage:
       type: object
       description: 'One persisted conversation message in the chat transcript.
@@ -647,7 +1082,7 @@ components:
       required:
       - content
       - role
-    _InstalledBy:
+    _CompanyRef:
       type: object
       properties:
         uuid:
@@ -658,28 +1093,141 @@ components:
       required:
       - name
       - uuid
-    _RunStats:
+    FeedbackTagEnum:
+      enum:
+      - accurate
+      - saved_time
+      - good_judgement
+      - slow
+      - hallucination
+      - missed_context
+      - wrong_supplier
+      type: string
+      description: '* `accurate` - accurate
+
+        * `saved_time` - saved_time
+
+        * `good_judgement` - good_judgement
+
+        * `slow` - slow
+
+        * `hallucination` - hallucination
+
+        * `missed_context` - missed_context
+
+        * `wrong_supplier` - wrong_supplier'
+    AgentFleetDetail:
       type: object
       properties:
-        latest_run_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        succeeded:
-          type: integer
-        failed:
-          type: integer
-        running:
-          type: integer
-        total:
-          type: integer
+        agent:
+          $ref: '#/components/schemas/_FleetAgentDetailAgent'
+        runs:
+          $ref: '#/components/schemas/_RunStats'
+        installations:
+          type: array
+          items:
+            $ref: '#/components/schemas/_FleetInstallation'
       required:
-      - failed
-      - latest_run_at
-      - running
-      - succeeded
-      - total
+      - agent
+      - installations
+      - runs
+    MessageAttachmentRef:
+      type: object
+      description: 'One attachment ref carried on a message''s ``metadata["attachments"]``
+
+        (SC-4146). Channel-neutral and reusable by **any** message serializer (agent
+
+        chat today; task chat / private notes next) — nest it with ``many=True,
+
+        required=False`` so a message that carried no attachments omits the key.
+
+
+        Read-only projection of the dicts written by
+
+        :func:`~apps.files.services.message_attachments.resolve_and_gate_attachments`;
+
+        carries no bytes / URL — the FE mints a short-TTL presigned URL from ``uuid``
+
+        when it renders a preview. ``disposition``''s enum name is pinned via
+
+        ``ENUM_NAME_OVERRIDES`` (``MessageAttachmentDispositionEnum``) so the shared
+
+        component doesn''t collide in the generated OpenAPI schema.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        filename:
+          type: string
+          readOnly: true
+        mime:
+          type: string
+          readOnly: true
+        disposition:
+          allOf:
+          - $ref: '#/components/schemas/MessageAttachmentDispositionEnum'
+          readOnly: true
+      required:
+      - disposition
+      - filename
+      - mime
+      - uuid
+    _UserRef:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - uuid
+    Patched_SetStatusInput:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/AgentInstallationStatusEnum'
+    AgentInstallationMe:
+      type: object
+      description: The shape the FE consumes — enough to address the agent and render its name.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        status:
+          type: string
+        agent:
+          $ref: '#/components/schemas/_AgentRef'
+        shadow_user:
+          $ref: '#/components/schemas/_ShadowUserRef'
+      required:
+      - agent
+      - shadow_user
+      - status
+      - uuid
+    _AgentRef:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        slug:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+        description:
+          type: string
+        is_taskable:
+          type: boolean
+      required:
+      - description
+      - is_taskable
+      - name
+      - slug
+      - uuid
     Task:
       type: object
       properties:
@@ -1014,554 +1562,6 @@ components:
       - unread_mention_count
       - uuid
       - watchers
-    _InstallationRef:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        status:
-          $ref: '#/components/schemas/AgentInstallationStatusEnum'
-        installed_by:
-          allOf:
-          - $ref: '#/components/schemas/_InstalledBy'
-        installed_at:
-          type: string
-          format: date-time
-      required:
-      - installed_at
-      - installed_by
-      - status
-      - uuid
-    AgentSessionMessageRoleEnum:
-      enum:
-      - user
-      - assistant
-      type: string
-      description: '* `user` - user
-
-        * `assistant` - assistant'
-    RelatedItemInput:
-      type: object
-      description: 'One write-side related-item: a target ``type`` + entity ``uuid``.'
-      properties:
-        type:
-          type: string
-        uuid:
-          type: string
-          format: uuid
-      required:
-      - type
-      - uuid
-    AgentResponseFeedback:
-      type: object
-      description: Outbound shape — returned by ``POST /api/v1/agents/feedback/``.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        agent_name:
-          type: string
-        invocation_id:
-          type: string
-        session_id:
-          type: string
-        agentcore_request_id:
-          type: string
-        client_message_id:
-          type: string
-        agent_version:
-          type:
-          - integer
-          - 'null'
-        rating_value:
-          type: number
-          format: double
-        tags:
-          type: array
-          items:
-            $ref: '#/components/schemas/FeedbackTagEnum'
-      required:
-      - agent_name
-      - agent_version
-      - agentcore_request_id
-      - client_message_id
-      - invocation_id
-      - rating_value
-      - session_id
-      - tags
-      - uuid
-    MessageAttachmentRef:
-      type: object
-      description: 'One attachment ref carried on a message''s ``metadata["attachments"]``
-
-        (SC-4146). Channel-neutral and reusable by **any** message serializer (agent
-
-        chat today; task chat / private notes next) — nest it with ``many=True,
-
-        required=False`` so a message that carried no attachments omits the key.
-
-
-        Read-only projection of the dicts written by
-
-        :func:`~apps.files.services.message_attachments.resolve_and_gate_attachments`;
-
-        carries no bytes / URL — the FE mints a short-TTL presigned URL from ``uuid``
-
-        when it renders a preview. ``disposition``''s enum name is pinned via
-
-        ``ENUM_NAME_OVERRIDES`` (``MessageAttachmentDispositionEnum``) so the shared
-
-        component doesn''t collide in the generated OpenAPI schema.'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        filename:
-          type: string
-          readOnly: true
-        mime:
-          type: string
-          readOnly: true
-        disposition:
-          allOf:
-          - $ref: '#/components/schemas/MessageAttachmentDispositionEnum'
-          readOnly: true
-      required:
-      - disposition
-      - filename
-      - mime
-      - uuid
-    _FleetAgentDetailAgent:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        slug:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        name:
-          type: string
-        description:
-          type: string
-        is_taskable:
-          type: boolean
-        is_router:
-          type: boolean
-        is_enabled:
-          type: boolean
-        scope_kind:
-          type: string
-        installable_by_company_types:
-          type: array
-          items:
-            type: string
-        has_runtime:
-          type: boolean
-        default_allowed_tools:
-          type: array
-          items:
-            type: string
-      required:
-      - default_allowed_tools
-      - description
-      - has_runtime
-      - installable_by_company_types
-      - is_enabled
-      - is_router
-      - is_taskable
-      - name
-      - scope_kind
-      - slug
-      - uuid
-    AgentFleetDetail:
-      type: object
-      properties:
-        agent:
-          $ref: '#/components/schemas/_FleetAgentDetailAgent'
-        runs:
-          $ref: '#/components/schemas/_RunStats'
-        installations:
-          type: array
-          items:
-            $ref: '#/components/schemas/_FleetInstallation'
-      required:
-      - agent
-      - installations
-      - runs
-    MessageAttachmentDispositionEnum:
-      enum:
-      - sent
-      - suspicious
-      - skipped_timeout
-      type: string
-      description: '* `sent` - Sent
-
-        * `suspicious` - Suspicious
-
-        * `skipped_timeout` - Not used (scan pending)'
-    UserMinimal:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        name:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          format: email
-        is_agent:
-          type: boolean
-          readOnly: true
-        is_mor_router:
-          type: boolean
-          readOnly: true
-      required:
-      - email
-      - is_agent
-      - is_mor_router
-      - name
-      - uuid
-    TaskPriorityEnum:
-      enum:
-      - low
-      - medium
-      - high
-      - urgent
-      type: string
-      description: '* `low` - Low
-
-        * `medium` - Medium
-
-        * `high` - High
-
-        * `urgent` - Urgent'
-    _UserRef:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        name:
-          type: string
-      required:
-      - name
-      - uuid
-    AgentInstallationMe:
-      type: object
-      description: The shape the FE consumes — enough to address the agent and render its name.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        status:
-          type: string
-        agent:
-          $ref: '#/components/schemas/_AgentRef'
-        shadow_user:
-          $ref: '#/components/schemas/_ShadowUserRef'
-      required:
-      - agent
-      - shadow_user
-      - status
-      - uuid
-    _InstallCounts:
-      type: object
-      properties:
-        active:
-          type: integer
-        paused:
-          type: integer
-        revoked:
-          type: integer
-        total:
-          type: integer
-      required:
-      - active
-      - paused
-      - revoked
-      - total
-    _CompanyRef:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        name:
-          type: string
-      required:
-      - name
-      - uuid
-    AgentInstallationAdminRow:
-      type: object
-      properties:
-        agent:
-          $ref: '#/components/schemas/_AgentRef'
-        installation:
-          allOf:
-          - $ref: '#/components/schemas/_InstallationRef'
-      required:
-      - agent
-      - installation
-    MorRouterMe:
-      type: object
-      description: Whether the caller's MoR exposes an "Opply" tasks-router, and how to address it.
-      properties:
-        available:
-          type: boolean
-        shadow_user:
-          allOf:
-          - $ref: '#/components/schemas/_ShadowUserRef'
-      required:
-      - available
-      - shadow_user
-    FleetAgent:
-      type: object
-      description: One agent row on the fleet overview.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        slug:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        name:
-          type: string
-        description:
-          type: string
-        is_taskable:
-          type: boolean
-        is_router:
-          type: boolean
-        is_enabled:
-          type: boolean
-        scope_kind:
-          type: string
-        installable_by_company_types:
-          type: array
-          items:
-            type: string
-        installs:
-          $ref: '#/components/schemas/_InstallCounts'
-      required:
-      - description
-      - installable_by_company_types
-      - installs
-      - is_enabled
-      - is_router
-      - is_taskable
-      - name
-      - scope_kind
-      - slug
-      - uuid
-    _AgentRef:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        slug:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        name:
-          type: string
-        description:
-          type: string
-        is_taskable:
-          type: boolean
-      required:
-      - description
-      - is_taskable
-      - name
-      - slug
-      - uuid
-    AgentSession:
-      type: object
-      description: 'Read shape for the active AgentCore session pointer.
-
-
-        Surfaces ``session_id`` plus ``last_used_at`` so the FE can decide
-
-        whether a hydrated value is stale enough to warrant a fresh chat. We
-
-        intentionally do not expose the row''s primary key — callers always
-
-        address "the session for the current ``(user, company, agent_name)``"
-
-        via the ``/me/`` endpoint, so a UUID lookup field would be dead weight.'
-      properties:
-        session_id:
-          type: string
-          readOnly: true
-          description: Opaque AgentCore session id. Conversation pointer, not a secret — AgentCore enforces auth via the runtime JWT. Min length 33 chars (AgentCore SDK requirement); we mint as 'opply-{uuid4().hex}'.
-        agent_name:
-          type: string
-          readOnly: true
-          description: AgentCore runtime name (e.g. 'buyer-assistant').
-        agent_version:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: Concrete AgentCore runtime version (integer) this session last ran on, resolved from the version channel at invoke time. null = legacy row, local dev, or a channel with no CDK-published version. Kept for later session cleanup/repair (e.g. drop sessions from a bad version).
-        last_used_at:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Bumped on every invocation; lets us garbage-collect stale rows later.
-      required:
-      - agent_name
-      - agent_version
-      - last_used_at
-      - session_id
-    _FleetInstallation:
-      type: object
-      properties:
-        company:
-          allOf:
-          - $ref: '#/components/schemas/_CompanyRef'
-        status:
-          type: string
-        installed_by:
-          allOf:
-          - $ref: '#/components/schemas/_UserRef'
-        installed_at:
-          type: string
-          format: date-time
-        shadow_user:
-          allOf:
-          - $ref: '#/components/schemas/_UserRef'
-      required:
-      - company
-      - installed_at
-      - installed_by
-      - shadow_user
-      - status
-    AgentResponseFeedbackRequest:
-      type: object
-      description: 'Inbound shape for ``POST /api/v1/agents/feedback/``.
-
-
-        Polarity validation enforces that a positive ``rating_value`` only
-
-        carries positive tags and a negative one only carries negative tags.
-
-        Polarity sets live alongside the enum in ``apps.agents.enums``.'
-      properties:
-        agent_name:
-          type: string
-          maxLength: 64
-        invocation_id:
-          type: string
-          maxLength: 64
-        session_id:
-          type: string
-          default: ''
-          maxLength: 128
-        agentcore_request_id:
-          type: string
-          default: ''
-          maxLength: 128
-        client_message_id:
-          type: string
-          default: ''
-          maxLength: 64
-        agent_version:
-          type:
-          - integer
-          - 'null'
-          minimum: 0
-        rating_value:
-          type: number
-          format: double
-          maximum: 1.0
-          minimum: 0.0
-        tags:
-          type: array
-          items:
-            $ref: '#/components/schemas/FeedbackTagEnum'
-          maxItems: 7
-      required:
-      - agent_name
-      - invocation_id
-      - rating_value
-    FeedbackTagEnum:
-      enum:
-      - accurate
-      - saved_time
-      - good_judgement
-      - slow
-      - hallucination
-      - missed_context
-      - wrong_supplier
-      type: string
-      description: '* `accurate` - accurate
-
-        * `saved_time` - saved_time
-
-        * `good_judgement` - good_judgement
-
-        * `slow` - slow
-
-        * `hallucination` - hallucination
-
-        * `missed_context` - missed_context
-
-        * `wrong_supplier` - wrong_supplier'
-    _ShadowUserRef:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        name:
-          type: string
-      required:
-      - name
-      - uuid
-    Patched_SetStatusInput:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/AgentInstallationStatusEnum'
-    AgentInstallationStatusEnum:
-      enum:
-      - active
-      - paused
-      - revoked
-      type: string
-      description: '* `active` - Active
-
-        * `paused` - Paused
-
-        * `revoked` - Revoked'
-    AgentSessionMessages:
-      type: object
-      description: 'Envelope returned by ``GET /sessions/me/events/`` carrying the
-
-        user''s chat transcript projected from the agent''s snapshot.'
-      properties:
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgentSessionMessage'
-      required:
-      - messages
-    AgentDetailError:
-      type: object
-      description: 'Common error envelope for the agents session endpoints — returns
-
-        ``{"detail": "..."}`` on every non-2xx response.'
-      properties:
-        detail:
-          type: string
-      required:
-      - detail
   securitySchemes:
     cookieAuth:
       type: apiKey

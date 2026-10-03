@@ -346,81 +346,56 @@ paths:
           description: ''
 components:
   schemas:
-    NullEnum:
-      enum:
-      - null
-    Currencies:
-      enum:
-      - EUR
-      - USD
-      - GBP
-      - CAD
-      type: string
-      description: '* `EUR` - EUR
-
-        * `USD` - USD
-
-        * `GBP` - GBP
-
-        * `CAD` - CAD'
-    ProcessCSV:
+    PaginatedIngredientList:
       type: object
-      properties:
-        company_document_uuid:
-          type: string
-          format: uuid
       required:
-      - company_document_uuid
-    TaskResult:
-      type: object
+      - count
+      - results
       properties:
-        task_id:
-          type: string
-          description: Celery ID for the Task that was run
-          maxLength: 255
-        status:
-          allOf:
-          - $ref: '#/components/schemas/TaskResultStatusEnum'
-          title: Task State
-          description: 'Current state of the task being run
-
-
-            * `FAILURE` - FAILURE
-
-            * `PENDING` - PENDING
-
-            * `RECEIVED` - RECEIVED
-
-            * `RETRY` - RETRY
-
-            * `REVOKED` - REVOKED
-
-            * `STARTED` - STARTED
-
-            * `SUCCESS` - SUCCESS'
-        result:
+        count:
+          type: integer
+          example: 123
+        next:
           type:
-          - object
+          - string
           - 'null'
-          additionalProperties: {}
-          readOnly: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+    PaginatedInquiryDocumentList:
+      type: object
       required:
-      - result
-      - task_id
-    FrequencyEnum:
-      enum:
-      - weekly
-      - monthly
-      - quarterly
-      - annually
-      type: string
-      description: '* `weekly` - Weekly
-
-        * `monthly` - Monthly
-
-        * `quarterly` - Quarterly
-
-        * `annually` - Annually'
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InquiryDocument'
     TaskResultStatusEnum:
       enum:
       - FAILURE
@@ -447,14 +422,6 @@ components:
     BlankEnum:
       enum:
       - ''
-    TaskCreated:
-      type: object
-      properties:
-        task_id:
-          type: string
-          format: uuid
-      required:
-      - task_id
     Ingredient:
       type: object
       properties:
@@ -543,92 +510,56 @@ components:
       - id
       - name
       - uuid
-    PaginatedInquiryDocumentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/InquiryDocument'
-    InquiryDocument:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        document:
-          type: string
-          format: uri
-        description:
-          type:
-          - string
-          - 'null'
-      required:
-      - document
-      - uuid
-    AllergenRequirementsEnum:
+    Currencies:
       enum:
-      - celery
-      - cereals_containing_gluten
-      - crustaceans
-      - eggs
-      - fish
-      - lupin
-      - milk
-      - molluscs
-      - mustard
-      - nuts
-      - peanuts
-      - sesame_seeds
-      - soya
-      - sulphur_dioxide
+      - EUR
+      - USD
+      - GBP
+      - CAD
       type: string
-      description: '* `celery` - Celery
+      description: '* `EUR` - EUR
 
-        * `cereals_containing_gluten` - Cereals Containing Gluten
+        * `USD` - USD
 
-        * `crustaceans` - Crustaceans
+        * `GBP` - GBP
 
-        * `eggs` - Eggs
+        * `CAD` - CAD'
+    TaskResult:
+      type: object
+      properties:
+        task_id:
+          type: string
+          description: Celery ID for the Task that was run
+          maxLength: 255
+        status:
+          allOf:
+          - $ref: '#/components/schemas/TaskResultStatusEnum'
+          title: Task State
+          description: 'Current state of the task being run
 
-        * `fish` - Fish
 
-        * `lupin` - Lupin
+            * `FAILURE` - FAILURE
 
-        * `milk` - Milk
+            * `PENDING` - PENDING
 
-        * `molluscs` - Molluscs
+            * `RECEIVED` - RECEIVED
 
-        * `mustard` - Mustard
+            * `RETRY` - RETRY
 
-        * `nuts` - Nuts
+            * `REVOKED` - REVOKED
 
-        * `peanuts` - Peanuts
+            * `STARTED` - STARTED
 
-        * `sesame_seeds` - Sesame Seeds
-
-        * `soya` - Soya
-
-        * `sulphur_dioxide` - Sulphur Dioxide'
+            * `SUCCESS` - SUCCESS'
+        result:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+      required:
+      - result
+      - task_id
     PatchedIngredient:
       type: object
       properties:
@@ -711,6 +642,40 @@ components:
           - string
           - 'null'
           format: uuid
+    DietRequirementsEnum:
+      enum:
+      - kosher
+      - halal
+      - organic
+      - vegan
+      - vegetarian
+      type: string
+      description: '* `kosher` - Kosher
+
+        * `halal` - Halal
+
+        * `organic` - Organic
+
+        * `vegan` - Vegan
+
+        * `vegetarian` - Vegetarian'
+    InquiryDocument:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        document:
+          type: string
+          format: uri
+        description:
+          type:
+          - string
+          - 'null'
+      required:
+      - document
+      - uuid
     UnitOfMeasurementEnum:
       enum:
       - fl oz
@@ -770,48 +735,83 @@ components:
         * `cases` - Cases
 
         * `trays` - Trays'
-    PaginatedIngredientList:
+    ProcessCSV:
       type: object
-      required:
-      - count
-      - results
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Ingredient'
-    DietRequirementsEnum:
+        company_document_uuid:
+          type: string
+          format: uuid
+      required:
+      - company_document_uuid
+    FrequencyEnum:
       enum:
-      - kosher
-      - halal
-      - organic
-      - vegan
-      - vegetarian
+      - weekly
+      - monthly
+      - quarterly
+      - annually
       type: string
-      description: '* `kosher` - Kosher
+      description: '* `weekly` - Weekly
 
-        * `halal` - Halal
+        * `monthly` - Monthly
 
-        * `organic` - Organic
+        * `quarterly` - Quarterly
 
-        * `vegan` - Vegan
+        * `annually` - Annually'
+    AllergenRequirementsEnum:
+      enum:
+      - celery
+      - cereals_containing_gluten
+      - crustaceans
+      - eggs
+      - fish
+      - lupin
+      - milk
+      - molluscs
+      - mustard
+      - nuts
+      - peanuts
+      - sesame_seeds
+      - soya
+      - sulphur_dioxide
+      type: string
+      description: '* `celery` - Celery
 
-        * `vegetarian` - Vegetarian'
+        * `cereals_containing_gluten` - Cereals Containing Gluten
+
+        * `crustaceans` - Crustaceans
+
+        * `eggs` - Eggs
+
+        * `fish` - Fish
+
+        * `lupin` - Lupin
+
+        * `milk` - Milk
+
+        * `molluscs` - Molluscs
+
+        * `mustard` - Mustard
+
+        * `nuts` - Nuts
+
+        * `peanuts` - Peanuts
+
+        * `sesame_seeds` - Sesame Seeds
+
+        * `soya` - Soya
+
+        * `sulphur_dioxide` - Sulphur Dioxide'
+    TaskCreated:
+      type: object
+      properties:
+        task_id:
+          type: string
+          format: uuid
+      required:
+      - task_id
+    NullEnum:
+      enum:
+      - null
   securitySchemes:
     cookieAuth:
       type: apiKey

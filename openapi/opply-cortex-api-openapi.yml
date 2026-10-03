@@ -429,59 +429,20 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedCortexWorkflowWithJobsList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CortexWorkflowWithJobs'
-    CortexJobCreate:
-      type: object
-      description: Accepts a workflow by UUID for creation convenience.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        workflow_uuid:
-          type: string
-          format: uuid
-          writeOnly: true
-        agent_name:
-          type: string
-        description:
-          type: string
-        status:
-          $ref: '#/components/schemas/CortexJobStatusEnum'
-        job_index:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-      required:
-      - agent_name
-      - description
-      - status
-      - uuid
-      - workflow_uuid
+    CortexJobStatusEnum:
+      enum:
+      - PENDING
+      - EXECUTING
+      - COMPLETED
+      - AWAITING_HUMAN
+      type: string
+      description: '* `PENDING` - Pending
+
+        * `EXECUTING` - Executing
+
+        * `COMPLETED` - Completed
+
+        * `AWAITING_HUMAN` - Awaiting Human'
     PatchedCortexWorkflowWithJobs:
       type: object
       description: List all workflows with their associated jobs.
@@ -515,20 +476,6 @@ components:
         workFlowAlreadyHasFeedback:
           type: string
           readOnly: true
-    CortexJobUpdate:
-      type: object
-      description: 'Partial updates: agent_name, description, status.'
-      properties:
-        agent_name:
-          type: string
-        description:
-          type: string
-        status:
-          $ref: '#/components/schemas/CortexJobStatusEnum'
-        job_index:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
     CortexWorkflowCreate:
       type: object
       properties:
@@ -549,31 +496,6 @@ components:
       - input
       - type
       - uuid
-    PaginatedCortexJobList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CortexJob'
     PatchedCortexJobUpdate:
       type: object
       description: 'Partial updates: agent_name, description, status.'
@@ -588,37 +510,20 @@ components:
           type: integer
           maximum: 2147483647
           minimum: 0
-    CortexJobStatusEnum:
-      enum:
-      - PENDING
-      - EXECUTING
-      - COMPLETED
-      - AWAITING_HUMAN
-      type: string
-      description: '* `PENDING` - Pending
-
-        * `EXECUTING` - Executing
-
-        * `COMPLETED` - Completed
-
-        * `AWAITING_HUMAN` - Awaiting Human'
-    CortexWorkflowTypeEnum:
-      enum:
-      - FINANCE
-      - PREDICTIONS
-      - COMPLIANCE
-      - LOGISTICS
-      - ORDERS
-      type: string
-      description: '* `FINANCE` - Finance
-
-        * `PREDICTIONS` - Predictions
-
-        * `COMPLIANCE` - Compliance
-
-        * `LOGISTICS` - Logistics
-
-        * `ORDERS` - Orders'
+    CortexJobUpdate:
+      type: object
+      description: 'Partial updates: agent_name, description, status.'
+      properties:
+        agent_name:
+          type: string
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/CortexJobStatusEnum'
+        job_index:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
     CortexWorkflowWithJobs:
       type: object
       description: List all workflows with their associated jobs.
@@ -660,6 +565,101 @@ components:
       - type
       - uuid
       - workFlowAlreadyHasFeedback
+    PaginatedCortexWorkflowWithJobsList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CortexWorkflowWithJobs'
+    CortexWorkflowTypeEnum:
+      enum:
+      - FINANCE
+      - PREDICTIONS
+      - COMPLIANCE
+      - LOGISTICS
+      - ORDERS
+      type: string
+      description: '* `FINANCE` - Finance
+
+        * `PREDICTIONS` - Predictions
+
+        * `COMPLIANCE` - Compliance
+
+        * `LOGISTICS` - Logistics
+
+        * `ORDERS` - Orders'
+    PaginatedCortexJobList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CortexJob'
+    CortexJobCreate:
+      type: object
+      description: Accepts a workflow by UUID for creation convenience.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        workflow_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        agent_name:
+          type: string
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/CortexJobStatusEnum'
+        job_index:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+      required:
+      - agent_name
+      - description
+      - status
+      - uuid
+      - workflow_uuid
     CortexJob:
       type: object
       description: Used for reading jobs (and nested under workflows).

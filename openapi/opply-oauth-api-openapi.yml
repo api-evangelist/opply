@@ -129,31 +129,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedOAuthApplicationList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/OAuthApplication'
     AuthorizationGrantTypeEnum:
       enum:
       - authorization-code
@@ -174,14 +149,6 @@ components:
         * `client-credentials` - Client credentials
 
         * `openid-hybrid` - OpenID connect hybrid'
-    ClientTypeEnum:
-      enum:
-      - confidential
-      - public
-      type: string
-      description: '* `confidential` - Confidential
-
-        * `public` - Public'
     OAuthApplication:
       type: object
       description: Serializer for OAuth Application management (admin-only).
@@ -217,6 +184,39 @@ components:
       - created
       - id
       - updated
+    ClientTypeEnum:
+      enum:
+      - confidential
+      - public
+      type: string
+      description: '* `confidential` - Confidential
+
+        * `public` - Public'
+    PaginatedOAuthApplicationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OAuthApplication'
   securitySchemes:
     cookieAuth:
       type: apiKey

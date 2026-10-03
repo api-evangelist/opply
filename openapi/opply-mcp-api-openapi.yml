@@ -708,80 +708,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedMcpAuditLogList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/McpAuditLog'
-    PatchedMcpUserAccess:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-          description: Public identifier for this access record
-        user_uuid:
-          type: string
-          format: uuid
-        user_email:
-          type: string
-          format: email
-          readOnly: true
-        is_enabled:
-          type: boolean
-          description: Whether MCP access is currently active for this user
-        allowed_scopes:
-          description: OAuth scopes this user is permitted to use, e.g. ['orders:read', 'orders:write']
-        allowed_tools:
-          description: Specific tool names this user may call. Empty list means all tools within the allowed scopes are permitted.
-        granted_by_email:
-          type:
-          - string
-          - 'null'
-          format: email
-          readOnly: true
-        last_used:
-          type: string
-          readOnly: true
-        last_reason:
-          type: string
-          readOnly: true
-        last_tool:
-          type: string
-          readOnly: true
-        total_calls_30d:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-    McpAccessRequest:
+    PatchedMcpAccessRequest:
       type: object
       properties:
         uuid:
@@ -829,13 +756,112 @@ components:
           type: string
           format: date-time
           readOnly: true
+    PaginatedMcpUserAccessList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/McpUserAccess'
+    PaginatedMcpAccessRequestList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/McpAccessRequest'
+    McpUserAccess:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Public identifier for this access record
+        user_uuid:
+          type: string
+          format: uuid
+        user_email:
+          type: string
+          format: email
+          readOnly: true
+        is_enabled:
+          type: boolean
+          description: Whether MCP access is currently active for this user
+        allowed_scopes:
+          description: OAuth scopes this user is permitted to use, e.g. ['orders:read', 'orders:write']
+        allowed_tools:
+          description: Specific tool names this user may call. Empty list means all tools within the allowed scopes are permitted.
+        granted_by_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          readOnly: true
+        last_used:
+          type: string
+          readOnly: true
+        last_reason:
+          type: string
+          readOnly: true
+        last_tool:
+          type: string
+          readOnly: true
+        total_calls_30d:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
       required:
       - created
-      - justification
-      - requested_scopes
-      - reviewed_at
-      - reviewed_by_email
-      - status
+      - granted_by_email
+      - last_reason
+      - last_tool
+      - last_used
+      - modified
+      - total_calls_30d
       - user_email
       - user_uuid
       - uuid
@@ -928,7 +954,87 @@ components:
         * `zendesk:write` - Create and update Zendesk tickets, comments, and tags
 
         * `unleashed:read` - Read Unleashed company, suppliers, warehouses, and purchase orders'
-    McpUserAccess:
+    McpAccessRequest:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Public identifier for this access request
+        user_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        user_email:
+          type: string
+          format: email
+          readOnly: true
+        requested_scopes:
+          type: array
+          items:
+            $ref: '#/components/schemas/McpScopeKeyEnum'
+        justification:
+          type: string
+          description: Brief explanation from the user of why they need MCP access
+          maxLength: 500
+        status:
+          allOf:
+          - $ref: '#/components/schemas/McpAccessRequestStatusEnum'
+          readOnly: true
+        review_note:
+          type: string
+          default: ''
+        reviewed_by_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          readOnly: true
+        reviewed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: When the admin reviewed this request
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created
+      - justification
+      - requested_scopes
+      - reviewed_at
+      - reviewed_by_email
+      - status
+      - user_email
+      - user_uuid
+      - uuid
+    McpAuditStatusEnum:
+      enum:
+      - success
+      - error
+      - denied
+      type: string
+      description: '* `success` - Success
+
+        * `error` - Error
+
+        * `denied` - Denied'
+    McpAccessRequestStatusEnum:
+      enum:
+      - pending
+      - approved
+      - denied
+      type: string
+      description: '* `pending` - Pending
+
+        * `approved` - Approved
+
+        * `denied` - Denied'
+    PatchedMcpUserAccess:
       type: object
       properties:
         uuid:
@@ -976,67 +1082,6 @@ components:
           type: string
           format: date-time
           readOnly: true
-      required:
-      - created
-      - granted_by_email
-      - last_reason
-      - last_tool
-      - last_used
-      - modified
-      - total_calls_30d
-      - user_email
-      - user_uuid
-      - uuid
-    PaginatedMcpAccessRequestList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/McpAccessRequest'
-    PaginatedMcpUserAccessList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/McpUserAccess'
     McpAuditLog:
       type: object
       properties:
@@ -1125,76 +1170,31 @@ components:
       - user_agent
       - user_email
       - uuid
-    McpAuditStatusEnum:
-      enum:
-      - success
-      - error
-      - denied
-      type: string
-      description: '* `success` - Success
-
-        * `error` - Error
-
-        * `denied` - Denied'
-    PatchedMcpAccessRequest:
+    PaginatedMcpAuditLogList:
       type: object
+      required:
+      - count
+      - results
       properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-          description: Public identifier for this access request
-        user_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        user_email:
-          type: string
-          format: email
-          readOnly: true
-        requested_scopes:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
           type: array
           items:
-            $ref: '#/components/schemas/McpScopeKeyEnum'
-        justification:
-          type: string
-          description: Brief explanation from the user of why they need MCP access
-          maxLength: 500
-        status:
-          allOf:
-          - $ref: '#/components/schemas/McpAccessRequestStatusEnum'
-          readOnly: true
-        review_note:
-          type: string
-          default: ''
-        reviewed_by_email:
-          type:
-          - string
-          - 'null'
-          format: email
-          readOnly: true
-        reviewed_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: When the admin reviewed this request
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-    McpAccessRequestStatusEnum:
-      enum:
-      - pending
-      - approved
-      - denied
-      type: string
-      description: '* `pending` - Pending
-
-        * `approved` - Approved
-
-        * `denied` - Denied'
+            $ref: '#/components/schemas/McpAuditLog'
   securitySchemes:
     cookieAuth:
       type: apiKey

@@ -1902,20 +1902,616 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    HubSpotSyncRunTypeEnum:
+    CrmImportRunStatusEnum:
       enum:
-      - view_sync
-      - create_leads
-      - deal_state_refresh
-      - companies_upload
+      - pending
+      - in_progress
+      - success
+      - failure
       type: string
-      description: '* `view_sync` - View Sync
+      description: '* `pending` - Pending
 
-        * `create_leads` - Create Leads
+        * `in_progress` - In Progress
 
-        * `deal_state_refresh` - Deal/Lead State Refresh
+        * `success` - Success
 
-        * `companies_upload` - Companies Upload'
+        * `failure` - Failure'
+    CrmContact:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        company_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        linkedin_url:
+          type: string
+          description: LinkedIn profile URL used as the unique identifier for the contact
+          maxLength: 500
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CrmContactField'
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - company_uuid
+      - created
+      - fields
+      - linkedin_url
+      - modified
+      - uuid
+    CrmContactField:
+      type: object
+      properties:
+        field_type:
+          allOf:
+          - $ref: '#/components/schemas/CrmContactFieldTypeEnum'
+          readOnly: true
+        field_value:
+          readOnly: true
+        source:
+          type: string
+          readOnly: true
+      required:
+      - field_type
+      - field_value
+      - source
+    HubSpotSyncRunCreated:
+      type: object
+      properties:
+        run_uuid:
+          type: string
+          format: uuid
+      required:
+      - run_uuid
+    PaginatedEnrichmentRunListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnrichmentRunList'
+    PaginatedCrmImportRunListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CrmImportRunList'
+    CrmCustomColumnTypeEnum:
+      enum:
+      - numeric
+      - text
+      - llm
+      - score
+      type: string
+      description: '* `numeric` - Numeric
+
+        * `text` - Text
+
+        * `llm` - LLM
+
+        * `score` - Score'
+    ScoringDebug:
+      type: object
+      properties:
+        signals:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScoringSignal'
+        base_score:
+          type: number
+          format: double
+        final_score:
+          type: number
+          format: double
+        killer_applied:
+          type: boolean
+        killer_reason:
+          type:
+          - string
+          - 'null'
+        enrichment_data:
+          type: object
+          additionalProperties: {}
+        fetched_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      required:
+      - base_score
+      - enrichment_data
+      - fetched_at
+      - final_score
+      - killer_applied
+      - killer_reason
+      - signals
+    HubSpotSyncStatusEnum:
+      enum:
+      - pending
+      - synced
+      - failed
+      - not_found
+      type: string
+      description: '* `pending` - Pending
+
+        * `synced` - Synced
+
+        * `failed` - Failed
+
+        * `not_found` - Not Found'
+    PaginatedCrmContactList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CrmContact'
+    CrmCompanyEnrichedFields:
+      type: object
+      properties:
+        score:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: ICP score (0-100) calculated from icp_scoring enrichment process
+        ai_summary:
+          type:
+          - string
+          - 'null'
+          description: AI-generated company summary from icp_scoring enrichment process
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created
+      - modified
+    EnrichmentRunCreated:
+      type: object
+      description: Response after triggering enrichment.
+      properties:
+        run_uuid:
+          type: string
+          format: uuid
+      required:
+      - run_uuid
+    EnrichViewRequest:
+      type: object
+      description: Input for triggering enrichment on a saved view.
+      properties:
+        process_name:
+          allOf:
+          - $ref: '#/components/schemas/EnrichmentProcessNameEnum'
+          default: icp_scoring
+        force_full_enrichment:
+          type: boolean
+          default: false
+          description: Bypass the pre-score threshold check, forcing supplementary enrichment regardless of score.
+        force_refresh:
+          type: boolean
+          default: false
+          description: Bypass the S3 cache on every Lambda in the pipeline.
+    EnrichmentRunDetail:
+      type: object
+      description: Detail representation for the enrichment run history endpoint.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        view_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        process_name:
+          allOf:
+          - $ref: '#/components/schemas/EnrichmentProcessNameEnum'
+          description: 'Which enrichment process to run
+
+
+            * `icp_scoring` - ICP Scoring
+
+            * `company_employee_data` - Company Employee Data
+
+            * `contact_enrichment` - Contact Enrichment'
+        status:
+          $ref: '#/components/schemas/CrmImportRunStatusEnum'
+        total_companies:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        processed_companies:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        progress_percent:
+          type: number
+          format: double
+          readOnly: true
+        triggered_by_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        error:
+          type: string
+        started_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      required:
+      - created
+      - process_name
+      - progress_percent
+      - triggered_by_uuid
+      - uuid
+      - view_uuid
+    CrmImportRunTypeEnum:
+      enum:
+      - companies_bulk
+      - companies_file
+      - contacts_csv
+      type: string
+      description: '* `companies_bulk` - Companies Bulk Import
+
+        * `companies_file` - Companies File Import
+
+        * `contacts_csv` - Contacts CSV Import'
+    HubSpotSyncRunList:
+      type: object
+      description: List representation for the run history endpoint.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        run_type:
+          description: 'Type of sync run. Empty for legacy rows.
+
+
+            * `view_sync` - View Sync
+
+            * `create_leads` - Create Leads
+
+            * `deal_state_refresh` - Deal/Lead State Refresh
+
+            * `companies_upload` - Companies Upload'
+          oneOf:
+          - $ref: '#/components/schemas/HubSpotSyncRunTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        view_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/CrmImportRunStatusEnum'
+        total_companies:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        synced_companies:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        not_found_companies:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        failed_companies:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        triggered_by_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      required:
+      - created
+      - triggered_by_uuid
+      - uuid
+      - view_uuid
+    CrmSettings:
+      type: object
+      description: 'Serializer for per-company CRM settings (singleton).
+
+
+        The `company` field is set server-side and is not exposed.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        sync_hubspot_on_view_save:
+          type: boolean
+          description: When False, the automatic HubSpot View Sync that fires on saved view create/update is suppressed. Manual syncs via the hubspot-sync endpoint are unaffected.
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created
+      - modified
+      - uuid
+    CrmCustomColumn:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        type:
+          $ref: '#/components/schemas/CrmCustomColumnTypeEnum'
+        config: {}
+        created_by_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        is_owner:
+          type: boolean
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created
+      - created_by_uuid
+      - is_owner
+      - modified
+      - name
+      - type
+      - uuid
+    DnsCheckStatusEnum:
+      enum:
+      - pending
+      - success
+      - error
+      - not_found
+      type: string
+      description: '* `pending` - Pending
+
+        * `success` - Success
+
+        * `error` - Error
+
+        * `not_found` - Not Found'
+    PatchedCrmCustomColumn:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        type:
+          $ref: '#/components/schemas/CrmCustomColumnTypeEnum'
+        config: {}
+        created_by_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        is_owner:
+          type: boolean
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedCrmSavedView:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        config: {}
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/CrmCustomColumn'
+          readOnly: true
+        column_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          writeOnly: true
+        created_by_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        is_owner:
+          type: boolean
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        config_last_changed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: Timestamp of the most recent change to `config`. Used to determine whether the latest HubSpot sync is stale relative to the current view config.
+        latest_hubspot_sync_run:
+          type: string
+          readOnly: true
+        hubspot_sync_is_stale:
+          type: boolean
+          readOnly: true
+    HubSpotSyncRun:
+      type: object
+      description: 'Status payload for hubspot-create-leads runs.
+
+
+        Includes phase + contact-enrichment counters when the run was started via
+
+        the LLM-gated flow (ENABLE_CONTACT_ENRICHMENT_HUBSPOT_SYNC). Existing
+
+        fields are preserved so older clients keep working.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        status:
+          type: string
+        total_companies:
+          type: integer
+        synced_companies:
+          type: integer
+        not_found_companies:
+          type: integer
+        failed_companies:
+          type: integer
+        error:
+          type: string
+        started_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        phase:
+          type: string
+          readOnly: true
+        contacts_enrichment_total:
+          type: integer
+          readOnly: true
+        contacts_enrichment_processed:
+          type: integer
+          readOnly: true
+      required:
+      - completed_at
+      - contacts_enrichment_processed
+      - contacts_enrichment_total
+      - error
+      - failed_companies
+      - not_found_companies
+      - phase
+      - started_at
+      - status
+      - synced_companies
+      - total_companies
+      - uuid
     CrmSavedView:
       type: object
       properties:
@@ -1977,69 +2573,163 @@ components:
       - modified
       - name
       - uuid
-    CrmCustomColumn:
+    EnrichmentRun:
       type: object
+      description: Serializer for enrichment run status, including progress percentage.
       properties:
         uuid:
           type: string
           format: uuid
           readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        type:
-          $ref: '#/components/schemas/CrmCustomColumnTypeEnum'
-        config: {}
-        created_by_uuid:
-          type: string
-          format: uuid
+        process_name:
+          allOf:
+          - $ref: '#/components/schemas/EnrichmentProcessNameEnum'
+          description: 'Which enrichment process to run
+
+
+            * `icp_scoring` - ICP Scoring
+
+            * `company_employee_data` - Company Employee Data
+
+            * `contact_enrichment` - Contact Enrichment'
+        status:
+          $ref: '#/components/schemas/CrmImportRunStatusEnum'
+        total_companies:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        processed_companies:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        progress_percent:
+          type: number
+          format: double
           readOnly: true
-        is_owner:
-          type: boolean
-          readOnly: true
-        created:
+        error:
           type: string
+        started_at:
+          type:
+          - string
+          - 'null'
           format: date-time
-          readOnly: true
-        modified:
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        created:
           type: string
           format: date-time
           readOnly: true
       required:
       - created
-      - created_by_uuid
-      - is_owner
-      - modified
-      - name
-      - type
+      - process_name
+      - progress_percent
       - uuid
-    CrmSettings:
+    BlankEnum:
+      enum:
+      - ''
+    HubSpotPipeline:
       type: object
-      description: 'Serializer for per-company CRM settings (singleton).
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+      required:
+      - id
+      - label
+    CrmContactFieldTypeEnum:
+      enum:
+      - company_name
+      - first_name
+      - last_name
+      - full_name
+      - job_title
+      - location
+      - linkedin_url
+      - phone
+      - email
+      - other
+      type: string
+      description: '* `company_name` - Company Name
 
+        * `first_name` - First Name
 
-        The `company` field is set server-side and is not exposed.'
+        * `last_name` - Last Name
+
+        * `full_name` - Full Name
+
+        * `job_title` - Job Title
+
+        * `location` - Location
+
+        * `linkedin_url` - LinkedIn URL
+
+        * `phone` - Phone
+
+        * `email` - Email
+
+        * `other` - Other'
+    EnrichmentRunList:
+      type: object
+      description: List representation for the enrichment run history endpoint.
       properties:
         uuid:
           type: string
           format: uuid
           readOnly: true
-        sync_hubspot_on_view_save:
-          type: boolean
-          description: When False, the automatic HubSpot View Sync that fires on saved view create/update is suppressed. Manual syncs via the hubspot-sync endpoint are unaffected.
+        view_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        process_name:
+          allOf:
+          - $ref: '#/components/schemas/EnrichmentProcessNameEnum'
+          description: 'Which enrichment process to run
+
+
+            * `icp_scoring` - ICP Scoring
+
+            * `company_employee_data` - Company Employee Data
+
+            * `contact_enrichment` - Contact Enrichment'
+        status:
+          $ref: '#/components/schemas/CrmImportRunStatusEnum'
+        total_companies:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        processed_companies:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        progress_percent:
+          type: number
+          format: double
+          readOnly: true
+        triggered_by_uuid:
+          type: string
+          format: uuid
+          readOnly: true
         created:
           type: string
           format: date-time
           readOnly: true
-        modified:
-          type: string
+        completed_at:
+          type:
+          - string
+          - 'null'
           format: date-time
-          readOnly: true
       required:
       - created
-      - modified
+      - process_name
+      - progress_percent
+      - triggered_by_uuid
       - uuid
-    PaginatedHubSpotOwnerList:
+      - view_uuid
+    PaginatedHubSpotPipelineList:
       type: object
       required:
       - count
@@ -2063,7 +2753,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/HubSpotOwner'
+            $ref: '#/components/schemas/HubSpotPipeline'
     PatchedCrmSettings:
       type: object
       description: 'Serializer for per-company CRM settings (singleton).
@@ -2100,30 +2790,63 @@ components:
         * `won` - Won
 
         * `lost` - Lost'
-    HubSpotSyncRun:
+    HubSpotSyncRunDetail:
       type: object
-      description: 'Status payload for hubspot-create-leads runs.
-
-
-        Includes phase + contact-enrichment counters when the run was started via
-
-        the LLM-gated flow (ENABLE_CONTACT_ENRICHMENT_HUBSPOT_SYNC). Existing
-
-        fields are preserved so older clients keep working.'
+      description: Detail representation for the run history endpoint.
       properties:
         uuid:
           type: string
           format: uuid
-        status:
+          readOnly: true
+        run_type:
+          description: 'Type of sync run. Empty for legacy rows.
+
+
+            * `view_sync` - View Sync
+
+            * `create_leads` - Create Leads
+
+            * `deal_state_refresh` - Deal/Lead State Refresh
+
+            * `companies_upload` - Companies Upload'
+          oneOf:
+          - $ref: '#/components/schemas/HubSpotSyncRunTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        view_uuid:
           type: string
+          format: uuid
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/CrmImportRunStatusEnum'
         total_companies:
           type: integer
+          maximum: 2147483647
+          minimum: 0
         synced_companies:
           type: integer
+          maximum: 2147483647
+          minimum: 0
         not_found_companies:
           type: integer
+          maximum: 2147483647
+          minimum: 0
         failed_companies:
           type: integer
+          maximum: 2147483647
+          minimum: 0
+        triggered_by_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
         error:
           type: string
         started_at:
@@ -2131,33 +2854,51 @@ components:
           - string
           - 'null'
           format: date-time
-        completed_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        phase:
+        company_uuids:
+          description: List of CrmCompany UUIDs to process (Create Leads only). Empty for View Sync.
+        pipeline_id:
           type: string
-          readOnly: true
-        contacts_enrichment_total:
-          type: integer
-          readOnly: true
-        contacts_enrichment_processed:
-          type: integer
-          readOnly: true
+          description: HubSpot lead pipeline ID selected for this Create Leads run.
+          maxLength: 100
+        owner_id:
+          type: string
+          description: HubSpot owner ID selected for this Create Leads run.
+          maxLength: 100
       required:
-      - completed_at
-      - contacts_enrichment_processed
-      - contacts_enrichment_total
-      - error
-      - failed_companies
-      - not_found_companies
-      - phase
-      - started_at
-      - status
-      - synced_companies
-      - total_companies
+      - created
+      - triggered_by_uuid
       - uuid
+      - view_uuid
+    NullEnum:
+      enum:
+      - null
+    EnrichmentProcessNameEnum:
+      enum:
+      - icp_scoring
+      - company_employee_data
+      - contact_enrichment
+      type: string
+      description: '* `icp_scoring` - ICP Scoring
+
+        * `company_employee_data` - Company Employee Data
+
+        * `contact_enrichment` - Contact Enrichment'
+    HubSpotOwner:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+      required:
+      - email
+      - first_name
+      - id
+      - last_name
     CrmImportRunList:
       type: object
       description: List representation for the CRM import run history endpoint.
@@ -2213,61 +2954,118 @@ components:
       - run_type
       - triggered_by_uuid
       - uuid
-    ScoringDebug:
+    PaginatedHubSpotOwnerList:
       type: object
+      required:
+      - count
+      - results
       properties:
-        signals:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScoringSignal'
-        base_score:
-          type: number
-          format: double
-        final_score:
-          type: number
-          format: double
-        killer_applied:
-          type: boolean
-        killer_reason:
+        count:
+          type: integer
+          example: 123
+        next:
           type:
           - string
           - 'null'
-        enrichment_data:
-          type: object
-          additionalProperties: {}
-        fetched_at:
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/HubSpotOwner'
+    CrmImportRunDetail:
+      type: object
+      description: Detail representation for the CRM import run history endpoint.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        run_type:
+          allOf:
+          - $ref: '#/components/schemas/CrmImportRunTypeEnum'
+          description: 'Which kind of import this run represents.
+
+
+            * `companies_bulk` - Companies Bulk Import
+
+            * `companies_file` - Companies File Import
+
+            * `contacts_csv` - Contacts CSV Import'
+        source:
+          type: string
+          description: Data source label passed to the import (e.g. clay, cognism, apollo).
+          maxLength: 100
+        status:
+          $ref: '#/components/schemas/CrmImportRunStatusEnum'
+        total_companies:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        created_companies:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        updated_companies:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        triggered_by_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        error:
+          type: string
+        started_at:
           type:
           - string
           - 'null'
           format: date-time
       required:
-      - base_score
-      - enrichment_data
-      - fetched_at
-      - final_score
-      - killer_applied
-      - killer_reason
-      - signals
-    NullEnum:
-      enum:
-      - null
-    BlankEnum:
-      enum:
-      - ''
-    CrmCustomColumnTypeEnum:
-      enum:
-      - numeric
-      - text
-      - llm
-      - score
-      type: string
-      description: '* `numeric` - Numeric
-
-        * `text` - Text
-
-        * `llm` - LLM
-
-        * `score` - Score'
+      - created
+      - run_type
+      - triggered_by_uuid
+      - uuid
+    PaginatedCrmCompanyList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CrmCompany'
     HubSpotCreateLeadsRequest:
       type: object
       properties:
@@ -2287,91 +3085,6 @@ components:
       - company_uuids
       - owner_id
       - pipeline_id
-    PatchedCrmCustomColumn:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        type:
-          $ref: '#/components/schemas/CrmCustomColumnTypeEnum'
-        config: {}
-        created_by_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        is_owner:
-          type: boolean
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-    DnsCheckStatusEnum:
-      enum:
-      - pending
-      - success
-      - error
-      - not_found
-      type: string
-      description: '* `pending` - Pending
-
-        * `success` - Success
-
-        * `error` - Error
-
-        * `not_found` - Not Found'
-    CrmContactField:
-      type: object
-      properties:
-        field_type:
-          allOf:
-          - $ref: '#/components/schemas/CrmContactFieldTypeEnum'
-          readOnly: true
-        field_value:
-          readOnly: true
-        source:
-          type: string
-          readOnly: true
-      required:
-      - field_type
-      - field_value
-      - source
-    EnrichViewRequest:
-      type: object
-      description: Input for triggering enrichment on a saved view.
-      properties:
-        process_name:
-          allOf:
-          - $ref: '#/components/schemas/EnrichmentProcessNameEnum'
-          default: icp_scoring
-        force_full_enrichment:
-          type: boolean
-          default: false
-          description: Bypass the pre-score threshold check, forcing supplementary enrichment regardless of score.
-        force_refresh:
-          type: boolean
-          default: false
-          description: Bypass the S3 cache on every Lambda in the pipeline.
-    CrmImportRunTypeEnum:
-      enum:
-      - companies_bulk
-      - companies_file
-      - contacts_csv
-      type: string
-      description: '* `companies_bulk` - Companies Bulk Import
-
-        * `companies_file` - Companies File Import
-
-        * `contacts_csv` - Contacts CSV Import'
     CrmCompany:
       type: object
       properties:
@@ -2441,28 +3154,45 @@ components:
       - hubspot_sync_status
       - modified
       - uuid
-    HubSpotSyncRunCreated:
+    PaginatedHubSpotSyncRunListList:
       type: object
-      properties:
-        run_uuid:
-          type: string
-          format: uuid
       required:
-      - run_uuid
-    HubSpotSyncStatusEnum:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/HubSpotSyncRunList'
+    HubSpotSyncRunTypeEnum:
       enum:
-      - pending
-      - synced
-      - failed
-      - not_found
+      - view_sync
+      - create_leads
+      - deal_state_refresh
+      - companies_upload
       type: string
-      description: '* `pending` - Pending
+      description: '* `view_sync` - View Sync
 
-        * `synced` - Synced
+        * `create_leads` - Create Leads
 
-        * `failed` - Failed
+        * `deal_state_refresh` - Deal/Lead State Refresh
 
-        * `not_found` - Not Found'
+        * `companies_upload` - Companies Upload'
     CrmCompanyData:
       type: object
       properties:
@@ -2599,31 +3329,6 @@ components:
       - modified
       - source
       - uuid
-    CrmCompanyEnrichedFields:
-      type: object
-      properties:
-        score:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: ICP score (0-100) calculated from icp_scoring enrichment process
-        ai_summary:
-          type:
-          - string
-          - 'null'
-          description: AI-generated company summary from icp_scoring enrichment process
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created
-      - modified
     ScoringSignal:
       type: object
       properties:
@@ -2641,711 +3346,6 @@ components:
       - points
       - raw_value
       - signal
-    EnrichmentRunList:
-      type: object
-      description: List representation for the enrichment run history endpoint.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        view_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        process_name:
-          allOf:
-          - $ref: '#/components/schemas/EnrichmentProcessNameEnum'
-          description: 'Which enrichment process to run
-
-
-            * `icp_scoring` - ICP Scoring
-
-            * `company_employee_data` - Company Employee Data
-
-            * `contact_enrichment` - Contact Enrichment'
-        status:
-          $ref: '#/components/schemas/CrmImportRunStatusEnum'
-        total_companies:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        processed_companies:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        progress_percent:
-          type: number
-          format: double
-          readOnly: true
-        triggered_by_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        completed_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-      required:
-      - created
-      - process_name
-      - progress_percent
-      - triggered_by_uuid
-      - uuid
-      - view_uuid
-    CrmContactFieldTypeEnum:
-      enum:
-      - company_name
-      - first_name
-      - last_name
-      - full_name
-      - job_title
-      - location
-      - linkedin_url
-      - phone
-      - email
-      - other
-      type: string
-      description: '* `company_name` - Company Name
-
-        * `first_name` - First Name
-
-        * `last_name` - Last Name
-
-        * `full_name` - Full Name
-
-        * `job_title` - Job Title
-
-        * `location` - Location
-
-        * `linkedin_url` - LinkedIn URL
-
-        * `phone` - Phone
-
-        * `email` - Email
-
-        * `other` - Other'
-    HubSpotSyncRunDetail:
-      type: object
-      description: Detail representation for the run history endpoint.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        run_type:
-          description: 'Type of sync run. Empty for legacy rows.
-
-
-            * `view_sync` - View Sync
-
-            * `create_leads` - Create Leads
-
-            * `deal_state_refresh` - Deal/Lead State Refresh
-
-            * `companies_upload` - Companies Upload'
-          oneOf:
-          - $ref: '#/components/schemas/HubSpotSyncRunTypeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-        view_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        status:
-          $ref: '#/components/schemas/CrmImportRunStatusEnum'
-        total_companies:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        synced_companies:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        not_found_companies:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        failed_companies:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        triggered_by_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        completed_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        error:
-          type: string
-        started_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        company_uuids:
-          description: List of CrmCompany UUIDs to process (Create Leads only). Empty for View Sync.
-        pipeline_id:
-          type: string
-          description: HubSpot lead pipeline ID selected for this Create Leads run.
-          maxLength: 100
-        owner_id:
-          type: string
-          description: HubSpot owner ID selected for this Create Leads run.
-          maxLength: 100
-      required:
-      - created
-      - triggered_by_uuid
-      - uuid
-      - view_uuid
-    PaginatedCrmCompanyList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CrmCompany'
-    EnrichmentRun:
-      type: object
-      description: Serializer for enrichment run status, including progress percentage.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        process_name:
-          allOf:
-          - $ref: '#/components/schemas/EnrichmentProcessNameEnum'
-          description: 'Which enrichment process to run
-
-
-            * `icp_scoring` - ICP Scoring
-
-            * `company_employee_data` - Company Employee Data
-
-            * `contact_enrichment` - Contact Enrichment'
-        status:
-          $ref: '#/components/schemas/CrmImportRunStatusEnum'
-        total_companies:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        processed_companies:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        progress_percent:
-          type: number
-          format: double
-          readOnly: true
-        error:
-          type: string
-        started_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        completed_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created
-      - process_name
-      - progress_percent
-      - uuid
-    CrmImportRunDetail:
-      type: object
-      description: Detail representation for the CRM import run history endpoint.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        run_type:
-          allOf:
-          - $ref: '#/components/schemas/CrmImportRunTypeEnum'
-          description: 'Which kind of import this run represents.
-
-
-            * `companies_bulk` - Companies Bulk Import
-
-            * `companies_file` - Companies File Import
-
-            * `contacts_csv` - Contacts CSV Import'
-        source:
-          type: string
-          description: Data source label passed to the import (e.g. clay, cognism, apollo).
-          maxLength: 100
-        status:
-          $ref: '#/components/schemas/CrmImportRunStatusEnum'
-        total_companies:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        created_companies:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        updated_companies:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        triggered_by_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        completed_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        error:
-          type: string
-        started_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-      required:
-      - created
-      - run_type
-      - triggered_by_uuid
-      - uuid
-    PatchedCrmSavedView:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        config: {}
-        columns:
-          type: array
-          items:
-            $ref: '#/components/schemas/CrmCustomColumn'
-          readOnly: true
-        column_uuids:
-          type: array
-          items:
-            type: string
-            format: uuid
-          writeOnly: true
-        created_by_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        is_owner:
-          type: boolean
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        config_last_changed_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: Timestamp of the most recent change to `config`. Used to determine whether the latest HubSpot sync is stale relative to the current view config.
-        latest_hubspot_sync_run:
-          type: string
-          readOnly: true
-        hubspot_sync_is_stale:
-          type: boolean
-          readOnly: true
-    CrmImportRunStatusEnum:
-      enum:
-      - pending
-      - in_progress
-      - success
-      - failure
-      type: string
-      description: '* `pending` - Pending
-
-        * `in_progress` - In Progress
-
-        * `success` - Success
-
-        * `failure` - Failure'
-    PaginatedCrmImportRunListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CrmImportRunList'
-    HubSpotOwner:
-      type: object
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-        first_name:
-          type: string
-        last_name:
-          type: string
-      required:
-      - email
-      - first_name
-      - id
-      - last_name
-    EnrichmentRunCreated:
-      type: object
-      description: Response after triggering enrichment.
-      properties:
-        run_uuid:
-          type: string
-          format: uuid
-      required:
-      - run_uuid
-    PaginatedEnrichmentRunListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/EnrichmentRunList'
-    CrmContact:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        company_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        linkedin_url:
-          type: string
-          description: LinkedIn profile URL used as the unique identifier for the contact
-          maxLength: 500
-        fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/CrmContactField'
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - company_uuid
-      - created
-      - fields
-      - linkedin_url
-      - modified
-      - uuid
-    PaginatedCrmContactList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CrmContact'
-    EnrichmentProcessNameEnum:
-      enum:
-      - icp_scoring
-      - company_employee_data
-      - contact_enrichment
-      type: string
-      description: '* `icp_scoring` - ICP Scoring
-
-        * `company_employee_data` - Company Employee Data
-
-        * `contact_enrichment` - Contact Enrichment'
-    PaginatedHubSpotSyncRunListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/HubSpotSyncRunList'
-    HubSpotSyncRunList:
-      type: object
-      description: List representation for the run history endpoint.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        run_type:
-          description: 'Type of sync run. Empty for legacy rows.
-
-
-            * `view_sync` - View Sync
-
-            * `create_leads` - Create Leads
-
-            * `deal_state_refresh` - Deal/Lead State Refresh
-
-            * `companies_upload` - Companies Upload'
-          oneOf:
-          - $ref: '#/components/schemas/HubSpotSyncRunTypeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-        view_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        status:
-          $ref: '#/components/schemas/CrmImportRunStatusEnum'
-        total_companies:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        synced_companies:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        not_found_companies:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        failed_companies:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        triggered_by_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        completed_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-      required:
-      - created
-      - triggered_by_uuid
-      - uuid
-      - view_uuid
-    EnrichmentRunDetail:
-      type: object
-      description: Detail representation for the enrichment run history endpoint.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        view_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        process_name:
-          allOf:
-          - $ref: '#/components/schemas/EnrichmentProcessNameEnum'
-          description: 'Which enrichment process to run
-
-
-            * `icp_scoring` - ICP Scoring
-
-            * `company_employee_data` - Company Employee Data
-
-            * `contact_enrichment` - Contact Enrichment'
-        status:
-          $ref: '#/components/schemas/CrmImportRunStatusEnum'
-        total_companies:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        processed_companies:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        progress_percent:
-          type: number
-          format: double
-          readOnly: true
-        triggered_by_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        completed_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        error:
-          type: string
-        started_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-      required:
-      - created
-      - process_name
-      - progress_percent
-      - triggered_by_uuid
-      - uuid
-      - view_uuid
-    HubSpotPipeline:
-      type: object
-      properties:
-        id:
-          type: string
-        label:
-          type: string
-      required:
-      - id
-      - label
-    PaginatedHubSpotPipelineList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/HubSpotPipeline'
   securitySchemes:
     cookieAuth:
       type: apiKey

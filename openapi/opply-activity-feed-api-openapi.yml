@@ -156,20 +156,27 @@ paths:
           description: ''
 components:
   schemas:
-    FeedItemStatusEnum:
-      enum:
-      - queued
-      - processing
-      - integrating
-      - processed
-      type: string
-      description: '* `queued` - Queued
-
-        * `processing` - Processing
-
-        * `integrating` - Integrating
-
-        * `processed` - Processed'
+    PaginatedFeedItemReadList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeedItemRead'
     FeedItemRead:
       type: object
       properties:
@@ -230,27 +237,20 @@ components:
       - status
       - summary
       - uuid
-    PaginatedFeedItemReadList:
-      type: object
-      required:
-      - results
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/FeedItemRead'
+    FeedItemStatusEnum:
+      enum:
+      - queued
+      - processing
+      - integrating
+      - processed
+      type: string
+      description: '* `queued` - Queued
+
+        * `processing` - Processing
+
+        * `integrating` - Integrating
+
+        * `processed` - Processed'
   securitySchemes:
     cookieAuth:
       type: apiKey

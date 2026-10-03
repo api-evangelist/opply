@@ -819,6 +819,46 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    CompanyTypeEnum:
+      enum:
+      - brand
+      - supplier
+      - merchant_of_record
+      type: string
+      description: '* `brand` - Brand
+
+        * `supplier` - Supplier
+
+        * `merchant_of_record` - Merchant of Record'
+    QuoteState:
+      enum:
+      - available
+      - ordered
+      - expired
+      - declined
+      - pending_payment
+      - proceeded
+      - contract_created
+      - contract_proceeded
+      - contract_confirmed
+      type: string
+      description: '* `available` - available
+
+        * `ordered` - ordered
+
+        * `expired` - expired
+
+        * `declined` - declined
+
+        * `pending_payment` - pending_payment
+
+        * `proceeded` - proceeded
+
+        * `contract_created` - Contract Created
+
+        * `contract_proceeded` - contract_proceeded
+
+        * `contract_confirmed` - contract_confirmed'
     PaginatedSupplierInquiryListList:
       type: object
       required:
@@ -844,127 +884,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SupplierInquiryList'
-    Company:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        website:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        name:
-          type: string
-          maxLength: 255
-        logo:
-          type:
-          - string
-          - 'null'
-          format: uri
-        industry:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        kyb_status:
-          type: string
-          readOnly: true
-        phone_number:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-        country:
-          type: string
-          readOnly: true
-        state:
-          type: string
-          readOnly: true
-        company_type:
-          $ref: '#/components/schemas/CompanyTypeEnum'
-        product_type:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductTypeEnum'
-          default:
-          - e
-          - h
-          - o
-          - r
-          - t
-        activity_type:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivityTypeEnum'
-          default:
-          - e
-          - h
-          - o
-          - r
-          - t
-        registration_number:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        registration_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        mongo_id:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        referral_code:
-          type: string
-          readOnly: true
-        phone_country_code:
-          oneOf:
-          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        company_addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompanyAddress'
-        currency:
-          type: string
-          readOnly: true
-        payout_method_type:
-          type:
-          - string
-          - 'null'
-          description: rapyd payout method
-          maxLength: 45
-        bank_account_country:
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        duns:
-          type:
-          - string
-          - 'null'
-          description: DUNS number for creditworthiness checks and payouts
-          maxLength: 50
-      required:
-      - country
-      - currency
-      - id
-      - kyb_status
-      - mongo_id
-      - name
-      - referral_code
-      - state
-      - uuid
     Country:
       enum:
       - AF
@@ -1717,94 +1636,254 @@ components:
         * `ZM` - Zambia
 
         * `ZW` - Zimbabwe'
-    InquiryDeclinedResponse:
+    Currencies:
+      enum:
+      - EUR
+      - USD
+      - GBP
+      - CAD
+      type: string
+      description: '* `EUR` - EUR
+
+        * `USD` - USD
+
+        * `GBP` - GBP
+
+        * `CAD` - CAD'
+    InquiryCategory:
+      enum:
+      - non_recurring
+      - recurring
+      - purchase_request
+      - ingredient
+      - ingredient_copy
+      type: string
+      description: '* `non_recurring` - Non Recurring
+
+        * `recurring` - Recurring
+
+        * `purchase_request` - Purchase Request
+
+        * `ingredient` - Ingredient
+
+        * `ingredient_copy` - Ingredient Copy'
+    Address:
       type: object
       properties:
-        decline_reason:
-          type: array
-          items:
-            $ref: '#/components/schemas/InquiryDeclinedResponseDeclineReasonEnum'
-        decline_reason_extended:
+        building:
           type:
           - string
           - 'null'
-      required:
-      - decline_reason
-    PaginatedDashboardInquiriesList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
+          maxLength: 100
+        street_1:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        street_2:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        town:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        region:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        postcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        place_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        latitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        longitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        company_id:
           type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/DashboardInquiries'
-    PurchaseRequestResponse:
+          readOnly: true
+      required:
+      - company_id
+    InquiryDeclinedResponseDeclineReasonEnum:
+      enum:
+      - do_not_sell_this_ingredient
+      - request_quantity_too_small
+      - request_quantity_too_large
+      - cant_meet_specification
+      - cant_meet_delivery_date
+      - ingredient_out_of_stock
+      - other
+      type: string
+      description: '* `do_not_sell_this_ingredient` - Not Sell
+
+        * `request_quantity_too_small` - Too Small
+
+        * `request_quantity_too_large` - Too Large
+
+        * `cant_meet_specification` - Cant Meet Specification
+
+        * `cant_meet_delivery_date` - Cant Meet Delivery Date
+
+        * `ingredient_out_of_stock` - Out Of Stock
+
+        * `other` - Other'
+    DietRequirementsEnum:
+      enum:
+      - kosher
+      - halal
+      - organic
+      - vegan
+      - vegetarian
+      type: string
+      description: '* `kosher` - Kosher
+
+        * `halal` - Halal
+
+        * `organic` - Organic
+
+        * `vegan` - Vegan
+
+        * `vegetarian` - Vegetarian'
+    DashboardInquiriesForSupplier:
       type: object
       properties:
         uuid:
           type: string
           format: uuid
-        due_date:
+          readOnly: true
+        name:
           type: string
-          format: date
-        related_contract:
-          type: integer
+          maxLength: 255
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        currency:
+          $ref: '#/components/schemas/Currencies'
+        unit_of_measurement:
+          $ref: '#/components/schemas/UnitOfMeasurementEnum'
+        category:
+          $ref: '#/components/schemas/InquiryCategory'
         quantity:
           type: string
           format: decimal
           pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-        quote_uuid:
+        total_forecast_quantity:
+          type: string
+          readOnly: true
+        first_order_delivery_date:
           type:
           - string
           - 'null'
+          format: date
+        is_new:
+          type: boolean
+          readOnly: true
+        due_date:
+          type: string
+          format: date
+        original_quote_uuid:
+          type: string
           format: uuid
+          readOnly: true
       required:
       - due_date
+      - is_new
+      - name
+      - original_quote_uuid
       - quantity
-      - related_contract
+      - total_forecast_quantity
       - uuid
-    PaginatedDashboardInquiriesForSupplierList:
+    ProductTypeEnum:
+      enum:
+      - confect_snacks
+      - conv_food
+      - bread_cereals
+      - sauces_spices
+      - spreads
+      - tea
+      - coffee
+      - water
+      - carb_drinks
+      - alc_drinks
+      - juice_drinks
+      - energy_drinks
+      - cosmetics
+      - milk_dairy
+      - free_form_alt
+      - other
+      type: string
+      description: '* `confect_snacks` - Confectionery & Snacks
+
+        * `conv_food` - Convenience Food
+
+        * `bread_cereals` - Bread & Cereals
+
+        * `sauces_spices` - Sauces & Spices
+
+        * `spreads` - Spreads
+
+        * `tea` - Tea
+
+        * `coffee` - Coffee
+
+        * `water` - Water
+
+        * `carb_drinks` - Carbonated Drinks
+
+        * `alc_drinks` - Alcoholic Drinks
+
+        * `juice_drinks` - Juice Drinks
+
+        * `energy_drinks` - Energy Drinks
+
+        * `cosmetics` - Cosmetics
+
+        * `milk_dairy` - Milk & Dairy
+
+        * `free_form_alt` - Free Form Alternative
+
+        * `other` - Other'
+    InquiryDocument:
       type: object
-      required:
-      - count
-      - results
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        document:
+          type: string
+          format: uri
+        description:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/DashboardInquiriesForSupplier'
+      required:
+      - document
+      - uuid
     Inquiry:
       type: object
       properties:
@@ -1973,36 +2052,7 @@ components:
       - supplier_countries
       - target_unit_price
       - uuid
-    QuoteState:
-      enum:
-      - available
-      - ordered
-      - expired
-      - declined
-      - pending_payment
-      - proceeded
-      - contract_created
-      - contract_proceeded
-      - contract_confirmed
-      type: string
-      description: '* `available` - available
-
-        * `ordered` - ordered
-
-        * `expired` - expired
-
-        * `declined` - declined
-
-        * `pending_payment` - pending_payment
-
-        * `proceeded` - proceeded
-
-        * `contract_created` - Contract Created
-
-        * `contract_proceeded` - contract_proceeded
-
-        * `contract_confirmed` - contract_confirmed'
-    PaginatedInquiryDocumentList:
+    PaginatedDashboardInquiriesForSupplierList:
       type: object
       required:
       - count
@@ -2026,133 +2076,8 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/InquiryDocument'
-    NullEnum:
-      enum:
-      - null
-    PatchedUpdatePurchaseRequest:
-      type: object
-      properties:
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-        due_date:
-          type: string
-          format: date
-        delivery_address:
-          type:
-          - integer
-          - 'null'
-        purchase_quote_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-    PaginatedChannelExpandedList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChannelExpanded'
-    BlankEnum:
-      enum:
-      - ''
-    ProductTypeEnum:
-      enum:
-      - confect_snacks
-      - conv_food
-      - bread_cereals
-      - sauces_spices
-      - spreads
-      - tea
-      - coffee
-      - water
-      - carb_drinks
-      - alc_drinks
-      - juice_drinks
-      - energy_drinks
-      - cosmetics
-      - milk_dairy
-      - free_form_alt
-      - other
-      type: string
-      description: '* `confect_snacks` - Confectionery & Snacks
-
-        * `conv_food` - Convenience Food
-
-        * `bread_cereals` - Bread & Cereals
-
-        * `sauces_spices` - Sauces & Spices
-
-        * `spreads` - Spreads
-
-        * `tea` - Tea
-
-        * `coffee` - Coffee
-
-        * `water` - Water
-
-        * `carb_drinks` - Carbonated Drinks
-
-        * `alc_drinks` - Alcoholic Drinks
-
-        * `juice_drinks` - Juice Drinks
-
-        * `energy_drinks` - Energy Drinks
-
-        * `cosmetics` - Cosmetics
-
-        * `milk_dairy` - Milk & Dairy
-
-        * `free_form_alt` - Free Form Alternative
-
-        * `other` - Other'
-    ActivityTypeEnum:
-      enum:
-      - producer
-      - distributor
-      - importer_exporter
-      - wholesaler
-      - food_manufacturer
-      - beverage_manufacturer
-      - raw_mat_manufacturer
-      - other
-      type: string
-      description: '* `producer` - Producer
-
-        * `distributor` - Distributor
-
-        * `importer_exporter` - Importer / Exporter
-
-        * `wholesaler` - Wholesaler
-
-        * `food_manufacturer` - Manufacturer of Finished Food Products
-
-        * `beverage_manufacturer` - Manufacturer of Finished Beverage Products
-
-        * `raw_mat_manufacturer` - Manufacturer of raw materials
-
-        * `other` - Other'
-    SupplierInquiryList:
+            $ref: '#/components/schemas/DashboardInquiriesForSupplier'
+    Company:
       type: object
       properties:
         id:
@@ -2162,109 +2087,117 @@ components:
           type: string
           format: uuid
           readOnly: true
-        state:
-          $ref: '#/components/schemas/InquiryState'
+        website:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
         name:
           type: string
           maxLength: 255
-        currency:
-          $ref: '#/components/schemas/Currencies'
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-        unit_of_measurement:
-          $ref: '#/components/schemas/UnitOfMeasurementEnum'
-        due_date:
-          type: string
-          format: date
-        delivery_address:
-          allOf:
-          - $ref: '#/components/schemas/DeliveryAddressForSupplier'
-          readOnly: true
-        published:
+        logo:
           type:
           - string
           - 'null'
-          format: date-time
-          description: Datetime when the inquiry becomes published. Leave empty to keep it unpublished.
-        logo_url:
-          type: string
           format: uri
-          maxLength: 2048
-        is_new:
-          type: boolean
-          readOnly: true
-        supplier_state:
-          allOf:
-          - $ref: '#/components/schemas/SupplierStateEnum'
-          readOnly: true
-        declined:
-          type: string
-          readOnly: true
-        first_order_delivery_date:
+        industry:
           type:
           - string
           - 'null'
-          format: date
-        is_recurring:
-          type: boolean
-          default: false
-        is_delivery_date_flexible:
-          type: boolean
-        total_forecast_quantity:
+          maxLength: 100
+        kyb_status:
           type: string
           readOnly: true
-        category:
-          $ref: '#/components/schemas/InquiryCategory'
-        original_quote_uuid:
+        phone_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        country:
           type: string
-          format: uuid
           readOnly: true
+        state:
+          type: string
+          readOnly: true
+        company_type:
+          $ref: '#/components/schemas/CompanyTypeEnum'
+        product_type:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductTypeEnum'
+          default:
+          - e
+          - h
+          - o
+          - r
+          - t
+        activity_type:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityTypeEnum'
+          default:
+          - e
+          - h
+          - o
+          - r
+          - t
+        registration_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        registration_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        mongo_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        referral_code:
+          type: string
+          readOnly: true
+        phone_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        company_addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyAddress'
+        currency:
+          type: string
+          readOnly: true
+        payout_method_type:
+          type:
+          - string
+          - 'null'
+          description: rapyd payout method
+          maxLength: 45
+        bank_account_country:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        duns:
+          type:
+          - string
+          - 'null'
+          description: DUNS number for creditworthiness checks and payouts
+          maxLength: 50
       required:
-      - declined
-      - delivery_address
-      - due_date
+      - country
+      - currency
       - id
-      - is_new
+      - kyb_status
+      - mongo_id
       - name
-      - original_quote_uuid
-      - quantity
-      - supplier_state
-      - total_forecast_quantity
+      - referral_code
+      - state
       - uuid
-    SamplesFeedbackEnum:
-      enum:
-      - ingredient_quality
-      - quote_price
-      - supplier_communication
-      - quality_not_as_expected
-      - too_expensive
-      - not_suitable_for_recipe
-      - not_needed_anymore
-      - dont_provided_samples
-      - ingredient_out_of_stock
-      - other
-      type: string
-      description: '* `ingredient_quality` - Ingredient Quality
-
-        * `quote_price` - Quote Price
-
-        * `supplier_communication` - Supplier Communication
-
-        * `quality_not_as_expected` - Quality Not As Expected
-
-        * `too_expensive` - Too Expensive
-
-        * `not_suitable_for_recipe` - Not Suitable For Recipe
-
-        * `not_needed_anymore` - Not Needed Anymore
-
-        * `dont_provided_samples` - Dont Provide Samples
-
-        * `ingredient_out_of_stock` - Ingredient Out Of Stock
-
-        * `other` - Other'
     InquiryResponse:
       type: object
       properties:
@@ -2500,7 +2433,525 @@ components:
       - total_forecast_quantity
       - total_forecast_spend
       - uuid
-    SupplierInquiryResponse:
+    SamplesStatusEnum:
+      enum:
+      - available
+      - requested
+      - sent
+      - received
+      - accepted
+      - rejected
+      - declined
+      type: string
+      description: '* `available` - Available
+
+        * `requested` - Requested
+
+        * `sent` - Sent
+
+        * `received` - Received
+
+        * `accepted` - Accepted
+
+        * `rejected` - Rejected
+
+        * `declined` - Declined'
+    PaginatedInquiryListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InquiryList'
+    ActivityTypeEnum:
+      enum:
+      - producer
+      - distributor
+      - importer_exporter
+      - wholesaler
+      - food_manufacturer
+      - beverage_manufacturer
+      - raw_mat_manufacturer
+      - other
+      type: string
+      description: '* `producer` - Producer
+
+        * `distributor` - Distributor
+
+        * `importer_exporter` - Importer / Exporter
+
+        * `wholesaler` - Wholesaler
+
+        * `food_manufacturer` - Manufacturer of Finished Food Products
+
+        * `beverage_manufacturer` - Manufacturer of Finished Beverage Products
+
+        * `raw_mat_manufacturer` - Manufacturer of raw materials
+
+        * `other` - Other'
+    PriorityNameEnum:
+      enum:
+      - price
+      - quality
+      - service
+      type: string
+      description: '* `price` - Price
+
+        * `quality` - Quality
+
+        * `service` - Service'
+    PatchedUpdatePurchaseRequest:
+      type: object
+      properties:
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        due_date:
+          type: string
+          format: date
+        delivery_address:
+          type:
+          - integer
+          - 'null'
+        purchase_quote_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+    PaginatedInquiryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Inquiry'
+    UpdatePurchaseRequest:
+      type: object
+      properties:
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        due_date:
+          type: string
+          format: date
+        delivery_address:
+          type:
+          - integer
+          - 'null'
+        purchase_quote_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+      required:
+      - due_date
+      - purchase_quote_uuid
+      - quantity
+    PurchaseRequestResponse:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        due_date:
+          type: string
+          format: date
+        related_contract:
+          type: integer
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        quote_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+      required:
+      - due_date
+      - quantity
+      - related_contract
+      - uuid
+    InquiryUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        state:
+          type: string
+        category:
+          $ref: '#/components/schemas/InquiryCategory'
+        name:
+          type: string
+          maxLength: 255
+        current_unit_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        target_unit_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        currency:
+          $ref: '#/components/schemas/Currencies'
+        description:
+          type: string
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        unit_of_measurement:
+          $ref: '#/components/schemas/UnitOfMeasurementEnum'
+        allergen_requirements:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/AllergenRequirementsEnum'
+            - $ref: '#/components/schemas/BlankEnum'
+        allergen_declaration:
+          type: boolean
+        dietary_certificate:
+          type: boolean
+        diet_requirements:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/DietRequirementsEnum'
+            - $ref: '#/components/schemas/BlankEnum'
+        forecast:
+          oneOf:
+          - $ref: '#/components/schemas/ForecastEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        due_date:
+          type: string
+          format: date
+        delivery_address:
+          type:
+          - integer
+          - 'null'
+        supplier_countries:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/Country'
+            - $ref: '#/components/schemas/BlankEnum'
+          maxItems: 250
+        current_supplier:
+          type: string
+        published:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Datetime when the inquiry becomes published. Leave empty to keep it unpublished.
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        is_new:
+          type: boolean
+          readOnly: true
+        article:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        existing_suppliers:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+          readOnly: true
+        supply_priorities:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplyPriorities'
+        first_order_delivery_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        opply_brand_commission:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+        opply_supplier_commission:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+        is_recurring:
+          type: boolean
+          default: false
+        frequency:
+          oneOf:
+          - $ref: '#/components/schemas/FrequencyEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        desired_contract_length:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        is_delivery_date_flexible:
+          type: boolean
+        parent_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        ingredient:
+          type:
+          - integer
+          - 'null'
+        reason_for_request:
+          type:
+          - string
+          - 'null'
+        desired_packaging_format:
+          type: string
+        desired_packaging_format_is_flexible:
+          type: boolean
+        ai_generated:
+          type: boolean
+        documents_to_copy:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+        existing_supplier_name:
+          type: string
+          readOnly: true
+      required:
+      - current_unit_price
+      - description
+      - due_date
+      - existing_supplier_name
+      - existing_suppliers
+      - id
+      - is_new
+      - state
+      - supplier_countries
+      - target_unit_price
+      - uuid
+    DashboardInquiries:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        currency:
+          $ref: '#/components/schemas/Currencies'
+        unit_of_measurement:
+          $ref: '#/components/schemas/UnitOfMeasurementEnum'
+        total_quotes_count:
+          type: number
+          readOnly: true
+        new_quotes_count:
+          type: number
+          readOnly: true
+        lowest_unit_price:
+          type: number
+          format: double
+          readOnly: true
+        savings_percentage:
+          type: number
+          readOnly: true
+        is_new:
+          type: boolean
+          readOnly: true
+        original_quote_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        ai_generated:
+          type: boolean
+      required:
+      - is_new
+      - lowest_unit_price
+      - name
+      - new_quotes_count
+      - original_quote_uuid
+      - savings_percentage
+      - total_quotes_count
+      - uuid
+    SupportedCurrencies:
+      enum:
+      - EUR
+      - GBP
+      - USD
+      - CAD
+      type: string
+      description: '* `EUR` - EUR
+
+        * `GBP` - GBP
+
+        * `USD` - USD
+
+        * `CAD` - CAD'
+    PaginatedChannelExpandedList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChannelExpanded'
+    PurchaseRequestCreate:
+      type: object
+      properties:
+        quote_uuid:
+          type: string
+          format: uuid
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        delivery_date:
+          type: string
+          format: date
+        delivery_address:
+          type: integer
+        ingredient_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+      required:
+      - delivery_address
+      - delivery_date
+      - quantity
+      - quote_uuid
+    ChannelExpanded:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        buyer_name:
+          type: string
+          readOnly: true
+        supplier_name:
+          type: string
+          readOnly: true
+      required:
+      - buyer_name
+      - supplier_name
+      - uuid
+    PaginatedInquiryDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InquiryDocument'
+    SupplierStateEnum:
+      enum:
+      - awaiting_quote
+      - quote_provided
+      - ordered
+      - expired
+      - declined
+      type: string
+      description: '* `awaiting_quote` - awaiting_quote
+
+        * `quote_provided` - quote_provided
+
+        * `ordered` - ordered
+
+        * `expired` - expired
+
+        * `declined` - declined'
+    PatchedInquiry:
       type: object
       properties:
         id:
@@ -2560,9 +3011,372 @@ components:
           type: string
           format: date
         delivery_address:
-          allOf:
-          - $ref: '#/components/schemas/DeliveryAddressForSupplier'
+          type:
+          - integer
+          - 'null'
+        supplier_countries:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/Country'
+            - $ref: '#/components/schemas/BlankEnum'
+          maxItems: 250
+        current_supplier:
+          type: string
+        published:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Datetime when the inquiry becomes published. Leave empty to keep it unpublished.
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        is_new:
+          type: boolean
           readOnly: true
+        article:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        existing_suppliers:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+          readOnly: true
+        supply_priorities:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplyPriorities'
+        first_order_delivery_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        opply_brand_commission:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+        opply_supplier_commission:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+        is_recurring:
+          type: boolean
+          default: false
+        frequency:
+          oneOf:
+          - $ref: '#/components/schemas/FrequencyEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        desired_contract_length:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        is_delivery_date_flexible:
+          type: boolean
+        parent_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        ingredient:
+          type:
+          - integer
+          - 'null'
+        reason_for_request:
+          type:
+          - string
+          - 'null'
+        desired_packaging_format:
+          type: string
+        desired_packaging_format_is_flexible:
+          type: boolean
+        ai_generated:
+          type: boolean
+        documents_to_copy:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+    DeliveryAddressForSupplier:
+      type: object
+      properties:
+        town:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        postcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+    BlankEnum:
+      enum:
+      - ''
+    InquiryDeclinedResponse:
+      type: object
+      properties:
+        decline_reason:
+          type: array
+          items:
+            $ref: '#/components/schemas/InquiryDeclinedResponseDeclineReasonEnum'
+        decline_reason_extended:
+          type:
+          - string
+          - 'null'
+      required:
+      - decline_reason
+    SupplyPriorities:
+      type: object
+      properties:
+        priority_name:
+          oneOf:
+          - $ref: '#/components/schemas/PriorityNameEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        priority_value:
+          type:
+          - integer
+          - 'null'
+          maximum: 3
+          minimum: 1
+          description: Level of priority for the user. 1-higher, 3-lower
+    CompanyAddress:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        address_type:
+          $ref: '#/components/schemas/AddressTypeEnum'
+        contact_full_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        contact_phone:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        building:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        street_1:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        street_2:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        town:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        region:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        postcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        place_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        latitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        longitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        vat_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        vat_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        vat_exempt:
+          type: boolean
+        phone_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        delivery_instructions:
+          type:
+          - string
+          - 'null'
+        collection_instructions:
+          type:
+          - string
+          - 'null'
+        country_type:
+          $ref: '#/components/schemas/CountryTypeEnum'
+        eori_number:
+          type: string
+          maxLength: 20
+        ein_number:
+          type: string
+          maxLength: 20
+        notes:
+          type: string
+        delivery_location_type:
+          type: string
+          description: Type of delivery location (warehouse, factory, distribution_center, retail_location, other).
+          maxLength: 50
+        delivery_location_type_other:
+          type: string
+          description: Free-text description when delivery_location_type == 'other'.
+          maxLength: 255
+        warehouse_receiving_hours:
+          type: string
+          description: Free-text receiving hours (e.g. 'Mon-Fri 9am-5pm').
+          maxLength: 255
+      required:
+      - created
+      - id
+      - modified
+      - name
+      - uuid
+    ForecastEnum:
+      enum:
+      - one_time_order
+      - weekly
+      - Monthly
+      - quarterly
+      - annually
+      - undecided
+      type: string
+      description: '* `one_time_order` - One Time Order
+
+        * `weekly` - Weekly
+
+        * `Monthly` - Monthly
+
+        * `quarterly` - Quarterly
+
+        * `annually` - Annually
+
+        * `undecided` - Undecided'
+    InquiryList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        state:
+          $ref: '#/components/schemas/InquiryState'
+        category:
+          $ref: '#/components/schemas/InquiryCategory'
+        name:
+          type: string
+          maxLength: 255
+        current_unit_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        target_unit_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        currency:
+          $ref: '#/components/schemas/Currencies'
+        description:
+          type: string
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        unit_of_measurement:
+          $ref: '#/components/schemas/UnitOfMeasurementEnum'
+        allergen_requirements:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/AllergenRequirementsEnum'
+            - $ref: '#/components/schemas/BlankEnum'
+        allergen_declaration:
+          type: boolean
+        dietary_certificate:
+          type: boolean
+        diet_requirements:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/DietRequirementsEnum'
+            - $ref: '#/components/schemas/BlankEnum'
+        forecast:
+          oneOf:
+          - $ref: '#/components/schemas/ForecastEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        due_date:
+          type: string
+          format: date
+        delivery_address:
+          type:
+          - integer
+          - 'null'
         supplier_countries:
           type: array
           items:
@@ -2678,237 +3492,136 @@ components:
         decline_reason:
           type: string
           readOnly: true
-        company_address:
-          allOf:
-          - $ref: '#/components/schemas/Address'
-          readOnly: true
-        progress:
-          type: string
-          readOnly: true
-        possible_suppliers:
-          type: string
-          readOnly: true
-        suppliers_found:
-          type: string
-          readOnly: true
-        number_of_quotes:
-          type: string
-          readOnly: true
-        company:
-          allOf:
-          - $ref: '#/components/schemas/Company'
-          readOnly: true
-        existing_supplier_name:
-          type: string
-          readOnly: true
-        supplier_matching:
-          type: string
-          readOnly: true
-        total_forecast_spend:
-          type: string
-          readOnly: true
-        published_quote_uuid:
-          type: string
-          default: ''
-        supplier_state:
-          allOf:
-          - $ref: '#/components/schemas/SupplierStateEnum'
-          readOnly: true
-        buyer_contact_name:
-          type: string
-          readOnly: true
-        buyer_full_name:
-          type: string
-          readOnly: true
-        commission_payout_vat_rate:
-          type: string
-          readOnly: true
       required:
-      - buyer_contact_name
-      - buyer_full_name
-      - commission_payout_vat_rate
-      - company
-      - company_address
       - current_unit_price
       - decline_reason
       - declined
-      - delivery_address
       - description
       - due_date
-      - existing_supplier_name
       - existing_supplier_uuid
       - existing_suppliers
       - id
       - is_new
       - name
-      - number_of_quotes
       - orders_uuid
       - original_quote_uuid
-      - possible_suppliers
-      - progress
       - quantity
       - supplier_countries
-      - supplier_matching
-      - supplier_state
-      - suppliers_found
       - target_unit_price
       - total_forecast_quantity
-      - total_forecast_spend
       - uuid
-    PurchaseRequestCreate:
+    PaginatedDashboardInquiriesList:
       type: object
-      properties:
-        quote_uuid:
-          type: string
-          format: uuid
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-        delivery_date:
-          type: string
-          format: date
-        delivery_address:
-          type: integer
-        ingredient_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
       required:
-      - delivery_address
-      - delivery_date
-      - quantity
-      - quote_uuid
-    AllAndFeaturedQuotesForInquiry:
-      type: object
+      - count
+      - results
       properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        product_name:
-          type: string
-          maxLength: 255
-        unit_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,9}(?:\.\d{0,10})?$
-        currency:
-          $ref: '#/components/schemas/SupportedCurrencies'
-        category:
-          $ref: '#/components/schemas/QuoteCategory'
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-        unit_of_measurement:
-          $ref: '#/components/schemas/UnitOfMeasurementEnum'
-        lead_time:
+        count:
           type: integer
-          maximum: 2147483647
-          minimum: 0
-          title: The maximum time a supplier agrees to deliver the product within (days)
-        expiry_date:
+          example: 123
+        next:
           type:
           - string
           - 'null'
-          format: date
-        status:
-          $ref: '#/components/schemas/QuoteState'
-        samples_status:
-          $ref: '#/components/schemas/SamplesStatusEnum'
-        samples_delivery_address:
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
           type:
-          - integer
+          - string
           - 'null'
-        samples_feedback:
-          type:
-          - array
-          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
           items:
-            $ref: '#/components/schemas/SamplesFeedbackEnum'
-        samples_feedback_comment:
-          type: string
-        unread_messages_count:
-          type: number
-          readOnly: true
-        has_specs:
-          type: boolean
-          readOnly: true
-        unit_price_no_vat_with_shipping:
-          type: string
-          readOnly: true
-        price_percentage_lower:
-          type: string
-          readOnly: true
-        packaging:
-          type: string
-        expires_in:
-          type: string
-          readOnly: true
-        total_forecast_volume:
-          type: string
-          readOnly: true
-      required:
-      - currency
-      - expires_in
-      - has_specs
-      - lead_time
-      - packaging
-      - price_percentage_lower
-      - product_name
-      - quantity
-      - total_forecast_volume
-      - unit_price_no_vat_with_shipping
-      - unread_messages_count
-      - uuid
-    ChannelExpanded:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        buyer_name:
-          type: string
-          readOnly: true
-        supplier_name:
-          type: string
-          readOnly: true
-      required:
-      - buyer_name
-      - supplier_name
-      - uuid
-    DeliveryAddressForSupplier:
-      type: object
-      properties:
-        town:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        country:
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        postcode:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-    CompanyTypeEnum:
+            $ref: '#/components/schemas/DashboardInquiries'
+    UnitOfMeasurementEnum:
       enum:
-      - brand
-      - supplier
-      - merchant_of_record
+      - fl oz
+      - g
+      - mg
+      - gals
+      - kg
+      - L
+      - tons
+      - oz
+      - lbs
+      - pcs
+      - pt
+      - ml
+      - boxes
+      - pallets
+      - tsp
+      - tbsp
+      - units
+      - cases
+      - trays
       type: string
-      description: '* `brand` - Brand
+      description: '* `fl oz` - Fluid Ounces
 
-        * `supplier` - Supplier
+        * `g` - Grams
 
-        * `merchant_of_record` - Merchant of Record'
+        * `mg` - milligrams
+
+        * `gals` - Gallons
+
+        * `kg` - Kilograms
+
+        * `L` - Liters
+
+        * `tons` - Metric Tons
+
+        * `oz` - Ounces
+
+        * `lbs` - Pounds
+
+        * `pcs` - Pieces
+
+        * `pt` - Pints
+
+        * `ml` - Milliliter
+
+        * `boxes` - Boxes
+
+        * `pallets` - Pallets
+
+        * `tsp` - Teaspoons
+
+        * `tbsp` - Tablespoons
+
+        * `units` - Units
+
+        * `cases` - Cases
+
+        * `trays` - Trays'
+    FrequencyEnum:
+      enum:
+      - weekly
+      - monthly
+      - quarterly
+      - annually
+      type: string
+      description: '* `weekly` - Weekly
+
+        * `monthly` - Monthly
+
+        * `quarterly` - Quarterly
+
+        * `annually` - Annually'
+    NullEnum:
+      enum:
+      - null
+    CountryTypeEnum:
+      enum:
+      - EU
+      - GB
+      - Other
+      type: string
+      description: '* `EU` - Eu
+
+        * `GB` - Gb
+
+        * `Other` - Other'
     PhoneCountryCodeEnum:
       enum:
       - '+376'
@@ -3592,6 +4305,170 @@ components:
         * `+260` - +260
 
         * `+263` - +263'
+    SupplierInquiryList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        state:
+          $ref: '#/components/schemas/InquiryState'
+        name:
+          type: string
+          maxLength: 255
+        currency:
+          $ref: '#/components/schemas/Currencies'
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        unit_of_measurement:
+          $ref: '#/components/schemas/UnitOfMeasurementEnum'
+        due_date:
+          type: string
+          format: date
+        delivery_address:
+          allOf:
+          - $ref: '#/components/schemas/DeliveryAddressForSupplier'
+          readOnly: true
+        published:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Datetime when the inquiry becomes published. Leave empty to keep it unpublished.
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        is_new:
+          type: boolean
+          readOnly: true
+        supplier_state:
+          allOf:
+          - $ref: '#/components/schemas/SupplierStateEnum'
+          readOnly: true
+        declined:
+          type: string
+          readOnly: true
+        first_order_delivery_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        is_recurring:
+          type: boolean
+          default: false
+        is_delivery_date_flexible:
+          type: boolean
+        total_forecast_quantity:
+          type: string
+          readOnly: true
+        category:
+          $ref: '#/components/schemas/InquiryCategory'
+        original_quote_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+      required:
+      - declined
+      - delivery_address
+      - due_date
+      - id
+      - is_new
+      - name
+      - original_quote_uuid
+      - quantity
+      - supplier_state
+      - total_forecast_quantity
+      - uuid
+    AllAndFeaturedQuotesForInquiry:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        product_name:
+          type: string
+          maxLength: 255
+        unit_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,9}(?:\.\d{0,10})?$
+        currency:
+          $ref: '#/components/schemas/SupportedCurrencies'
+        category:
+          $ref: '#/components/schemas/QuoteCategory'
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        unit_of_measurement:
+          $ref: '#/components/schemas/UnitOfMeasurementEnum'
+        lead_time:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: The maximum time a supplier agrees to deliver the product within (days)
+        expiry_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        status:
+          $ref: '#/components/schemas/QuoteState'
+        samples_status:
+          $ref: '#/components/schemas/SamplesStatusEnum'
+        samples_delivery_address:
+          type:
+          - integer
+          - 'null'
+        samples_feedback:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/SamplesFeedbackEnum'
+        samples_feedback_comment:
+          type: string
+        unread_messages_count:
+          type: number
+          readOnly: true
+        has_specs:
+          type: boolean
+          readOnly: true
+        unit_price_no_vat_with_shipping:
+          type: string
+          readOnly: true
+        price_percentage_lower:
+          type: string
+          readOnly: true
+        packaging:
+          type: string
+        expires_in:
+          type: string
+          readOnly: true
+        total_forecast_volume:
+          type: string
+          readOnly: true
+      required:
+      - currency
+      - expires_in
+      - has_specs
+      - lead_time
+      - packaging
+      - price_percentage_lower
+      - product_name
+      - quantity
+      - total_forecast_volume
+      - unit_price_no_vat_with_shipping
+      - unread_messages_count
+      - uuid
     InquiryState:
       enum:
       - awaiting_quotes
@@ -3618,111 +4495,38 @@ components:
         * `supplier_decline_to_quote` - Supplier Decline To Quote
 
         * `cancelled` - Cancelled'
-    ForecastEnum:
+    SamplesFeedbackEnum:
       enum:
-      - one_time_order
-      - weekly
-      - Monthly
-      - quarterly
-      - annually
-      - undecided
+      - ingredient_quality
+      - quote_price
+      - supplier_communication
+      - quality_not_as_expected
+      - too_expensive
+      - not_suitable_for_recipe
+      - not_needed_anymore
+      - dont_provided_samples
+      - ingredient_out_of_stock
+      - other
       type: string
-      description: '* `one_time_order` - One Time Order
+      description: '* `ingredient_quality` - Ingredient Quality
 
-        * `weekly` - Weekly
+        * `quote_price` - Quote Price
 
-        * `Monthly` - Monthly
+        * `supplier_communication` - Supplier Communication
 
-        * `quarterly` - Quarterly
+        * `quality_not_as_expected` - Quality Not As Expected
 
-        * `annually` - Annually
+        * `too_expensive` - Too Expensive
 
-        * `undecided` - Undecided'
-    PaginatedInquiryListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/InquiryList'
-    Address:
-      type: object
-      properties:
-        building:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        street_1:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        street_2:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        town:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        region:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        postcode:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        country:
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        place_id:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        latitude:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-        longitude:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-        company_id:
-          type: integer
-          readOnly: true
-      required:
-      - company_id
+        * `not_suitable_for_recipe` - Not Suitable For Recipe
+
+        * `not_needed_anymore` - Not Needed Anymore
+
+        * `dont_provided_samples` - Dont Provide Samples
+
+        * `ingredient_out_of_stock` - Ingredient Out Of Stock
+
+        * `other` - Other'
     AddressTypeEnum:
       enum:
       - billing_address
@@ -3737,395 +4541,7 @@ components:
         * `dispatch_address` - Dispatch address
 
         * `company_address` - Company address'
-    QuoteCategory:
-      enum:
-      - non_recurring
-      - recurring
-      - purchase_request_quote
-      type: string
-      description: '* `non_recurring` - Non Recurring
-
-        * `recurring` - Recurring
-
-        * `purchase_request_quote` - Purchase Request Quote'
-    FrequencyEnum:
-      enum:
-      - weekly
-      - monthly
-      - quarterly
-      - annually
-      type: string
-      description: '* `weekly` - Weekly
-
-        * `monthly` - Monthly
-
-        * `quarterly` - Quarterly
-
-        * `annually` - Annually'
-    DashboardInquiriesForSupplier:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        logo_url:
-          type: string
-          format: uri
-          maxLength: 2048
-        currency:
-          $ref: '#/components/schemas/Currencies'
-        unit_of_measurement:
-          $ref: '#/components/schemas/UnitOfMeasurementEnum'
-        category:
-          $ref: '#/components/schemas/InquiryCategory'
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-        total_forecast_quantity:
-          type: string
-          readOnly: true
-        first_order_delivery_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        is_new:
-          type: boolean
-          readOnly: true
-        due_date:
-          type: string
-          format: date
-        original_quote_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-      required:
-      - due_date
-      - is_new
-      - name
-      - original_quote_uuid
-      - quantity
-      - total_forecast_quantity
-      - uuid
-    SupportedCurrencies:
-      enum:
-      - EUR
-      - GBP
-      - USD
-      - CAD
-      type: string
-      description: '* `EUR` - EUR
-
-        * `GBP` - GBP
-
-        * `USD` - USD
-
-        * `CAD` - CAD'
-    PaginatedInquiryList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Inquiry'
-    AllergenRequirementsEnum:
-      enum:
-      - celery
-      - cereals_containing_gluten
-      - crustaceans
-      - eggs
-      - fish
-      - lupin
-      - milk
-      - molluscs
-      - mustard
-      - nuts
-      - peanuts
-      - sesame_seeds
-      - soya
-      - sulphur_dioxide
-      type: string
-      description: '* `celery` - Celery
-
-        * `cereals_containing_gluten` - Cereals Containing Gluten
-
-        * `crustaceans` - Crustaceans
-
-        * `eggs` - Eggs
-
-        * `fish` - Fish
-
-        * `lupin` - Lupin
-
-        * `milk` - Milk
-
-        * `molluscs` - Molluscs
-
-        * `mustard` - Mustard
-
-        * `nuts` - Nuts
-
-        * `peanuts` - Peanuts
-
-        * `sesame_seeds` - Sesame Seeds
-
-        * `soya` - Soya
-
-        * `sulphur_dioxide` - Sulphur Dioxide'
-    InquiryDocument:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        document:
-          type: string
-          format: uri
-        description:
-          type:
-          - string
-          - 'null'
-      required:
-      - document
-      - uuid
-    UpdatePurchaseRequest:
-      type: object
-      properties:
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-        due_date:
-          type: string
-          format: date
-        delivery_address:
-          type:
-          - integer
-          - 'null'
-        purchase_quote_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-      required:
-      - due_date
-      - purchase_quote_uuid
-      - quantity
-    Currencies:
-      enum:
-      - EUR
-      - USD
-      - GBP
-      - CAD
-      type: string
-      description: '* `EUR` - EUR
-
-        * `USD` - USD
-
-        * `GBP` - GBP
-
-        * `CAD` - CAD'
-    DietRequirementsEnum:
-      enum:
-      - kosher
-      - halal
-      - organic
-      - vegan
-      - vegetarian
-      type: string
-      description: '* `kosher` - Kosher
-
-        * `halal` - Halal
-
-        * `organic` - Organic
-
-        * `vegan` - Vegan
-
-        * `vegetarian` - Vegetarian'
-    PriorityNameEnum:
-      enum:
-      - price
-      - quality
-      - service
-      type: string
-      description: '* `price` - Price
-
-        * `quality` - Quality
-
-        * `service` - Service'
-    CompanyAddress:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        address_type:
-          $ref: '#/components/schemas/AddressTypeEnum'
-        contact_full_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        contact_phone:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-        building:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        street_1:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        street_2:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        town:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        region:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        postcode:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        country:
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        place_id:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        latitude:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-        longitude:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-        vat_number:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-        vat_country_code:
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        vat_exempt:
-          type: boolean
-        phone_country_code:
-          oneOf:
-          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        delivery_instructions:
-          type:
-          - string
-          - 'null'
-        collection_instructions:
-          type:
-          - string
-          - 'null'
-        country_type:
-          $ref: '#/components/schemas/CountryTypeEnum'
-        eori_number:
-          type: string
-          maxLength: 20
-        ein_number:
-          type: string
-          maxLength: 20
-        notes:
-          type: string
-        delivery_location_type:
-          type: string
-          description: Type of delivery location (warehouse, factory, distribution_center, retail_location, other).
-          maxLength: 50
-        delivery_location_type_other:
-          type: string
-          description: Free-text description when delivery_location_type == 'other'.
-          maxLength: 255
-        warehouse_receiving_hours:
-          type: string
-          description: Free-text receiving hours (e.g. 'Mon-Fri 9am-5pm').
-          maxLength: 255
-      required:
-      - created
-      - id
-      - modified
-      - name
-      - uuid
-    CountryTypeEnum:
-      enum:
-      - EU
-      - GB
-      - Other
-      type: string
-      description: '* `EU` - Eu
-
-        * `GB` - Gb
-
-        * `Other` - Other'
-    PatchedInquiry:
+    SupplierInquiryResponse:
       type: object
       properties:
         id:
@@ -4185,368 +4601,9 @@ components:
           type: string
           format: date
         delivery_address:
-          type:
-          - integer
-          - 'null'
-        supplier_countries:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/Country'
-            - $ref: '#/components/schemas/BlankEnum'
-          maxItems: 250
-        current_supplier:
-          type: string
-        published:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Datetime when the inquiry becomes published. Leave empty to keep it unpublished.
-        logo_url:
-          type: string
-          format: uri
-          maxLength: 2048
-        is_new:
-          type: boolean
+          allOf:
+          - $ref: '#/components/schemas/DeliveryAddressForSupplier'
           readOnly: true
-        article:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        existing_suppliers:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-            format: uuid
-          readOnly: true
-        supply_priorities:
-          type: array
-          items:
-            $ref: '#/components/schemas/SupplyPriorities'
-        first_order_delivery_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        opply_brand_commission:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
-        opply_supplier_commission:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
-        is_recurring:
-          type: boolean
-          default: false
-        frequency:
-          oneOf:
-          - $ref: '#/components/schemas/FrequencyEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        desired_contract_length:
-          type:
-          - integer
-          - 'null'
-          minimum: 0
-        is_delivery_date_flexible:
-          type: boolean
-        parent_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        ingredient:
-          type:
-          - integer
-          - 'null'
-        reason_for_request:
-          type:
-          - string
-          - 'null'
-        desired_packaging_format:
-          type: string
-        desired_packaging_format_is_flexible:
-          type: boolean
-        ai_generated:
-          type: boolean
-        documents_to_copy:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-            format: uuid
-    SupplyPriorities:
-      type: object
-      properties:
-        priority_name:
-          oneOf:
-          - $ref: '#/components/schemas/PriorityNameEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        priority_value:
-          type:
-          - integer
-          - 'null'
-          maximum: 3
-          minimum: 1
-          description: Level of priority for the user. 1-higher, 3-lower
-    SamplesStatusEnum:
-      enum:
-      - available
-      - requested
-      - sent
-      - received
-      - accepted
-      - rejected
-      - declined
-      type: string
-      description: '* `available` - Available
-
-        * `requested` - Requested
-
-        * `sent` - Sent
-
-        * `received` - Received
-
-        * `accepted` - Accepted
-
-        * `rejected` - Rejected
-
-        * `declined` - Declined'
-    InquiryCategory:
-      enum:
-      - non_recurring
-      - recurring
-      - purchase_request
-      - ingredient
-      - ingredient_copy
-      type: string
-      description: '* `non_recurring` - Non Recurring
-
-        * `recurring` - Recurring
-
-        * `purchase_request` - Purchase Request
-
-        * `ingredient` - Ingredient
-
-        * `ingredient_copy` - Ingredient Copy'
-    DashboardInquiries:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        logo_url:
-          type: string
-          format: uri
-          maxLength: 2048
-        currency:
-          $ref: '#/components/schemas/Currencies'
-        unit_of_measurement:
-          $ref: '#/components/schemas/UnitOfMeasurementEnum'
-        total_quotes_count:
-          type: number
-          readOnly: true
-        new_quotes_count:
-          type: number
-          readOnly: true
-        lowest_unit_price:
-          type: number
-          format: double
-          readOnly: true
-        savings_percentage:
-          type: number
-          readOnly: true
-        is_new:
-          type: boolean
-          readOnly: true
-        original_quote_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        ai_generated:
-          type: boolean
-      required:
-      - is_new
-      - lowest_unit_price
-      - name
-      - new_quotes_count
-      - original_quote_uuid
-      - savings_percentage
-      - total_quotes_count
-      - uuid
-    SupplierStateEnum:
-      enum:
-      - awaiting_quote
-      - quote_provided
-      - ordered
-      - expired
-      - declined
-      type: string
-      description: '* `awaiting_quote` - awaiting_quote
-
-        * `quote_provided` - quote_provided
-
-        * `ordered` - ordered
-
-        * `expired` - expired
-
-        * `declined` - declined'
-    InquiryDeclinedResponseDeclineReasonEnum:
-      enum:
-      - do_not_sell_this_ingredient
-      - request_quantity_too_small
-      - request_quantity_too_large
-      - cant_meet_specification
-      - cant_meet_delivery_date
-      - ingredient_out_of_stock
-      - other
-      type: string
-      description: '* `do_not_sell_this_ingredient` - Not Sell
-
-        * `request_quantity_too_small` - Too Small
-
-        * `request_quantity_too_large` - Too Large
-
-        * `cant_meet_specification` - Cant Meet Specification
-
-        * `cant_meet_delivery_date` - Cant Meet Delivery Date
-
-        * `ingredient_out_of_stock` - Out Of Stock
-
-        * `other` - Other'
-    UnitOfMeasurementEnum:
-      enum:
-      - fl oz
-      - g
-      - mg
-      - gals
-      - kg
-      - L
-      - tons
-      - oz
-      - lbs
-      - pcs
-      - pt
-      - ml
-      - boxes
-      - pallets
-      - tsp
-      - tbsp
-      - units
-      - cases
-      - trays
-      type: string
-      description: '* `fl oz` - Fluid Ounces
-
-        * `g` - Grams
-
-        * `mg` - milligrams
-
-        * `gals` - Gallons
-
-        * `kg` - Kilograms
-
-        * `L` - Liters
-
-        * `tons` - Metric Tons
-
-        * `oz` - Ounces
-
-        * `lbs` - Pounds
-
-        * `pcs` - Pieces
-
-        * `pt` - Pints
-
-        * `ml` - Milliliter
-
-        * `boxes` - Boxes
-
-        * `pallets` - Pallets
-
-        * `tsp` - Teaspoons
-
-        * `tbsp` - Tablespoons
-
-        * `units` - Units
-
-        * `cases` - Cases
-
-        * `trays` - Trays'
-    InquiryList:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        state:
-          $ref: '#/components/schemas/InquiryState'
-        category:
-          $ref: '#/components/schemas/InquiryCategory'
-        name:
-          type: string
-          maxLength: 255
-        current_unit_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-        target_unit_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-        currency:
-          $ref: '#/components/schemas/Currencies'
-        description:
-          type: string
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-        unit_of_measurement:
-          $ref: '#/components/schemas/UnitOfMeasurementEnum'
-        allergen_requirements:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/AllergenRequirementsEnum'
-            - $ref: '#/components/schemas/BlankEnum'
-        allergen_declaration:
-          type: boolean
-        dietary_certificate:
-          type: boolean
-        diet_requirements:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/DietRequirementsEnum'
-            - $ref: '#/components/schemas/BlankEnum'
-        forecast:
-          oneOf:
-          - $ref: '#/components/schemas/ForecastEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        due_date:
-          type: string
-          format: date
-        delivery_address:
-          type:
-          - integer
-          - 'null'
         supplier_countries:
           type: array
           items:
@@ -4662,195 +4719,138 @@ components:
         decline_reason:
           type: string
           readOnly: true
+        company_address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
+          readOnly: true
+        progress:
+          type: string
+          readOnly: true
+        possible_suppliers:
+          type: string
+          readOnly: true
+        suppliers_found:
+          type: string
+          readOnly: true
+        number_of_quotes:
+          type: string
+          readOnly: true
+        company:
+          allOf:
+          - $ref: '#/components/schemas/Company'
+          readOnly: true
+        existing_supplier_name:
+          type: string
+          readOnly: true
+        supplier_matching:
+          type: string
+          readOnly: true
+        total_forecast_spend:
+          type: string
+          readOnly: true
+        published_quote_uuid:
+          type: string
+          default: ''
+        supplier_state:
+          allOf:
+          - $ref: '#/components/schemas/SupplierStateEnum'
+          readOnly: true
+        buyer_contact_name:
+          type: string
+          readOnly: true
+        buyer_full_name:
+          type: string
+          readOnly: true
+        commission_payout_vat_rate:
+          type: string
+          readOnly: true
       required:
+      - buyer_contact_name
+      - buyer_full_name
+      - commission_payout_vat_rate
+      - company
+      - company_address
       - current_unit_price
       - decline_reason
       - declined
+      - delivery_address
       - description
       - due_date
+      - existing_supplier_name
       - existing_supplier_uuid
       - existing_suppliers
       - id
       - is_new
       - name
+      - number_of_quotes
       - orders_uuid
       - original_quote_uuid
+      - possible_suppliers
+      - progress
       - quantity
       - supplier_countries
+      - supplier_matching
+      - supplier_state
+      - suppliers_found
       - target_unit_price
       - total_forecast_quantity
+      - total_forecast_spend
       - uuid
-    InquiryUpdate:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        state:
-          type: string
-        category:
-          $ref: '#/components/schemas/InquiryCategory'
-        name:
-          type: string
-          maxLength: 255
-        current_unit_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-        target_unit_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-        currency:
-          $ref: '#/components/schemas/Currencies'
-        description:
-          type: string
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-        unit_of_measurement:
-          $ref: '#/components/schemas/UnitOfMeasurementEnum'
-        allergen_requirements:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/AllergenRequirementsEnum'
-            - $ref: '#/components/schemas/BlankEnum'
-        allergen_declaration:
-          type: boolean
-        dietary_certificate:
-          type: boolean
-        diet_requirements:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/DietRequirementsEnum'
-            - $ref: '#/components/schemas/BlankEnum'
-        forecast:
-          oneOf:
-          - $ref: '#/components/schemas/ForecastEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        due_date:
-          type: string
-          format: date
-        delivery_address:
-          type:
-          - integer
-          - 'null'
-        supplier_countries:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/Country'
-            - $ref: '#/components/schemas/BlankEnum'
-          maxItems: 250
-        current_supplier:
-          type: string
-        published:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Datetime when the inquiry becomes published. Leave empty to keep it unpublished.
-        logo_url:
-          type: string
-          format: uri
-          maxLength: 2048
-        is_new:
-          type: boolean
-          readOnly: true
-        article:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        existing_suppliers:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-            format: uuid
-          readOnly: true
-        supply_priorities:
-          type: array
-          items:
-            $ref: '#/components/schemas/SupplyPriorities'
-        first_order_delivery_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        opply_brand_commission:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
-        opply_supplier_commission:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
-        is_recurring:
-          type: boolean
-          default: false
-        frequency:
-          oneOf:
-          - $ref: '#/components/schemas/FrequencyEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        desired_contract_length:
-          type:
-          - integer
-          - 'null'
-          minimum: 0
-        is_delivery_date_flexible:
-          type: boolean
-        parent_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        ingredient:
-          type:
-          - integer
-          - 'null'
-        reason_for_request:
-          type:
-          - string
-          - 'null'
-        desired_packaging_format:
-          type: string
-        desired_packaging_format_is_flexible:
-          type: boolean
-        ai_generated:
-          type: boolean
-        documents_to_copy:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-            format: uuid
-        existing_supplier_name:
-          type: string
-          readOnly: true
-      required:
-      - current_unit_price
-      - description
-      - due_date
-      - existing_supplier_name
-      - existing_suppliers
-      - id
-      - is_new
-      - state
-      - supplier_countries
-      - target_unit_price
-      - uuid
+    QuoteCategory:
+      enum:
+      - non_recurring
+      - recurring
+      - purchase_request_quote
+      type: string
+      description: '* `non_recurring` - Non Recurring
+
+        * `recurring` - Recurring
+
+        * `purchase_request_quote` - Purchase Request Quote'
+    AllergenRequirementsEnum:
+      enum:
+      - celery
+      - cereals_containing_gluten
+      - crustaceans
+      - eggs
+      - fish
+      - lupin
+      - milk
+      - molluscs
+      - mustard
+      - nuts
+      - peanuts
+      - sesame_seeds
+      - soya
+      - sulphur_dioxide
+      type: string
+      description: '* `celery` - Celery
+
+        * `cereals_containing_gluten` - Cereals Containing Gluten
+
+        * `crustaceans` - Crustaceans
+
+        * `eggs` - Eggs
+
+        * `fish` - Fish
+
+        * `lupin` - Lupin
+
+        * `milk` - Milk
+
+        * `molluscs` - Molluscs
+
+        * `mustard` - Mustard
+
+        * `nuts` - Nuts
+
+        * `peanuts` - Peanuts
+
+        * `sesame_seeds` - Sesame Seeds
+
+        * `soya` - Soya
+
+        * `sulphur_dioxide` - Sulphur Dioxide'
   securitySchemes:
     cookieAuth:
       type: apiKey

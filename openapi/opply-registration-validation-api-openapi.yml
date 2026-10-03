@@ -84,6 +84,33 @@ paths:
           description: No response body
 components:
   schemas:
+    RegistrationValidationResponse:
+      type: object
+      properties:
+        registration_name:
+          type:
+          - string
+          - 'null'
+        registration_number:
+          type:
+          - string
+          - 'null'
+        registration_country_code:
+          type: string
+      required:
+      - registration_country_code
+      - registration_name
+      - registration_number
+    CompaniesHouseSearchResult:
+      type: object
+      properties:
+        registration_name:
+          type: string
+        registration_number:
+          type: string
+      required:
+      - registration_name
+      - registration_number
     RegistrationValidationInput:
       type: object
       properties:
@@ -108,33 +135,6 @@ components:
             $ref: '#/components/schemas/CompaniesHouseSearchResult'
       required:
       - results
-    CompaniesHouseSearchResult:
-      type: object
-      properties:
-        registration_name:
-          type: string
-        registration_number:
-          type: string
-      required:
-      - registration_name
-      - registration_number
-    RegistrationValidationResponse:
-      type: object
-      properties:
-        registration_name:
-          type:
-          - string
-          - 'null'
-        registration_number:
-          type:
-          - string
-          - 'null'
-        registration_country_code:
-          type: string
-      required:
-      - registration_country_code
-      - registration_name
-      - registration_number
   securitySchemes:
     cookieAuth:
       type: apiKey

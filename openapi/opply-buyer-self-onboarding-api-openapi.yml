@@ -687,113 +687,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    LineItemClassificationEnum:
-      enum:
-      - INGREDIENT
-      - PACKAGING
-      - LOGISTICS
-      - SERVICES
-      - OTHER
-      type: string
-      description: '* `INGREDIENT` - Ingredient
-
-        * `PACKAGING` - Packaging
-
-        * `LOGISTICS` - Logistics
-
-        * `SERVICES` - Services
-
-        * `OTHER` - Other'
-    _SupplierWrite:
-      type: object
-      description: Inline write shape for an extracted supplier (+ its line items).
-      properties:
-        source_invoice_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        supplier_name:
-          type: string
-          maxLength: 255
-        vat_number:
-          type: string
-          default: ''
-          maxLength: 64
-        registration_number:
-          type: string
-          default: ''
-          maxLength: 64
-        address:
-          type: string
-          default: ''
-        contact_name:
-          type: string
-          default: ''
-          maxLength: 255
-        contact_email:
-          type: string
-          format: email
-          default: ''
-        contact_phone:
-          type: string
-          default: ''
-          maxLength: 64
-        payment_terms:
-          type: string
-          default: ''
-          maxLength: 64
-        invoice_currency:
-          type: string
-          default: ''
-          maxLength: 8
-        average_monthly_spend:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
-        lead_time_days:
-          type:
-          - integer
-          - 'null'
-          minimum: 0
-        supplier_country:
-          type: string
-          default: ''
-          maxLength: 100
-        confidence:
-          allOf:
-          - $ref: '#/components/schemas/ExtractionConfidenceEnum'
-          default: medium
-        evidence:
-          type: string
-          default: ''
-          maxLength: 300
-        gaps:
-          type: array
-          items:
-            type: object
-            additionalProperties: {}
-        matched_existing_supplier_id:
-          type:
-          - integer
-          - 'null'
-          minimum: 1
-        line_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/_LineItemWrite'
-      required:
-      - supplier_name
-    MatchConfidenceEnum:
-      enum:
-      - exact
-      - fuzzy
-      type: string
-      description: '* `exact` - exact
-
-        * `fuzzy` - fuzzy'
     ExtractedLineItem:
       type: object
       description: 'Read+write line-item proposal. ``source_invoice_uuid`` and
@@ -848,143 +741,176 @@ components:
       - source_invoice_uuid
       - source_supplier_uuid
       - uuid
-    LegalEntityTypeEnum:
+    USStateEnum:
       enum:
-      - ltd
-      - llp
-      - plc
-      - sole_trader
-      - partnership
-      - other
+      - AL
+      - AK
+      - AZ
+      - AR
+      - CA
+      - CO
+      - CT
+      - DE
+      - FL
+      - GA
+      - HI
+      - ID
+      - IL
+      - IN
+      - IA
+      - KS
+      - KY
+      - LA
+      - ME
+      - MD
+      - MA
+      - MI
+      - MN
+      - MS
+      - MO
+      - MT
+      - NE
+      - NV
+      - NH
+      - NJ
+      - NM
+      - NY
+      - NC
+      - ND
+      - OH
+      - OK
+      - OR
+      - PA
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VT
+      - VA
+      - WA
+      - WV
+      - WI
+      - WY
+      - DC
+      - PR
+      - GU
+      - VI
+      - AS
+      - MP
       type: string
-      description: '* `ltd` - Limited Company (Ltd)
+      description: '* `AL` - Alabama
 
-        * `llp` - Limited Liability Partnership (LLP)
+        * `AK` - Alaska
 
-        * `plc` - Public Limited Company (PLC)
+        * `AZ` - Arizona
 
-        * `sole_trader` - Sole Trader
+        * `AR` - Arkansas
 
-        * `partnership` - Partnership
+        * `CA` - California
 
-        * `other` - Other'
-    DeliveryLocation:
-      type: object
-      description: 'Buyer Delivery Locations section. A buyer can have 1..N of these,
+        * `CO` - Colorado
 
-        each one a `CompanyAddress(address_type=DELIVERY)`. The required-field
+        * `CT` - Connecticut
 
-        set matches the doc''s §4.5 list. Includes the rich legacy fields
+        * `DE` - Delaware
 
-        (`warehouse_receiving_hours`, `delivery_location_type`, EORI, EIN)
+        * `FL` - Florida
 
-        so the new flow has parity with the old `BuyerOnboardingDeliveryAddress`
+        * `GA` - Georgia
 
-        shape.'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        contact_full_name:
-          type: string
-          maxLength: 255
-        contact_phone:
-          type: string
-          maxLength: 50
-        phone_country_code:
-          oneOf:
-          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        street_1:
-          type: string
-          maxLength: 255
-        street_2:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        town:
-          type: string
-          maxLength: 100
-        region:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        postcode:
-          type: string
-          maxLength: 100
-        country:
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/BlankEnum'
-        delivery_instructions:
-          type:
-          - string
-          - 'null'
-        eori_number:
-          type: string
-          maxLength: 20
-        ein_number:
-          type: string
-          maxLength: 20
-        delivery_location_type:
-          type: string
-          description: Type of delivery location (warehouse, factory, distribution_center, retail_location, other).
-          maxLength: 50
-        delivery_location_type_other:
-          type: string
-          description: Free-text description when delivery_location_type == 'other'.
-          maxLength: 255
-        warehouse_receiving_hours:
-          type: string
-          description: Free-text receiving hours (e.g. 'Mon-Fri 9am-5pm').
-          maxLength: 255
-        provider:
-          type: string
-          writeOnly: true
-        provider_external_id:
-          type: string
-          writeOnly: true
-          maxLength: 128
-        confirmed_existing_address_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          writeOnly: true
-      required:
-      - contact_full_name
-      - contact_phone
-      - country
-      - name
-      - postcode
-      - street_1
-      - town
-      - uuid
-    OnboardingComplianceCommitResult:
-      oneOf:
-      - $ref: '#/components/schemas/BuyerDocument'
-      - $ref: '#/components/schemas/BuyerFinancialDocument'
-    SupplierReviewStatusEnum:
-      enum:
-      - pending_review
-      - matched
-      - onboarding
-      - rejected
-      type: string
-      description: '* `pending_review` - Pending review
+        * `HI` - Hawaii
 
-        * `matched` - Matched to existing supplier
+        * `ID` - Idaho
 
-        * `onboarding` - Onboarding new supplier
+        * `IL` - Illinois
 
-        * `rejected` - Rejected'
+        * `IN` - Indiana
+
+        * `IA` - Iowa
+
+        * `KS` - Kansas
+
+        * `KY` - Kentucky
+
+        * `LA` - Louisiana
+
+        * `ME` - Maine
+
+        * `MD` - Maryland
+
+        * `MA` - Massachusetts
+
+        * `MI` - Michigan
+
+        * `MN` - Minnesota
+
+        * `MS` - Mississippi
+
+        * `MO` - Missouri
+
+        * `MT` - Montana
+
+        * `NE` - Nebraska
+
+        * `NV` - Nevada
+
+        * `NH` - New Hampshire
+
+        * `NJ` - New Jersey
+
+        * `NM` - New Mexico
+
+        * `NY` - New York
+
+        * `NC` - North Carolina
+
+        * `ND` - North Dakota
+
+        * `OH` - Ohio
+
+        * `OK` - Oklahoma
+
+        * `OR` - Oregon
+
+        * `PA` - Pennsylvania
+
+        * `RI` - Rhode Island
+
+        * `SC` - South Carolina
+
+        * `SD` - South Dakota
+
+        * `TN` - Tennessee
+
+        * `TX` - Texas
+
+        * `UT` - Utah
+
+        * `VT` - Vermont
+
+        * `VA` - Virginia
+
+        * `WA` - Washington
+
+        * `WV` - West Virginia
+
+        * `WI` - Wisconsin
+
+        * `WY` - Wyoming
+
+        * `DC` - District of Columbia
+
+        * `PR` - Puerto Rico
+
+        * `GU` - Guam
+
+        * `VI` - U.S. Virgin Islands
+
+        * `AS` - American Samoa
+
+        * `MP` - Northern Mariana Islands'
     Country:
       enum:
       - AF
@@ -1737,45 +1663,365 @@ components:
         * `ZM` - Zambia
 
         * `ZW` - Zimbabwe'
-    PaginatedBuyerOnboardingSupplierSubmissionList:
+    SupplierMatchPreviewResponse:
       type: object
-      required:
-      - count
-      - results
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
+        matches:
           type: array
           items:
-            $ref: '#/components/schemas/BuyerOnboardingSupplierSubmission'
-    DocumentLifecycleStatusEnum:
+            $ref: '#/components/schemas/SupplierMatchResult'
+      required:
+      - matches
+    BuyerOnboardingSupplierSubmissionRequest:
+      type: object
+      description: 'Request-only schema for creating a supplier submission — writable fields
+
+        only. Without it the create''s OpenAPI request body reuses the read component
+
+        and demands response-only fields (`id`, `review_status`,
+
+        `matched_supplier_name`). The viewset still validates/creates through
+
+        :class:`OnboardingSupplierSerializer`; this exists purely so
+
+        ``@extend_schema(request=...)`` emits an honest request contract (its fields
+
+        are a subset the read serializer also accepts, so runtime and schema agree).'
+      properties:
+        supplier_name:
+          type: string
+          description: Supplier name
+          maxLength: 255
+        vat_number:
+          type: string
+          description: Supplier VAT / tax registration number
+          maxLength: 64
+        registration_number:
+          type: string
+          description: Business/company registration number (e.g. Companies House number; Xero's Contact.CompanyNumber) — distinct from the VAT number.
+          maxLength: 64
+        duns:
+          type: string
+          description: DUNS number (Dun & Bradstreet identifier), primarily for US suppliers.
+          maxLength: 50
+        products_description:
+          type: string
+          description: Description of products purchased from this supplier
+        average_monthly_spend:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          description: Average monthly spend with this supplier
+        invoice_currency:
+          type: string
+          description: Invoice/Payment currency (e.g., USD, GBP, EUR)
+          maxLength: 3
+        payment_terms:
+          type: string
+          description: Supplier payment terms
+        priority:
+          description: 'Priority to onboard this supplier
+
+
+            * `high` - High
+
+            * `medium` - Medium
+
+            * `low` - Low'
+          oneOf:
+          - $ref: '#/components/schemas/PriorityEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        supplier_country:
+          type: string
+          description: Supplier country
+          maxLength: 100
+        supplier_state:
+          type: string
+          title: Supplier State/County
+          description: Supplier state or county
+          maxLength: 100
+        supplier_address:
+          type: string
+          description: Supplier address
+        contact_name:
+          type: string
+          description: Supplier contact name
+          maxLength: 255
+        contact_email:
+          type: string
+          format: email
+          description: Supplier contact email
+          maxLength: 255
+        contact_phone:
+          type: string
+          description: Supplier contact phone number
+          maxLength: 50
+        arranges_delivery:
+          type: boolean
+          description: Does the supplier arrange delivery?
+        lead_time:
+          type: string
+          description: Agreed lead time
+          maxLength: 255
+        is_organic:
+          type: boolean
+          description: Is this an organic supplier?
+        relationship_notes:
+          type: string
+          description: Any noteworthy information about your trading relationship
+        notes:
+          type: string
+          description: Additional notes about the supplier
+        provider:
+          type: string
+          writeOnly: true
+        provider_external_id:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        confirmed_existing_supplier_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          writeOnly: true
+      required:
+      - supplier_name
+    ComplianceDocumentTypeEnum:
       enum:
-      - valid
-      - expired
-      - expiring_soon
-      - renewed
+      - SALES_TAX_EXEMPTION
+      - OTHER
       type: string
-      description: '* `valid` - Valid
+      description: '* `SALES_TAX_EXEMPTION` - Sales Tax Exemption
 
-        * `expired` - Expired
+        * `OTHER` - Other'
+    SupplierMatchResultSourceEnum:
+      enum:
+      - onboarded
+      - in_progress
+      - submitted
+      type: string
+      description: '* `onboarded` - onboarded
 
-        * `expiring_soon` - Expiring Soon
+        * `in_progress` - in_progress
 
-        * `renewed` - Renewed'
+        * `submitted` - submitted'
+    OnboardingExtractionStatusEnum:
+      enum:
+      - staged
+      - reviewed
+      - partially_committed
+      - committed
+      - discarded
+      type: string
+      description: '* `staged` - Staged
+
+        * `reviewed` - Reviewed
+
+        * `partially_committed` - Partially committed
+
+        * `committed` - Committed
+
+        * `discarded` - Discarded'
+    DeliveryAddressMatchPreviewResponse:
+      type: object
+      properties:
+        matches:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeliveryAddressMatchResult'
+      required:
+      - matches
+    SupplierMatchResult:
+      type: object
+      description: 'One preview result. `matched` is true for a supplier the buyer already
+
+        has in ANY state — `source` says which: `onboarded` (sources from it),
+
+        `in_progress` (being onboarded), or `submitted` (pending review). Graph
+
+        matches the buyer doesn''t have at all are the MoR''s concern, never here.
+
+        `company_uuid` is set only for `onboarded` (the others aren''t Companies yet).'
+      properties:
+        supplier_name:
+          type: string
+        matched:
+          type: boolean
+        confidence:
+          oneOf:
+          - $ref: '#/components/schemas/MatchConfidenceEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        source:
+          oneOf:
+          - $ref: '#/components/schemas/SupplierMatchResultSourceEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        company_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        company_name:
+          type:
+          - string
+          - 'null'
+        ratio:
+          type:
+          - number
+          - 'null'
+          format: double
+      required:
+      - matched
+      - supplier_name
+    OnboardingComplianceCommitResult:
+      oneOf:
+      - $ref: '#/components/schemas/BuyerDocument'
+      - $ref: '#/components/schemas/BuyerFinancialDocument'
+    BuyerOnboardingSupplierSubmission:
+      type: object
+      description: 'Buyer Suppliers section. The agent commit POSTs one row per extracted
+
+        supplier; only `supplier_name` is required. Backed by the
+
+        `buyer_onboarding.Supplier` model — the MoR review queue reads from
+
+        the same table.
+
+
+        `review_status` and `matched_supplier_name` are surfaced read-only so
+
+        the buyer can see whether each submission is still pending review,
+
+        has been matched to an existing supplier, or is being onboarded by
+
+        their MoR.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        supplier_name:
+          type: string
+          description: Supplier name
+          maxLength: 255
+        vat_number:
+          type: string
+          description: Supplier VAT / tax registration number
+          maxLength: 64
+        registration_number:
+          type: string
+          description: Business/company registration number (e.g. Companies House number; Xero's Contact.CompanyNumber) — distinct from the VAT number.
+          maxLength: 64
+        duns:
+          type: string
+          description: DUNS number (Dun & Bradstreet identifier), primarily for US suppliers.
+          maxLength: 50
+        products_description:
+          type: string
+          description: Description of products purchased from this supplier
+        average_monthly_spend:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          description: Average monthly spend with this supplier
+        invoice_currency:
+          type: string
+          description: Invoice/Payment currency (e.g., USD, GBP, EUR)
+          maxLength: 3
+        payment_terms:
+          type: string
+          description: Supplier payment terms
+        priority:
+          description: 'Priority to onboard this supplier
+
+
+            * `high` - High
+
+            * `medium` - Medium
+
+            * `low` - Low'
+          oneOf:
+          - $ref: '#/components/schemas/PriorityEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        supplier_country:
+          type: string
+          description: Supplier country
+          maxLength: 100
+        supplier_state:
+          type: string
+          title: Supplier State/County
+          description: Supplier state or county
+          maxLength: 100
+        supplier_address:
+          type: string
+          description: Supplier address
+        contact_name:
+          type: string
+          description: Supplier contact name
+          maxLength: 255
+        contact_email:
+          type: string
+          format: email
+          description: Supplier contact email
+          maxLength: 255
+        contact_phone:
+          type: string
+          description: Supplier contact phone number
+          maxLength: 50
+        arranges_delivery:
+          type: boolean
+          description: Does the supplier arrange delivery?
+        lead_time:
+          type: string
+          description: Agreed lead time
+          maxLength: 255
+        is_organic:
+          type: boolean
+          description: Is this an organic supplier?
+        relationship_notes:
+          type: string
+          description: Any noteworthy information about your trading relationship
+        notes:
+          type: string
+          description: Additional notes about the supplier
+        review_status:
+          allOf:
+          - $ref: '#/components/schemas/SupplierReviewStatusEnum'
+          readOnly: true
+          description: 'Where this submission sits in the MoR review queue.
+
+
+            * `pending_review` - Pending review
+
+            * `matched` - Matched to existing supplier
+
+            * `onboarding` - Onboarding new supplier
+
+            * `rejected` - Rejected'
+        matched_supplier_name:
+          type: string
+          readOnly: true
+        provider:
+          type: string
+          writeOnly: true
+        provider_external_id:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        confirmed_existing_supplier_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          writeOnly: true
+      required:
+      - id
+      - matched_supplier_name
+      - review_status
+      - supplier_name
     ExtractedComplianceDocumentRead:
       type: object
       description: Nested read shape for ``OnboardingExtractionSerializer``.
@@ -1877,146 +2123,260 @@ components:
       - type_hint
       - us_state
       - uuid
-    PaginatedOnboardingExtractionList:
+    SupplierMatchPreviewRequest:
       type: object
-      required:
-      - count
-      - results
+      description: 'Batch of connector-discovered supplier names to check against the
+
+        suppliers the buyer already sources from, for the import review preview.'
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/OnboardingExtraction'
-    BusinessProfile:
-      type: object
-      description: 'Buyer Business Profile section. Writes a flat shape that the agent''s
-
-        Step-3 Verify panel posts. Mutates `Company` plus a paired
-
-        `CompanyAddress(address_type=COMPANY)` and (when `use_as_billing` is
-
-        true) mirrors to `CompanyAddress(address_type=BILLING)`.'
-      properties:
-        name:
-          type: string
-          maxLength: 255
-        registration_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        registration_number:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        legal_entity_type:
-          allOf:
-          - $ref: '#/components/schemas/LegalEntityTypeEnum'
-          description: 'Legal entity type captured on the buyer Business Profile section. Required for buyers; left blank for suppliers and merchants of record.
-
-
-            * `ltd` - Limited Company (Ltd)
-
-            * `llp` - Limited Liability Partnership (LLP)
-
-            * `plc` - Public Limited Company (PLC)
-
-            * `sole_trader` - Sole Trader
-
-            * `partnership` - Partnership
-
-            * `other` - Other'
-        website:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        vat_number:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          maxLength: 50
-        vat_country_code:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          maxLength: 2
-        phone_country_code:
-          oneOf:
-          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        phone_number:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-        buyer_accounts_email_address:
-          type:
-          - string
-          - 'null'
-          format: email
-          maxLength: 254
-        buyer_delivery_email_address:
-          type:
-          - string
-          - 'null'
-          format: email
-          maxLength: 254
-        address:
-          $ref: '#/components/schemas/BusinessProfileAddress'
-        use_as_billing:
-          type: boolean
-          writeOnly: true
-          default: true
-        billing_matches_company:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          readOnly: true
-        country:
-          type: string
-          readOnly: true
-      required:
-      - billing_matches_company
-      - country
-      - email
-      - legal_entity_type
-      - name
-    ItemMatchPreviewRequest:
-      type: object
-      description: 'Batch of connector-discovered material/ingredient names to check against
-
-        the buyer''s existing catalogue, for the import review preview.'
-      properties:
-        item_names:
+        supplier_names:
           type: array
           items:
             type: string
             maxLength: 255
-          description: Discovered item names to check for a match against the buyer's existing materials.
-          maxItems: 500
+          description: Discovered supplier names to check for a match against the buyer's existing suppliers.
+          maxItems: 200
       required:
-      - item_names
+      - supplier_names
+    MatchConfidenceEnum:
+      enum:
+      - exact
+      - fuzzy
+      type: string
+      description: '* `exact` - exact
+
+        * `fuzzy` - fuzzy'
+    LegalEntityTypeEnum:
+      enum:
+      - ltd
+      - llp
+      - plc
+      - sole_trader
+      - partnership
+      - other
+      type: string
+      description: '* `ltd` - Limited Company (Ltd)
+
+        * `llp` - Limited Liability Partnership (LLP)
+
+        * `plc` - Public Limited Company (PLC)
+
+        * `sole_trader` - Sole Trader
+
+        * `partnership` - Partnership
+
+        * `other` - Other'
+    OnboardingComplianceDocumentCommit:
+      type: object
+      description: 'Body of ``POST /onboarding-compliance-documents/``.
+
+
+        ``extracted_compliance_document_uuid`` names the staged row; the other
+
+        fields are optional buyer edits from the review screen that override
+
+        the extracted values on the created ``BuyerDocument``.'
+      properties:
+        extracted_compliance_document_uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 255
+        issue_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        expiry_date:
+          type:
+          - string
+          - 'null'
+          format: date
+      required:
+      - extracted_compliance_document_uuid
+    OnboardingInvoiceStatusEnum:
+      enum:
+      - uploaded
+      - agent_extracted
+      - agent_extraction_failed
+      - discarded
+      type: string
+      description: '* `uploaded` - Uploaded
+
+        * `agent_extracted` - Agent extracted
+
+        * `agent_extraction_failed` - Agent extraction failed
+
+        * `discarded` - Discarded'
+    _ComplianceDocumentWrite:
+      type: object
+      description: 'Inline write shape for a compliance document inside a proposal
+
+        payload. Mirrors ``ExtractedComplianceDocumentProposal`` in
+
+        ``@opply/agent-protocol`` — every optional string accepts ``null``
+
+        (the agent''s "couldn''t read it" value) and stores ``""``.'
+      properties:
+        uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        source_invoice_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        compliance_type:
+          allOf:
+          - $ref: '#/components/schemas/ComplianceDocumentTypeEnum'
+          default: OTHER
+        type_hint:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 64
+        title:
+          type: string
+          maxLength: 255
+        holder_name:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 255
+        issuing_authority:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 255
+        jurisdiction:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 128
+        us_state:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 2
+        country:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 2
+        certificate_number:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 128
+        issue_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        expiry_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        confidence:
+          allOf:
+          - $ref: '#/components/schemas/ExtractionConfidenceEnum'
+          default: medium
+        evidence:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 300
+        gaps:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+      required:
+      - title
+    OnboardingInvoiceList:
+      type: object
+      description: 'Compact shape used inside batch responses and list endpoints.
+
+
+        Intentionally never exposes ``storage_object_key`` / ``storage_bucket`` —
+
+        the private path stays on the server.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        original_filename:
+          type: string
+          readOnly: true
+        mime_type:
+          type: string
+          readOnly: true
+        size_bytes:
+          type: integer
+          readOnly: true
+        page_count:
+          type: integer
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/OnboardingInvoiceStatusEnum'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - mime_type
+      - original_filename
+      - page_count
+      - size_bytes
+      - status
+      - uuid
+    OnboardingInvoiceContent:
+      type: object
+      description: 'Body of ``GET /onboarding-invoices/{uuid}/content/``.
+
+
+        ``signed_url`` is short-TTL and tied to a single object. Mirrors
+
+        the shape the agent proxy will forward inside its payload.'
+      properties:
+        signed_url:
+          type: string
+          format: uri
+          readOnly: true
+        mime_type:
+          type: string
+          readOnly: true
+        size_bytes:
+          type: integer
+          readOnly: true
+        page_count:
+          type: integer
+          readOnly: true
+        expires_in_seconds:
+          type: integer
+          readOnly: true
+      required:
+      - expires_in_seconds
+      - mime_type
+      - page_count
+      - signed_url
+      - size_bytes
     BuyerDocument:
       type: object
       description: 'Serializer for BuyerDocument — buyer certification and compliance documents.
@@ -2239,106 +2599,112 @@ components:
       - superseded_by_uuid
       - type
       - uuid
-    ComplianceDocumentTypeEnum:
+    CatalogItemKindEnum:
       enum:
-      - SALES_TAX_EXEMPTION
-      - OTHER
+      - ingredient
+      - packaging
       type: string
-      description: '* `SALES_TAX_EXEMPTION` - Sales Tax Exemption
+      description: '* `ingredient` - Ingredient
 
-        * `OTHER` - Other'
-    DeliveryAddressMatchResult:
+        * `packaging` - Packaging'
+    OnboardingInvoiceBatch:
       type: object
-      description: 'One delivery-address preview result, aligned by index to the request. An
-
-        exact match auto-dedups at commit; a fuzzy match is a hint the buyer confirms
-
-        (''Use my saved address'').'
       properties:
-        matched:
-          type: boolean
-        confidence:
-          oneOf:
-          - $ref: '#/components/schemas/MatchConfidenceEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        address_uuid:
-          type:
-          - string
-          - 'null'
+        uuid:
+          type: string
           format: uuid
-        address_name:
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/OnboardingInvoiceBatchStatusEnum'
+          readOnly: true
+        total_invoice_count:
+          type: integer
+          readOnly: true
+        extracted_invoice_count:
+          type: integer
+          readOnly: true
+        extraction_started_at:
           type:
           - string
           - 'null'
-        ratio:
+          format: date-time
+          readOnly: true
+        extraction_completed_at:
           type:
-          - number
+          - string
           - 'null'
-          format: double
-      required:
-      - matched
-    SupplierMatchPreviewResponse:
-      type: object
-      properties:
-        matches:
+          format: date-time
+          readOnly: true
+        extraction_failed_reason:
+          type: string
+          readOnly: true
+        invoices:
           type: array
           items:
-            $ref: '#/components/schemas/SupplierMatchResult'
-      required:
-      - matches
-    SupplierMatchResult:
-      type: object
-      description: 'One preview result. `matched` is true for a supplier the buyer already
-
-        has in ANY state — `source` says which: `onboarded` (sources from it),
-
-        `in_progress` (being onboarded), or `submitted` (pending review). Graph
-
-        matches the buyer doesn''t have at all are the MoR''s concern, never here.
-
-        `company_uuid` is set only for `onboarded` (the others aren''t Companies yet).'
-      properties:
-        supplier_name:
+            $ref: '#/components/schemas/OnboardingInvoiceList'
+          readOnly: true
+        created_at:
           type: string
-        matched:
-          type: boolean
-        confidence:
-          oneOf:
-          - $ref: '#/components/schemas/MatchConfidenceEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        source:
-          oneOf:
-          - $ref: '#/components/schemas/SupplierMatchResultSourceEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        company_uuid:
-          type:
-          - string
-          - 'null'
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - extracted_invoice_count
+      - extraction_completed_at
+      - extraction_failed_reason
+      - extraction_started_at
+      - invoices
+      - modified_at
+      - status
+      - total_invoice_count
+      - uuid
+    DocumentType:
+      type: object
+      description: Shared serializer for the DocumentType taxonomy (buyer, supplier, Opply documents).
+      properties:
+        uuid:
+          type: string
           format: uuid
-        company_name:
-          type:
-          - string
-          - 'null'
-        ratio:
-          type:
-          - number
-          - 'null'
-          format: double
-      required:
-      - matched
-      - supplier_name
-    OnboardingInvoiceContent:
-      type: object
-      description: 'Body of ``GET /onboarding-invoices/{uuid}/content/``.
-
-
-        ``signed_url`` is short-TTL and tied to a single object. Mirrors
-
-        the shape the agent proxy will forward inside its payload.'
-      properties:
-        signed_url:
+          readOnly: true
+        name:
           type: string
-          format: uri
+          maxLength: 255
+        description:
+          type: string
+      required:
+      - name
+      - uuid
+    OnboardingBanking:
+      type: object
+      description: 'Buyer Banking & payments section. A 1:1 resource on Company: a single
+
+        optional IBAN. The section is treated as complete when an IBAN is
+
+        saved; "Skip for now" is handled FE-side and does not write to the BE.'
+      properties:
+        iban:
+          type: string
+          description: Optional IBAN.
+          maxLength: 64
+    OnboardingInvoiceDetail:
+      type: object
+      description: 'Identical shape to the list serializer in v1 — exists as a
+
+        separate class so we have a place to add detail-only fields later
+
+        without renaming the list response.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        original_filename:
+          type: string
           readOnly: true
         mime_type:
           type: string
@@ -2349,15 +2715,37 @@ components:
         page_count:
           type: integer
           readOnly: true
-        expires_in_seconds:
-          type: integer
+        status:
+          allOf:
+          - $ref: '#/components/schemas/OnboardingInvoiceStatusEnum'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
           readOnly: true
       required:
-      - expires_in_seconds
+      - created_at
       - mime_type
+      - original_filename
       - page_count
-      - signed_url
       - size_bytes
+      - status
+      - uuid
+    ItemMatchPreviewRequest:
+      type: object
+      description: 'Batch of connector-discovered material/ingredient names to check against
+
+        the buyer''s existing catalogue, for the import review preview.'
+      properties:
+        item_names:
+          type: array
+          items:
+            type: string
+            maxLength: 255
+          description: Discovered item names to check for a match against the buyer's existing materials.
+          maxItems: 500
+      required:
+      - item_names
     ExtractedSupplierRead:
       type: object
       description: Nested read shape for ``OnboardingExtractionSerializer``.
@@ -2459,152 +2847,82 @@ components:
       - supplier_name
       - uuid
       - vat_number
-    NullEnum:
+    BuyerFinancialDocumentTypeEnum:
       enum:
-      - null
-    BuyerOnboardingSupplierSubmission:
+      - management_accounts
+      - audited_accounts
+      - balance_sheet
+      - profit_and_loss
+      - cashflow_forecast
+      - sales_tax_exemption
+      - other
+      type: string
+      description: '* `management_accounts` - Management Accounts
+
+        * `audited_accounts` - Audited Accounts
+
+        * `balance_sheet` - Balance Sheet
+
+        * `profit_and_loss` - Profit and Loss
+
+        * `cashflow_forecast` - Cashflow Forecast
+
+        * `sales_tax_exemption` - Sales Tax Exemption
+
+        * `other` - Other'
+    PriorityEnum:
+      enum:
+      - high
+      - medium
+      - low
+      type: string
+      description: '* `high` - High
+
+        * `medium` - Medium
+
+        * `low` - Low'
+    BlankEnum:
+      enum:
+      - ''
+    DocumentLifecycleStatusEnum:
+      enum:
+      - valid
+      - expired
+      - expiring_soon
+      - renewed
+      type: string
+      description: '* `valid` - Valid
+
+        * `expired` - Expired
+
+        * `expiring_soon` - Expiring Soon
+
+        * `renewed` - Renewed'
+    PaginatedBuyerOnboardingSupplierSubmissionList:
       type: object
-      description: 'Buyer Suppliers section. The agent commit POSTs one row per extracted
-
-        supplier; only `supplier_name` is required. Backed by the
-
-        `buyer_onboarding.Supplier` model — the MoR review queue reads from
-
-        the same table.
-
-
-        `review_status` and `matched_supplier_name` are surfaced read-only so
-
-        the buyer can see whether each submission is still pending review,
-
-        has been matched to an existing supplier, or is being onboarded by
-
-        their MoR.'
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        supplier_name:
-          type: string
-          description: Supplier name
-          maxLength: 255
-        vat_number:
-          type: string
-          description: Supplier VAT / tax registration number
-          maxLength: 64
-        registration_number:
-          type: string
-          description: Business/company registration number (e.g. Companies House number; Xero's Contact.CompanyNumber) — distinct from the VAT number.
-          maxLength: 64
-        duns:
-          type: string
-          description: DUNS number (Dun & Bradstreet identifier), primarily for US suppliers.
-          maxLength: 50
-        products_description:
-          type: string
-          description: Description of products purchased from this supplier
-        average_monthly_spend:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-          description: Average monthly spend with this supplier
-        invoice_currency:
-          type: string
-          description: Invoice/Payment currency (e.g., USD, GBP, EUR)
-          maxLength: 3
-        payment_terms:
-          type: string
-          description: Supplier payment terms
-        priority:
-          description: 'Priority to onboard this supplier
-
-
-            * `high` - High
-
-            * `medium` - Medium
-
-            * `low` - Low'
-          oneOf:
-          - $ref: '#/components/schemas/PriorityEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-        supplier_country:
-          type: string
-          description: Supplier country
-          maxLength: 100
-        supplier_state:
-          type: string
-          title: Supplier State/County
-          description: Supplier state or county
-          maxLength: 100
-        supplier_address:
-          type: string
-          description: Supplier address
-        contact_name:
-          type: string
-          description: Supplier contact name
-          maxLength: 255
-        contact_email:
-          type: string
-          format: email
-          description: Supplier contact email
-          maxLength: 255
-        contact_phone:
-          type: string
-          description: Supplier contact phone number
-          maxLength: 50
-        arranges_delivery:
-          type: boolean
-          description: Does the supplier arrange delivery?
-        lead_time:
-          type: string
-          description: Agreed lead time
-          maxLength: 255
-        is_organic:
-          type: boolean
-          description: Is this an organic supplier?
-        relationship_notes:
-          type: string
-          description: Any noteworthy information about your trading relationship
-        notes:
-          type: string
-          description: Additional notes about the supplier
-        review_status:
-          allOf:
-          - $ref: '#/components/schemas/SupplierReviewStatusEnum'
-          readOnly: true
-          description: 'Where this submission sits in the MoR review queue.
-
-
-            * `pending_review` - Pending review
-
-            * `matched` - Matched to existing supplier
-
-            * `onboarding` - Onboarding new supplier
-
-            * `rejected` - Rejected'
-        matched_supplier_name:
-          type: string
-          readOnly: true
-        provider:
-          type: string
-          writeOnly: true
-        provider_external_id:
-          type: string
-          writeOnly: true
-          maxLength: 128
-        confirmed_existing_supplier_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          writeOnly: true
       required:
-      - id
-      - matched_supplier_name
-      - review_status
-      - supplier_name
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerOnboardingSupplierSubmission'
     PatchedBusinessProfile:
       type: object
       description: 'Buyer Business Profile section. Writes a flat shape that the agent''s
@@ -2699,165 +3017,359 @@ components:
         country:
           type: string
           readOnly: true
-    BlankEnum:
-      enum:
-      - ''
-    OnboardingInvoiceDetail:
+    _LineItemWrite:
       type: object
-      description: 'Identical shape to the list serializer in v1 — exists as a
+      description: Inline write shape for line items inside a proposal payload.
+      properties:
+        source_invoice_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          default: ''
+          maxLength: 2000
+        quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,11}(?:\.\d{0,3})?$
+        unit:
+          type: string
+          default: ''
+          maxLength: 32
+        unit_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,4})?$
+        currency:
+          type: string
+          default: ''
+          maxLength: 8
+        classification:
+          allOf:
+          - $ref: '#/components/schemas/LineItemClassificationEnum'
+          default: OTHER
+        confidence:
+          allOf:
+          - $ref: '#/components/schemas/ExtractionConfidenceEnum'
+          default: medium
+      required:
+      - name
+    DeliveryLocation:
+      type: object
+      description: 'Buyer Delivery Locations section. A buyer can have 1..N of these,
 
-        separate class so we have a place to add detail-only fields later
+        each one a `CompanyAddress(address_type=DELIVERY)`. The required-field
 
-        without renaming the list response.'
+        set matches the doc''s §4.5 list. Includes the rich legacy fields
+
+        (`warehouse_receiving_hours`, `delivery_location_type`, EORI, EIN)
+
+        so the new flow has parity with the old `BuyerOnboardingDeliveryAddress`
+
+        shape.'
       properties:
         uuid:
           type: string
           format: uuid
           readOnly: true
-        original_filename:
+        name:
           type: string
-          readOnly: true
-        mime_type:
+          maxLength: 255
+        contact_full_name:
           type: string
-          readOnly: true
-        size_bytes:
-          type: integer
-          readOnly: true
-        page_count:
-          type: integer
-          readOnly: true
-        status:
-          allOf:
-          - $ref: '#/components/schemas/OnboardingInvoiceStatusEnum'
-          readOnly: true
-        created_at:
+          maxLength: 255
+        contact_phone:
           type: string
-          format: date-time
-          readOnly: true
+          maxLength: 50
+        phone_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        street_1:
+          type: string
+          maxLength: 255
+        street_2:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        town:
+          type: string
+          maxLength: 100
+        region:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        postcode:
+          type: string
+          maxLength: 100
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/BlankEnum'
+        delivery_instructions:
+          type:
+          - string
+          - 'null'
+        eori_number:
+          type: string
+          maxLength: 20
+        ein_number:
+          type: string
+          maxLength: 20
+        delivery_location_type:
+          type: string
+          description: Type of delivery location (warehouse, factory, distribution_center, retail_location, other).
+          maxLength: 50
+        delivery_location_type_other:
+          type: string
+          description: Free-text description when delivery_location_type == 'other'.
+          maxLength: 255
+        warehouse_receiving_hours:
+          type: string
+          description: Free-text receiving hours (e.g. 'Mon-Fri 9am-5pm').
+          maxLength: 255
+        provider:
+          type: string
+          writeOnly: true
+        provider_external_id:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        confirmed_existing_address_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          writeOnly: true
       required:
-      - created_at
-      - mime_type
-      - original_filename
-      - page_count
-      - size_bytes
-      - status
+      - contact_full_name
+      - contact_phone
+      - country
+      - name
+      - postcode
+      - street_1
+      - town
       - uuid
-    PriorityEnum:
+    PaginatedOnboardingExtractionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OnboardingExtraction'
+    ItemMatchPreviewResponse:
+      type: object
+      properties:
+        matches:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemMatchResult'
+      required:
+      - matches
+    UnitOfMeasurementEnum:
       enum:
-      - high
-      - medium
-      - low
+      - fl oz
+      - g
+      - mg
+      - gals
+      - kg
+      - L
+      - tons
+      - oz
+      - lbs
+      - pcs
+      - pt
+      - ml
+      - boxes
+      - pallets
+      - tsp
+      - tbsp
+      - units
+      - cases
+      - trays
       type: string
-      description: '* `high` - High
+      description: '* `fl oz` - Fluid Ounces
 
-        * `medium` - Medium
+        * `g` - Grams
 
-        * `low` - Low'
-    OnboardingExtractionStatusEnum:
+        * `mg` - milligrams
+
+        * `gals` - Gallons
+
+        * `kg` - Kilograms
+
+        * `L` - Liters
+
+        * `tons` - Metric Tons
+
+        * `oz` - Ounces
+
+        * `lbs` - Pounds
+
+        * `pcs` - Pieces
+
+        * `pt` - Pints
+
+        * `ml` - Milliliter
+
+        * `boxes` - Boxes
+
+        * `pallets` - Pallets
+
+        * `tsp` - Teaspoons
+
+        * `tbsp` - Tablespoons
+
+        * `units` - Units
+
+        * `cases` - Cases
+
+        * `trays` - Trays'
+    ItemMatchResult:
+      type: object
+      description: 'One item preview result. Unlike suppliers there''s no relationship nuance —
+
+        the buyer''s whole catalogue is fair game. An exact match will merge at commit
+
+        (update_or_create on the name); a fuzzy match is a hint the buyer confirms.'
+      properties:
+        item_name:
+          type: string
+        matched:
+          type: boolean
+        confidence:
+          oneOf:
+          - $ref: '#/components/schemas/MatchConfidenceEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        matched_item_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        matched_item_name:
+          type:
+          - string
+          - 'null'
+        ratio:
+          type:
+          - number
+          - 'null'
+          format: double
+      required:
+      - item_name
+      - matched
+    DeliveryAddressPreviewItem:
+      type: object
+      description: 'One discovered delivery address to check against the buyer''s saved ones.
+
+        Only the signature fields are needed (street + town + postcode + country).'
+      properties:
+        street_1:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        town:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        postcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 64
+        country:
+          type:
+          - string
+          - 'null'
+          maxLength: 64
+    OnboardingInvoiceBatchStatusEnum:
       enum:
-      - staged
-      - reviewed
-      - partially_committed
+      - uploading
+      - ready_for_extraction
+      - extracting
+      - extracted
+      - extraction_failed
       - committed
       - discarded
       type: string
-      description: '* `staged` - Staged
+      description: '* `uploading` - Uploading
 
-        * `reviewed` - Reviewed
+        * `ready_for_extraction` - Ready for extraction
 
-        * `partially_committed` - Partially committed
+        * `extracting` - Extracting
+
+        * `extracted` - Extracted
+
+        * `extraction_failed` - Extraction failed
 
         * `committed` - Committed
 
         * `discarded` - Discarded'
-    BuyerFinancialDocumentTypeEnum:
-      enum:
-      - management_accounts
-      - audited_accounts
-      - balance_sheet
-      - profit_and_loss
-      - cashflow_forecast
-      - sales_tax_exemption
-      - other
-      type: string
-      description: '* `management_accounts` - Management Accounts
-
-        * `audited_accounts` - Audited Accounts
-
-        * `balance_sheet` - Balance Sheet
-
-        * `profit_and_loss` - Profit and Loss
-
-        * `cashflow_forecast` - Cashflow Forecast
-
-        * `sales_tax_exemption` - Sales Tax Exemption
-
-        * `other` - Other'
-    OnboardingExtractionWrite:
+    DeliveryAddressMatchResult:
       type: object
-      description: 'Body of ``POST /onboarding-extractions/``.
+      description: 'One delivery-address preview result, aligned by index to the request. An
 
+        exact match auto-dedups at commit; a fuzzy match is a hint the buyer confirms
 
-        **Partial staging**: only the sections present in the payload are
-
-        (re-)staged — a present section replaces the previous staging
-
-        destructively (an explicit ``[]`` wipes it), while an absent key
-
-        leaves the previously staged rows untouched. This lets the
-
-        compliance-commit step stage ``compliance_documents`` alone without
-
-        wiping staged suppliers or the proposed_* sections. No field carries
-
-        a ``default`` for exactly this reason — absent must stay
-
-        distinguishable from explicitly empty. The viewset enforces that
-
-        ``batch_uuid`` belongs to ``request.user_company``.'
+        (''Use my saved address'').'
       properties:
-        batch_uuid:
-          type: string
+        matched:
+          type: boolean
+        confidence:
+          oneOf:
+          - $ref: '#/components/schemas/MatchConfidenceEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        address_uuid:
+          type:
+          - string
+          - 'null'
           format: uuid
-        proposed_business_profile:
-          type: object
-          additionalProperties: {}
-        proposed_banking:
-          type: object
-          additionalProperties: {}
-        proposed_delivery:
-          type: array
-          items:
-            type: object
-            additionalProperties: {}
-        agent_reasoning:
-          type: string
-          maxLength: 2000
-        extraction_session_id:
-          type: string
-          maxLength: 64
-        suppliers:
-          type: array
-          items:
-            $ref: '#/components/schemas/_SupplierWrite'
-        compliance_documents:
-          type: array
-          items:
-            $ref: '#/components/schemas/_ComplianceDocumentWrite'
+        address_name:
+          type:
+          - string
+          - 'null'
+        ratio:
+          type:
+          - number
+          - 'null'
+          format: double
       required:
-      - batch_uuid
-    DeliveryAddressMatchPreviewRequest:
-      type: object
-      description: 'Batch of connector-discovered delivery addresses to check against the
-
-        buyer''s existing saved delivery addresses, for the import review preview.'
-      properties:
-        addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/DeliveryAddressPreviewItem'
-      required:
-      - addresses
+      - matched
+    NullEnum:
+      enum:
+      - null
     PhoneCountryCodeEnum:
       enum:
       - '+376'
@@ -3541,178 +4053,394 @@ components:
         * `+260` - +260
 
         * `+263` - +263'
-    _LineItemWrite:
+    BuyerFinancialDocument:
       type: object
-      description: Inline write shape for line items inside a proposal payload.
+      description: Read serializer returned for list/create responses.
       properties:
-        source_invoice_uuid:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/BuyerFinancialDocumentTypeEnum'
+          readOnly: true
+          description: 'Category of financial document — drives how the credit team triages the upload.
+
+
+            * `management_accounts` - Management Accounts
+
+            * `audited_accounts` - Audited Accounts
+
+            * `balance_sheet` - Balance Sheet
+
+            * `profit_and_loss` - Profit and Loss
+
+            * `cashflow_forecast` - Cashflow Forecast
+
+            * `sales_tax_exemption` - Sales Tax Exemption
+
+            * `other` - Other'
+        original_filename:
+          type: string
+          readOnly: true
+          description: Filename as supplied by the user at upload time (preserved for display).
+        file_size_bytes:
+          type: integer
+          readOnly: true
+          description: Size of the uploaded file in bytes; capped at the application-level upload limit.
+        file_url:
           type:
           - string
           - 'null'
+          readOnly: true
+        uploaded_by_name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+          description: Display name (sales-tax exemptions only; blank for other financial docs).
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+          description: Start date of document validity (sales-tax exemptions only).
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+          description: End/expiry date of document validity (sales-tax exemptions only).
+        certificate_number:
+          type: string
+          readOnly: true
+          description: Permit / exemption / certificate number as printed (sales-tax exemptions only).
+        jurisdiction:
+          type: string
+          readOnly: true
+          description: State/region the document applies in, as printed (e.g. 'Michigan'). For US documents the structured counterpart is us_state_jurisdiction.
+        issuing_authority:
+          type: string
+          readOnly: true
+          description: Body that issued the document (e.g. 'Michigan Department of Treasury').
+        holder_name:
+          type: string
+          readOnly: true
+          description: Entity the document is issued to as printed — normally the buyer company.
+      required:
+      - certificate_number
+      - created_at
+      - end_date
+      - file_size_bytes
+      - file_url
+      - holder_name
+      - issuing_authority
+      - jurisdiction
+      - name
+      - original_filename
+      - start_date
+      - type
+      - uploaded_by_name
+      - uuid
+    OnboardingExtractionWrite:
+      type: object
+      description: 'Body of ``POST /onboarding-extractions/``.
+
+
+        **Partial staging**: only the sections present in the payload are
+
+        (re-)staged — a present section replaces the previous staging
+
+        destructively (an explicit ``[]`` wipes it), while an absent key
+
+        leaves the previously staged rows untouched. This lets the
+
+        compliance-commit step stage ``compliance_documents`` alone without
+
+        wiping staged suppliers or the proposed_* sections. No field carries
+
+        a ``default`` for exactly this reason — absent must stay
+
+        distinguishable from explicitly empty. The viewset enforces that
+
+        ``batch_uuid`` belongs to ``request.user_company``.'
+      properties:
+        batch_uuid:
+          type: string
           format: uuid
+        proposed_business_profile:
+          type: object
+          additionalProperties: {}
+        proposed_banking:
+          type: object
+          additionalProperties: {}
+        proposed_delivery:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+        agent_reasoning:
+          type: string
+          maxLength: 2000
+        extraction_session_id:
+          type: string
+          maxLength: 64
+        suppliers:
+          type: array
+          items:
+            $ref: '#/components/schemas/_SupplierWrite'
+        compliance_documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/_ComplianceDocumentWrite'
+      required:
+      - batch_uuid
+    OnboardingExtraction:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        batch_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/OnboardingExtractionStatusEnum'
+          readOnly: true
+        proposed_business_profile:
+          readOnly: true
+          description: Aggregate company-profile fields (name, VAT, registered address).
+        proposed_banking:
+          readOnly: true
+          description: Aggregate banking fields the agent extracted (e.g. IBAN).
+        proposed_delivery:
+          readOnly: true
+          description: Delivery addresses inferred from invoice headers.
+        agent_reasoning:
+          type: string
+          readOnly: true
+          description: Tweet-length human-readable summary from the orchestrator.
+        extraction_session_id:
+          type: string
+          readOnly: true
+          description: AgentCore session id; correlates back to the originating run.
+        suppliers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExtractedSupplierRead'
+          readOnly: true
+        compliance_documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExtractedComplianceDocumentRead'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - agent_reasoning
+      - batch_uuid
+      - compliance_documents
+      - created_at
+      - extraction_session_id
+      - modified_at
+      - proposed_banking
+      - proposed_business_profile
+      - proposed_delivery
+      - status
+      - suppliers
+      - uuid
+    BusinessProfile:
+      type: object
+      description: 'Buyer Business Profile section. Writes a flat shape that the agent''s
+
+        Step-3 Verify panel posts. Mutates `Company` plus a paired
+
+        `CompanyAddress(address_type=COMPANY)` and (when `use_as_billing` is
+
+        true) mirrors to `CompanyAddress(address_type=BILLING)`.'
+      properties:
         name:
           type: string
           maxLength: 255
-        description:
-          type: string
-          default: ''
-          maxLength: 2000
-        quantity:
+        registration_name:
           type:
           - string
           - 'null'
-          format: decimal
-          pattern: ^-?\d{0,11}(?:\.\d{0,3})?$
-        unit:
-          type: string
-          default: ''
-          maxLength: 32
-        unit_price:
+          maxLength: 255
+        registration_number:
           type:
           - string
           - 'null'
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,4})?$
-        currency:
-          type: string
-          default: ''
-          maxLength: 8
-        classification:
+          maxLength: 255
+        legal_entity_type:
           allOf:
-          - $ref: '#/components/schemas/LineItemClassificationEnum'
-          default: OTHER
-        confidence:
-          allOf:
-          - $ref: '#/components/schemas/ExtractionConfidenceEnum'
-          default: medium
-      required:
-      - name
-    DeliveryAddressMatchPreviewResponse:
-      type: object
-      properties:
-        matches:
-          type: array
-          items:
-            $ref: '#/components/schemas/DeliveryAddressMatchResult'
-      required:
-      - matches
-    BuyerOnboardingSupplierSubmissionRequest:
-      type: object
-      description: 'Request-only schema for creating a supplier submission — writable fields
+          - $ref: '#/components/schemas/LegalEntityTypeEnum'
+          description: 'Legal entity type captured on the buyer Business Profile section. Required for buyers; left blank for suppliers and merchants of record.
 
-        only. Without it the create''s OpenAPI request body reuses the read component
 
-        and demands response-only fields (`id`, `review_status`,
+            * `ltd` - Limited Company (Ltd)
 
-        `matched_supplier_name`). The viewset still validates/creates through
+            * `llp` - Limited Liability Partnership (LLP)
 
-        :class:`OnboardingSupplierSerializer`; this exists purely so
+            * `plc` - Public Limited Company (PLC)
 
-        ``@extend_schema(request=...)`` emits an honest request contract (its fields
+            * `sole_trader` - Sole Trader
 
-        are a subset the read serializer also accepts, so runtime and schema agree).'
-      properties:
-        supplier_name:
-          type: string
-          description: Supplier name
+            * `partnership` - Partnership
+
+            * `other` - Other'
+        website:
+          type:
+          - string
+          - 'null'
           maxLength: 255
         vat_number:
-          type: string
-          description: Supplier VAT / tax registration number
-          maxLength: 64
-        registration_number:
-          type: string
-          description: Business/company registration number (e.g. Companies House number; Xero's Contact.CompanyNumber) — distinct from the VAT number.
-          maxLength: 64
-        duns:
-          type: string
-          description: DUNS number (Dun & Bradstreet identifier), primarily for US suppliers.
-          maxLength: 50
-        products_description:
-          type: string
-          description: Description of products purchased from this supplier
-        average_monthly_spend:
           type:
           - string
           - 'null'
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-          description: Average monthly spend with this supplier
-        invoice_currency:
-          type: string
-          description: Invoice/Payment currency (e.g., USD, GBP, EUR)
-          maxLength: 3
-        payment_terms:
-          type: string
-          description: Supplier payment terms
-        priority:
-          description: 'Priority to onboard this supplier
-
-
-            * `high` - High
-
-            * `medium` - Medium
-
-            * `low` - Low'
+          writeOnly: true
+          maxLength: 50
+        vat_country_code:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          maxLength: 2
+        phone_country_code:
           oneOf:
-          - $ref: '#/components/schemas/PriorityEnum'
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
           - $ref: '#/components/schemas/BlankEnum'
-        supplier_country:
-          type: string
-          description: Supplier country
-          maxLength: 100
-        supplier_state:
-          type: string
-          title: Supplier State/County
-          description: Supplier state or county
-          maxLength: 100
-        supplier_address:
-          type: string
-          description: Supplier address
-        contact_name:
-          type: string
-          description: Supplier contact name
-          maxLength: 255
-        contact_email:
-          type: string
-          format: email
-          description: Supplier contact email
-          maxLength: 255
-        contact_phone:
-          type: string
-          description: Supplier contact phone number
-          maxLength: 50
-        arranges_delivery:
-          type: boolean
-          description: Does the supplier arrange delivery?
-        lead_time:
-          type: string
-          description: Agreed lead time
-          maxLength: 255
-        is_organic:
-          type: boolean
-          description: Is this an organic supplier?
-        relationship_notes:
-          type: string
-          description: Any noteworthy information about your trading relationship
-        notes:
-          type: string
-          description: Additional notes about the supplier
-        provider:
-          type: string
-          writeOnly: true
-        provider_external_id:
-          type: string
-          writeOnly: true
-          maxLength: 128
-        confirmed_existing_supplier_uuid:
+          - $ref: '#/components/schemas/NullEnum'
+        phone_number:
           type:
           - string
           - 'null'
-          format: uuid
+          maxLength: 50
+        buyer_accounts_email_address:
+          type:
+          - string
+          - 'null'
+          format: email
+          maxLength: 254
+        buyer_delivery_email_address:
+          type:
+          - string
+          - 'null'
+          format: email
+          maxLength: 254
+        address:
+          $ref: '#/components/schemas/BusinessProfileAddress'
+        use_as_billing:
+          type: boolean
           writeOnly: true
+          default: true
+        billing_matches_company:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          readOnly: true
+        country:
+          type: string
+          readOnly: true
       required:
-      - supplier_name
+      - billing_matches_company
+      - country
+      - email
+      - legal_entity_type
+      - name
+    LineItemClassificationEnum:
+      enum:
+      - INGREDIENT
+      - PACKAGING
+      - LOGISTICS
+      - SERVICES
+      - OTHER
+      type: string
+      description: '* `INGREDIENT` - Ingredient
+
+        * `PACKAGING` - Packaging
+
+        * `LOGISTICS` - Logistics
+
+        * `SERVICES` - Services
+
+        * `OTHER` - Other'
+    SupplierReviewStatusEnum:
+      enum:
+      - pending_review
+      - matched
+      - onboarding
+      - rejected
+      type: string
+      description: '* `pending_review` - Pending review
+
+        * `matched` - Matched to existing supplier
+
+        * `onboarding` - Onboarding new supplier
+
+        * `rejected` - Rejected'
+    BusinessProfileAddress:
+      type: object
+      description: 'The buyer''s primary `CompanyAddress(address_type=COMPANY)`. The address
+
+        country is set server-side from `Company.registration_country_code`, so
+
+        it is read-only on the wire.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        street_1:
+          type: string
+          maxLength: 255
+        street_2:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        town:
+          type: string
+          maxLength: 100
+        region:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        postcode:
+          type: string
+          maxLength: 100
+        country:
+          readOnly: true
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/NullEnum'
+      required:
+      - country
+      - postcode
+      - street_1
+      - town
+      - uuid
     PatchedOnboardingBanking:
       type: object
       description: 'Buyer Banking & payments section. A 1:1 resource on Company: a single
@@ -3725,139 +4453,6 @@ components:
           type: string
           description: Optional IBAN.
           maxLength: 64
-    _ComplianceDocumentWrite:
-      type: object
-      description: 'Inline write shape for a compliance document inside a proposal
-
-        payload. Mirrors ``ExtractedComplianceDocumentProposal`` in
-
-        ``@opply/agent-protocol`` — every optional string accepts ``null``
-
-        (the agent''s "couldn''t read it" value) and stores ``""``.'
-      properties:
-        uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        source_invoice_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        compliance_type:
-          allOf:
-          - $ref: '#/components/schemas/ComplianceDocumentTypeEnum'
-          default: OTHER
-        type_hint:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 64
-        title:
-          type: string
-          maxLength: 255
-        holder_name:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 255
-        issuing_authority:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 255
-        jurisdiction:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 128
-        us_state:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 2
-        country:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 2
-        certificate_number:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 128
-        issue_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        expiry_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        confidence:
-          allOf:
-          - $ref: '#/components/schemas/ExtractionConfidenceEnum'
-          default: medium
-        evidence:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 300
-        gaps:
-          type: array
-          items:
-            type: object
-            additionalProperties: {}
-      required:
-      - title
-    OnboardingComplianceDocumentCommit:
-      type: object
-      description: 'Body of ``POST /onboarding-compliance-documents/``.
-
-
-        ``extracted_compliance_document_uuid`` names the staged row; the other
-
-        fields are optional buyer edits from the review screen that override
-
-        the extracted values on the created ``BuyerDocument``.'
-      properties:
-        extracted_compliance_document_uuid:
-          type: string
-          format: uuid
-        name:
-          type: string
-          maxLength: 255
-        issue_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        expiry_date:
-          type:
-          - string
-          - 'null'
-          format: date
-      required:
-      - extracted_compliance_document_uuid
-    CatalogItemKindEnum:
-      enum:
-      - ingredient
-      - packaging
-      type: string
-      description: '* `ingredient` - Ingredient
-
-        * `packaging` - Packaging'
     OnboardingIngredient:
       type: object
       description: 'Buyer Ingredients & SKUs section. Creates `catalog.BuyerItem` rows for
@@ -3969,336 +4564,88 @@ components:
       required:
       - item_name
       - uuid
-    USStateEnum:
-      enum:
-      - AL
-      - AK
-      - AZ
-      - AR
-      - CA
-      - CO
-      - CT
-      - DE
-      - FL
-      - GA
-      - HI
-      - ID
-      - IL
-      - IN
-      - IA
-      - KS
-      - KY
-      - LA
-      - ME
-      - MD
-      - MA
-      - MI
-      - MN
-      - MS
-      - MO
-      - MT
-      - NE
-      - NV
-      - NH
-      - NJ
-      - NM
-      - NY
-      - NC
-      - ND
-      - OH
-      - OK
-      - OR
-      - PA
-      - RI
-      - SC
-      - SD
-      - TN
-      - TX
-      - UT
-      - VT
-      - VA
-      - WA
-      - WV
-      - WI
-      - WY
-      - DC
-      - PR
-      - GU
-      - VI
-      - AS
-      - MP
-      type: string
-      description: '* `AL` - Alabama
-
-        * `AK` - Alaska
-
-        * `AZ` - Arizona
-
-        * `AR` - Arkansas
-
-        * `CA` - California
-
-        * `CO` - Colorado
-
-        * `CT` - Connecticut
-
-        * `DE` - Delaware
-
-        * `FL` - Florida
-
-        * `GA` - Georgia
-
-        * `HI` - Hawaii
-
-        * `ID` - Idaho
-
-        * `IL` - Illinois
-
-        * `IN` - Indiana
-
-        * `IA` - Iowa
-
-        * `KS` - Kansas
-
-        * `KY` - Kentucky
-
-        * `LA` - Louisiana
-
-        * `ME` - Maine
-
-        * `MD` - Maryland
-
-        * `MA` - Massachusetts
-
-        * `MI` - Michigan
-
-        * `MN` - Minnesota
-
-        * `MS` - Mississippi
-
-        * `MO` - Missouri
-
-        * `MT` - Montana
-
-        * `NE` - Nebraska
-
-        * `NV` - Nevada
-
-        * `NH` - New Hampshire
-
-        * `NJ` - New Jersey
-
-        * `NM` - New Mexico
-
-        * `NY` - New York
-
-        * `NC` - North Carolina
-
-        * `ND` - North Dakota
-
-        * `OH` - Ohio
-
-        * `OK` - Oklahoma
-
-        * `OR` - Oregon
-
-        * `PA` - Pennsylvania
-
-        * `RI` - Rhode Island
-
-        * `SC` - South Carolina
-
-        * `SD` - South Dakota
-
-        * `TN` - Tennessee
-
-        * `TX` - Texas
-
-        * `UT` - Utah
-
-        * `VT` - Vermont
-
-        * `VA` - Virginia
-
-        * `WA` - Washington
-
-        * `WV` - West Virginia
-
-        * `WI` - Wisconsin
-
-        * `WY` - Wyoming
-
-        * `DC` - District of Columbia
-
-        * `PR` - Puerto Rico
-
-        * `GU` - Guam
-
-        * `VI` - U.S. Virgin Islands
-
-        * `AS` - American Samoa
-
-        * `MP` - Northern Mariana Islands'
-    BusinessProfileAddress:
+    _SupplierWrite:
       type: object
-      description: 'The buyer''s primary `CompanyAddress(address_type=COMPANY)`. The address
-
-        country is set server-side from `Company.registration_country_code`, so
-
-        it is read-only on the wire.'
+      description: Inline write shape for an extracted supplier (+ its line items).
       properties:
-        uuid:
-          type: string
+        source_invoice_uuid:
+          type:
+          - string
+          - 'null'
           format: uuid
-          readOnly: true
-        street_1:
+        supplier_name:
           type: string
           maxLength: 255
-        street_2:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        town:
+        vat_number:
           type: string
-          maxLength: 100
-        region:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        postcode:
-          type: string
-          maxLength: 100
-        country:
-          readOnly: true
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/NullEnum'
-      required:
-      - country
-      - postcode
-      - street_1
-      - town
-      - uuid
-    DeliveryAddressPreviewItem:
-      type: object
-      description: 'One discovered delivery address to check against the buyer''s saved ones.
-
-        Only the signature fields are needed (street + town + postcode + country).'
-      properties:
-        street_1:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        town:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        postcode:
-          type:
-          - string
-          - 'null'
+          default: ''
           maxLength: 64
-        country:
+        registration_number:
+          type: string
+          default: ''
+          maxLength: 64
+        address:
+          type: string
+          default: ''
+        contact_name:
+          type: string
+          default: ''
+          maxLength: 255
+        contact_email:
+          type: string
+          format: email
+          default: ''
+        contact_phone:
+          type: string
+          default: ''
+          maxLength: 64
+        payment_terms:
+          type: string
+          default: ''
+          maxLength: 64
+        invoice_currency:
+          type: string
+          default: ''
+          maxLength: 8
+        average_monthly_spend:
           type:
           - string
           - 'null'
-          maxLength: 64
-    DocumentType:
-      type: object
-      description: Shared serializer for the DocumentType taxonomy (buyer, supplier, Opply documents).
-      properties:
-        uuid:
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        lead_time_days:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        supplier_country:
           type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        description:
-          type: string
-      required:
-      - name
-      - uuid
-    OnboardingInvoiceList:
-      type: object
-      description: 'Compact shape used inside batch responses and list endpoints.
-
-
-        Intentionally never exposes ``storage_object_key`` / ``storage_bucket`` —
-
-        the private path stays on the server.'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        original_filename:
-          type: string
-          readOnly: true
-        mime_type:
-          type: string
-          readOnly: true
-        size_bytes:
-          type: integer
-          readOnly: true
-        page_count:
-          type: integer
-          readOnly: true
-        status:
+          default: ''
+          maxLength: 100
+        confidence:
           allOf:
-          - $ref: '#/components/schemas/OnboardingInvoiceStatusEnum'
-          readOnly: true
-        created_at:
+          - $ref: '#/components/schemas/ExtractionConfidenceEnum'
+          default: medium
+        evidence:
           type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - mime_type
-      - original_filename
-      - page_count
-      - size_bytes
-      - status
-      - uuid
-    OnboardingInvoiceStatusEnum:
-      enum:
-      - uploaded
-      - agent_extracted
-      - agent_extraction_failed
-      - discarded
-      type: string
-      description: '* `uploaded` - Uploaded
-
-        * `agent_extracted` - Agent extracted
-
-        * `agent_extraction_failed` - Agent extraction failed
-
-        * `discarded` - Discarded'
-    OnboardingBanking:
-      type: object
-      description: 'Buyer Banking & payments section. A 1:1 resource on Company: a single
-
-        optional IBAN. The section is treated as complete when an IBAN is
-
-        saved; "Skip for now" is handled FE-side and does not write to the BE.'
-      properties:
-        iban:
-          type: string
-          description: Optional IBAN.
-          maxLength: 64
-    ItemMatchPreviewResponse:
-      type: object
-      properties:
-        matches:
+          default: ''
+          maxLength: 300
+        gaps:
           type: array
           items:
-            $ref: '#/components/schemas/ItemMatchResult'
+            type: object
+            additionalProperties: {}
+        matched_existing_supplier_id:
+          type:
+          - integer
+          - 'null'
+          minimum: 1
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/_LineItemWrite'
       required:
-      - matches
+      - supplier_name
     ExtractionConfidenceEnum:
       enum:
       - high
@@ -4335,365 +4682,18 @@ components:
       required:
       - batch_uuid
       - file
-    OnboardingInvoiceBatch:
+    DeliveryAddressMatchPreviewRequest:
       type: object
+      description: 'Batch of connector-discovered delivery addresses to check against the
+
+        buyer''s existing saved delivery addresses, for the import review preview.'
       properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        status:
-          allOf:
-          - $ref: '#/components/schemas/OnboardingInvoiceBatchStatusEnum'
-          readOnly: true
-        total_invoice_count:
-          type: integer
-          readOnly: true
-        extracted_invoice_count:
-          type: integer
-          readOnly: true
-        extraction_started_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-        extraction_completed_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-        extraction_failed_reason:
-          type: string
-          readOnly: true
-        invoices:
+        addresses:
           type: array
           items:
-            $ref: '#/components/schemas/OnboardingInvoiceList'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
+            $ref: '#/components/schemas/DeliveryAddressPreviewItem'
       required:
-      - created_at
-      - extracted_invoice_count
-      - extraction_completed_at
-      - extraction_failed_reason
-      - extraction_started_at
-      - invoices
-      - modified_at
-      - status
-      - total_invoice_count
-      - uuid
-    OnboardingInvoiceBatchStatusEnum:
-      enum:
-      - uploading
-      - ready_for_extraction
-      - extracting
-      - extracted
-      - extraction_failed
-      - committed
-      - discarded
-      type: string
-      description: '* `uploading` - Uploading
-
-        * `ready_for_extraction` - Ready for extraction
-
-        * `extracting` - Extracting
-
-        * `extracted` - Extracted
-
-        * `extraction_failed` - Extraction failed
-
-        * `committed` - Committed
-
-        * `discarded` - Discarded'
-    ItemMatchResult:
-      type: object
-      description: 'One item preview result. Unlike suppliers there''s no relationship nuance —
-
-        the buyer''s whole catalogue is fair game. An exact match will merge at commit
-
-        (update_or_create on the name); a fuzzy match is a hint the buyer confirms.'
-      properties:
-        item_name:
-          type: string
-        matched:
-          type: boolean
-        confidence:
-          oneOf:
-          - $ref: '#/components/schemas/MatchConfidenceEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        matched_item_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        matched_item_name:
-          type:
-          - string
-          - 'null'
-        ratio:
-          type:
-          - number
-          - 'null'
-          format: double
-      required:
-      - item_name
-      - matched
-    BuyerFinancialDocument:
-      type: object
-      description: Read serializer returned for list/create responses.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        type:
-          allOf:
-          - $ref: '#/components/schemas/BuyerFinancialDocumentTypeEnum'
-          readOnly: true
-          description: 'Category of financial document — drives how the credit team triages the upload.
-
-
-            * `management_accounts` - Management Accounts
-
-            * `audited_accounts` - Audited Accounts
-
-            * `balance_sheet` - Balance Sheet
-
-            * `profit_and_loss` - Profit and Loss
-
-            * `cashflow_forecast` - Cashflow Forecast
-
-            * `sales_tax_exemption` - Sales Tax Exemption
-
-            * `other` - Other'
-        original_filename:
-          type: string
-          readOnly: true
-          description: Filename as supplied by the user at upload time (preserved for display).
-        file_size_bytes:
-          type: integer
-          readOnly: true
-          description: Size of the uploaded file in bytes; capped at the application-level upload limit.
-        file_url:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        uploaded_by_name:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-          description: Display name (sales-tax exemptions only; blank for other financial docs).
-        start_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          readOnly: true
-          description: Start date of document validity (sales-tax exemptions only).
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          readOnly: true
-          description: End/expiry date of document validity (sales-tax exemptions only).
-        certificate_number:
-          type: string
-          readOnly: true
-          description: Permit / exemption / certificate number as printed (sales-tax exemptions only).
-        jurisdiction:
-          type: string
-          readOnly: true
-          description: State/region the document applies in, as printed (e.g. 'Michigan'). For US documents the structured counterpart is us_state_jurisdiction.
-        issuing_authority:
-          type: string
-          readOnly: true
-          description: Body that issued the document (e.g. 'Michigan Department of Treasury').
-        holder_name:
-          type: string
-          readOnly: true
-          description: Entity the document is issued to as printed — normally the buyer company.
-      required:
-      - certificate_number
-      - created_at
-      - end_date
-      - file_size_bytes
-      - file_url
-      - holder_name
-      - issuing_authority
-      - jurisdiction
-      - name
-      - original_filename
-      - start_date
-      - type
-      - uploaded_by_name
-      - uuid
-    SupplierMatchResultSourceEnum:
-      enum:
-      - onboarded
-      - in_progress
-      - submitted
-      type: string
-      description: '* `onboarded` - onboarded
-
-        * `in_progress` - in_progress
-
-        * `submitted` - submitted'
-    UnitOfMeasurementEnum:
-      enum:
-      - fl oz
-      - g
-      - mg
-      - gals
-      - kg
-      - L
-      - tons
-      - oz
-      - lbs
-      - pcs
-      - pt
-      - ml
-      - boxes
-      - pallets
-      - tsp
-      - tbsp
-      - units
-      - cases
-      - trays
-      type: string
-      description: '* `fl oz` - Fluid Ounces
-
-        * `g` - Grams
-
-        * `mg` - milligrams
-
-        * `gals` - Gallons
-
-        * `kg` - Kilograms
-
-        * `L` - Liters
-
-        * `tons` - Metric Tons
-
-        * `oz` - Ounces
-
-        * `lbs` - Pounds
-
-        * `pcs` - Pieces
-
-        * `pt` - Pints
-
-        * `ml` - Milliliter
-
-        * `boxes` - Boxes
-
-        * `pallets` - Pallets
-
-        * `tsp` - Teaspoons
-
-        * `tbsp` - Tablespoons
-
-        * `units` - Units
-
-        * `cases` - Cases
-
-        * `trays` - Trays'
-    OnboardingExtraction:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        batch_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        status:
-          allOf:
-          - $ref: '#/components/schemas/OnboardingExtractionStatusEnum'
-          readOnly: true
-        proposed_business_profile:
-          readOnly: true
-          description: Aggregate company-profile fields (name, VAT, registered address).
-        proposed_banking:
-          readOnly: true
-          description: Aggregate banking fields the agent extracted (e.g. IBAN).
-        proposed_delivery:
-          readOnly: true
-          description: Delivery addresses inferred from invoice headers.
-        agent_reasoning:
-          type: string
-          readOnly: true
-          description: Tweet-length human-readable summary from the orchestrator.
-        extraction_session_id:
-          type: string
-          readOnly: true
-          description: AgentCore session id; correlates back to the originating run.
-        suppliers:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExtractedSupplierRead'
-          readOnly: true
-        compliance_documents:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExtractedComplianceDocumentRead'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - agent_reasoning
-      - batch_uuid
-      - compliance_documents
-      - created_at
-      - extraction_session_id
-      - modified_at
-      - proposed_banking
-      - proposed_business_profile
-      - proposed_delivery
-      - status
-      - suppliers
-      - uuid
-    SupplierMatchPreviewRequest:
-      type: object
-      description: 'Batch of connector-discovered supplier names to check against the
-
-        suppliers the buyer already sources from, for the import review preview.'
-      properties:
-        supplier_names:
-          type: array
-          items:
-            type: string
-            maxLength: 255
-          description: Discovered supplier names to check for a match against the buyer's existing suppliers.
-          maxItems: 200
-      required:
-      - supplier_names
+      - addresses
   securitySchemes:
     cookieAuth:
       type: apiKey

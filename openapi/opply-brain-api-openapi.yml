@@ -81,6 +81,49 @@ paths:
           description: ''
 components:
   schemas:
+    CelebrateEnum:
+      enum:
+      - suppliers
+      - ingredients
+      - operations
+      - commercials
+      - compliance
+      - financial
+      - market
+      type: string
+      description: '* `suppliers` - Suppliers
+
+        * `ingredients` - Ingredients
+
+        * `operations` - Operations
+
+        * `commercials` - Commercials
+
+        * `compliance` - Compliance
+
+        * `financial` - Financial
+
+        * `market` - Market'
+    BrainObserveProgressResponse:
+      type: object
+      description: 'Sectors whose unlock-celebration modal should be shown now.
+
+
+        Returned in the order the server processed them; the FE queues
+
+        them and surfaces one at a time. A sector appears here exactly
+
+        once across all observations — the BE flips the row''s
+
+        ``resolved`` flag in the same transaction.'
+      properties:
+        celebrate:
+          type: array
+          items:
+            $ref: '#/components/schemas/CelebrateEnum'
+          description: Brain sector keys whose unlock threshold was just observed to cross from below to above. Empty when nothing new fired.
+      required:
+      - celebrate
     BrainObserveProgressRequest:
       type: object
       description: 'Per-sector "above threshold?" observation submitted by the FE.
@@ -110,49 +153,6 @@ components:
           description: Map of brain sector key → whether the user is currently above the sector's unlock threshold. Keys outside the ``BrainSectorKey`` enum are silently ignored.
       required:
       - sectors
-    BrainObserveProgressResponse:
-      type: object
-      description: 'Sectors whose unlock-celebration modal should be shown now.
-
-
-        Returned in the order the server processed them; the FE queues
-
-        them and surfaces one at a time. A sector appears here exactly
-
-        once across all observations — the BE flips the row''s
-
-        ``resolved`` flag in the same transaction.'
-      properties:
-        celebrate:
-          type: array
-          items:
-            $ref: '#/components/schemas/CelebrateEnum'
-          description: Brain sector keys whose unlock threshold was just observed to cross from below to above. Empty when nothing new fired.
-      required:
-      - celebrate
-    CelebrateEnum:
-      enum:
-      - suppliers
-      - ingredients
-      - operations
-      - commercials
-      - compliance
-      - financial
-      - market
-      type: string
-      description: '* `suppliers` - Suppliers
-
-        * `ingredients` - Ingredients
-
-        * `operations` - Operations
-
-        * `commercials` - Commercials
-
-        * `compliance` - Compliance
-
-        * `financial` - Financial
-
-        * `market` - Market'
   securitySchemes:
     cookieAuth:
       type: apiKey
