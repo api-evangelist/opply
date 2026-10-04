@@ -330,24 +330,14 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    KYBVerificationStatusResponse:
+    PayoutCompanyType:
       type: object
       properties:
-        status:
-          $ref: '#/components/schemas/KYBVerificationStatusResponseStatusEnum'
-        current_step:
-          type: integer
-          maximum: 4
-          minimum: 1
-        redirect_url:
-          type:
-          - string
-          - 'null'
-          format: uri
+        company_type:
+          $ref: '#/components/schemas/PayoutCompanyTypeCompanyTypeEnum'
       required:
-      - current_step
-      - status
-    RapydSupplierTermsCard:
+      - company_type
+    KYBStep1Response:
       type: object
       properties:
         redirect_url:
@@ -355,26 +345,53 @@ components:
           format: uri
       required:
       - redirect_url
-    PaymentAvailability:
+    SupportedCurrencies:
+      enum:
+      - EUR
+      - GBP
+      - USD
+      - CAD
+      type: string
+      description: '* `EUR` - EUR
+
+        * `GBP` - GBP
+
+        * `USD` - USD
+
+        * `CAD` - CAD'
+    KYBVerificationStatusResponseStatusEnum:
+      enum:
+      - Not started
+      - Started
+      - In Review
+      - Completed
+      type: string
+      description: '* `Not started` - Not started
+
+        * `Started` - Started
+
+        * `In Review` - In Review
+
+        * `Completed` - Completed'
+    PricesRetrieve:
       type: object
       properties:
-        order_id:
+        currency:
+          type: string
+        name:
+          type: string
+        quote_uuid:
           type: string
           format: uuid
-      required:
-      - order_id
-    OrderPrices:
-      type: object
-      properties:
-        commission_payout_with_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        shipping_cost_with_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
         sum_to_pay:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        unit_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_commission_with_vat:
           type: string
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
@@ -382,17 +399,7 @@ components:
           type: string
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        quotes:
-          type: array
-          items:
-            $ref: '#/components/schemas/PricesRetrieve'
-        currency:
-          $ref: '#/components/schemas/AllCurrencies'
-        commission_payout:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        payment_commission:
+        total_shipping_cost:
           type: string
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
@@ -400,35 +407,15 @@ components:
           type: string
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_price_commission:
+        total_price_with_vat:
           type: string
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_price_commission_vat:
+        unit_price_with_vat:
           type: string
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_price_fx_fee:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        commission_payout_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        buyer_total_price_sum_to_pay_without_fx:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_price_with_commission_with_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        discount_amount:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        sum_to_pay_no_discount:
+        total_price_with_vat_with_shipping_with_vat:
           type: string
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
@@ -464,37 +451,93 @@ components:
           type: string
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        payout_per_unit:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        sum_payout_no_shipping:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        payout_per_unit_no_shipping:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        vat_sum_no_commission:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        additional_buyer_to_opply_fees_no_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        additional_buyer_to_opply_fees_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        additional_fees_vat_rate:
+          type: array
+          items:
+            type: string
+            format: decimal
+            pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        vat_sum_for_supplier:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        vat_sum_no_commission_for_supplier:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
       required:
-      - buyer_total_price_sum_to_pay_without_fx
-      - commission_payout
-      - commission_payout_vat
-      - commission_payout_with_vat
-      - currency
-      - payment_commission
-      - quotes
-      - shipping_cost_with_vat
+      - additional_buyer_to_opply_fees_no_vat
+      - additional_buyer_to_opply_fees_with_vat
+      - additional_fees_vat_rate
+      - payout_per_unit
+      - payout_per_unit_no_shipping
+      - shipping_cost_no_vat
       - sum_payout
+      - sum_payout_no_shipping
       - sum_to_pay
       - total_price
-      - total_price_commission
-      - total_price_commission_vat
-      - total_price_fx_fee
-      - total_price_with_commission_with_vat
-    PayoutCompanyType:
+      - total_price_commission_with_vat
+      - total_price_no_vat
+      - total_price_no_vat_with_shipping
+      - total_price_with_vat
+      - total_price_with_vat_with_shipping_with_vat
+      - total_shipping_cost
+      - unit_price
+      - unit_price_no_vat
+      - unit_price_no_vat_with_shipping
+      - unit_price_with_commission_with_vat
+      - unit_price_with_vat
+      - unit_price_with_vat_with_shipping
+      - vat_sum
+      - vat_sum_for_supplier
+      - vat_sum_no_commission
+      - vat_sum_no_commission_for_supplier
+    PaymentMethod:
+      enum:
+      - card
+      - bank_transfer
+      - PAY30
+      - PAY30EOFM
+      type: string
+      description: '* `card` - Card
+
+        * `bank_transfer` - Bank Transfer
+
+        * `PAY30` - Kriya 30
+
+        * `PAY30EOFM` - Kriya Next Month'
+    RapydSupplierTermsCard:
       type: object
       properties:
-        company_type:
-          $ref: '#/components/schemas/PayoutCompanyTypeCompanyTypeEnum'
+        redirect_url:
+          type: string
+          format: uri
       required:
-      - company_type
-    PayoutCompanyTypeCompanyTypeEnum:
-      enum:
-      - Sole Proprietor
-      - Private Limited Company
-      type: string
-      description: '* `Sole Proprietor` - Sole Proprietor
-
-        * `Private Limited Company` - Private Limited Company'
+      - redirect_url
     RapydCheckoutData:
       type: object
       properties:
@@ -519,51 +562,19 @@ components:
       - prices
       - redirect_url
       - virtual_bank_account
-    PaymentScenarioEnum:
-      enum:
-      - in_advance
-      - on_dispatch
-      type: string
-      description: '* `in_advance` - In Advance
-
-        * `on_dispatch` - On Dispatch'
-    PayoutCallback:
+    BankTransfer:
       type: object
       properties:
-        beneficiary_id:
-          type: string
-        payout_method_type:
-          type: string
         merchant_reference_id:
           type: string
-      required:
-      - beneficiary_id
-      - merchant_reference_id
-      - payout_method_type
-    RapydCheckout:
-      type: object
-      properties:
-        order_id:
+        reference_number:
           type: string
-          format: uuid
-        selected_currency:
-          $ref: '#/components/schemas/SupportedCurrencies'
+        bank_account:
+          allOf:
+          - $ref: '#/components/schemas/BankAccount'
       required:
-      - order_id
-    SupportedCurrencies:
-      enum:
-      - EUR
-      - GBP
-      - USD
-      - CAD
-      type: string
-      description: '* `EUR` - EUR
-
-        * `GBP` - GBP
-
-        * `USD` - USD
-
-        * `CAD` - CAD'
+      - merchant_reference_id
+      - reference_number
     AllCurrencies:
       enum:
       - BND
@@ -1487,25 +1498,45 @@ components:
         * `LUC` - LUC
 
         * `YER` - YER'
-    PricesRetrieve:
+    KYBVerificationStatusResponse:
       type: object
       properties:
-        currency:
+        status:
+          $ref: '#/components/schemas/KYBVerificationStatusResponseStatusEnum'
+        current_step:
+          type: integer
+          maximum: 4
+          minimum: 1
+        redirect_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+      required:
+      - current_step
+      - status
+    KYBStep1:
+      type: object
+      properties:
+        phone_number:
           type: string
-        name:
+        phone_country_code:
           type: string
-        quote_uuid:
+      required:
+      - phone_country_code
+      - phone_number
+    OrderPrices:
+      type: object
+      properties:
+        commission_payout_with_vat:
           type: string
-          format: uuid
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        shipping_cost_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
         sum_to_pay:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        unit_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_price_commission_with_vat:
           type: string
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
@@ -1513,7 +1544,17 @@ components:
           type: string
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_shipping_cost:
+        quotes:
+          type: array
+          items:
+            $ref: '#/components/schemas/PricesRetrieve'
+        currency:
+          $ref: '#/components/schemas/AllCurrencies'
+        commission_payout:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        payment_commission:
           type: string
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
@@ -1521,15 +1562,35 @@ components:
           type: string
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_price_with_vat:
+        total_price_commission:
           type: string
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        unit_price_with_vat:
+        total_price_commission_vat:
           type: string
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        total_price_with_vat_with_shipping_with_vat:
+        total_price_fx_fee:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        commission_payout_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        buyer_total_price_sum_to_pay_without_fx:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        total_price_with_commission_with_vat:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        discount_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        sum_to_pay_no_discount:
           type: string
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
@@ -1565,71 +1626,22 @@ components:
           type: string
           format: decimal
           pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        payout_per_unit:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        sum_payout_no_shipping:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        payout_per_unit_no_shipping:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        vat_sum_no_commission:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        additional_buyer_to_opply_fees_no_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        additional_buyer_to_opply_fees_with_vat:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        additional_fees_vat_rate:
-          type: array
-          items:
-            type: string
-            format: decimal
-            pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        vat_sum_for_supplier:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
-        vat_sum_no_commission_for_supplier:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
       required:
-      - additional_buyer_to_opply_fees_no_vat
-      - additional_buyer_to_opply_fees_with_vat
-      - additional_fees_vat_rate
-      - payout_per_unit
-      - payout_per_unit_no_shipping
-      - shipping_cost_no_vat
+      - buyer_total_price_sum_to_pay_without_fx
+      - commission_payout
+      - commission_payout_vat
+      - commission_payout_with_vat
+      - currency
+      - payment_commission
+      - quotes
+      - shipping_cost_with_vat
       - sum_payout
-      - sum_payout_no_shipping
       - sum_to_pay
       - total_price
-      - total_price_commission_with_vat
-      - total_price_no_vat
-      - total_price_no_vat_with_shipping
-      - total_price_with_vat
-      - total_price_with_vat_with_shipping_with_vat
-      - total_shipping_cost
-      - unit_price
-      - unit_price_no_vat
-      - unit_price_no_vat_with_shipping
-      - unit_price_with_commission_with_vat
-      - unit_price_with_vat
-      - unit_price_with_vat_with_shipping
-      - vat_sum
-      - vat_sum_for_supplier
-      - vat_sum_no_commission
-      - vat_sum_no_commission_for_supplier
+      - total_price_commission
+      - total_price_commission_vat
+      - total_price_fx_fee
+      - total_price_with_commission_with_vat
     RapydSavePayment:
       type: object
       properties:
@@ -1644,14 +1656,16 @@ components:
       required:
       - order_id
       - payment_id
-    KYBStep1Response:
+    RapydCheckout:
       type: object
       properties:
-        redirect_url:
+        order_id:
           type: string
-          format: uri
+          format: uuid
+        selected_currency:
+          $ref: '#/components/schemas/SupportedCurrencies'
       required:
-      - redirect_url
+      - order_id
     BankAccount:
       type: object
       properties:
@@ -1686,20 +1700,22 @@ components:
       required:
       - address
       - beneficiary_name
-    KYBVerificationStatusResponseStatusEnum:
+    PaymentAvailability:
+      type: object
+      properties:
+        order_id:
+          type: string
+          format: uuid
+      required:
+      - order_id
+    PayoutCompanyTypeCompanyTypeEnum:
       enum:
-      - Not started
-      - Started
-      - In Review
-      - Completed
+      - Sole Proprietor
+      - Private Limited Company
       type: string
-      description: '* `Not started` - Not started
+      description: '* `Sole Proprietor` - Sole Proprietor
 
-        * `Started` - Started
-
-        * `In Review` - In Review
-
-        * `Completed` - Completed'
+        * `Private Limited Company` - Private Limited Company'
     VirtualBankTransfer:
       type: object
       properties:
@@ -1732,43 +1748,27 @@ components:
       - order_id
       - payment_method
       - payment_scenario
-    KYBStep1:
+    PayoutCallback:
       type: object
       properties:
-        phone_number:
+        beneficiary_id:
           type: string
-        phone_country_code:
+        payout_method_type:
           type: string
-      required:
-      - phone_country_code
-      - phone_number
-    PaymentMethod:
-      enum:
-      - card
-      - bank_transfer
-      - PAY30
-      - PAY30EOFM
-      type: string
-      description: '* `card` - Card
-
-        * `bank_transfer` - Bank Transfer
-
-        * `PAY30` - Kriya 30
-
-        * `PAY30EOFM` - Kriya Next Month'
-    BankTransfer:
-      type: object
-      properties:
         merchant_reference_id:
           type: string
-        reference_number:
-          type: string
-        bank_account:
-          allOf:
-          - $ref: '#/components/schemas/BankAccount'
       required:
+      - beneficiary_id
       - merchant_reference_id
-      - reference_number
+      - payout_method_type
+    PaymentScenarioEnum:
+      enum:
+      - in_advance
+      - on_dispatch
+      type: string
+      description: '* `in_advance` - In Advance
+
+        * `on_dispatch` - On Dispatch'
   securitySchemes:
     cookieAuth:
       type: apiKey

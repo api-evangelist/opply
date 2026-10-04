@@ -83,221 +83,6 @@ paths:
           description: ''
 components:
   schemas:
-    PriorityEnum:
-      enum:
-      - high
-      - medium
-      - low
-      type: string
-      description: '* `high` - High
-
-        * `medium` - Medium
-
-        * `low` - Low'
-    OnboardingSupplier:
-      type: object
-      description: Serializer for OnboardingSupplier model
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        company_name:
-          type: string
-          maxLength: 255
-        status:
-          type: string
-          readOnly: true
-        buyer:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The buyer company that referred this supplier - DEPRECATED, use buyers field
-        buyer_name:
-          type: string
-          readOnly: true
-        buyers_list:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerSummary'
-          readOnly: true
-        buyer_uuids:
-          type: array
-          items:
-            type: string
-            format: uuid
-          writeOnly: true
-          description: List of buyer UUIDs to associate with this supplier
-        owners_list:
-          type: array
-          items:
-            $ref: '#/components/schemas/StaffUser'
-          readOnly: true
-        owner_uuids:
-          type: array
-          items:
-            type: string
-            format: uuid
-          writeOnly: true
-          description: List of staff user UUIDs to assign as owners
-        final_supplier:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: Reference to the final supplier company after completing onboarding
-        final_supplier_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          readOnly: true
-        final_supplier_name:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        address_name:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        address_street_1:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        address_street_2:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        address_town:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        address_region:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        address_postcode:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        address_country:
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/NullEnum'
-        address_contact_full_name:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        address_contact_phone_country_code:
-          oneOf:
-          - $ref: '#/components/schemas/AddressContactPhoneCountryCodeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        address_contact_phone:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        address_contact_email:
-          type:
-          - string
-          - 'null'
-          format: email
-          readOnly: true
-        address_vat_number:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        address_vat_country_code:
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/NullEnum'
-        address_ein_number:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: 'EIN number for US suppliers (format: XX-XXXXXXX)'
-        address_note:
-          type: string
-        duns:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: DUNS number for US suppliers
-        lead_time_days:
-          type:
-          - integer
-          - 'null'
-          maximum: 365
-          minimum: 0
-          description: Default supplier lead time in calendar days, copied to the final supplier on completion.
-        registration_name:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: Canonical registered name from Companies House (GB) — captured at onboarding-supplier creation.
-        registration_number:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: Canonical Companies House registration number (GB) — captured at onboarding-supplier creation.
-        registration_country_code:
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/NullEnum'
-        is_archived:
-          type: boolean
-          readOnly: true
-      required:
-      - address_contact_email
-      - address_contact_full_name
-      - address_contact_phone
-      - address_ein_number
-      - address_name
-      - address_postcode
-      - address_region
-      - address_street_1
-      - address_street_2
-      - address_town
-      - address_vat_number
-      - buyer
-      - buyer_name
-      - buyers_list
-      - company_name
-      - created
-      - duns
-      - final_supplier
-      - final_supplier_name
-      - final_supplier_uuid
-      - is_archived
-      - modified
-      - owners_list
-      - registration_name
-      - registration_number
-      - status
-      - uuid
     PaginatedOnboardingSupplierListList:
       type: object
       required:
@@ -323,6 +108,890 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OnboardingSupplierList'
+    AvailableCurrenciesEnum:
+      enum:
+      - EUR
+      - GBP
+      - USD
+      type: string
+      description: '* `EUR` - EUR
+
+        * `GBP` - GBP
+
+        * `USD` - USD'
+    SupplierRequest:
+      type: object
+      description: 'Serializer for buyer supplier requests submitted from the portal
+
+        "Request Supplier" form.
+
+
+        Creates a ``buyer_onboarding.Supplier`` submission (default
+
+        ``review_status=PENDING_REVIEW``) bound to the buyer''s ``BuyerOnboarding``
+
+        so it lands in the MoR supplier-submissions review queue, where the MoR can
+
+        match it to an existing supplier or onboard it. The view fires a Zendesk
+
+        ticket on commit. The owning ``BuyerOnboarding`` is resolved by the view and
+
+        passed via ``save(buyer_onboarding=...)``.'
+      properties:
+        supplier_name:
+          type: string
+          description: Supplier name
+          maxLength: 255
+        average_monthly_spend:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          description: Average monthly spend
+        invoice_currency:
+          description: 'Invoice/Payment currency (e.g., USD, GBP, EUR)
+
+
+            * `EUR` - EUR
+
+            * `GBP` - GBP
+
+            * `USD` - USD'
+          oneOf:
+          - $ref: '#/components/schemas/AvailableCurrenciesEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        payment_terms:
+          type: string
+          description: Supplier payment terms
+        priority:
+          description: 'Priority to onboard this supplier
+
+
+            * `high` - High
+
+            * `medium` - Medium
+
+            * `low` - Low'
+          oneOf:
+          - $ref: '#/components/schemas/PriorityEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        supplier_country:
+          type: string
+          description: Supplier country
+          maxLength: 100
+        arranges_delivery:
+          type: boolean
+          default: false
+          description: Does the supplier arrange delivery?
+        lead_time:
+          type: string
+          description: Agreed lead time
+          maxLength: 255
+        is_organic:
+          type: boolean
+          default: false
+          description: Is this an organic supplier?
+        relationship_notes:
+          type: string
+          description: Any noteworthy information about your trading relationship
+        duns:
+          type:
+          - string
+          - 'null'
+          description: DUNS number for US suppliers
+          maxLength: 50
+        vat_number:
+          type: string
+          description: Supplier VAT number
+          maxLength: 64
+        registration_number:
+          type: string
+          description: Supplier company registration number
+          maxLength: 64
+        contact_name:
+          type: string
+          description: Supplier contact name
+          maxLength: 255
+        contact_email:
+          type: string
+          format: email
+          description: Supplier contact email
+        contact_phone:
+          type: string
+          description: Supplier contact phone
+          maxLength: 64
+        supplier_address:
+          type: string
+          description: Supplier address
+      required:
+      - supplier_name
+    SupplierReviewStatusEnum:
+      enum:
+      - pending_review
+      - matched
+      - onboarding
+      - rejected
+      type: string
+      description: '* `pending_review` - Pending review
+
+        * `matched` - Matched to existing supplier
+
+        * `onboarding` - Onboarding new supplier
+
+        * `rejected` - Rejected'
+    OnboardingSupplierList:
+      type: object
+      description: Lightweight serializer for list views
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        company_name:
+          type: string
+          readOnly: true
+        status:
+          type: string
+          readOnly: true
+        buyer_name:
+          type: string
+          readOnly: true
+        is_archived:
+          type: boolean
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - buyer_name
+      - company_name
+      - created
+      - is_archived
+      - status
+      - uuid
+    BlankEnum:
+      enum:
+      - ''
+    AddressContactPhoneCountryCodeEnum:
+      enum:
+      - '+376'
+      - '+971'
+      - '+93'
+      - '+1268'
+      - '+1264'
+      - '+355'
+      - '+374'
+      - '+244'
+      - '+672'
+      - '+54'
+      - '+1684'
+      - '+43'
+      - '+61'
+      - '+297'
+      - '+994'
+      - '+387'
+      - '+1246'
+      - '+880'
+      - '+32'
+      - '+226'
+      - '+359'
+      - '+973'
+      - '+257'
+      - '+229'
+      - '+590'
+      - '+1441'
+      - '+673'
+      - '+591'
+      - '+55'
+      - '+1242'
+      - '+975'
+      - '+267'
+      - '+375'
+      - '+501'
+      - '+1'
+      - '+243'
+      - '+236'
+      - '+242'
+      - '+41'
+      - '+225'
+      - '+682'
+      - '+56'
+      - '+237'
+      - '+86'
+      - '+57'
+      - '+506'
+      - '+53'
+      - '+238'
+      - '+357'
+      - '+420'
+      - '+49'
+      - '+253'
+      - '+45'
+      - '+1767'
+      - '+1809'
+      - '+213'
+      - '+593'
+      - '+372'
+      - '+20'
+      - '+212'
+      - '+291'
+      - '+34'
+      - '+251'
+      - '+358'
+      - '+679'
+      - '+500'
+      - '+691'
+      - '+298'
+      - '+33'
+      - '+241'
+      - '+44'
+      - '+1473'
+      - '+995'
+      - '+594'
+      - '+441481'
+      - '+233'
+      - '+350'
+      - '+299'
+      - '+220'
+      - '+224'
+      - '+240'
+      - '+30'
+      - '+502'
+      - '+1671'
+      - '+245'
+      - '+595'
+      - '+852'
+      - '+504'
+      - '+385'
+      - '+509'
+      - '+36'
+      - '+62'
+      - '+353'
+      - '+972'
+      - '+441624'
+      - '+91'
+      - '+246'
+      - '+964'
+      - '+98'
+      - '+354'
+      - '+39'
+      - '+441534'
+      - '+1876'
+      - '+962'
+      - '+81'
+      - '+254'
+      - '+996'
+      - '+855'
+      - '+686'
+      - '+269'
+      - '+1869'
+      - '+850'
+      - '+82'
+      - '+965'
+      - '+345'
+      - '+7'
+      - '+856'
+      - '+961'
+      - '+1758'
+      - '+423'
+      - '+94'
+      - '+231'
+      - '+266'
+      - '+370'
+      - '+352'
+      - '+371'
+      - '+218'
+      - '+377'
+      - '+373'
+      - '+382'
+      - '+261'
+      - '+692'
+      - '+389'
+      - '+223'
+      - '+95'
+      - '+976'
+      - '+853'
+      - '+1670'
+      - '+596'
+      - '+222'
+      - '+1664'
+      - '+356'
+      - '+230'
+      - '+960'
+      - '+265'
+      - '+52'
+      - '+60'
+      - '+258'
+      - '+264'
+      - '+687'
+      - '+227'
+      - '+234'
+      - '+505'
+      - '+31'
+      - '+47'
+      - '+977'
+      - '+674'
+      - '+683'
+      - '+64'
+      - '+968'
+      - '+507'
+      - '+51'
+      - '+689'
+      - '+675'
+      - '+63'
+      - '+92'
+      - '+48'
+      - '+508'
+      - '+1787'
+      - '+970'
+      - '+351'
+      - '+680'
+      - '+974'
+      - '+262'
+      - '+40'
+      - '+381'
+      - '+250'
+      - '+966'
+      - '+677'
+      - '+248'
+      - '+249'
+      - '+46'
+      - '+65'
+      - '+290'
+      - '+386'
+      - '+421'
+      - '+232'
+      - '+378'
+      - '+221'
+      - '+252'
+      - '+597'
+      - '+239'
+      - '+503'
+      - '+963'
+      - '+268'
+      - '+1649'
+      - '+235'
+      - '+228'
+      - '+66'
+      - '+992'
+      - '+690'
+      - '+670'
+      - '+993'
+      - '+216'
+      - '+676'
+      - '+90'
+      - '+1868'
+      - '+688'
+      - '+886'
+      - '+255'
+      - '+380'
+      - '+256'
+      - '+598'
+      - '+998'
+      - '+379'
+      - '+1784'
+      - '+58'
+      - '+1284'
+      - '+1340'
+      - '+84'
+      - '+678'
+      - '+681'
+      - '+685'
+      - '+967'
+      - '+27'
+      - '+260'
+      - '+263'
+      type: string
+      description: '* `+376` - +376
+
+        * `+971` - +971
+
+        * `+93` - +93
+
+        * `+1268` - +1268
+
+        * `+1264` - +1264
+
+        * `+355` - +355
+
+        * `+374` - +374
+
+        * `+244` - +244
+
+        * `+672` - +672
+
+        * `+54` - +54
+
+        * `+1684` - +1684
+
+        * `+43` - +43
+
+        * `+61` - +61
+
+        * `+297` - +297
+
+        * `+994` - +994
+
+        * `+387` - +387
+
+        * `+1246` - +1246
+
+        * `+880` - +880
+
+        * `+32` - +32
+
+        * `+226` - +226
+
+        * `+359` - +359
+
+        * `+973` - +973
+
+        * `+257` - +257
+
+        * `+229` - +229
+
+        * `+590` - +590
+
+        * `+1441` - +1441
+
+        * `+673` - +673
+
+        * `+591` - +591
+
+        * `+55` - +55
+
+        * `+1242` - +1242
+
+        * `+975` - +975
+
+        * `+267` - +267
+
+        * `+375` - +375
+
+        * `+501` - +501
+
+        * `+1` - +1
+
+        * `+243` - +243
+
+        * `+236` - +236
+
+        * `+242` - +242
+
+        * `+41` - +41
+
+        * `+225` - +225
+
+        * `+682` - +682
+
+        * `+56` - +56
+
+        * `+237` - +237
+
+        * `+86` - +86
+
+        * `+57` - +57
+
+        * `+506` - +506
+
+        * `+53` - +53
+
+        * `+238` - +238
+
+        * `+357` - +357
+
+        * `+420` - +420
+
+        * `+49` - +49
+
+        * `+253` - +253
+
+        * `+45` - +45
+
+        * `+1767` - +1767
+
+        * `+1809` - +1809
+
+        * `+213` - +213
+
+        * `+593` - +593
+
+        * `+372` - +372
+
+        * `+20` - +20
+
+        * `+212` - +212
+
+        * `+291` - +291
+
+        * `+34` - +34
+
+        * `+251` - +251
+
+        * `+358` - +358
+
+        * `+679` - +679
+
+        * `+500` - +500
+
+        * `+691` - +691
+
+        * `+298` - +298
+
+        * `+33` - +33
+
+        * `+241` - +241
+
+        * `+44` - +44
+
+        * `+1473` - +1473
+
+        * `+995` - +995
+
+        * `+594` - +594
+
+        * `+441481` - +441481
+
+        * `+233` - +233
+
+        * `+350` - +350
+
+        * `+299` - +299
+
+        * `+220` - +220
+
+        * `+224` - +224
+
+        * `+240` - +240
+
+        * `+30` - +30
+
+        * `+502` - +502
+
+        * `+1671` - +1671
+
+        * `+245` - +245
+
+        * `+595` - +595
+
+        * `+852` - +852
+
+        * `+504` - +504
+
+        * `+385` - +385
+
+        * `+509` - +509
+
+        * `+36` - +36
+
+        * `+62` - +62
+
+        * `+353` - +353
+
+        * `+972` - +972
+
+        * `+441624` - +441624
+
+        * `+91` - +91
+
+        * `+246` - +246
+
+        * `+964` - +964
+
+        * `+98` - +98
+
+        * `+354` - +354
+
+        * `+39` - +39
+
+        * `+441534` - +441534
+
+        * `+1876` - +1876
+
+        * `+962` - +962
+
+        * `+81` - +81
+
+        * `+254` - +254
+
+        * `+996` - +996
+
+        * `+855` - +855
+
+        * `+686` - +686
+
+        * `+269` - +269
+
+        * `+1869` - +1869
+
+        * `+850` - +850
+
+        * `+82` - +82
+
+        * `+965` - +965
+
+        * `+345` - +345
+
+        * `+7` - +7
+
+        * `+856` - +856
+
+        * `+961` - +961
+
+        * `+1758` - +1758
+
+        * `+423` - +423
+
+        * `+94` - +94
+
+        * `+231` - +231
+
+        * `+266` - +266
+
+        * `+370` - +370
+
+        * `+352` - +352
+
+        * `+371` - +371
+
+        * `+218` - +218
+
+        * `+377` - +377
+
+        * `+373` - +373
+
+        * `+382` - +382
+
+        * `+261` - +261
+
+        * `+692` - +692
+
+        * `+389` - +389
+
+        * `+223` - +223
+
+        * `+95` - +95
+
+        * `+976` - +976
+
+        * `+853` - +853
+
+        * `+1670` - +1670
+
+        * `+596` - +596
+
+        * `+222` - +222
+
+        * `+1664` - +1664
+
+        * `+356` - +356
+
+        * `+230` - +230
+
+        * `+960` - +960
+
+        * `+265` - +265
+
+        * `+52` - +52
+
+        * `+60` - +60
+
+        * `+258` - +258
+
+        * `+264` - +264
+
+        * `+687` - +687
+
+        * `+227` - +227
+
+        * `+234` - +234
+
+        * `+505` - +505
+
+        * `+31` - +31
+
+        * `+47` - +47
+
+        * `+977` - +977
+
+        * `+674` - +674
+
+        * `+683` - +683
+
+        * `+64` - +64
+
+        * `+968` - +968
+
+        * `+507` - +507
+
+        * `+51` - +51
+
+        * `+689` - +689
+
+        * `+675` - +675
+
+        * `+63` - +63
+
+        * `+92` - +92
+
+        * `+48` - +48
+
+        * `+508` - +508
+
+        * `+1787` - +1787
+
+        * `+970` - +970
+
+        * `+351` - +351
+
+        * `+680` - +680
+
+        * `+974` - +974
+
+        * `+262` - +262
+
+        * `+40` - +40
+
+        * `+381` - +381
+
+        * `+250` - +250
+
+        * `+966` - +966
+
+        * `+677` - +677
+
+        * `+248` - +248
+
+        * `+249` - +249
+
+        * `+46` - +46
+
+        * `+65` - +65
+
+        * `+290` - +290
+
+        * `+386` - +386
+
+        * `+421` - +421
+
+        * `+232` - +232
+
+        * `+378` - +378
+
+        * `+221` - +221
+
+        * `+252` - +252
+
+        * `+597` - +597
+
+        * `+239` - +239
+
+        * `+503` - +503
+
+        * `+963` - +963
+
+        * `+268` - +268
+
+        * `+1649` - +1649
+
+        * `+235` - +235
+
+        * `+228` - +228
+
+        * `+66` - +66
+
+        * `+992` - +992
+
+        * `+690` - +690
+
+        * `+670` - +670
+
+        * `+993` - +993
+
+        * `+216` - +216
+
+        * `+676` - +676
+
+        * `+90` - +90
+
+        * `+1868` - +1868
+
+        * `+688` - +688
+
+        * `+886` - +886
+
+        * `+255` - +255
+
+        * `+380` - +380
+
+        * `+256` - +256
+
+        * `+598` - +598
+
+        * `+998` - +998
+
+        * `+379` - +379
+
+        * `+1784` - +1784
+
+        * `+58` - +58
+
+        * `+1284` - +1284
+
+        * `+1340` - +1340
+
+        * `+84` - +84
+
+        * `+678` - +678
+
+        * `+681` - +681
+
+        * `+685` - +685
+
+        * `+967` - +967
+
+        * `+27` - +27
+
+        * `+260` - +260
+
+        * `+263` - +263'
+    NullEnum:
+      enum:
+      - null
+    StaffUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+      required:
+      - email
+      - first_name
+      - id
+      - is_staff
+      - last_name
+      - uuid
     Country:
       enum:
       - AF
@@ -1075,870 +1744,210 @@ components:
         * `ZM` - Zambia
 
         * `ZW` - Zimbabwe'
-    BlankEnum:
-      enum:
-      - ''
-    SupplierRequest:
+    OnboardingSupplier:
       type: object
-      description: 'Serializer for buyer supplier requests submitted from the portal
-
-        "Request Supplier" form.
-
-
-        Creates a ``buyer_onboarding.Supplier`` submission (default
-
-        ``review_status=PENDING_REVIEW``) bound to the buyer''s ``BuyerOnboarding``
-
-        so it lands in the MoR supplier-submissions review queue, where the MoR can
-
-        match it to an existing supplier or onboard it. The view fires a Zendesk
-
-        ticket on commit. The owning ``BuyerOnboarding`` is resolved by the view and
-
-        passed via ``save(buyer_onboarding=...)``.'
+      description: Serializer for OnboardingSupplier model
       properties:
-        supplier_name:
+        uuid:
           type: string
-          description: Supplier name
+          format: uuid
+          readOnly: true
+        company_name:
+          type: string
           maxLength: 255
-        average_monthly_spend:
+        status:
+          type: string
+          readOnly: true
+        buyer:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The buyer company that referred this supplier - DEPRECATED, use buyers field
+        buyer_name:
+          type: string
+          readOnly: true
+        buyers_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerSummary'
+          readOnly: true
+        buyer_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          writeOnly: true
+          description: List of buyer UUIDs to associate with this supplier
+        owners_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/StaffUser'
+          readOnly: true
+        owner_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          writeOnly: true
+          description: List of staff user UUIDs to assign as owners
+        final_supplier:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Reference to the final supplier company after completing onboarding
+        final_supplier_uuid:
           type:
           - string
           - 'null'
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-          description: Average monthly spend
-        invoice_currency:
-          description: 'Invoice/Payment currency (e.g., USD, GBP, EUR)
-
-
-            * `EUR` - EUR
-
-            * `GBP` - GBP
-
-            * `USD` - USD'
+          format: uuid
+          readOnly: true
+        final_supplier_name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        address_name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_street_1:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_street_2:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_town:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_region:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_postcode:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_country:
           oneOf:
-          - $ref: '#/components/schemas/AvailableCurrenciesEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-        payment_terms:
-          type: string
-          description: Supplier payment terms
-        priority:
-          description: 'Priority to onboard this supplier
-
-
-            * `high` - High
-
-            * `medium` - Medium
-
-            * `low` - Low'
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/NullEnum'
+        address_contact_full_name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_contact_phone_country_code:
           oneOf:
-          - $ref: '#/components/schemas/PriorityEnum'
+          - $ref: '#/components/schemas/AddressContactPhoneCountryCodeEnum'
           - $ref: '#/components/schemas/BlankEnum'
-        supplier_country:
+          - $ref: '#/components/schemas/NullEnum'
+        address_contact_phone:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_contact_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          readOnly: true
+        address_vat_number:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        address_vat_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/NullEnum'
+        address_ein_number:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: 'EIN number for US suppliers (format: XX-XXXXXXX)'
+        address_note:
           type: string
-          description: Supplier country
-          maxLength: 100
-        arranges_delivery:
-          type: boolean
-          default: false
-          description: Does the supplier arrange delivery?
-        lead_time:
-          type: string
-          description: Agreed lead time
-          maxLength: 255
-        is_organic:
-          type: boolean
-          default: false
-          description: Is this an organic supplier?
-        relationship_notes:
-          type: string
-          description: Any noteworthy information about your trading relationship
         duns:
           type:
           - string
           - 'null'
+          readOnly: true
           description: DUNS number for US suppliers
-          maxLength: 50
-        vat_number:
-          type: string
-          description: Supplier VAT number
-          maxLength: 64
+        lead_time_days:
+          type:
+          - integer
+          - 'null'
+          maximum: 365
+          minimum: 0
+          description: Default supplier lead time in calendar days, copied to the final supplier on completion.
+        registration_name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: Canonical registered name from Companies House (GB) — captured at onboarding-supplier creation.
         registration_number:
-          type: string
-          description: Supplier company registration number
-          maxLength: 64
-        contact_name:
-          type: string
-          description: Supplier contact name
-          maxLength: 255
-        contact_email:
-          type: string
-          format: email
-          description: Supplier contact email
-        contact_phone:
-          type: string
-          description: Supplier contact phone
-          maxLength: 64
-        supplier_address:
-          type: string
-          description: Supplier address
-      required:
-      - supplier_name
-    StaffUser:
-      type: object
-      properties:
-        id:
-          type: integer
+          type:
+          - string
+          - 'null'
           readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        email:
-          type: string
-          format: email
-          readOnly: true
-        first_name:
-          type: string
-          readOnly: true
-        last_name:
-          type: string
-          readOnly: true
-        is_staff:
+          description: Canonical Companies House registration number (GB) — captured at onboarding-supplier creation.
+        registration_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/NullEnum'
+        is_archived:
           type: boolean
           readOnly: true
-          title: Staff status
-          description: Designates whether the user can log into this admin site.
       required:
-      - email
-      - first_name
-      - id
-      - is_staff
-      - last_name
+      - address_contact_email
+      - address_contact_full_name
+      - address_contact_phone
+      - address_ein_number
+      - address_name
+      - address_postcode
+      - address_region
+      - address_street_1
+      - address_street_2
+      - address_town
+      - address_vat_number
+      - buyer
+      - buyer_name
+      - buyers_list
+      - company_name
+      - created
+      - duns
+      - final_supplier
+      - final_supplier_name
+      - final_supplier_uuid
+      - is_archived
+      - modified
+      - owners_list
+      - registration_name
+      - registration_number
+      - status
       - uuid
-    BuyerSummary:
-      type: object
-      description: Serializer for buyer summary information
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-      required:
-      - name
-      - uuid
-    AddressContactPhoneCountryCodeEnum:
-      enum:
-      - '+376'
-      - '+971'
-      - '+93'
-      - '+1268'
-      - '+1264'
-      - '+355'
-      - '+374'
-      - '+244'
-      - '+672'
-      - '+54'
-      - '+1684'
-      - '+43'
-      - '+61'
-      - '+297'
-      - '+994'
-      - '+387'
-      - '+1246'
-      - '+880'
-      - '+32'
-      - '+226'
-      - '+359'
-      - '+973'
-      - '+257'
-      - '+229'
-      - '+590'
-      - '+1441'
-      - '+673'
-      - '+591'
-      - '+55'
-      - '+1242'
-      - '+975'
-      - '+267'
-      - '+375'
-      - '+501'
-      - '+1'
-      - '+243'
-      - '+236'
-      - '+242'
-      - '+41'
-      - '+225'
-      - '+682'
-      - '+56'
-      - '+237'
-      - '+86'
-      - '+57'
-      - '+506'
-      - '+53'
-      - '+238'
-      - '+357'
-      - '+420'
-      - '+49'
-      - '+253'
-      - '+45'
-      - '+1767'
-      - '+1809'
-      - '+213'
-      - '+593'
-      - '+372'
-      - '+20'
-      - '+212'
-      - '+291'
-      - '+34'
-      - '+251'
-      - '+358'
-      - '+679'
-      - '+500'
-      - '+691'
-      - '+298'
-      - '+33'
-      - '+241'
-      - '+44'
-      - '+1473'
-      - '+995'
-      - '+594'
-      - '+441481'
-      - '+233'
-      - '+350'
-      - '+299'
-      - '+220'
-      - '+224'
-      - '+240'
-      - '+30'
-      - '+502'
-      - '+1671'
-      - '+245'
-      - '+595'
-      - '+852'
-      - '+504'
-      - '+385'
-      - '+509'
-      - '+36'
-      - '+62'
-      - '+353'
-      - '+972'
-      - '+441624'
-      - '+91'
-      - '+246'
-      - '+964'
-      - '+98'
-      - '+354'
-      - '+39'
-      - '+441534'
-      - '+1876'
-      - '+962'
-      - '+81'
-      - '+254'
-      - '+996'
-      - '+855'
-      - '+686'
-      - '+269'
-      - '+1869'
-      - '+850'
-      - '+82'
-      - '+965'
-      - '+345'
-      - '+7'
-      - '+856'
-      - '+961'
-      - '+1758'
-      - '+423'
-      - '+94'
-      - '+231'
-      - '+266'
-      - '+370'
-      - '+352'
-      - '+371'
-      - '+218'
-      - '+377'
-      - '+373'
-      - '+382'
-      - '+261'
-      - '+692'
-      - '+389'
-      - '+223'
-      - '+95'
-      - '+976'
-      - '+853'
-      - '+1670'
-      - '+596'
-      - '+222'
-      - '+1664'
-      - '+356'
-      - '+230'
-      - '+960'
-      - '+265'
-      - '+52'
-      - '+60'
-      - '+258'
-      - '+264'
-      - '+687'
-      - '+227'
-      - '+234'
-      - '+505'
-      - '+31'
-      - '+47'
-      - '+977'
-      - '+674'
-      - '+683'
-      - '+64'
-      - '+968'
-      - '+507'
-      - '+51'
-      - '+689'
-      - '+675'
-      - '+63'
-      - '+92'
-      - '+48'
-      - '+508'
-      - '+1787'
-      - '+970'
-      - '+351'
-      - '+680'
-      - '+974'
-      - '+262'
-      - '+40'
-      - '+381'
-      - '+250'
-      - '+966'
-      - '+677'
-      - '+248'
-      - '+249'
-      - '+46'
-      - '+65'
-      - '+290'
-      - '+386'
-      - '+421'
-      - '+232'
-      - '+378'
-      - '+221'
-      - '+252'
-      - '+597'
-      - '+239'
-      - '+503'
-      - '+963'
-      - '+268'
-      - '+1649'
-      - '+235'
-      - '+228'
-      - '+66'
-      - '+992'
-      - '+690'
-      - '+670'
-      - '+993'
-      - '+216'
-      - '+676'
-      - '+90'
-      - '+1868'
-      - '+688'
-      - '+886'
-      - '+255'
-      - '+380'
-      - '+256'
-      - '+598'
-      - '+998'
-      - '+379'
-      - '+1784'
-      - '+58'
-      - '+1284'
-      - '+1340'
-      - '+84'
-      - '+678'
-      - '+681'
-      - '+685'
-      - '+967'
-      - '+27'
-      - '+260'
-      - '+263'
-      type: string
-      description: '* `+376` - +376
-
-        * `+971` - +971
-
-        * `+93` - +93
-
-        * `+1268` - +1268
-
-        * `+1264` - +1264
-
-        * `+355` - +355
-
-        * `+374` - +374
-
-        * `+244` - +244
-
-        * `+672` - +672
-
-        * `+54` - +54
-
-        * `+1684` - +1684
-
-        * `+43` - +43
-
-        * `+61` - +61
-
-        * `+297` - +297
-
-        * `+994` - +994
-
-        * `+387` - +387
-
-        * `+1246` - +1246
-
-        * `+880` - +880
-
-        * `+32` - +32
-
-        * `+226` - +226
-
-        * `+359` - +359
-
-        * `+973` - +973
-
-        * `+257` - +257
-
-        * `+229` - +229
-
-        * `+590` - +590
-
-        * `+1441` - +1441
-
-        * `+673` - +673
-
-        * `+591` - +591
-
-        * `+55` - +55
-
-        * `+1242` - +1242
-
-        * `+975` - +975
-
-        * `+267` - +267
-
-        * `+375` - +375
-
-        * `+501` - +501
-
-        * `+1` - +1
-
-        * `+243` - +243
-
-        * `+236` - +236
-
-        * `+242` - +242
-
-        * `+41` - +41
-
-        * `+225` - +225
-
-        * `+682` - +682
-
-        * `+56` - +56
-
-        * `+237` - +237
-
-        * `+86` - +86
-
-        * `+57` - +57
-
-        * `+506` - +506
-
-        * `+53` - +53
-
-        * `+238` - +238
-
-        * `+357` - +357
-
-        * `+420` - +420
-
-        * `+49` - +49
-
-        * `+253` - +253
-
-        * `+45` - +45
-
-        * `+1767` - +1767
-
-        * `+1809` - +1809
-
-        * `+213` - +213
-
-        * `+593` - +593
-
-        * `+372` - +372
-
-        * `+20` - +20
-
-        * `+212` - +212
-
-        * `+291` - +291
-
-        * `+34` - +34
-
-        * `+251` - +251
-
-        * `+358` - +358
-
-        * `+679` - +679
-
-        * `+500` - +500
-
-        * `+691` - +691
-
-        * `+298` - +298
-
-        * `+33` - +33
-
-        * `+241` - +241
-
-        * `+44` - +44
-
-        * `+1473` - +1473
-
-        * `+995` - +995
-
-        * `+594` - +594
-
-        * `+441481` - +441481
-
-        * `+233` - +233
-
-        * `+350` - +350
-
-        * `+299` - +299
-
-        * `+220` - +220
-
-        * `+224` - +224
-
-        * `+240` - +240
-
-        * `+30` - +30
-
-        * `+502` - +502
-
-        * `+1671` - +1671
-
-        * `+245` - +245
-
-        * `+595` - +595
-
-        * `+852` - +852
-
-        * `+504` - +504
-
-        * `+385` - +385
-
-        * `+509` - +509
-
-        * `+36` - +36
-
-        * `+62` - +62
-
-        * `+353` - +353
-
-        * `+972` - +972
-
-        * `+441624` - +441624
-
-        * `+91` - +91
-
-        * `+246` - +246
-
-        * `+964` - +964
-
-        * `+98` - +98
-
-        * `+354` - +354
-
-        * `+39` - +39
-
-        * `+441534` - +441534
-
-        * `+1876` - +1876
-
-        * `+962` - +962
-
-        * `+81` - +81
-
-        * `+254` - +254
-
-        * `+996` - +996
-
-        * `+855` - +855
-
-        * `+686` - +686
-
-        * `+269` - +269
-
-        * `+1869` - +1869
-
-        * `+850` - +850
-
-        * `+82` - +82
-
-        * `+965` - +965
-
-        * `+345` - +345
-
-        * `+7` - +7
-
-        * `+856` - +856
-
-        * `+961` - +961
-
-        * `+1758` - +1758
-
-        * `+423` - +423
-
-        * `+94` - +94
-
-        * `+231` - +231
-
-        * `+266` - +266
-
-        * `+370` - +370
-
-        * `+352` - +352
-
-        * `+371` - +371
-
-        * `+218` - +218
-
-        * `+377` - +377
-
-        * `+373` - +373
-
-        * `+382` - +382
-
-        * `+261` - +261
-
-        * `+692` - +692
-
-        * `+389` - +389
-
-        * `+223` - +223
-
-        * `+95` - +95
-
-        * `+976` - +976
-
-        * `+853` - +853
-
-        * `+1670` - +1670
-
-        * `+596` - +596
-
-        * `+222` - +222
-
-        * `+1664` - +1664
-
-        * `+356` - +356
-
-        * `+230` - +230
-
-        * `+960` - +960
-
-        * `+265` - +265
-
-        * `+52` - +52
-
-        * `+60` - +60
-
-        * `+258` - +258
-
-        * `+264` - +264
-
-        * `+687` - +687
-
-        * `+227` - +227
-
-        * `+234` - +234
-
-        * `+505` - +505
-
-        * `+31` - +31
-
-        * `+47` - +47
-
-        * `+977` - +977
-
-        * `+674` - +674
-
-        * `+683` - +683
-
-        * `+64` - +64
-
-        * `+968` - +968
-
-        * `+507` - +507
-
-        * `+51` - +51
-
-        * `+689` - +689
-
-        * `+675` - +675
-
-        * `+63` - +63
-
-        * `+92` - +92
-
-        * `+48` - +48
-
-        * `+508` - +508
-
-        * `+1787` - +1787
-
-        * `+970` - +970
-
-        * `+351` - +351
-
-        * `+680` - +680
-
-        * `+974` - +974
-
-        * `+262` - +262
-
-        * `+40` - +40
-
-        * `+381` - +381
-
-        * `+250` - +250
-
-        * `+966` - +966
-
-        * `+677` - +677
-
-        * `+248` - +248
-
-        * `+249` - +249
-
-        * `+46` - +46
-
-        * `+65` - +65
-
-        * `+290` - +290
-
-        * `+386` - +386
-
-        * `+421` - +421
-
-        * `+232` - +232
-
-        * `+378` - +378
-
-        * `+221` - +221
-
-        * `+252` - +252
-
-        * `+597` - +597
-
-        * `+239` - +239
-
-        * `+503` - +503
-
-        * `+963` - +963
-
-        * `+268` - +268
-
-        * `+1649` - +1649
-
-        * `+235` - +235
-
-        * `+228` - +228
-
-        * `+66` - +66
-
-        * `+992` - +992
-
-        * `+690` - +690
-
-        * `+670` - +670
-
-        * `+993` - +993
-
-        * `+216` - +216
-
-        * `+676` - +676
-
-        * `+90` - +90
-
-        * `+1868` - +1868
-
-        * `+688` - +688
-
-        * `+886` - +886
-
-        * `+255` - +255
-
-        * `+380` - +380
-
-        * `+256` - +256
-
-        * `+598` - +598
-
-        * `+998` - +998
-
-        * `+379` - +379
-
-        * `+1784` - +1784
-
-        * `+58` - +58
-
-        * `+1284` - +1284
-
-        * `+1340` - +1340
-
-        * `+84` - +84
-
-        * `+678` - +678
-
-        * `+681` - +681
-
-        * `+685` - +685
-
-        * `+967` - +967
-
-        * `+27` - +27
-
-        * `+260` - +260
-
-        * `+263` - +263'
-    SupplierReviewStatusEnum:
-      enum:
-      - pending_review
-      - matched
-      - onboarding
-      - rejected
-      type: string
-      description: '* `pending_review` - Pending review
-
-        * `matched` - Matched to existing supplier
-
-        * `onboarding` - Onboarding new supplier
-
-        * `rejected` - Rejected'
-    AvailableCurrenciesEnum:
-      enum:
-      - EUR
-      - GBP
-      - USD
-      type: string
-      description: '* `EUR` - EUR
-
-        * `GBP` - GBP
-
-        * `USD` - USD'
     BuyerOnboardingSupplierSubmission:
       type: object
       description: 'Buyer Suppliers section. The agent commit POSTs one row per extracted
@@ -2082,40 +2091,31 @@ components:
       - matched_supplier_name
       - review_status
       - supplier_name
-    OnboardingSupplierList:
+    PriorityEnum:
+      enum:
+      - high
+      - medium
+      - low
+      type: string
+      description: '* `high` - High
+
+        * `medium` - Medium
+
+        * `low` - Low'
+    BuyerSummary:
       type: object
-      description: Lightweight serializer for list views
+      description: Serializer for buyer summary information
       properties:
         uuid:
           type: string
           format: uuid
           readOnly: true
-        company_name:
+        name:
           type: string
-          readOnly: true
-        status:
-          type: string
-          readOnly: true
-        buyer_name:
-          type: string
-          readOnly: true
-        is_archived:
-          type: boolean
-          readOnly: true
-        created:
-          type: string
-          format: date-time
           readOnly: true
       required:
-      - buyer_name
-      - company_name
-      - created
-      - is_archived
-      - status
+      - name
       - uuid
-    NullEnum:
-      enum:
-      - null
   securitySchemes:
     cookieAuth:
       type: apiKey

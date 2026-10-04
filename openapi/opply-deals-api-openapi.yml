@@ -208,6 +208,29 @@ paths:
           description: No response body
 components:
   schemas:
+    Deals:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 100
+        notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notes'
+          readOnly: true
+      required:
+      - id
+      - notes
+      - title
+      - uuid
     Notes:
       type: object
       properties:
@@ -247,29 +270,6 @@ components:
           maxLength: 100
       required:
       - external_id
-    Deals:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        title:
-          type: string
-          maxLength: 100
-        notes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Notes'
-          readOnly: true
-      required:
-      - id
-      - notes
-      - title
-      - uuid
   securitySchemes:
     cookieAuth:
       type: apiKey

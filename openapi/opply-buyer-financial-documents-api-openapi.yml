@@ -93,44 +93,6 @@ paths:
           description: Document deleted
 components:
   schemas:
-    PaginatedBuyerFinancialDocumentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerFinancialDocument'
-    BuyerFinancialDocumentUpload:
-      type: object
-      description: Write serializer for multipart uploads.
-      properties:
-        file:
-          type: string
-          format: binary
-        type:
-          allOf:
-          - $ref: '#/components/schemas/BuyerFinancialDocumentTypeEnum'
-          default: management_accounts
-      required:
-      - file
     BuyerFinancialDocument:
       type: object
       description: Read serializer returned for list/create responses.
@@ -230,6 +192,19 @@ components:
       - type
       - uploaded_by_name
       - uuid
+    BuyerFinancialDocumentUpload:
+      type: object
+      description: Write serializer for multipart uploads.
+      properties:
+        file:
+          type: string
+          format: binary
+        type:
+          allOf:
+          - $ref: '#/components/schemas/BuyerFinancialDocumentTypeEnum'
+          default: management_accounts
+      required:
+      - file
     BuyerFinancialDocumentTypeEnum:
       enum:
       - management_accounts
@@ -253,6 +228,31 @@ components:
         * `sales_tax_exemption` - Sales Tax Exemption
 
         * `other` - Other'
+    PaginatedBuyerFinancialDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerFinancialDocument'
   securitySchemes:
     cookieAuth:
       type: apiKey

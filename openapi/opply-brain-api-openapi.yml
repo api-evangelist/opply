@@ -81,6 +81,35 @@ paths:
           description: ''
 components:
   schemas:
+    BrainObserveProgressRequest:
+      type: object
+      description: 'Per-sector "above threshold?" observation submitted by the FE.
+
+
+        The FE knows each sector''s unlock threshold (per
+
+        ``BRAIN_SECTOR_UNLOCK`` in ``mocks/brain.ts``); the BE doesn''t
+
+        care about the count itself, only the boolean "is the sector
+
+        above its threshold right now?". This keeps the API agnostic
+
+        to FE-side threshold tuning — we can move targets without a BE
+
+        deploy.
+
+
+        Unknown sector keys are ignored at the view level so newer FE
+
+        builds that emit additional keys don''t 400 against an older API.'
+      properties:
+        sectors:
+          type: object
+          additionalProperties:
+            type: boolean
+          description: Map of brain sector key → whether the user is currently above the sector's unlock threshold. Keys outside the ``BrainSectorKey`` enum are silently ignored.
+      required:
+      - sectors
     CelebrateEnum:
       enum:
       - suppliers
@@ -124,35 +153,6 @@ components:
           description: Brain sector keys whose unlock threshold was just observed to cross from below to above. Empty when nothing new fired.
       required:
       - celebrate
-    BrainObserveProgressRequest:
-      type: object
-      description: 'Per-sector "above threshold?" observation submitted by the FE.
-
-
-        The FE knows each sector''s unlock threshold (per
-
-        ``BRAIN_SECTOR_UNLOCK`` in ``mocks/brain.ts``); the BE doesn''t
-
-        care about the count itself, only the boolean "is the sector
-
-        above its threshold right now?". This keeps the API agnostic
-
-        to FE-side threshold tuning — we can move targets without a BE
-
-        deploy.
-
-
-        Unknown sector keys are ignored at the view level so newer FE
-
-        builds that emit additional keys don''t 400 against an older API.'
-      properties:
-        sectors:
-          type: object
-          additionalProperties:
-            type: boolean
-          description: Map of brain sector key → whether the user is currently above the sector's unlock threshold. Keys outside the ``BrainSectorKey`` enum are silently ignored.
-      required:
-      - sectors
   securitySchemes:
     cookieAuth:
       type: apiKey

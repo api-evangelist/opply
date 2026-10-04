@@ -1006,135 +1006,174 @@ paths:
           description: Item or document not found
 components:
   schemas:
-    SupplierItemDocument:
+    SupplierItemDetail:
       type: object
       properties:
         uuid:
           type: string
           format: uuid
           readOnly: true
-        document:
+        item_name:
+          type: string
+          maxLength: 255
+        sku:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        item_description:
+          type:
+          - string
+          - 'null'
+        logo_url:
           type: string
           format: uri
+          maxLength: 2048
+        supplier_company_uuid:
+          type: string
+          format: uuid
           readOnly: true
-        file_name:
+        supplier_company_name:
           type: string
           readOnly: true
-        category:
+        category_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        kind:
           allOf:
-          - $ref: '#/components/schemas/CatalogItemDocumentCategoryEnum'
-          readOnly: true
-        start_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          readOnly: true
-          description: Start date of document validity
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          readOnly: true
-          description: End/expiry date of document validity
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        contained_allergens:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContainedAllergensEnum'
+        has_allergen_declaration:
+          type: boolean
+          description: A signed allergen declaration is available on file for this material.
+        diet_compliance:
+          type: array
+          items:
+            $ref: '#/components/schemas/DietComplianceEnum'
+        has_dietary_certificate:
+          type: boolean
+          description: A dietary certificate is available on file for this material.
         is_active:
           type: boolean
-          readOnly: true
-        status:
-          type: string
-          readOnly: true
-        is_archived:
-          type: boolean
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplierItemDocument'
           readOnly: true
         created_at:
           type: string
           format: date-time
           readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
       required:
-      - category
       - created_at
-      - document
-      - end_date
-      - file_name
-      - is_active
-      - is_archived
-      - start_date
-      - status
+      - documents
+      - item_name
+      - modified_at
+      - supplier_company_name
+      - supplier_company_uuid
       - uuid
-    DietRequirementsEnum:
+    ContainedAllergensEnum:
       enum:
-      - kosher
-      - halal
-      - organic
-      - vegan
-      - vegetarian
+      - celery
+      - cereals_containing_gluten
+      - crustaceans
+      - eggs
+      - fish
+      - lupin
+      - milk
+      - molluscs
+      - mustard
+      - nuts
+      - peanuts
+      - sesame_seeds
+      - soya
+      - sulphur_dioxide
       type: string
-      description: '* `kosher` - Kosher
+      description: '* `celery` - Celery
 
-        * `halal` - Halal
+        * `cereals_containing_gluten` - Cereals Containing Gluten
 
-        * `organic` - Organic
+        * `crustaceans` - Crustaceans
 
-        * `vegan` - Vegan
+        * `eggs` - Eggs
 
-        * `vegetarian` - Vegetarian'
-    BuyerItemDocument:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        document:
-          type: string
-          format: uri
-          readOnly: true
-        file_name:
-          type: string
-          readOnly: true
-        category:
-          allOf:
-          - $ref: '#/components/schemas/CatalogItemDocumentCategoryEnum'
-          readOnly: true
-        start_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          readOnly: true
-          description: Start date of document validity
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          readOnly: true
-          description: End/expiry date of document validity
-        is_active:
-          type: boolean
-          readOnly: true
-        status:
-          type: string
-          readOnly: true
-        is_archived:
-          type: boolean
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - category
-      - created_at
-      - document
-      - end_date
-      - file_name
-      - is_active
-      - is_archived
-      - start_date
-      - status
-      - uuid
+        * `fish` - Fish
+
+        * `lupin` - Lupin
+
+        * `milk` - Milk
+
+        * `molluscs` - Molluscs
+
+        * `mustard` - Mustard
+
+        * `nuts` - Nuts
+
+        * `peanuts` - Peanuts
+
+        * `sesame_seeds` - Sesame Seeds
+
+        * `soya` - Soya
+
+        * `sulphur_dioxide` - Sulphur Dioxide'
     BrandBuyerItemList:
       type: object
       properties:
@@ -1326,122 +1365,104 @@ components:
       required:
       - category
       - file_name
-    PatchedBuyerItemDetail:
+    BuyerItemDocument:
       type: object
       properties:
         uuid:
           type: string
           format: uuid
           readOnly: true
-        item_name:
-          type: string
-          maxLength: 255
-        sku:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        item_description:
-          type:
-          - string
-          - 'null'
-        logo_url:
+        document:
           type: string
           format: uri
-          maxLength: 2048
-        buyer_company_uuid:
-          type: string
-          format: uuid
           readOnly: true
-        buyer_company_name:
+        file_name:
           type: string
           readOnly: true
-        category_uuid:
+        category:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemDocumentCategoryEnum'
+          readOnly: true
+        start_date:
           type:
           - string
           - 'null'
-          format: uuid
-        kind:
-          allOf:
-          - $ref: '#/components/schemas/CatalogItemKindEnum'
-          description: 'What kind of material this row represents (ingredient, packaging, ...).
-
-
-            * `ingredient` - Ingredient
-
-            * `packaging` - Packaging'
-        unit_of_measurement:
-          allOf:
-          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
-          description: 'Natural unit the material is measured in.
-
-
-            * `fl oz` - Fluid Ounces
-
-            * `g` - Grams
-
-            * `mg` - milligrams
-
-            * `gals` - Gallons
-
-            * `kg` - Kilograms
-
-            * `L` - Liters
-
-            * `tons` - Metric Tons
-
-            * `oz` - Ounces
-
-            * `lbs` - Pounds
-
-            * `pcs` - Pieces
-
-            * `pt` - Pints
-
-            * `ml` - Milliliter
-
-            * `boxes` - Boxes
-
-            * `pallets` - Pallets
-
-            * `tsp` - Teaspoons
-
-            * `tbsp` - Tablespoons
-
-            * `units` - Units
-
-            * `cases` - Cases
-
-            * `trays` - Trays'
-        allergen_requirements:
-          type: array
-          items:
-            $ref: '#/components/schemas/AllergenRequirementsEnum'
-        require_allergen_declaration:
-          type: boolean
-          description: A signed allergen declaration is required to source this material.
-        diet_requirements:
-          type: array
-          items:
-            $ref: '#/components/schemas/DietRequirementsEnum'
-        require_dietary_certificate:
-          type: boolean
-          description: A dietary certificate is required to validate the diet requirements.
+          format: date
+          readOnly: true
+          description: Start date of document validity
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+          description: End/expiry date of document validity
         is_active:
           type: boolean
-        documents:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerItemDocument'
+          readOnly: true
+        status:
+          type: string
+          readOnly: true
+        is_archived:
+          type: boolean
           readOnly: true
         created_at:
           type: string
           format: date-time
           readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
+      required:
+      - category
+      - created_at
+      - document
+      - end_date
+      - file_name
+      - is_active
+      - is_archived
+      - start_date
+      - status
+      - uuid
+    PaginatedSupplierItemListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplierItemList'
+    DietComplianceEnum:
+      enum:
+      - kosher
+      - halal
+      - organic
+      - vegan
+      - vegetarian
+      type: string
+      description: '* `kosher` - Kosher
+
+        * `halal` - Halal
+
+        * `organic` - Organic
+
+        * `vegan` - Vegan
+
+        * `vegetarian` - Vegetarian'
     BuyerItemList:
       type: object
       properties:
@@ -1626,15 +1647,32 @@ components:
       - sku
       - unit_of_measurement
       - uuid
-    CatalogItemKindEnum:
-      enum:
-      - ingredient
-      - packaging
-      type: string
-      description: '* `ingredient` - Ingredient
-
-        * `packaging` - Packaging'
-    ContainedAllergensEnum:
+    PaginatedSupplierItemDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplierItemDocument'
+    AllergenRequirementsEnum:
       enum:
       - celery
       - cereals_containing_gluten
@@ -1678,6 +1716,901 @@ components:
         * `soya` - Soya
 
         * `sulphur_dioxide` - Sulphur Dioxide'
+    SupplierItemDocumentUpload:
+      type: object
+      properties:
+        file_name:
+          type: string
+          writeOnly: true
+        category:
+          $ref: '#/components/schemas/CatalogItemDocumentCategoryEnum'
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+      required:
+      - category
+      - file_name
+    BuyerItemCreate:
+      type: object
+      properties:
+        item_name:
+          type: string
+          maxLength: 255
+        sku:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        item_description:
+          type:
+          - string
+          - 'null'
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        buyer_company_uuid:
+          type: string
+          format: uuid
+        category_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        allergen_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllergenRequirementsEnum'
+        require_allergen_declaration:
+          type: boolean
+          description: A signed allergen declaration is required to source this material.
+        diet_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/DietRequirementsEnum'
+        require_dietary_certificate:
+          type: boolean
+          description: A dietary certificate is required to validate the diet requirements.
+      required:
+      - buyer_company_uuid
+      - item_name
+    SupplierItemCreate:
+      type: object
+      properties:
+        item_name:
+          type: string
+          maxLength: 255
+        sku:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        item_description:
+          type:
+          - string
+          - 'null'
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        supplier_company_uuid:
+          type: string
+          format: uuid
+        category_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        contained_allergens:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContainedAllergensEnum'
+        has_allergen_declaration:
+          type: boolean
+          description: A signed allergen declaration is available on file for this material.
+        diet_compliance:
+          type: array
+          items:
+            $ref: '#/components/schemas/DietComplianceEnum'
+        has_dietary_certificate:
+          type: boolean
+          description: A dietary certificate is available on file for this material.
+      required:
+      - item_name
+      - supplier_company_uuid
+    PaginatedBuyerItemDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerItemDocument'
+    BrandBuyerItemCreate:
+      type: object
+      properties:
+        item_name:
+          type: string
+          maxLength: 255
+        sku:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        item_description:
+          type:
+          - string
+          - 'null'
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        category_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        allergen_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllergenRequirementsEnum'
+        require_allergen_declaration:
+          type: boolean
+          description: A signed allergen declaration is required to source this material.
+        diet_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/DietRequirementsEnum'
+        require_dietary_certificate:
+          type: boolean
+          description: A dietary certificate is required to validate the diet requirements.
+      required:
+      - item_name
+    CatalogItemDocumentCategoryEnum:
+      enum:
+      - spec_sheet
+      - certificate_of_analysis
+      - british_retail_consortium
+      - international_organisation_for_standardisation
+      - foundation_food_safety_system_certification
+      - international_featured_standards
+      - safe_quality_food
+      type: string
+      description: '* `spec_sheet` - Spec Sheet
+
+        * `certificate_of_analysis` - Certificate of Analysis
+
+        * `british_retail_consortium` - British Retail Consortium
+
+        * `international_organisation_for_standardisation` - International Organisation for Standardisation
+
+        * `foundation_food_safety_system_certification` - Foundation Food Safety System Certification
+
+        * `international_featured_standards` - International Featured Standards
+
+        * `safe_quality_food` - Safe Quality Food'
+    DietRequirementsEnum:
+      enum:
+      - kosher
+      - halal
+      - organic
+      - vegan
+      - vegetarian
+      type: string
+      description: '* `kosher` - Kosher
+
+        * `halal` - Halal
+
+        * `organic` - Organic
+
+        * `vegan` - Vegan
+
+        * `vegetarian` - Vegetarian'
+    SupplierItemDocument:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        document:
+          type: string
+          format: uri
+          readOnly: true
+        file_name:
+          type: string
+          readOnly: true
+        category:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemDocumentCategoryEnum'
+          readOnly: true
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+          description: Start date of document validity
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+          description: End/expiry date of document validity
+        is_active:
+          type: boolean
+          readOnly: true
+        status:
+          type: string
+          readOnly: true
+        is_archived:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - category
+      - created_at
+      - document
+      - end_date
+      - file_name
+      - is_active
+      - is_archived
+      - start_date
+      - status
+      - uuid
+    NullEnum:
+      enum:
+      - null
+    PatchedBrandBuyerItemDetail:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        item_name:
+          type: string
+          maxLength: 255
+        sku:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        item_description:
+          type:
+          - string
+          - 'null'
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        category_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        allergen_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllergenRequirementsEnum'
+        require_allergen_declaration:
+          type: boolean
+          description: A signed allergen declaration is required to source this material.
+        diet_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/DietRequirementsEnum'
+        require_dietary_certificate:
+          type: boolean
+          description: A dietary certificate is required to validate the diet requirements.
+        is_active:
+          type: boolean
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerItemDocument'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedBuyerItemDetail:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        item_name:
+          type: string
+          maxLength: 255
+        sku:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        item_description:
+          type:
+          - string
+          - 'null'
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        buyer_company_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        buyer_company_name:
+          type: string
+          readOnly: true
+        category_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        allergen_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllergenRequirementsEnum'
+        require_allergen_declaration:
+          type: boolean
+          description: A signed allergen declaration is required to source this material.
+        diet_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/DietRequirementsEnum'
+        require_dietary_certificate:
+          type: boolean
+          description: A dietary certificate is required to validate the diet requirements.
+        is_active:
+          type: boolean
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerItemDocument'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PaginatedBrandBuyerItemListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BrandBuyerItemList'
+    CatalogItemKindEnum:
+      enum:
+      - ingredient
+      - packaging
+      type: string
+      description: '* `ingredient` - Ingredient
+
+        * `packaging` - Packaging'
+    BuyerItemDetail:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        item_name:
+          type: string
+          maxLength: 255
+        sku:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        item_description:
+          type:
+          - string
+          - 'null'
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        buyer_company_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        buyer_company_name:
+          type: string
+          readOnly: true
+        category_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemKindEnum'
+          description: 'What kind of material this row represents (ingredient, packaging, ...).
+
+
+            * `ingredient` - Ingredient
+
+            * `packaging` - Packaging'
+        unit_of_measurement:
+          allOf:
+          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
+          description: 'Natural unit the material is measured in.
+
+
+            * `fl oz` - Fluid Ounces
+
+            * `g` - Grams
+
+            * `mg` - milligrams
+
+            * `gals` - Gallons
+
+            * `kg` - Kilograms
+
+            * `L` - Liters
+
+            * `tons` - Metric Tons
+
+            * `oz` - Ounces
+
+            * `lbs` - Pounds
+
+            * `pcs` - Pieces
+
+            * `pt` - Pints
+
+            * `ml` - Milliliter
+
+            * `boxes` - Boxes
+
+            * `pallets` - Pallets
+
+            * `tsp` - Teaspoons
+
+            * `tbsp` - Tablespoons
+
+            * `units` - Units
+
+            * `cases` - Cases
+
+            * `trays` - Trays'
+        allergen_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllergenRequirementsEnum'
+        require_allergen_declaration:
+          type: boolean
+          description: A signed allergen declaration is required to source this material.
+        diet_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/DietRequirementsEnum'
+        require_dietary_certificate:
+          type: boolean
+          description: A dietary certificate is required to validate the diet requirements.
+        is_active:
+          type: boolean
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerItemDocument'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - buyer_company_name
+      - buyer_company_uuid
+      - created_at
+      - documents
+      - item_name
+      - modified_at
+      - uuid
+    PaginatedBuyerItemListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerItemList'
+    UnitOfMeasurementEnum:
+      enum:
+      - fl oz
+      - g
+      - mg
+      - gals
+      - kg
+      - L
+      - tons
+      - oz
+      - lbs
+      - pcs
+      - pt
+      - ml
+      - boxes
+      - pallets
+      - tsp
+      - tbsp
+      - units
+      - cases
+      - trays
+      type: string
+      description: '* `fl oz` - Fluid Ounces
+
+        * `g` - Grams
+
+        * `mg` - milligrams
+
+        * `gals` - Gallons
+
+        * `kg` - Kilograms
+
+        * `L` - Liters
+
+        * `tons` - Metric Tons
+
+        * `oz` - Ounces
+
+        * `lbs` - Pounds
+
+        * `pcs` - Pieces
+
+        * `pt` - Pints
+
+        * `ml` - Milliliter
+
+        * `boxes` - Boxes
+
+        * `pallets` - Pallets
+
+        * `tsp` - Teaspoons
+
+        * `tbsp` - Tablespoons
+
+        * `units` - Units
+
+        * `cases` - Cases
+
+        * `trays` - Trays'
     PatchedSupplierItemDetail:
       type: object
       properties:
@@ -1785,529 +2718,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SupplierItemDocument'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-    PaginatedSupplierItemDocumentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SupplierItemDocument'
-    CatalogItemDocumentCategoryEnum:
-      enum:
-      - spec_sheet
-      - certificate_of_analysis
-      - british_retail_consortium
-      - international_organisation_for_standardisation
-      - foundation_food_safety_system_certification
-      - international_featured_standards
-      - safe_quality_food
-      type: string
-      description: '* `spec_sheet` - Spec Sheet
-
-        * `certificate_of_analysis` - Certificate of Analysis
-
-        * `british_retail_consortium` - British Retail Consortium
-
-        * `international_organisation_for_standardisation` - International Organisation for Standardisation
-
-        * `foundation_food_safety_system_certification` - Foundation Food Safety System Certification
-
-        * `international_featured_standards` - International Featured Standards
-
-        * `safe_quality_food` - Safe Quality Food'
-    BrandBuyerItemCreate:
-      type: object
-      properties:
-        item_name:
-          type: string
-          maxLength: 255
-        sku:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        item_description:
-          type:
-          - string
-          - 'null'
-        logo_url:
-          type: string
-          format: uri
-          maxLength: 2048
-        category_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        kind:
-          allOf:
-          - $ref: '#/components/schemas/CatalogItemKindEnum'
-          description: 'What kind of material this row represents (ingredient, packaging, ...).
-
-
-            * `ingredient` - Ingredient
-
-            * `packaging` - Packaging'
-        unit_of_measurement:
-          allOf:
-          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
-          description: 'Natural unit the material is measured in.
-
-
-            * `fl oz` - Fluid Ounces
-
-            * `g` - Grams
-
-            * `mg` - milligrams
-
-            * `gals` - Gallons
-
-            * `kg` - Kilograms
-
-            * `L` - Liters
-
-            * `tons` - Metric Tons
-
-            * `oz` - Ounces
-
-            * `lbs` - Pounds
-
-            * `pcs` - Pieces
-
-            * `pt` - Pints
-
-            * `ml` - Milliliter
-
-            * `boxes` - Boxes
-
-            * `pallets` - Pallets
-
-            * `tsp` - Teaspoons
-
-            * `tbsp` - Tablespoons
-
-            * `units` - Units
-
-            * `cases` - Cases
-
-            * `trays` - Trays'
-        allergen_requirements:
-          type: array
-          items:
-            $ref: '#/components/schemas/AllergenRequirementsEnum'
-        require_allergen_declaration:
-          type: boolean
-          description: A signed allergen declaration is required to source this material.
-        diet_requirements:
-          type: array
-          items:
-            $ref: '#/components/schemas/DietRequirementsEnum'
-        require_dietary_certificate:
-          type: boolean
-          description: A dietary certificate is required to validate the diet requirements.
-      required:
-      - item_name
-    SupplierItemDocumentUpload:
-      type: object
-      properties:
-        file_name:
-          type: string
-          writeOnly: true
-        category:
-          $ref: '#/components/schemas/CatalogItemDocumentCategoryEnum'
-        start_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-      required:
-      - category
-      - file_name
-    PaginatedSupplierItemListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SupplierItemList'
-    SupplierItemDetail:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        item_name:
-          type: string
-          maxLength: 255
-        sku:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        item_description:
-          type:
-          - string
-          - 'null'
-        logo_url:
-          type: string
-          format: uri
-          maxLength: 2048
-        supplier_company_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        supplier_company_name:
-          type: string
-          readOnly: true
-        category_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        kind:
-          allOf:
-          - $ref: '#/components/schemas/CatalogItemKindEnum'
-          description: 'What kind of material this row represents (ingredient, packaging, ...).
-
-
-            * `ingredient` - Ingredient
-
-            * `packaging` - Packaging'
-        unit_of_measurement:
-          allOf:
-          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
-          description: 'Natural unit the material is measured in.
-
-
-            * `fl oz` - Fluid Ounces
-
-            * `g` - Grams
-
-            * `mg` - milligrams
-
-            * `gals` - Gallons
-
-            * `kg` - Kilograms
-
-            * `L` - Liters
-
-            * `tons` - Metric Tons
-
-            * `oz` - Ounces
-
-            * `lbs` - Pounds
-
-            * `pcs` - Pieces
-
-            * `pt` - Pints
-
-            * `ml` - Milliliter
-
-            * `boxes` - Boxes
-
-            * `pallets` - Pallets
-
-            * `tsp` - Teaspoons
-
-            * `tbsp` - Tablespoons
-
-            * `units` - Units
-
-            * `cases` - Cases
-
-            * `trays` - Trays'
-        contained_allergens:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContainedAllergensEnum'
-        has_allergen_declaration:
-          type: boolean
-          description: A signed allergen declaration is available on file for this material.
-        diet_compliance:
-          type: array
-          items:
-            $ref: '#/components/schemas/DietComplianceEnum'
-        has_dietary_certificate:
-          type: boolean
-          description: A dietary certificate is available on file for this material.
-        is_active:
-          type: boolean
-        documents:
-          type: array
-          items:
-            $ref: '#/components/schemas/SupplierItemDocument'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - documents
-      - item_name
-      - modified_at
-      - supplier_company_name
-      - supplier_company_uuid
-      - uuid
-    UnitOfMeasurementEnum:
-      enum:
-      - fl oz
-      - g
-      - mg
-      - gals
-      - kg
-      - L
-      - tons
-      - oz
-      - lbs
-      - pcs
-      - pt
-      - ml
-      - boxes
-      - pallets
-      - tsp
-      - tbsp
-      - units
-      - cases
-      - trays
-      type: string
-      description: '* `fl oz` - Fluid Ounces
-
-        * `g` - Grams
-
-        * `mg` - milligrams
-
-        * `gals` - Gallons
-
-        * `kg` - Kilograms
-
-        * `L` - Liters
-
-        * `tons` - Metric Tons
-
-        * `oz` - Ounces
-
-        * `lbs` - Pounds
-
-        * `pcs` - Pieces
-
-        * `pt` - Pints
-
-        * `ml` - Milliliter
-
-        * `boxes` - Boxes
-
-        * `pallets` - Pallets
-
-        * `tsp` - Teaspoons
-
-        * `tbsp` - Tablespoons
-
-        * `units` - Units
-
-        * `cases` - Cases
-
-        * `trays` - Trays'
-    DietComplianceEnum:
-      enum:
-      - kosher
-      - halal
-      - organic
-      - vegan
-      - vegetarian
-      type: string
-      description: '* `kosher` - Kosher
-
-        * `halal` - Halal
-
-        * `organic` - Organic
-
-        * `vegan` - Vegan
-
-        * `vegetarian` - Vegetarian'
-    PaginatedBuyerItemListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerItemList'
-    NullEnum:
-      enum:
-      - null
-    PatchedBrandBuyerItemDetail:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        item_name:
-          type: string
-          maxLength: 255
-        sku:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        item_description:
-          type:
-          - string
-          - 'null'
-        logo_url:
-          type: string
-          format: uri
-          maxLength: 2048
-        category_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        kind:
-          allOf:
-          - $ref: '#/components/schemas/CatalogItemKindEnum'
-          description: 'What kind of material this row represents (ingredient, packaging, ...).
-
-
-            * `ingredient` - Ingredient
-
-            * `packaging` - Packaging'
-        unit_of_measurement:
-          allOf:
-          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
-          description: 'Natural unit the material is measured in.
-
-
-            * `fl oz` - Fluid Ounces
-
-            * `g` - Grams
-
-            * `mg` - milligrams
-
-            * `gals` - Gallons
-
-            * `kg` - Kilograms
-
-            * `L` - Liters
-
-            * `tons` - Metric Tons
-
-            * `oz` - Ounces
-
-            * `lbs` - Pounds
-
-            * `pcs` - Pieces
-
-            * `pt` - Pints
-
-            * `ml` - Milliliter
-
-            * `boxes` - Boxes
-
-            * `pallets` - Pallets
-
-            * `tsp` - Teaspoons
-
-            * `tbsp` - Tablespoons
-
-            * `units` - Units
-
-            * `cases` - Cases
-
-            * `trays` - Trays'
-        allergen_requirements:
-          type: array
-          items:
-            $ref: '#/components/schemas/AllergenRequirementsEnum'
-        require_allergen_declaration:
-          type: boolean
-          description: A signed allergen declaration is required to source this material.
-        diet_requirements:
-          type: array
-          items:
-            $ref: '#/components/schemas/DietRequirementsEnum'
-        require_dietary_certificate:
-          type: boolean
-          description: A dietary certificate is required to validate the diet requirements.
-        is_active:
-          type: boolean
-        documents:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerItemDocument'
           readOnly: true
         created_at:
           type: string
@@ -2501,31 +2911,6 @@ components:
       - supplier_company_uuid
       - unit_of_measurement
       - uuid
-    PaginatedBuyerItemDocumentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerItemDocument'
     BrandBuyerItemDetail:
       type: object
       properties:
@@ -2641,391 +3026,6 @@ components:
       - item_name
       - modified_at
       - uuid
-    BuyerItemCreate:
-      type: object
-      properties:
-        item_name:
-          type: string
-          maxLength: 255
-        sku:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        item_description:
-          type:
-          - string
-          - 'null'
-        logo_url:
-          type: string
-          format: uri
-          maxLength: 2048
-        buyer_company_uuid:
-          type: string
-          format: uuid
-        category_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        kind:
-          allOf:
-          - $ref: '#/components/schemas/CatalogItemKindEnum'
-          description: 'What kind of material this row represents (ingredient, packaging, ...).
-
-
-            * `ingredient` - Ingredient
-
-            * `packaging` - Packaging'
-        unit_of_measurement:
-          allOf:
-          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
-          description: 'Natural unit the material is measured in.
-
-
-            * `fl oz` - Fluid Ounces
-
-            * `g` - Grams
-
-            * `mg` - milligrams
-
-            * `gals` - Gallons
-
-            * `kg` - Kilograms
-
-            * `L` - Liters
-
-            * `tons` - Metric Tons
-
-            * `oz` - Ounces
-
-            * `lbs` - Pounds
-
-            * `pcs` - Pieces
-
-            * `pt` - Pints
-
-            * `ml` - Milliliter
-
-            * `boxes` - Boxes
-
-            * `pallets` - Pallets
-
-            * `tsp` - Teaspoons
-
-            * `tbsp` - Tablespoons
-
-            * `units` - Units
-
-            * `cases` - Cases
-
-            * `trays` - Trays'
-        allergen_requirements:
-          type: array
-          items:
-            $ref: '#/components/schemas/AllergenRequirementsEnum'
-        require_allergen_declaration:
-          type: boolean
-          description: A signed allergen declaration is required to source this material.
-        diet_requirements:
-          type: array
-          items:
-            $ref: '#/components/schemas/DietRequirementsEnum'
-        require_dietary_certificate:
-          type: boolean
-          description: A dietary certificate is required to validate the diet requirements.
-      required:
-      - buyer_company_uuid
-      - item_name
-    PaginatedBrandBuyerItemListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BrandBuyerItemList'
-    BuyerItemDetail:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        item_name:
-          type: string
-          maxLength: 255
-        sku:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        item_description:
-          type:
-          - string
-          - 'null'
-        logo_url:
-          type: string
-          format: uri
-          maxLength: 2048
-        buyer_company_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        buyer_company_name:
-          type: string
-          readOnly: true
-        category_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        kind:
-          allOf:
-          - $ref: '#/components/schemas/CatalogItemKindEnum'
-          description: 'What kind of material this row represents (ingredient, packaging, ...).
-
-
-            * `ingredient` - Ingredient
-
-            * `packaging` - Packaging'
-        unit_of_measurement:
-          allOf:
-          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
-          description: 'Natural unit the material is measured in.
-
-
-            * `fl oz` - Fluid Ounces
-
-            * `g` - Grams
-
-            * `mg` - milligrams
-
-            * `gals` - Gallons
-
-            * `kg` - Kilograms
-
-            * `L` - Liters
-
-            * `tons` - Metric Tons
-
-            * `oz` - Ounces
-
-            * `lbs` - Pounds
-
-            * `pcs` - Pieces
-
-            * `pt` - Pints
-
-            * `ml` - Milliliter
-
-            * `boxes` - Boxes
-
-            * `pallets` - Pallets
-
-            * `tsp` - Teaspoons
-
-            * `tbsp` - Tablespoons
-
-            * `units` - Units
-
-            * `cases` - Cases
-
-            * `trays` - Trays'
-        allergen_requirements:
-          type: array
-          items:
-            $ref: '#/components/schemas/AllergenRequirementsEnum'
-        require_allergen_declaration:
-          type: boolean
-          description: A signed allergen declaration is required to source this material.
-        diet_requirements:
-          type: array
-          items:
-            $ref: '#/components/schemas/DietRequirementsEnum'
-        require_dietary_certificate:
-          type: boolean
-          description: A dietary certificate is required to validate the diet requirements.
-        is_active:
-          type: boolean
-        documents:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerItemDocument'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - buyer_company_name
-      - buyer_company_uuid
-      - created_at
-      - documents
-      - item_name
-      - modified_at
-      - uuid
-    SupplierItemCreate:
-      type: object
-      properties:
-        item_name:
-          type: string
-          maxLength: 255
-        sku:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        item_description:
-          type:
-          - string
-          - 'null'
-        logo_url:
-          type: string
-          format: uri
-          maxLength: 2048
-        supplier_company_uuid:
-          type: string
-          format: uuid
-        category_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        kind:
-          allOf:
-          - $ref: '#/components/schemas/CatalogItemKindEnum'
-          description: 'What kind of material this row represents (ingredient, packaging, ...).
-
-
-            * `ingredient` - Ingredient
-
-            * `packaging` - Packaging'
-        unit_of_measurement:
-          allOf:
-          - $ref: '#/components/schemas/UnitOfMeasurementEnum'
-          description: 'Natural unit the material is measured in.
-
-
-            * `fl oz` - Fluid Ounces
-
-            * `g` - Grams
-
-            * `mg` - milligrams
-
-            * `gals` - Gallons
-
-            * `kg` - Kilograms
-
-            * `L` - Liters
-
-            * `tons` - Metric Tons
-
-            * `oz` - Ounces
-
-            * `lbs` - Pounds
-
-            * `pcs` - Pieces
-
-            * `pt` - Pints
-
-            * `ml` - Milliliter
-
-            * `boxes` - Boxes
-
-            * `pallets` - Pallets
-
-            * `tsp` - Teaspoons
-
-            * `tbsp` - Tablespoons
-
-            * `units` - Units
-
-            * `cases` - Cases
-
-            * `trays` - Trays'
-        contained_allergens:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContainedAllergensEnum'
-        has_allergen_declaration:
-          type: boolean
-          description: A signed allergen declaration is available on file for this material.
-        diet_compliance:
-          type: array
-          items:
-            $ref: '#/components/schemas/DietComplianceEnum'
-        has_dietary_certificate:
-          type: boolean
-          description: A dietary certificate is available on file for this material.
-      required:
-      - item_name
-      - supplier_company_uuid
-    AllergenRequirementsEnum:
-      enum:
-      - celery
-      - cereals_containing_gluten
-      - crustaceans
-      - eggs
-      - fish
-      - lupin
-      - milk
-      - molluscs
-      - mustard
-      - nuts
-      - peanuts
-      - sesame_seeds
-      - soya
-      - sulphur_dioxide
-      type: string
-      description: '* `celery` - Celery
-
-        * `cereals_containing_gluten` - Cereals Containing Gluten
-
-        * `crustaceans` - Crustaceans
-
-        * `eggs` - Eggs
-
-        * `fish` - Fish
-
-        * `lupin` - Lupin
-
-        * `milk` - Milk
-
-        * `molluscs` - Molluscs
-
-        * `mustard` - Mustard
-
-        * `nuts` - Nuts
-
-        * `peanuts` - Peanuts
-
-        * `sesame_seeds` - Sesame Seeds
-
-        * `soya` - Soya
-
-        * `sulphur_dioxide` - Sulphur Dioxide'
   securitySchemes:
     cookieAuth:
       type: apiKey

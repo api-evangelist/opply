@@ -218,131 +218,6 @@ paths:
           description: ''
 components:
   schemas:
-    SystemTaskSyncRequest:
-      type: object
-      description: 'Optional scoping for an on-demand fan-out. Omit both to sync everything.
-
-
-        Declared so the generated OpenAPI client documents the request body — the
-
-        view reads ``key`` / ``company_uuid`` off ``request.data``.'
-      properties:
-        key:
-          type: string
-        company_uuid:
-          type: string
-          format: uuid
-    SystemTaskSyncResult:
-      type: object
-      description: Counts returned by an on-demand fan-out (the ``Sync`` buttons).
-      properties:
-        processed:
-          type: integer
-        templates_created:
-          type: integer
-        skipped_existing:
-          type: integer
-        failed:
-          type: integer
-      required:
-      - failed
-      - processed
-      - skipped_existing
-      - templates_created
-    _CompanyRef:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        name:
-          type: string
-      required:
-      - name
-      - uuid
-    TaskStatusEnum:
-      enum:
-      - open
-      - in_progress
-      - waiting_approval
-      - done
-      type: string
-      description: '* `open` - Open
-
-        * `in_progress` - In Progress
-
-        * `waiting_approval` - Waiting Approval
-
-        * `done` - Done'
-    SystemTaskSchedule:
-      type: object
-      description: 'The tenant''s recurrence rule, so the drill-in can show *when* it runs.
-
-
-        ``recurrence_uuid`` is the target for the MoR-scoped pause/resume action
-
-        (``SystemTaskRecurrenceStateView``) — the drill-in can''t reach the tenant''s
-
-        series through the tenant-scoped ``TaskRecurrenceViewSet``.'
-      properties:
-        recurrence_uuid:
-          type: string
-          format: uuid
-        frequency:
-          type: string
-        cron_expression:
-          type:
-          - string
-          - 'null'
-        interval:
-          type: integer
-        next_run_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        timezone:
-          type: string
-        is_enabled:
-          type: boolean
-      required:
-      - cron_expression
-      - frequency
-      - interval
-      - is_enabled
-      - next_run_at
-      - recurrence_uuid
-      - timezone
-    SystemTaskGateStatus:
-      type: object
-      description: 'Pre-run gate observability read off the tenant''s ``TaskRecurrence`` (see
-
-        ``system_tasks/gate.py``). Present even when the gate keeps skipping and no
-
-        occurrence is ever materialised — which is the whole point.'
-      properties:
-        last_checked_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        last_skipped_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        last_skip_reason:
-          type: string
-        consecutive_skips:
-          type: integer
-        currently_skipping:
-          type: boolean
-      required:
-      - consecutive_skips
-      - currently_skipping
-      - last_checked_at
-      - last_skip_reason
-      - last_skipped_at
     SystemTaskDefinitionRollup:
       type: object
       description: Rollup for one system-task definition, scoped to the caller.
@@ -395,30 +270,34 @@ components:
       - runs_failed
       - runs_succeeded
       - tenants_skipped_last_check
-    UserMinimal:
+    TaskPriorityEnum:
+      enum:
+      - low
+      - medium
+      - high
+      - urgent
+      type: string
+      description: '* `low` - Low
+
+        * `medium` - Medium
+
+        * `high` - High
+
+        * `urgent` - Urgent'
+    SystemTaskStateRequest:
       type: object
+      description: 'Body for the pause/resume actions — ``is_enabled=false`` pauses,
+
+        ``true`` resumes (recomputing the next slot from now). Shared by the
+
+        per-tenant and the definition-level (bulk) toggle since the shape is
+
+        identical, so the name is scope-agnostic.'
       properties:
-        uuid:
-          type: string
-          format: uuid
-        name:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          format: email
-        is_agent:
+        is_enabled:
           type: boolean
-          readOnly: true
-        is_mor_router:
-          type: boolean
-          readOnly: true
       required:
-      - email
-      - is_agent
-      - is_mor_router
-      - name
-      - uuid
+      - is_enabled
     SystemTaskInstance:
       type: object
       description: 'A system-task occurrence with its owning tenant + latest agent-run status.
@@ -779,6 +658,144 @@ components:
       - unread_mention_count
       - uuid
       - watchers
+    UserMinimal:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+        is_agent:
+          type: boolean
+          readOnly: true
+        is_mor_router:
+          type: boolean
+          readOnly: true
+      required:
+      - email
+      - is_agent
+      - is_mor_router
+      - name
+      - uuid
+    SystemTaskGateStatus:
+      type: object
+      description: 'Pre-run gate observability read off the tenant''s ``TaskRecurrence`` (see
+
+        ``system_tasks/gate.py``). Present even when the gate keeps skipping and no
+
+        occurrence is ever materialised — which is the whole point.'
+      properties:
+        last_checked_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        last_skipped_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        last_skip_reason:
+          type: string
+        consecutive_skips:
+          type: integer
+        currently_skipping:
+          type: boolean
+      required:
+      - consecutive_skips
+      - currently_skipping
+      - last_checked_at
+      - last_skip_reason
+      - last_skipped_at
+    SystemTaskSyncRequest:
+      type: object
+      description: 'Optional scoping for an on-demand fan-out. Omit both to sync everything.
+
+
+        Declared so the generated OpenAPI client documents the request body — the
+
+        view reads ``key`` / ``company_uuid`` off ``request.data``.'
+      properties:
+        key:
+          type: string
+        company_uuid:
+          type: string
+          format: uuid
+    RelatedItemInput:
+      type: object
+      description: 'One write-side related-item: a target ``type`` + entity ``uuid``.'
+      properties:
+        type:
+          type: string
+        uuid:
+          type: string
+          format: uuid
+      required:
+      - type
+      - uuid
+    SystemTaskSyncResult:
+      type: object
+      description: Counts returned by an on-demand fan-out (the ``Sync`` buttons).
+      properties:
+        processed:
+          type: integer
+        templates_created:
+          type: integer
+        skipped_existing:
+          type: integer
+        failed:
+          type: integer
+      required:
+      - failed
+      - processed
+      - skipped_existing
+      - templates_created
+    TaskStatusEnum:
+      enum:
+      - open
+      - in_progress
+      - waiting_approval
+      - done
+      type: string
+      description: '* `open` - Open
+
+        * `in_progress` - In Progress
+
+        * `waiting_approval` - Waiting Approval
+
+        * `done` - Done'
+    _CompanyRef:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - uuid
+    SystemTaskDefinitionStateResult:
+      type: object
+      description: 'Result of the definition-level (bulk) pause/resume: the resulting enabled
+
+        state for the definition plus how many tenant series were actually flipped.'
+      properties:
+        key:
+          type: string
+        is_enabled:
+          type: boolean
+        updated_count:
+          type: integer
+      required:
+      - is_enabled
+      - key
+      - updated_count
     SystemTaskTenant:
       type: object
       description: 'One installed tenant''s series for the drill-in: schedule + gate state +
@@ -824,62 +841,45 @@ components:
       - occurrences
       - occurrences_created
       - schedule
-    RelatedItemInput:
+    SystemTaskSchedule:
       type: object
-      description: 'One write-side related-item: a target ``type`` + entity ``uuid``.'
+      description: 'The tenant''s recurrence rule, so the drill-in can show *when* it runs.
+
+
+        ``recurrence_uuid`` is the target for the MoR-scoped pause/resume action
+
+        (``SystemTaskRecurrenceStateView``) — the drill-in can''t reach the tenant''s
+
+        series through the tenant-scoped ``TaskRecurrenceViewSet``.'
       properties:
-        type:
-          type: string
-        uuid:
+        recurrence_uuid:
           type: string
           format: uuid
-      required:
-      - type
-      - uuid
-    TaskPriorityEnum:
-      enum:
-      - low
-      - medium
-      - high
-      - urgent
-      type: string
-      description: '* `low` - Low
-
-        * `medium` - Medium
-
-        * `high` - High
-
-        * `urgent` - Urgent'
-    SystemTaskDefinitionStateResult:
-      type: object
-      description: 'Result of the definition-level (bulk) pause/resume: the resulting enabled
-
-        state for the definition plus how many tenant series were actually flipped.'
-      properties:
-        key:
+        frequency:
+          type: string
+        cron_expression:
+          type:
+          - string
+          - 'null'
+        interval:
+          type: integer
+        next_run_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        timezone:
           type: string
         is_enabled:
           type: boolean
-        updated_count:
-          type: integer
       required:
+      - cron_expression
+      - frequency
+      - interval
       - is_enabled
-      - key
-      - updated_count
-    SystemTaskStateRequest:
-      type: object
-      description: 'Body for the pause/resume actions — ``is_enabled=false`` pauses,
-
-        ``true`` resumes (recomputing the next slot from now). Shared by the
-
-        per-tenant and the definition-level (bulk) toggle since the shape is
-
-        identical, so the name is scope-agnostic.'
-      properties:
-        is_enabled:
-          type: boolean
-      required:
-      - is_enabled
+      - next_run_at
+      - recurrence_uuid
+      - timezone
   securitySchemes:
     cookieAuth:
       type: apiKey

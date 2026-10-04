@@ -75,33 +75,6 @@ paths:
           description: No response body
 components:
   schemas:
-    CompanyTypeEnum:
-      enum:
-      - brand
-      - supplier
-      - merchant_of_record
-      type: string
-      description: '* `brand` - Brand
-
-        * `supplier` - Supplier
-
-        * `merchant_of_record` - Merchant of Record'
-    MasqueradeableUser:
-      type: object
-      description: Serializer for listing users that can be masqueraded.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        email:
-          type: string
-          format: email
-        full_name:
-          type: string
-      required:
-      - email
-      - full_name
-      - uuid
     PaginatedMasqueradeableUserList:
       type: object
       required:
@@ -157,6 +130,33 @@ components:
       - target_user_email
       - target_user_name
       - token
+    CompanyTypeEnum:
+      enum:
+      - brand
+      - supplier
+      - merchant_of_record
+      type: string
+      description: '* `brand` - Brand
+
+        * `supplier` - Supplier
+
+        * `merchant_of_record` - Merchant of Record'
+    MasqueradeableUser:
+      type: object
+      description: Serializer for listing users that can be masqueraded.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        full_name:
+          type: string
+      required:
+      - email
+      - full_name
+      - uuid
   securitySchemes:
     cookieAuth:
       type: apiKey

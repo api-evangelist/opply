@@ -315,6 +315,48 @@ paths:
           description: No response body
 components:
   schemas:
+    MessageAttachmentRef:
+      type: object
+      description: 'One attachment ref carried on a message''s ``metadata["attachments"]``
+
+        (SC-4146). Channel-neutral and reusable by **any** message serializer (agent
+
+        chat today; task chat / private notes next) — nest it with ``many=True,
+
+        required=False`` so a message that carried no attachments omits the key.
+
+
+        Read-only projection of the dicts written by
+
+        :func:`~apps.files.services.message_attachments.resolve_and_gate_attachments`;
+
+        carries no bytes / URL — the FE mints a short-TTL presigned URL from ``uuid``
+
+        when it renders a preview. ``disposition``''s enum name is pinned via
+
+        ``ENUM_NAME_OVERRIDES`` (``MessageAttachmentDispositionEnum``) so the shared
+
+        component doesn''t collide in the generated OpenAPI schema.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        filename:
+          type: string
+          readOnly: true
+        mime:
+          type: string
+          readOnly: true
+        disposition:
+          allOf:
+          - $ref: '#/components/schemas/MessageAttachmentDispositionEnum'
+          readOnly: true
+      required:
+      - disposition
+      - filename
+      - mime
+      - uuid
     NoteCreate:
       type: object
       description: 'Request-body schema for creating a note (drf-spectacular only).
@@ -375,59 +417,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Note'
-    MessageAttachmentRef:
-      type: object
-      description: 'One attachment ref carried on a message''s ``metadata["attachments"]``
-
-        (SC-4146). Channel-neutral and reusable by **any** message serializer (agent
-
-        chat today; task chat / private notes next) — nest it with ``many=True,
-
-        required=False`` so a message that carried no attachments omits the key.
-
-
-        Read-only projection of the dicts written by
-
-        :func:`~apps.files.services.message_attachments.resolve_and_gate_attachments`;
-
-        carries no bytes / URL — the FE mints a short-TTL presigned URL from ``uuid``
-
-        when it renders a preview. ``disposition``''s enum name is pinned via
-
-        ``ENUM_NAME_OVERRIDES`` (``MessageAttachmentDispositionEnum``) so the shared
-
-        component doesn''t collide in the generated OpenAPI schema.'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        filename:
-          type: string
-          readOnly: true
-        mime:
-          type: string
-          readOnly: true
-        disposition:
-          allOf:
-          - $ref: '#/components/schemas/MessageAttachmentDispositionEnum'
-          readOnly: true
-      required:
-      - disposition
-      - filename
-      - mime
-      - uuid
-    MessageAttachmentDispositionEnum:
-      enum:
-      - sent
-      - suspicious
-      - skipped_timeout
-      type: string
-      description: '* `sent` - Sent
-
-        * `suspicious` - Suspicious
-
-        * `skipped_timeout` - Not used (scan pending)'
     Target:
       type: object
       description: 'Serialize a model''s ``target`` GenericForeignKey to ``{type, uuid, name}``.
@@ -586,6 +575,17 @@ components:
       - modified
       - target
       - uuid
+    MessageAttachmentDispositionEnum:
+      enum:
+      - sent
+      - suspicious
+      - skipped_timeout
+      type: string
+      description: '* `sent` - Sent
+
+        * `suspicious` - Suspicious
+
+        * `skipped_timeout` - Not used (scan pending)'
   securitySchemes:
     cookieAuth:
       type: apiKey

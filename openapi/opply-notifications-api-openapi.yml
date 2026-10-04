@@ -1051,110 +1051,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedNotificationRecipientList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationRecipient'
-    MarkRelatedCleared:
-      type: object
-      properties:
-        related_object_uuid:
-          type: string
-          format: uuid
-        related_object_type:
-          type: string
-        action_clear_trigger:
-          $ref: '#/components/schemas/ActionClearTriggerEnum'
-      required:
-      - action_clear_trigger
-      - related_object_type
-      - related_object_uuid
-    NotificationPreference:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        category:
-          $ref: '#/components/schemas/NotificationCategoryEnum'
-        channel:
-          $ref: '#/components/schemas/ChannelEnum'
-        enabled:
-          type: boolean
-      required:
-      - category
-      - channel
-      - id
-    NotificationCategoryEnum:
-      enum:
-      - tasks
-      - task_mentions
-      - updates
-      - system
-      type: string
-      description: '* `tasks` - Tasks
-
-        * `task_mentions` - Task Mentions
-
-        * `updates` - Updates
-
-        * `system` - System'
-    PaginatedCompanyNotificationOverrideList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompanyNotificationOverride'
-    PatchedCompanyNotificationOverride:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        category:
-          $ref: '#/components/schemas/NotificationCategoryEnum'
-        enabled:
-          type: boolean
     PaginatedNotificationList:
       type: object
       required:
@@ -1183,139 +1079,19 @@ components:
         unread_count:
           type: integer
           example: 123
-    MarkRelatedRead:
+    CompanyNotificationOverride:
       type: object
       properties:
-        related_object_uuid:
-          type: string
-          format: uuid
-        related_object_type:
-          type: string
-      required:
-      - related_object_type
-      - related_object_uuid
-    Notification:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        title:
-          $ref: '#/components/schemas/TitleEnum'
-        description:
-          type: string
-        content:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        read_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        type:
-          $ref: '#/components/schemas/NotificationTypeEnum'
-        category:
-          $ref: '#/components/schemas/NotificationCategoryEnum'
-        priority:
+        id:
           type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        duration:
-          type:
-          - string
-          - 'null'
-        location:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        receiver:
-          allOf:
-          - $ref: '#/components/schemas/ShortUser'
           readOnly: true
-        sender:
-          allOf:
-          - $ref: '#/components/schemas/ShortUser'
-          readOnly: true
-        related_object_type:
-          type: string
-          readOnly: true
-        related_object_uuid:
-          type: string
-          readOnly: true
-        is_read:
-          type: string
-          readOnly: true
-        used_for:
-          $ref: '#/components/schemas/UsedForEnum'
-        action_type:
-          oneOf:
-          - $ref: '#/components/schemas/ActionTypeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        action_clear_trigger:
-          oneOf:
-          - $ref: '#/components/schemas/ActionClearTriggerEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-      required:
-      - category
-      - content
-      - created_at
-      - description
-      - is_read
-      - receiver
-      - related_object_type
-      - related_object_uuid
-      - sender
-      - title
-      - type
-      - uuid
-    CategoryChannelState:
-      type: object
-      description: 'Per-channel boolean map returned by ``GET /preferences/categories/``.
-
-
-        Declared explicitly so drf-spectacular knows the response shape — the
-
-        in-line dict the action builds is otherwise inferred as the ModelViewSet''s
-
-        default serializer.'
-      properties:
-        email:
-          type: boolean
-        in_app:
-          type: boolean
-      required:
-      - email
-      - in_app
-    NotificationPreferenceUpsert:
-      type: object
-      description: 'Write-only payload for ``PUT /preferences/upsert/``.
-
-
-        Declared as a plain ``Serializer`` (not a ``ModelSerializer``) so the
-
-        generated TS schema doesn''t carry the read-only ``id`` field on the
-
-        request body. The FE just sends ``(category, channel, enabled)`` and the
-
-        BE resolves the row via ``update_or_create``.'
-      properties:
         category:
           $ref: '#/components/schemas/NotificationCategoryEnum'
-        channel:
-          $ref: '#/components/schemas/ChannelEnum'
         enabled:
           type: boolean
       required:
       - category
-      - channel
-      - enabled
+      - id
     EmailNotifications:
       type: object
       properties:
@@ -1341,114 +1117,20 @@ components:
       - is_activated_for_user
       - type
       - uuid
-    ActionClearTriggerEnum:
-      enum:
-      - Mark samples as dispatched
-      - Reject samples request
-      - Buyer marks samples as delivered
-      - Order is marked as dispatched or Buyer marks order as delivered
-      - Order has been delivered
-      - Purchase Order is Accepted or Declined
-      - Clear Time to Order Action
-      - Payment has been received
-      - Signed Agreement Uploaded
-      - Purchase Order is placed
-      - Update quote or reject negotiation
-      - One or more ingredients are created
-      - One of more products are created
-      - Samples are marked as received
-      - Marked as delivered
-      - Quote for request or decline request
-      - Product list is uploaded
-      - Respond to Request
-      - Respond to negotiations
-      - Contract is created
-      - Buyer has created a request
-      - Order or decline quote
-      - Open contract details page
-      - Accept contract renewal
-      - Decline contract renewal
-      - Negotiate contract renewal
-      - Place first request
-      - Feedback has been given for a sample
-      - 5 or more ingredients are created
-      - 2 or more products are created
-      type: string
-      description: '* `Mark samples as dispatched` - Mark Samples Dispatched
-
-        * `Reject samples request` - Reject Samples Request
-
-        * `Buyer marks samples as delivered` - Buyer Marks Samples Delivered
-
-        * `Order is marked as dispatched or Buyer marks order as delivered` - Order Marked As Dispatched Or Buyer Marks Order Delivered
-
-        * `Order has been delivered` - Order Delivered
-
-        * `Purchase Order is Accepted or Declined` - Purchase Order Accepted Or Declined
-
-        * `Clear Time to Order Action` - Clear Time To Order Action
-
-        * `Payment has been received` - Payment Received
-
-        * `Signed Agreement Uploaded` - Signed Agreement Uploaded
-
-        * `Purchase Order is placed` - Purchase Order Placed
-
-        * `Update quote or reject negotiation` - Update Quote Or Reject Negotiation
-
-        * `One or more ingredients are created` - Ingredients Created
-
-        * `One of more products are created` - Products Created
-
-        * `Samples are marked as received` - Samples Marked As Received
-
-        * `Marked as delivered` - Marked As Delivered
-
-        * `Quote for request or decline request` - Quote For Request Or Decline
-
-        * `Product list is uploaded` - Product List Uploaded
-
-        * `Respond to Request` - Respond To Request
-
-        * `Respond to negotiations` - Respond To Negotiations
-
-        * `Contract is created` - Contract Created
-
-        * `Buyer has created a request` - Buyer Created Request
-
-        * `Order or decline quote` - Order Or Decline Quote
-
-        * `Open contract details page` - Open Contract Details Page
-
-        * `Accept contract renewal` - Accept Contract Renewal
-
-        * `Decline contract renewal` - Decline Contract Renewal
-
-        * `Negotiate contract renewal` - Negotiate Contract Renewal
-
-        * `Place first request` - Place First Request
-
-        * `Feedback has been given for a sample` - Feedback Given For Sample
-
-        * `5 or more ingredients are created` - Upload Ingredient List
-
-        * `2 or more products are created` - Upload Product List'
-    ShortUser:
+    MarkRelatedCleared:
       type: object
       properties:
-        uuid:
+        related_object_uuid:
           type: string
           format: uuid
-          readOnly: true
-        first_name:
+        related_object_type:
           type: string
-          maxLength: 150
-        last_name_short:
-          type: string
-          readOnly: true
+        action_clear_trigger:
+          $ref: '#/components/schemas/ActionClearTriggerEnum'
       required:
-      - last_name_short
-      - uuid
+      - action_clear_trigger
+      - related_object_type
+      - related_object_uuid
     TitleEnum:
       enum:
       - Kriya KYB Reminder
@@ -1571,6 +1253,105 @@ components:
         * `Request for Re-order Declined` - Reorder Declined
 
         * `Supplier change payment terms` - Supplier Updated Payment Terms'
+    CategoryChannelState:
+      type: object
+      description: 'Per-channel boolean map returned by ``GET /preferences/categories/``.
+
+
+        Declared explicitly so drf-spectacular knows the response shape — the
+
+        in-line dict the action builds is otherwise inferred as the ModelViewSet''s
+
+        default serializer.'
+      properties:
+        email:
+          type: boolean
+        in_app:
+          type: boolean
+      required:
+      - email
+      - in_app
+    Notification:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          $ref: '#/components/schemas/TitleEnum'
+        description:
+          type: string
+        content:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        read_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        type:
+          $ref: '#/components/schemas/NotificationTypeEnum'
+        category:
+          $ref: '#/components/schemas/NotificationCategoryEnum'
+        priority:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        duration:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        receiver:
+          allOf:
+          - $ref: '#/components/schemas/ShortUser'
+          readOnly: true
+        sender:
+          allOf:
+          - $ref: '#/components/schemas/ShortUser'
+          readOnly: true
+        related_object_type:
+          type: string
+          readOnly: true
+        related_object_uuid:
+          type: string
+          readOnly: true
+        is_read:
+          type: string
+          readOnly: true
+        used_for:
+          $ref: '#/components/schemas/UsedForEnum'
+        action_type:
+          oneOf:
+          - $ref: '#/components/schemas/ActionTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        action_clear_trigger:
+          oneOf:
+          - $ref: '#/components/schemas/ActionClearTriggerEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+      required:
+      - category
+      - content
+      - created_at
+      - description
+      - is_read
+      - receiver
+      - related_object_type
+      - related_object_uuid
+      - sender
+      - title
+      - type
+      - uuid
     ChannelEnum:
       enum:
       - email
@@ -1579,9 +1360,6 @@ components:
       description: '* `email` - Email
 
         * `in_app` - In App'
-    BlankEnum:
-      enum:
-      - ''
     EmailNotificationsTypeEnum:
       enum:
       - b_s_new_message
@@ -1740,37 +1518,6 @@ components:
         * `b_grouped_statement_due_today` - b_grouped_statement_due_today
 
         * `b_grouped_statement_overdue` - b_grouped_statement_overdue'
-    CategoryPreference:
-      type: object
-      description: One row in the ``GET /preferences/categories/`` response.
-      properties:
-        category:
-          $ref: '#/components/schemas/NotificationCategoryEnum'
-        channels:
-          $ref: '#/components/schemas/CategoryChannelState'
-      required:
-      - category
-      - channels
-    NotificationRecipientStateEnum:
-      enum:
-      - queued
-      - sent
-      - delivered
-      - read
-      - archived
-      - failed
-      type: string
-      description: '* `queued` - Queued
-
-        * `sent` - Sent
-
-        * `delivered` - Delivered
-
-        * `read` - Read
-
-        * `archived` - Archived
-
-        * `failed` - Failed'
     NotificationTypeEnum:
       enum:
       - trigger-based
@@ -1785,9 +1532,139 @@ components:
         * `user-specific` - Userspecific
 
         * `global` - Global'
-    NullEnum:
+    NotificationPreference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        category:
+          $ref: '#/components/schemas/NotificationCategoryEnum'
+        channel:
+          $ref: '#/components/schemas/ChannelEnum'
+        enabled:
+          type: boolean
+      required:
+      - category
+      - channel
+      - id
+    ActionClearTriggerEnum:
       enum:
-      - null
+      - Mark samples as dispatched
+      - Reject samples request
+      - Buyer marks samples as delivered
+      - Order is marked as dispatched or Buyer marks order as delivered
+      - Order has been delivered
+      - Purchase Order is Accepted or Declined
+      - Clear Time to Order Action
+      - Payment has been received
+      - Signed Agreement Uploaded
+      - Purchase Order is placed
+      - Update quote or reject negotiation
+      - One or more ingredients are created
+      - One of more products are created
+      - Samples are marked as received
+      - Marked as delivered
+      - Quote for request or decline request
+      - Product list is uploaded
+      - Respond to Request
+      - Respond to negotiations
+      - Contract is created
+      - Buyer has created a request
+      - Order or decline quote
+      - Open contract details page
+      - Accept contract renewal
+      - Decline contract renewal
+      - Negotiate contract renewal
+      - Place first request
+      - Feedback has been given for a sample
+      - 5 or more ingredients are created
+      - 2 or more products are created
+      type: string
+      description: '* `Mark samples as dispatched` - Mark Samples Dispatched
+
+        * `Reject samples request` - Reject Samples Request
+
+        * `Buyer marks samples as delivered` - Buyer Marks Samples Delivered
+
+        * `Order is marked as dispatched or Buyer marks order as delivered` - Order Marked As Dispatched Or Buyer Marks Order Delivered
+
+        * `Order has been delivered` - Order Delivered
+
+        * `Purchase Order is Accepted or Declined` - Purchase Order Accepted Or Declined
+
+        * `Clear Time to Order Action` - Clear Time To Order Action
+
+        * `Payment has been received` - Payment Received
+
+        * `Signed Agreement Uploaded` - Signed Agreement Uploaded
+
+        * `Purchase Order is placed` - Purchase Order Placed
+
+        * `Update quote or reject negotiation` - Update Quote Or Reject Negotiation
+
+        * `One or more ingredients are created` - Ingredients Created
+
+        * `One of more products are created` - Products Created
+
+        * `Samples are marked as received` - Samples Marked As Received
+
+        * `Marked as delivered` - Marked As Delivered
+
+        * `Quote for request or decline request` - Quote For Request Or Decline
+
+        * `Product list is uploaded` - Product List Uploaded
+
+        * `Respond to Request` - Respond To Request
+
+        * `Respond to negotiations` - Respond To Negotiations
+
+        * `Contract is created` - Contract Created
+
+        * `Buyer has created a request` - Buyer Created Request
+
+        * `Order or decline quote` - Order Or Decline Quote
+
+        * `Open contract details page` - Open Contract Details Page
+
+        * `Accept contract renewal` - Accept Contract Renewal
+
+        * `Decline contract renewal` - Decline Contract Renewal
+
+        * `Negotiate contract renewal` - Negotiate Contract Renewal
+
+        * `Place first request` - Place First Request
+
+        * `Feedback has been given for a sample` - Feedback Given For Sample
+
+        * `5 or more ingredients are created` - Upload Ingredient List
+
+        * `2 or more products are created` - Upload Product List'
+    UsedForEnum:
+      enum:
+      - general_notifications
+      - actions
+      type: string
+      description: '* `general_notifications` - General Notifications
+
+        * `actions` - Actions'
+    BlankEnum:
+      enum:
+      - ''
+    NotificationCategoryEnum:
+      enum:
+      - tasks
+      - task_mentions
+      - updates
+      - system
+      type: string
+      description: '* `tasks` - Tasks
+
+        * `task_mentions` - Task Mentions
+
+        * `updates` - Updates
+
+        * `system` - System'
     NotificationRecipient:
       type: object
       description: One in-app inbox row from the recipient's perspective.
@@ -1854,7 +1731,35 @@ components:
       - state
       - title
       - uuid
-    PatchedNotificationPreference:
+    PaginatedNotificationRecipientList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationRecipient'
+    NullEnum:
+      enum:
+      - null
+    PatchedCompanyNotificationOverride:
       type: object
       properties:
         id:
@@ -1862,8 +1767,6 @@ components:
           readOnly: true
         category:
           $ref: '#/components/schemas/NotificationCategoryEnum'
-        channel:
-          $ref: '#/components/schemas/ChannelEnum'
         enabled:
           type: boolean
     PaginatedNotificationPreferenceList:
@@ -1891,27 +1794,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NotificationPreference'
-    UsedForEnum:
-      enum:
-      - general_notifications
-      - actions
-      type: string
-      description: '* `general_notifications` - General Notifications
-
-        * `actions` - Actions'
-    CompanyNotificationOverride:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        category:
-          $ref: '#/components/schemas/NotificationCategoryEnum'
-        enabled:
-          type: boolean
-      required:
-      - category
-      - id
     ActionTypeEnum:
       enum:
       - order
@@ -1932,6 +1814,79 @@ components:
         * `samples` - Samples
 
         * `quotes` - Quotes'
+    NotificationRecipientStateEnum:
+      enum:
+      - queued
+      - sent
+      - delivered
+      - read
+      - archived
+      - failed
+      type: string
+      description: '* `queued` - Queued
+
+        * `sent` - Sent
+
+        * `delivered` - Delivered
+
+        * `read` - Read
+
+        * `archived` - Archived
+
+        * `failed` - Failed'
+    ShortUser:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name_short:
+          type: string
+          readOnly: true
+      required:
+      - last_name_short
+      - uuid
+    PatchedNotificationPreference:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        category:
+          $ref: '#/components/schemas/NotificationCategoryEnum'
+        channel:
+          $ref: '#/components/schemas/ChannelEnum'
+        enabled:
+          type: boolean
+    PaginatedCompanyNotificationOverrideList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyNotificationOverride'
     AllEmailNotifications:
       type: object
       properties:
@@ -1939,6 +1894,51 @@ components:
           type: boolean
       required:
       - all_emails
+    CategoryPreference:
+      type: object
+      description: One row in the ``GET /preferences/categories/`` response.
+      properties:
+        category:
+          $ref: '#/components/schemas/NotificationCategoryEnum'
+        channels:
+          $ref: '#/components/schemas/CategoryChannelState'
+      required:
+      - category
+      - channels
+    MarkRelatedRead:
+      type: object
+      properties:
+        related_object_uuid:
+          type: string
+          format: uuid
+        related_object_type:
+          type: string
+      required:
+      - related_object_type
+      - related_object_uuid
+    NotificationPreferenceUpsert:
+      type: object
+      description: 'Write-only payload for ``PUT /preferences/upsert/``.
+
+
+        Declared as a plain ``Serializer`` (not a ``ModelSerializer``) so the
+
+        generated TS schema doesn''t carry the read-only ``id`` field on the
+
+        request body. The FE just sends ``(category, channel, enabled)`` and the
+
+        BE resolves the row via ``update_or_create``.'
+      properties:
+        category:
+          $ref: '#/components/schemas/NotificationCategoryEnum'
+        channel:
+          $ref: '#/components/schemas/ChannelEnum'
+        enabled:
+          type: boolean
+      required:
+      - category
+      - channel
+      - enabled
   securitySchemes:
     cookieAuth:
       type: apiKey

@@ -117,6 +117,72 @@ paths:
           description: ''
 components:
   schemas:
+    CustomerStatusNotFoundResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+      required:
+      - detail
+    CustomerHealthStatusEnum:
+      enum:
+      - healthy
+      - average
+      - at_risk
+      - new
+      - churned
+      - on_hold
+      type: string
+      description: '* `healthy` - Healthy
+
+        * `average` - Average
+
+        * `at_risk` - At Risk
+
+        * `new` - New
+
+        * `churned` - Churned
+
+        * `on_hold` - On Hold'
+    BlankEnum:
+      enum:
+      - ''
+    PaginatedCustomerStatusList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerStatus'
+    UpdatedBy:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - uuid
     CustomerStatusUpdate:
       type: object
       description: Serializer for updating a customer's status.
@@ -160,6 +226,20 @@ components:
           maxLength: 1000
       required:
       - status
+    CustomerHoldReasonEnum:
+      enum:
+      - overdue_payments
+      - new_contract_required
+      - verification_needed
+      - other
+      type: string
+      description: '* `overdue_payments` - Overdue Payments
+
+        * `new_contract_required` - New Contract Required
+
+        * `verification_needed` - Verification Needed
+
+        * `other` - Other'
     CustomerStatus:
       type: object
       description: Serializer for reading CustomerStatus records.
@@ -219,86 +299,6 @@ components:
       - status
       - updated_by
       - uuid
-    BlankEnum:
-      enum:
-      - ''
-    CustomerHealthStatusEnum:
-      enum:
-      - healthy
-      - average
-      - at_risk
-      - new
-      - churned
-      - on_hold
-      type: string
-      description: '* `healthy` - Healthy
-
-        * `average` - Average
-
-        * `at_risk` - At Risk
-
-        * `new` - New
-
-        * `churned` - Churned
-
-        * `on_hold` - On Hold'
-    UpdatedBy:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        name:
-          type: string
-      required:
-      - name
-      - uuid
-    PaginatedCustomerStatusList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerStatus'
-    CustomerHoldReasonEnum:
-      enum:
-      - overdue_payments
-      - new_contract_required
-      - verification_needed
-      - other
-      type: string
-      description: '* `overdue_payments` - Overdue Payments
-
-        * `new_contract_required` - New Contract Required
-
-        * `verification_needed` - Verification Needed
-
-        * `other` - Other'
-    CustomerStatusNotFoundResponse:
-      type: object
-      properties:
-        detail:
-          type: string
-      required:
-      - detail
   securitySchemes:
     cookieAuth:
       type: apiKey

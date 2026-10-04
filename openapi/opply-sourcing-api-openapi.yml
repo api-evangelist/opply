@@ -570,243 +570,56 @@ paths:
           description: Product or document not found
 components:
   schemas:
-    TradedItemDocumentUpload:
-      type: object
-      properties:
-        file_name:
-          type: string
-          writeOnly: true
-        category:
-          $ref: '#/components/schemas/CatalogItemDocumentCategoryEnum'
-        start_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-      required:
-      - category
-      - file_name
-    TradedItemCreate:
-      type: object
-      properties:
-        item_name:
-          type: string
-        sku:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        item_description:
-          type:
-          - string
-          - 'null'
-        supplier_company_uuid:
-          type: string
-          format: uuid
-        buyer_company_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        category_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-      required:
-      - item_name
-      - supplier_company_uuid
-    TradedItemDocument:
+    CatalogDocumentStatusEnum:
+      enum:
+      - document_valid
+      - document_expired
+      - document_expiring_soon
+      - document_renewed
+      type: string
+      description: '* `document_valid` - Valid
+
+        * `document_expired` - Expired
+
+        * `document_expiring_soon` - Expiring Soon
+
+        * `document_renewed` - Renewed'
+    PatchedOrderLineItemSourceDetail:
       type: object
       properties:
         uuid:
           type: string
           format: uuid
           readOnly: true
-        document:
-          type: string
-          format: uri
-          readOnly: true
-        file_name:
-          type: string
-          readOnly: true
-        category:
-          allOf:
-          - $ref: '#/components/schemas/CatalogItemDocumentCategoryEnum'
-          readOnly: true
-        start_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          readOnly: true
-          description: Start date of document validity
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          readOnly: true
-          description: End/expiry date of document validity
-        is_active:
-          type: boolean
-          readOnly: true
-        status:
-          allOf:
-          - $ref: '#/components/schemas/CatalogDocumentStatusEnum'
-          readOnly: true
-        is_archived:
-          type: boolean
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - category
-      - created_at
-      - document
-      - end_date
-      - file_name
-      - is_active
-      - is_archived
-      - start_date
-      - status
-      - uuid
-    PaginatedOrderLineItemSourceDetailList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrderLineItemSourceDetail'
-    TradedItemList:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        item_name:
-          type: string
-          readOnly: true
-        sku:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        item_description:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        supplier_company_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        supplier_company_name:
-          type: string
-          readOnly: true
-        buyer_company_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          readOnly: true
-        buyer_company_name:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        category_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          readOnly: true
-        is_active:
-          type: boolean
-          readOnly: true
-        document_count:
-          type: integer
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - buyer_company_name
-      - buyer_company_uuid
-      - category_uuid
-      - created_at
-      - document_count
-      - is_active
-      - item_description
-      - item_name
-      - sku
-      - supplier_company_name
-      - supplier_company_uuid
-      - uuid
-    OrderLineItemSourceCreate:
-      type: object
-      properties:
         order_line_item_uuid:
           type: string
           format: uuid
+          readOnly: true
         traded_item_uuid:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-      required:
-      - order_line_item_uuid
-      - traded_item_uuid
-    PaginatedTradedItemDocumentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
+          readOnly: true
+        traded_item_name:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
+          readOnly: true
+        linked_by_uuid:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TradedItemDocument'
+          format: uuid
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
     PatchedTradedItemDetail:
       type: object
       properties:
@@ -853,42 +666,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TradedItemDocument'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-    PatchedOrderLineItemSourceDetail:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        order_line_item_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        traded_item_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          readOnly: true
-        traded_item_name:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        linked_by_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
           readOnly: true
         created_at:
           type: string
@@ -962,6 +739,94 @@ components:
       - supplier_company_name
       - supplier_company_uuid
       - uuid
+    TradedItemCreate:
+      type: object
+      properties:
+        item_name:
+          type: string
+        sku:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        item_description:
+          type:
+          - string
+          - 'null'
+        supplier_company_uuid:
+          type: string
+          format: uuid
+        buyer_company_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        category_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+      required:
+      - item_name
+      - supplier_company_uuid
+    PaginatedOrderLineItemSourceDetailList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderLineItemSourceDetail'
+    OrderLineItemSourceCreate:
+      type: object
+      properties:
+        order_line_item_uuid:
+          type: string
+          format: uuid
+        traded_item_uuid:
+          type: string
+          format: uuid
+      required:
+      - order_line_item_uuid
+      - traded_item_uuid
+    TradedItemDocumentUpload:
+      type: object
+      properties:
+        file_name:
+          type: string
+          writeOnly: true
+        category:
+          $ref: '#/components/schemas/CatalogItemDocumentCategoryEnum'
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+      required:
+      - category
+      - file_name
     PaginatedTradedItemListList:
       type: object
       required:
@@ -987,29 +852,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TradedItemList'
-    CatalogItemDocumentCategoryEnum:
-      enum:
-      - spec_sheet
-      - certificate_of_analysis
-      - british_retail_consortium
-      - international_organisation_for_standardisation
-      - foundation_food_safety_system_certification
-      - international_featured_standards
-      - safe_quality_food
-      type: string
-      description: '* `spec_sheet` - Spec Sheet
-
-        * `certificate_of_analysis` - Certificate of Analysis
-
-        * `british_retail_consortium` - British Retail Consortium
-
-        * `international_organisation_for_standardisation` - International Organisation for Standardisation
-
-        * `foundation_food_safety_system_certification` - Foundation Food Safety System Certification
-
-        * `international_featured_standards` - International Featured Standards
-
-        * `safe_quality_food` - Safe Quality Food'
     OrderLineItemSourceDetail:
       type: object
       properties:
@@ -1054,20 +896,178 @@ components:
       - traded_item_name
       - traded_item_uuid
       - uuid
-    CatalogDocumentStatusEnum:
+    TradedItemList:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        item_name:
+          type: string
+          readOnly: true
+        sku:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        item_description:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        supplier_company_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        supplier_company_name:
+          type: string
+          readOnly: true
+        buyer_company_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          readOnly: true
+        buyer_company_name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        category_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          readOnly: true
+        is_active:
+          type: boolean
+          readOnly: true
+        document_count:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - buyer_company_name
+      - buyer_company_uuid
+      - category_uuid
+      - created_at
+      - document_count
+      - is_active
+      - item_description
+      - item_name
+      - sku
+      - supplier_company_name
+      - supplier_company_uuid
+      - uuid
+    TradedItemDocument:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        document:
+          type: string
+          format: uri
+          readOnly: true
+        file_name:
+          type: string
+          readOnly: true
+        category:
+          allOf:
+          - $ref: '#/components/schemas/CatalogItemDocumentCategoryEnum'
+          readOnly: true
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+          description: Start date of document validity
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+          description: End/expiry date of document validity
+        is_active:
+          type: boolean
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/CatalogDocumentStatusEnum'
+          readOnly: true
+        is_archived:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - category
+      - created_at
+      - document
+      - end_date
+      - file_name
+      - is_active
+      - is_archived
+      - start_date
+      - status
+      - uuid
+    PaginatedTradedItemDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TradedItemDocument'
+    CatalogItemDocumentCategoryEnum:
       enum:
-      - document_valid
-      - document_expired
-      - document_expiring_soon
-      - document_renewed
+      - spec_sheet
+      - certificate_of_analysis
+      - british_retail_consortium
+      - international_organisation_for_standardisation
+      - foundation_food_safety_system_certification
+      - international_featured_standards
+      - safe_quality_food
       type: string
-      description: '* `document_valid` - Valid
+      description: '* `spec_sheet` - Spec Sheet
 
-        * `document_expired` - Expired
+        * `certificate_of_analysis` - Certificate of Analysis
 
-        * `document_expiring_soon` - Expiring Soon
+        * `british_retail_consortium` - British Retail Consortium
 
-        * `document_renewed` - Renewed'
+        * `international_organisation_for_standardisation` - International Organisation for Standardisation
+
+        * `foundation_food_safety_system_certification` - Foundation Food Safety System Certification
+
+        * `international_featured_standards` - International Featured Standards
+
+        * `safe_quality_food` - Safe Quality Food'
   securitySchemes:
     cookieAuth:
       type: apiKey
