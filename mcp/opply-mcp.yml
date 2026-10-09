@@ -68,3 +68,49 @@ deployment:
   probe: gated
   checked: '2026-08-12'
   source: catalog MCP census
+rfc9728:
+  endpoint: https://api.opply.com/api/v1/mcp/
+  metadata_url: https://api.opply.com/.well-known/oauth-protected-resource
+  discovered_via: WWW-Authenticate resource_metadata on an anonymous POST initialize
+  fetched: '2026-09-25'
+  http_status: 200
+  content_type: application/json
+  document:
+    resource: https://api.opply.com/api/v1/mcp/
+    authorization_servers:
+    - https://api.opply.com
+    scopes_supported:
+    - all:read
+    - all:write
+    - orders:read
+    - orders:write
+    - companies:read
+    - companies:write
+    - crm:read
+    - crm:write
+    - catalog:read
+    - catalog:write
+    - activities:read
+    - activities:write
+    - tasks:read
+    - tasks:write
+    - payments:read
+    - payments:write
+    - agreements:read
+    - agreements:write
+    - onboarding:read
+    - onboarding:write
+    - agents:read
+    - agents:write
+    - files:read
+    - insights:read
+    - recommendations:read
+    - recommendations:write
+    - production:read
+    - production:write
+    - sales_orders:read
+    - sales_orders:write
+    - unleashed:read
+    - quickbooks:read
+    bearer_methods_supported:
+    - header
