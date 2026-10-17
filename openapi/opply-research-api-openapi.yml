@@ -177,6 +177,34 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ActionPreferenceEnum:
+      enum:
+      - ACCEPT_FINAL
+      - NEEDS_REVIEW
+      - RERUN
+      - ESCALATE
+      - DISCARD
+      type: string
+      description: '* `ACCEPT_FINAL` - Accept as Final
+
+        * `NEEDS_REVIEW` - Needs Manual Review
+
+        * `RERUN` - Rerun
+
+        * `ESCALATE` - Escalate to Human
+
+        * `DISCARD` - Discard'
+    ConfidenceLevelEnum:
+      enum:
+      - CONFIDENT
+      - UNSURE
+      - NOT_CONFIDENT
+      type: string
+      description: '* `CONFIDENT` - Confident
+
+        * `UNSURE` - Unsure
+
+        * `NOT_CONFIDENT` - Not Confident'
     AgentFeedbackCreate:
       type: object
       description: Accepts a workflow by UUID for creation convenience.
@@ -221,26 +249,52 @@ components:
       description: '* `GOOD` - Good
 
         * `BAD` - Bad'
-    ActionPreferenceEnum:
-      enum:
-      - ACCEPT_FINAL
-      - NEEDS_REVIEW
-      - RERUN
-      - ESCALATE
-      - DISCARD
-      type: string
-      description: '* `ACCEPT_FINAL` - Accept as Final
-
-        * `NEEDS_REVIEW` - Needs Manual Review
-
-        * `RERUN` - Rerun
-
-        * `ESCALATE` - Escalate to Human
-
-        * `DISCARD` - Discard'
-    BlankEnum:
-      enum:
-      - ''
+    PatchedAgentFeedback:
+      type: object
+      description: Used for reading feedbacks.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        workflow_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        workflow_type:
+          type: string
+          readOnly: true
+        feedback_rating:
+          $ref: '#/components/schemas/FeedbackRatingEnum'
+        issue_type:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/IssueTypeEnum'
+        confidence_level:
+          oneOf:
+          - $ref: '#/components/schemas/ConfidenceLevelEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        action_preference:
+          $ref: '#/components/schemas/ActionPreferenceEnum'
+        comment:
+          type: string
+          maxLength: 200
+        created_by_email:
+          type: string
+          format: email
+          readOnly: true
+        metadata: {}
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
     IssueTypeEnum:
       enum:
       - INCORRECT_OUTPUT
@@ -267,9 +321,37 @@ components:
         * `SECURITY_RISK` - Security/Risk
 
         * `OTHER` - Other'
+    BlankEnum:
+      enum:
+      - ''
     NullEnum:
       enum:
       - null
+    PaginatedAgentFeedbackList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentFeedback'
     AgentFeedback:
       type: object
       description: Used for reading feedbacks.
@@ -325,88 +407,6 @@ components:
       - uuid
       - workflow_type
       - workflow_uuid
-    PaginatedAgentFeedbackList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgentFeedback'
-    ConfidenceLevelEnum:
-      enum:
-      - CONFIDENT
-      - UNSURE
-      - NOT_CONFIDENT
-      type: string
-      description: '* `CONFIDENT` - Confident
-
-        * `UNSURE` - Unsure
-
-        * `NOT_CONFIDENT` - Not Confident'
-    PatchedAgentFeedback:
-      type: object
-      description: Used for reading feedbacks.
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        workflow_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        workflow_type:
-          type: string
-          readOnly: true
-        feedback_rating:
-          $ref: '#/components/schemas/FeedbackRatingEnum'
-        issue_type:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/IssueTypeEnum'
-        confidence_level:
-          oneOf:
-          - $ref: '#/components/schemas/ConfidenceLevelEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        action_preference:
-          $ref: '#/components/schemas/ActionPreferenceEnum'
-        comment:
-          type: string
-          maxLength: 200
-        created_by_email:
-          type: string
-          format: email
-          readOnly: true
-        metadata: {}
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
   securitySchemes:
     cookieAuth:
       type: apiKey

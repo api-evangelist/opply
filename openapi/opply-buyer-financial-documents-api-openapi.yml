@@ -93,6 +93,67 @@ paths:
           description: Document deleted
 components:
   schemas:
+    BuyerFinancialDocumentUpload:
+      type: object
+      description: Write serializer for multipart uploads.
+      properties:
+        file:
+          type: string
+          format: binary
+        type:
+          allOf:
+          - $ref: '#/components/schemas/BuyerFinancialDocumentTypeEnum'
+          default: management_accounts
+      required:
+      - file
+    PaginatedBuyerFinancialDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerFinancialDocument'
+    BuyerFinancialDocumentTypeEnum:
+      enum:
+      - management_accounts
+      - audited_accounts
+      - balance_sheet
+      - profit_and_loss
+      - cashflow_forecast
+      - sales_tax_exemption
+      - other
+      type: string
+      description: '* `management_accounts` - Management Accounts
+
+        * `audited_accounts` - Audited Accounts
+
+        * `balance_sheet` - Balance Sheet
+
+        * `profit_and_loss` - Profit and Loss
+
+        * `cashflow_forecast` - Cashflow Forecast
+
+        * `sales_tax_exemption` - Sales Tax Exemption
+
+        * `other` - Other'
     BuyerFinancialDocument:
       type: object
       description: Read serializer returned for list/create responses.
@@ -192,67 +253,6 @@ components:
       - type
       - uploaded_by_name
       - uuid
-    BuyerFinancialDocumentUpload:
-      type: object
-      description: Write serializer for multipart uploads.
-      properties:
-        file:
-          type: string
-          format: binary
-        type:
-          allOf:
-          - $ref: '#/components/schemas/BuyerFinancialDocumentTypeEnum'
-          default: management_accounts
-      required:
-      - file
-    BuyerFinancialDocumentTypeEnum:
-      enum:
-      - management_accounts
-      - audited_accounts
-      - balance_sheet
-      - profit_and_loss
-      - cashflow_forecast
-      - sales_tax_exemption
-      - other
-      type: string
-      description: '* `management_accounts` - Management Accounts
-
-        * `audited_accounts` - Audited Accounts
-
-        * `balance_sheet` - Balance Sheet
-
-        * `profit_and_loss` - Profit and Loss
-
-        * `cashflow_forecast` - Cashflow Forecast
-
-        * `sales_tax_exemption` - Sales Tax Exemption
-
-        * `other` - Other'
-    PaginatedBuyerFinancialDocumentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerFinancialDocument'
   securitySchemes:
     cookieAuth:
       type: apiKey

@@ -345,6 +345,210 @@ paths:
           description: No response body
 components:
   schemas:
+    OpplyDocumentBuyer:
+      type: object
+      description: 'Read-only serializer for buyers viewing Opply documents.
+
+
+        Returns all documents (including archived) with computed status.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/DocumentType'
+          readOnly: true
+        file:
+          type: string
+          format: uri
+          readOnly: true
+          description: The uploaded document file
+        name:
+          type: string
+          readOnly: true
+          description: Display name for the document
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+          description: Start date of document validity
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+          description: End/expiry date of document validity
+        status:
+          allOf:
+          - $ref: '#/components/schemas/DocumentLifecycleStatusEnum'
+          readOnly: true
+        is_archived:
+          type: boolean
+          description: Return whether the document is archived (expired or renewed).
+          readOnly: true
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
+          readOnly: true
+          description: ISO country codes this document applies to. Empty = all countries.
+      required:
+      - countries
+      - end_date
+      - file
+      - is_archived
+      - name
+      - start_date
+      - status
+      - type
+      - uuid
+    PaginatedOpplyDocumentBuyerList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpplyDocumentBuyer'
+    PatchedOpplyDocument:
+      type: object
+      description: 'Serializer for OpplyDocument - for MoR users.
+
+
+        Handles CRUD operations with computed status fields.'
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        merchant_of_record:
+          type: integer
+          readOnly: true
+          description: The Merchant of Record that owns this document
+        type:
+          allOf:
+          - $ref: '#/components/schemas/DocumentType'
+          readOnly: true
+        type_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        renewing_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          writeOnly: true
+        file:
+          type: string
+          format: uri
+          description: The uploaded document file
+        name:
+          type: string
+          description: Display name for the document
+          maxLength: 255
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Start date of document validity
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: End/expiry date of document validity
+        status:
+          allOf:
+          - $ref: '#/components/schemas/DocumentLifecycleStatusEnum'
+          readOnly: true
+        is_archived:
+          type: boolean
+          description: Return whether the document is archived (expired or renewed).
+          readOnly: true
+        superseded_by_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
+          description: ISO country codes this document applies to. Empty = all countries.
+    PaginatedOpplyDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpplyDocument'
+    DocumentType:
+      type: object
+      description: Shared serializer for the DocumentType taxonomy (buyer, supplier, Opply documents).
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+      required:
+      - name
+      - uuid
     OpplyDocument:
       type: object
       description: 'Serializer for OpplyDocument - for MoR users.
@@ -432,169 +636,6 @@ components:
       - superseded_by_uuid
       - type
       - uuid
-    PatchedOpplyDocument:
-      type: object
-      description: 'Serializer for OpplyDocument - for MoR users.
-
-
-        Handles CRUD operations with computed status fields.'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        merchant_of_record:
-          type: integer
-          readOnly: true
-          description: The Merchant of Record that owns this document
-        type:
-          allOf:
-          - $ref: '#/components/schemas/DocumentType'
-          readOnly: true
-        type_uuid:
-          type: string
-          format: uuid
-          writeOnly: true
-        renewing_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          writeOnly: true
-        file:
-          type: string
-          format: uri
-          description: The uploaded document file
-        name:
-          type: string
-          description: Display name for the document
-          maxLength: 255
-        start_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: Start date of document validity
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: End/expiry date of document validity
-        status:
-          allOf:
-          - $ref: '#/components/schemas/DocumentLifecycleStatusEnum'
-          readOnly: true
-        is_archived:
-          type: boolean
-          description: Return whether the document is archived (expired or renewed).
-          readOnly: true
-        superseded_by_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        countries:
-          type: array
-          items:
-            $ref: '#/components/schemas/Country'
-          description: ISO country codes this document applies to. Empty = all countries.
-    OpplyDocumentBuyer:
-      type: object
-      description: 'Read-only serializer for buyers viewing Opply documents.
-
-
-        Returns all documents (including archived) with computed status.'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        type:
-          allOf:
-          - $ref: '#/components/schemas/DocumentType'
-          readOnly: true
-        file:
-          type: string
-          format: uri
-          readOnly: true
-          description: The uploaded document file
-        name:
-          type: string
-          readOnly: true
-          description: Display name for the document
-        start_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          readOnly: true
-          description: Start date of document validity
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          readOnly: true
-          description: End/expiry date of document validity
-        status:
-          allOf:
-          - $ref: '#/components/schemas/DocumentLifecycleStatusEnum'
-          readOnly: true
-        is_archived:
-          type: boolean
-          description: Return whether the document is archived (expired or renewed).
-          readOnly: true
-        countries:
-          type: array
-          items:
-            $ref: '#/components/schemas/Country'
-          readOnly: true
-          description: ISO country codes this document applies to. Empty = all countries.
-      required:
-      - countries
-      - end_date
-      - file
-      - is_archived
-      - name
-      - start_date
-      - status
-      - type
-      - uuid
-    PaginatedOpplyDocumentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/OpplyDocument'
     Country:
       enum:
       - AF
@@ -1361,47 +1402,6 @@ components:
         * `expiring_soon` - Expiring Soon
 
         * `renewed` - Renewed'
-    PaginatedOpplyDocumentBuyerList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/OpplyDocumentBuyer'
-    DocumentType:
-      type: object
-      description: Shared serializer for the DocumentType taxonomy (buyer, supplier, Opply documents).
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        description:
-          type: string
-      required:
-      - name
-      - uuid
   securitySchemes:
     cookieAuth:
       type: apiKey

@@ -81,6 +81,29 @@ paths:
           description: ''
 components:
   schemas:
+    CelebrateEnum:
+      enum:
+      - suppliers
+      - ingredients
+      - operations
+      - commercials
+      - compliance
+      - financial
+      - market
+      type: string
+      description: '* `suppliers` - Suppliers
+
+        * `ingredients` - Ingredients
+
+        * `operations` - Operations
+
+        * `commercials` - Commercials
+
+        * `compliance` - Compliance
+
+        * `financial` - Financial
+
+        * `market` - Market'
     BrainObserveProgressRequest:
       type: object
       description: 'Per-sector "above threshold?" observation submitted by the FE.
@@ -110,29 +133,6 @@ components:
           description: Map of brain sector key → whether the user is currently above the sector's unlock threshold. Keys outside the ``BrainSectorKey`` enum are silently ignored.
       required:
       - sectors
-    CelebrateEnum:
-      enum:
-      - suppliers
-      - ingredients
-      - operations
-      - commercials
-      - compliance
-      - financial
-      - market
-      type: string
-      description: '* `suppliers` - Suppliers
-
-        * `ingredients` - Ingredients
-
-        * `operations` - Operations
-
-        * `commercials` - Commercials
-
-        * `compliance` - Compliance
-
-        * `financial` - Financial
-
-        * `market` - Market'
     BrainObserveProgressResponse:
       type: object
       description: 'Sectors whose unlock-celebration modal should be shown now.

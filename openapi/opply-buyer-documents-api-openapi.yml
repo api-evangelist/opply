@@ -370,6 +370,165 @@ paths:
           description: ''
 components:
   schemas:
+    SupplierSite:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        company:
+          type: integer
+      required:
+      - company
+      - name
+      - uuid
+    SupplierDocument:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        company:
+          type: integer
+          readOnly: true
+        supplier_uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        supplier_name:
+          type: string
+          readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/DocumentType'
+          readOnly: true
+        type_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        renewing_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          writeOnly: true
+        site:
+          allOf:
+          - $ref: '#/components/schemas/SupplierSite'
+          readOnly: true
+        site_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          writeOnly: true
+        site_name:
+          type: string
+          writeOnly: true
+          description: Address/site name - auto-creates SupplierSite if not exists (SC-2293)
+        buyer_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          writeOnly: true
+          description: Buyer company UUID (optional)
+        buyer_name:
+          type:
+          - string
+          - 'null'
+          description: Return the buyer company name if assigned.
+          readOnly: true
+        url:
+          type: string
+          format: uri
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        notes:
+          type:
+          - string
+          - 'null'
+          maxLength: 2048
+        status:
+          allOf:
+          - $ref: '#/components/schemas/DocumentLifecycleStatusEnum'
+          readOnly: true
+        is_archived:
+          type: boolean
+          description: Return whether the document is archived.
+          readOnly: true
+        superseded_by_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          readOnly: true
+      required:
+      - buyer_name
+      - company
+      - is_archived
+      - site
+      - status
+      - superseded_by_uuid
+      - supplier_name
+      - supplier_uuid
+      - type
+      - url
+      - uuid
+    PaginatedSupplierDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplierDocument'
+    DocumentType:
+      type: object
+      description: Shared serializer for the DocumentType taxonomy (buyer, supplier, Opply documents).
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+      required:
+      - name
+      - uuid
     BuyerDocument:
       type: object
       description: 'Serializer for BuyerDocument — buyer certification and compliance documents.
@@ -592,457 +751,9 @@ components:
       - superseded_by_uuid
       - type
       - uuid
-    USStateEnum:
-      enum:
-      - AL
-      - AK
-      - AZ
-      - AR
-      - CA
-      - CO
-      - CT
-      - DE
-      - FL
-      - GA
-      - HI
-      - ID
-      - IL
-      - IN
-      - IA
-      - KS
-      - KY
-      - LA
-      - ME
-      - MD
-      - MA
-      - MI
-      - MN
-      - MS
-      - MO
-      - MT
-      - NE
-      - NV
-      - NH
-      - NJ
-      - NM
-      - NY
-      - NC
-      - ND
-      - OH
-      - OK
-      - OR
-      - PA
-      - RI
-      - SC
-      - SD
-      - TN
-      - TX
-      - UT
-      - VT
-      - VA
-      - WA
-      - WV
-      - WI
-      - WY
-      - DC
-      - PR
-      - GU
-      - VI
-      - AS
-      - MP
-      type: string
-      description: '* `AL` - Alabama
-
-        * `AK` - Alaska
-
-        * `AZ` - Arizona
-
-        * `AR` - Arkansas
-
-        * `CA` - California
-
-        * `CO` - Colorado
-
-        * `CT` - Connecticut
-
-        * `DE` - Delaware
-
-        * `FL` - Florida
-
-        * `GA` - Georgia
-
-        * `HI` - Hawaii
-
-        * `ID` - Idaho
-
-        * `IL` - Illinois
-
-        * `IN` - Indiana
-
-        * `IA` - Iowa
-
-        * `KS` - Kansas
-
-        * `KY` - Kentucky
-
-        * `LA` - Louisiana
-
-        * `ME` - Maine
-
-        * `MD` - Maryland
-
-        * `MA` - Massachusetts
-
-        * `MI` - Michigan
-
-        * `MN` - Minnesota
-
-        * `MS` - Mississippi
-
-        * `MO` - Missouri
-
-        * `MT` - Montana
-
-        * `NE` - Nebraska
-
-        * `NV` - Nevada
-
-        * `NH` - New Hampshire
-
-        * `NJ` - New Jersey
-
-        * `NM` - New Mexico
-
-        * `NY` - New York
-
-        * `NC` - North Carolina
-
-        * `ND` - North Dakota
-
-        * `OH` - Ohio
-
-        * `OK` - Oklahoma
-
-        * `OR` - Oregon
-
-        * `PA` - Pennsylvania
-
-        * `RI` - Rhode Island
-
-        * `SC` - South Carolina
-
-        * `SD` - South Dakota
-
-        * `TN` - Tennessee
-
-        * `TX` - Texas
-
-        * `UT` - Utah
-
-        * `VT` - Vermont
-
-        * `VA` - Virginia
-
-        * `WA` - Washington
-
-        * `WV` - West Virginia
-
-        * `WI` - Wisconsin
-
-        * `WY` - Wyoming
-
-        * `DC` - District of Columbia
-
-        * `PR` - Puerto Rico
-
-        * `GU` - Guam
-
-        * `VI` - U.S. Virgin Islands
-
-        * `AS` - American Samoa
-
-        * `MP` - Northern Mariana Islands'
-    PatchedBuyerDocument:
-      type: object
-      description: 'Serializer for BuyerDocument — buyer certification and compliance documents.
-
-
-        Handles CRUD with computed status fields, mirroring OpplyDocumentSerializer.'
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        type:
-          allOf:
-          - $ref: '#/components/schemas/DocumentType'
-          readOnly: true
-        type_uuid:
-          type: string
-          format: uuid
-          writeOnly: true
-        renewing_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          writeOnly: true
-        file:
-          type: string
-          format: uri
-          description: The uploaded document file
-        name:
-          type: string
-          description: Display name for the document
-          maxLength: 255
-        start_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: Start date of document validity
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: End/expiry date of document validity
-        countries:
-          type: array
-          items:
-            $ref: '#/components/schemas/Country'
-          description: ISO country codes this document applies to. Empty = all countries.
-        certificate_number:
-          type: string
-          description: Permit / exemption / certificate number as printed on the document
-          maxLength: 128
-        jurisdiction:
-          type: string
-          description: State/region the document applies in, as printed on the document (e.g. 'Michigan'). For US documents the structured counterpart is us_state_jurisdiction.
-          maxLength: 128
-        us_state_jurisdiction:
-          description: 'US state/territory this document applies in (USPS code, e.g. ''MI''). Structured counterpart of the free-text jurisdiction for US documents.
-
-
-            * `AL` - Alabama
-
-            * `AK` - Alaska
-
-            * `AZ` - Arizona
-
-            * `AR` - Arkansas
-
-            * `CA` - California
-
-            * `CO` - Colorado
-
-            * `CT` - Connecticut
-
-            * `DE` - Delaware
-
-            * `FL` - Florida
-
-            * `GA` - Georgia
-
-            * `HI` - Hawaii
-
-            * `ID` - Idaho
-
-            * `IL` - Illinois
-
-            * `IN` - Indiana
-
-            * `IA` - Iowa
-
-            * `KS` - Kansas
-
-            * `KY` - Kentucky
-
-            * `LA` - Louisiana
-
-            * `ME` - Maine
-
-            * `MD` - Maryland
-
-            * `MA` - Massachusetts
-
-            * `MI` - Michigan
-
-            * `MN` - Minnesota
-
-            * `MS` - Mississippi
-
-            * `MO` - Missouri
-
-            * `MT` - Montana
-
-            * `NE` - Nebraska
-
-            * `NV` - Nevada
-
-            * `NH` - New Hampshire
-
-            * `NJ` - New Jersey
-
-            * `NM` - New Mexico
-
-            * `NY` - New York
-
-            * `NC` - North Carolina
-
-            * `ND` - North Dakota
-
-            * `OH` - Ohio
-
-            * `OK` - Oklahoma
-
-            * `OR` - Oregon
-
-            * `PA` - Pennsylvania
-
-            * `RI` - Rhode Island
-
-            * `SC` - South Carolina
-
-            * `SD` - South Dakota
-
-            * `TN` - Tennessee
-
-            * `TX` - Texas
-
-            * `UT` - Utah
-
-            * `VT` - Vermont
-
-            * `VA` - Virginia
-
-            * `WA` - Washington
-
-            * `WV` - West Virginia
-
-            * `WI` - Wisconsin
-
-            * `WY` - Wyoming
-
-            * `DC` - District of Columbia
-
-            * `PR` - Puerto Rico
-
-            * `GU` - Guam
-
-            * `VI` - U.S. Virgin Islands
-
-            * `AS` - American Samoa
-
-            * `MP` - Northern Mariana Islands'
-          oneOf:
-          - $ref: '#/components/schemas/USStateEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-        issuing_authority:
-          type: string
-          description: Body that issued the document (e.g. 'Michigan Department of Treasury')
-          maxLength: 255
-        holder_name:
-          type: string
-          description: Entity the document is issued to as printed — normally the buyer company
-          maxLength: 255
-        notes:
-          type:
-          - string
-          - 'null'
-          description: Optional notes about this document
-          maxLength: 2048
-        status:
-          allOf:
-          - $ref: '#/components/schemas/DocumentLifecycleStatusEnum'
-          readOnly: true
-        is_archived:
-          type: boolean
-          description: Return whether the document is archived (expired or renewed).
-          readOnly: true
-        superseded_by_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
     BlankEnum:
       enum:
       - ''
-    PaginatedSupplierDocumentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SupplierDocument'
-    SupplierSite:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        company:
-          type: integer
-      required:
-      - company
-      - name
-      - uuid
-    PaginatedBuyerDocumentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerDocument'
     Country:
       enum:
       - AF
@@ -1795,6 +1506,176 @@ components:
         * `ZM` - Zambia
 
         * `ZW` - Zimbabwe'
+    USStateEnum:
+      enum:
+      - AL
+      - AK
+      - AZ
+      - AR
+      - CA
+      - CO
+      - CT
+      - DE
+      - FL
+      - GA
+      - HI
+      - ID
+      - IL
+      - IN
+      - IA
+      - KS
+      - KY
+      - LA
+      - ME
+      - MD
+      - MA
+      - MI
+      - MN
+      - MS
+      - MO
+      - MT
+      - NE
+      - NV
+      - NH
+      - NJ
+      - NM
+      - NY
+      - NC
+      - ND
+      - OH
+      - OK
+      - OR
+      - PA
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VT
+      - VA
+      - WA
+      - WV
+      - WI
+      - WY
+      - DC
+      - PR
+      - GU
+      - VI
+      - AS
+      - MP
+      type: string
+      description: '* `AL` - Alabama
+
+        * `AK` - Alaska
+
+        * `AZ` - Arizona
+
+        * `AR` - Arkansas
+
+        * `CA` - California
+
+        * `CO` - Colorado
+
+        * `CT` - Connecticut
+
+        * `DE` - Delaware
+
+        * `FL` - Florida
+
+        * `GA` - Georgia
+
+        * `HI` - Hawaii
+
+        * `ID` - Idaho
+
+        * `IL` - Illinois
+
+        * `IN` - Indiana
+
+        * `IA` - Iowa
+
+        * `KS` - Kansas
+
+        * `KY` - Kentucky
+
+        * `LA` - Louisiana
+
+        * `ME` - Maine
+
+        * `MD` - Maryland
+
+        * `MA` - Massachusetts
+
+        * `MI` - Michigan
+
+        * `MN` - Minnesota
+
+        * `MS` - Mississippi
+
+        * `MO` - Missouri
+
+        * `MT` - Montana
+
+        * `NE` - Nebraska
+
+        * `NV` - Nevada
+
+        * `NH` - New Hampshire
+
+        * `NJ` - New Jersey
+
+        * `NM` - New Mexico
+
+        * `NY` - New York
+
+        * `NC` - North Carolina
+
+        * `ND` - North Dakota
+
+        * `OH` - Ohio
+
+        * `OK` - Oklahoma
+
+        * `OR` - Oregon
+
+        * `PA` - Pennsylvania
+
+        * `RI` - Rhode Island
+
+        * `SC` - South Carolina
+
+        * `SD` - South Dakota
+
+        * `TN` - Tennessee
+
+        * `TX` - Texas
+
+        * `UT` - Utah
+
+        * `VT` - Vermont
+
+        * `VA` - Virginia
+
+        * `WA` - Washington
+
+        * `WV` - West Virginia
+
+        * `WI` - Wisconsin
+
+        * `WY` - Wyoming
+
+        * `DC` - District of Columbia
+
+        * `PR` - Puerto Rico
+
+        * `GU` - Guam
+
+        * `VI` - U.S. Virgin Islands
+
+        * `AS` - American Samoa
+
+        * `MP` - Northern Mariana Islands'
     DocumentLifecycleStatusEnum:
       enum:
       - valid
@@ -1809,38 +1690,41 @@ components:
         * `expiring_soon` - Expiring Soon
 
         * `renewed` - Renewed'
-    DocumentType:
+    PaginatedBuyerDocumentList:
       type: object
-      description: Shared serializer for the DocumentType taxonomy (buyer, supplier, Opply documents).
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        description:
-          type: string
       required:
-      - name
-      - uuid
-    SupplierDocument:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerDocument'
+    PatchedBuyerDocument:
       type: object
+      description: 'Serializer for BuyerDocument — buyer certification and compliance documents.
+
+
+        Handles CRUD with computed status fields, mirroring OpplyDocumentSerializer.'
       properties:
         uuid:
           type: string
           format: uuid
-          readOnly: true
-        company:
-          type: integer
-          readOnly: true
-        supplier_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        supplier_name:
-          type: string
           readOnly: true
         type:
           allOf:
@@ -1856,50 +1740,170 @@ components:
           - 'null'
           format: uuid
           writeOnly: true
-        site:
-          allOf:
-          - $ref: '#/components/schemas/SupplierSite'
-          readOnly: true
-        site_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          writeOnly: true
-        site_name:
-          type: string
-          writeOnly: true
-          description: Address/site name - auto-creates SupplierSite if not exists (SC-2293)
-        buyer_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          writeOnly: true
-          description: Buyer company UUID (optional)
-        buyer_name:
-          type:
-          - string
-          - 'null'
-          description: Return the buyer company name if assigned.
-          readOnly: true
-        url:
+        file:
           type: string
           format: uri
+          description: The uploaded document file
+        name:
+          type: string
+          description: Display name for the document
+          maxLength: 255
         start_date:
           type:
           - string
           - 'null'
           format: date
+          description: Start date of document validity
         end_date:
           type:
           - string
           - 'null'
           format: date
+          description: End/expiry date of document validity
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
+          description: ISO country codes this document applies to. Empty = all countries.
+        certificate_number:
+          type: string
+          description: Permit / exemption / certificate number as printed on the document
+          maxLength: 128
+        jurisdiction:
+          type: string
+          description: State/region the document applies in, as printed on the document (e.g. 'Michigan'). For US documents the structured counterpart is us_state_jurisdiction.
+          maxLength: 128
+        us_state_jurisdiction:
+          description: 'US state/territory this document applies in (USPS code, e.g. ''MI''). Structured counterpart of the free-text jurisdiction for US documents.
+
+
+            * `AL` - Alabama
+
+            * `AK` - Alaska
+
+            * `AZ` - Arizona
+
+            * `AR` - Arkansas
+
+            * `CA` - California
+
+            * `CO` - Colorado
+
+            * `CT` - Connecticut
+
+            * `DE` - Delaware
+
+            * `FL` - Florida
+
+            * `GA` - Georgia
+
+            * `HI` - Hawaii
+
+            * `ID` - Idaho
+
+            * `IL` - Illinois
+
+            * `IN` - Indiana
+
+            * `IA` - Iowa
+
+            * `KS` - Kansas
+
+            * `KY` - Kentucky
+
+            * `LA` - Louisiana
+
+            * `ME` - Maine
+
+            * `MD` - Maryland
+
+            * `MA` - Massachusetts
+
+            * `MI` - Michigan
+
+            * `MN` - Minnesota
+
+            * `MS` - Mississippi
+
+            * `MO` - Missouri
+
+            * `MT` - Montana
+
+            * `NE` - Nebraska
+
+            * `NV` - Nevada
+
+            * `NH` - New Hampshire
+
+            * `NJ` - New Jersey
+
+            * `NM` - New Mexico
+
+            * `NY` - New York
+
+            * `NC` - North Carolina
+
+            * `ND` - North Dakota
+
+            * `OH` - Ohio
+
+            * `OK` - Oklahoma
+
+            * `OR` - Oregon
+
+            * `PA` - Pennsylvania
+
+            * `RI` - Rhode Island
+
+            * `SC` - South Carolina
+
+            * `SD` - South Dakota
+
+            * `TN` - Tennessee
+
+            * `TX` - Texas
+
+            * `UT` - Utah
+
+            * `VT` - Vermont
+
+            * `VA` - Virginia
+
+            * `WA` - Washington
+
+            * `WV` - West Virginia
+
+            * `WI` - Wisconsin
+
+            * `WY` - Wyoming
+
+            * `DC` - District of Columbia
+
+            * `PR` - Puerto Rico
+
+            * `GU` - Guam
+
+            * `VI` - U.S. Virgin Islands
+
+            * `AS` - American Samoa
+
+            * `MP` - Northern Mariana Islands'
+          oneOf:
+          - $ref: '#/components/schemas/USStateEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        issuing_authority:
+          type: string
+          description: Body that issued the document (e.g. 'Michigan Department of Treasury')
+          maxLength: 255
+        holder_name:
+          type: string
+          description: Entity the document is issued to as printed — normally the buyer company
+          maxLength: 255
         notes:
           type:
           - string
           - 'null'
+          description: Optional notes about this document
           maxLength: 2048
         status:
           allOf:
@@ -1907,7 +1911,7 @@ components:
           readOnly: true
         is_archived:
           type: boolean
-          description: Return whether the document is archived.
+          description: Return whether the document is archived (expired or renewed).
           readOnly: true
         superseded_by_uuid:
           type:
@@ -1915,18 +1919,14 @@ components:
           - 'null'
           format: uuid
           readOnly: true
-      required:
-      - buyer_name
-      - company
-      - is_archived
-      - site
-      - status
-      - superseded_by_uuid
-      - supplier_name
-      - supplier_uuid
-      - type
-      - url
-      - uuid
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
   securitySchemes:
     cookieAuth:
       type: apiKey

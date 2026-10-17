@@ -223,22 +223,6 @@ components:
       - source
       - title
       - uuid
-    SeedSampleInsightsResponse:
-      type: object
-      properties:
-        insight_uuids:
-          type: array
-          items:
-            type: string
-            format: uuid
-      required:
-      - insight_uuids
-    _SeedInsightsRequest:
-      type: object
-      properties:
-        company_uuid:
-          type: string
-          format: uuid
     PaginatedInsightReadList:
       type: object
       required:
@@ -260,6 +244,22 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/InsightRead'
+    _SeedInsightsRequest:
+      type: object
+      properties:
+        company_uuid:
+          type: string
+          format: uuid
+    SeedSampleInsightsResponse:
+      type: object
+      properties:
+        insight_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+      required:
+      - insight_uuids
   securitySchemes:
     cookieAuth:
       type: apiKey

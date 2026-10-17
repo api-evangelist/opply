@@ -249,51 +249,34 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    SearchMessagesResponse:
+    PaginatedChannelList:
       type: object
+      required:
+      - count
+      - results
       properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        matched_text:
-          type: string
-          readOnly: true
-        text:
-          type:
-          - string
-          - 'null'
-        attachment:
+        count:
+          type: integer
+          example: 123
+        next:
           type:
           - string
           - 'null'
           format: uri
-        sender:
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Channel'
+        unread_count:
           type: integer
-        sender_name:
-          type: string
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        channel:
-          $ref: '#/components/schemas/ChannelForMessage'
-        page_number:
-          type: string
-          readOnly: true
-      required:
-      - channel
-      - created
-      - matched_text
-      - modified
-      - page_number
-      - sender
-      - sender_name
-      - uuid
+          example: 123
     Channel:
       type: object
       properties:
@@ -339,6 +322,20 @@ components:
       - related_object_uuid
       - supplier_name
       - uuid
+    BlankEnum:
+      enum:
+      - ''
+    GoogleUploadResponse:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+        token:
+          type: string
+      required:
+      - token
+      - url
     ChannelForMessageCompany:
       type: object
       properties:
@@ -348,48 +345,29 @@ components:
           readOnly: true
       required:
       - uuid
-    ChannelForMessage:
+    ChannelObjectHistory:
       type: object
       properties:
-        uuid:
+        object_type:
           type: string
-          format: uuid
           readOnly: true
-        new_messages_check:
+        object_uuid:
+          type: string
+          readOnly: true
+        created:
           type: string
           format: date-time
-        companies:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChannelForMessageCompany'
           readOnly: true
-        related_object_type:
-          type: string
-          readOnly: true
-        related_object_uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-        logo_url:
-          type: string
-          readOnly: true
+        action:
+          oneOf:
+          - $ref: '#/components/schemas/ChannelObjectHistoryActionEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        data: {}
       required:
-      - companies
-      - logo_url
-      - name
-      - related_object_type
-      - related_object_uuid
-      - uuid
-    GoogleUploadComplete:
-      type: object
-      properties:
-        token:
-          type: string
-      required:
-      - token
+      - created
+      - object_type
+      - object_uuid
     UnreadCount:
       type: object
       properties:
@@ -397,6 +375,13 @@ components:
           type: integer
       required:
       - unread_count
+    GoogleUploadComplete:
+      type: object
+      properties:
+        token:
+          type: string
+      required:
+      - token
     PaginatedMessageList:
       type: object
       required:
@@ -425,6 +410,84 @@ components:
         unread_count:
           type: integer
           example: 123
+    NullEnum:
+      enum:
+      - null
+    URL:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+      required:
+      - url
+    ChannelCompany:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+      required:
+      - uuid
+    ShortUser:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name_short:
+          type: string
+          readOnly: true
+      required:
+      - last_name_short
+      - uuid
+    GoogleUpload:
+      type: object
+      properties:
+        file_name:
+          type: string
+          maxLength: 1024
+        size:
+          type: integer
+          minimum: 1
+        content_type:
+          type: string
+          maxLength: 256
+        field_name:
+          type: string
+          maxLength: 256
+      required:
+      - field_name
+      - file_name
+      - size
+    ChannelObjectHistoryActionEnum:
+      enum:
+      - request_created
+      - quote_created
+      - contract_created
+      - order_created
+      - purchase_request_created
+      - purchase_request_quote_created
+      - purchase_request_order_created
+      type: string
+      description: '* `request_created` - Request Created
+
+        * `quote_created` - Quote Created
+
+        * `contract_created` - Contract Created
+
+        * `order_created` - Order Created
+
+        * `purchase_request_created` - Purchase Request Created
+
+        * `purchase_request_quote_created` - Purchase Request Quote Created
+
+        * `purchase_request_order_created` - Purchase Request Order Created'
     Message:
       type: object
       properties:
@@ -480,101 +543,86 @@ components:
       - sender
       - supplier_name
       - uuid
-    BlankEnum:
-      enum:
-      - ''
-    ChannelObjectHistoryActionEnum:
-      enum:
-      - request_created
-      - quote_created
-      - contract_created
-      - order_created
-      - purchase_request_created
-      - purchase_request_quote_created
-      - purchase_request_order_created
-      type: string
-      description: '* `request_created` - Request Created
-
-        * `quote_created` - Quote Created
-
-        * `contract_created` - Contract Created
-
-        * `order_created` - Order Created
-
-        * `purchase_request_created` - Purchase Request Created
-
-        * `purchase_request_quote_created` - Purchase Request Quote Created
-
-        * `purchase_request_order_created` - Purchase Request Order Created'
-    PaginatedChannelList:
+    ChannelForMessage:
       type: object
-      required:
-      - count
-      - results
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        new_messages_check:
+          type: string
+          format: date-time
+        companies:
           type: array
           items:
-            $ref: '#/components/schemas/Channel'
-        unread_count:
-          type: integer
-          example: 123
-    GoogleUpload:
-      type: object
-      properties:
-        file_name:
+            $ref: '#/components/schemas/ChannelForMessageCompany'
+          readOnly: true
+        related_object_type:
           type: string
-          maxLength: 1024
-        size:
-          type: integer
-          minimum: 1
-        content_type:
+          readOnly: true
+        related_object_uuid:
           type: string
-          maxLength: 256
-        field_name:
+          format: uuid
+          readOnly: true
+        name:
           type: string
-          maxLength: 256
+          readOnly: true
+        logo_url:
+          type: string
+          readOnly: true
       required:
-      - field_name
-      - file_name
-      - size
-    GoogleUploadResponse:
+      - companies
+      - logo_url
+      - name
+      - related_object_type
+      - related_object_uuid
+      - uuid
+    SearchMessagesResponse:
       type: object
       properties:
-        url:
+        uuid:
           type: string
+          format: uuid
+          readOnly: true
+        matched_text:
+          type: string
+          readOnly: true
+        text:
+          type:
+          - string
+          - 'null'
+        attachment:
+          type:
+          - string
+          - 'null'
           format: uri
-        token:
+        sender:
+          type: integer
+        sender_name:
           type: string
-      required:
-      - token
-      - url
-    NullEnum:
-      enum:
-      - null
-    URL:
-      type: object
-      properties:
-        url:
+        created:
           type: string
-          format: uri
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        channel:
+          $ref: '#/components/schemas/ChannelForMessage'
+        page_number:
+          type: string
+          readOnly: true
       required:
-      - url
+      - channel
+      - created
+      - matched_text
+      - modified
+      - page_number
+      - sender
+      - sender_name
+      - uuid
     SearchMessagesRequest:
       type: object
       properties:
@@ -582,54 +630,6 @@ components:
           type: string
       required:
       - text
-    ChannelObjectHistory:
-      type: object
-      properties:
-        object_type:
-          type: string
-          readOnly: true
-        object_uuid:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        action:
-          oneOf:
-          - $ref: '#/components/schemas/ChannelObjectHistoryActionEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        data: {}
-      required:
-      - created
-      - object_type
-      - object_uuid
-    ShortUser:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        first_name:
-          type: string
-          maxLength: 150
-        last_name_short:
-          type: string
-          readOnly: true
-      required:
-      - last_name_short
-      - uuid
-    ChannelCompany:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-      required:
-      - uuid
   securitySchemes:
     cookieAuth:
       type: apiKey

@@ -54,27 +54,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    WelcomeModalDismissal:
-      type: object
-      properties:
-        action:
-          allOf:
-          - $ref: '#/components/schemas/WelcomeModalActionEnum'
-          description: 'Which CTA the user chose when dismissing the welcome modal.
-
-
-            * `place_an_order` - Place an order
-
-            * `payments` - Payments
-
-            * `explore` - Explore'
-        dismissed_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - action
-      - dismissed_at
     WelcomeModalDismissalRequest:
       type: object
       description: Inbound payload for `POST /users/welcome-modal/me/`.
@@ -105,6 +84,27 @@ components:
     NullEnum:
       enum:
       - null
+    WelcomeModalDismissal:
+      type: object
+      properties:
+        action:
+          allOf:
+          - $ref: '#/components/schemas/WelcomeModalActionEnum'
+          description: 'Which CTA the user chose when dismissing the welcome modal.
+
+
+            * `place_an_order` - Place an order
+
+            * `payments` - Payments
+
+            * `explore` - Explore'
+        dismissed_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - action
+      - dismissed_at
     WelcomeModalActionEnum:
       enum:
       - place_an_order

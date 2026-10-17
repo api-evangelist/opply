@@ -523,132 +523,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CompanyRoleEnum:
-      enum:
-      - admin
-      - member
-      - staff
-      type: string
-      description: '* `admin` - Admin
-
-        * `member` - Member
-
-        * `staff` - Staff'
-    SingleMessageResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          maxLength: 255
-      required:
-      - message
-    CompanyMembersList:
-      type: object
-      properties:
-        uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        first_name:
-          type: string
-          maxLength: 30
-        last_name:
-          type: string
-          maxLength: 30
-        email:
-          type: string
-          format: email
-        status:
-          $ref: '#/components/schemas/CompanyMembersListStatusEnum'
-        is_admin:
-          type: boolean
-          default: false
-      required:
-      - email
-      - first_name
-      - last_name
-      - status
-      - uuid
-    UserInviteAcceptRequest:
-      type: object
-      properties:
-        invite_uuid:
-          type: string
-          format: uuid
-        password:
-          type: string
-      required:
-      - invite_uuid
-      - password
-    EmailInviteResponseStatusEnum:
-      enum:
-      - pending
-      - accepted
-      type: string
-      description: '* `pending` - Pending
-
-        * `accepted` - Accepted'
-    PatchedUser:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        email:
-          type: string
-          format: email
-          readOnly: true
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        job_title:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        tc_version:
-          type: number
-          format: double
-    PasswordResetCommit:
-      type: object
-      properties:
-        key:
-          type: string
-        password:
-          type: string
-        confirm_password:
-          type: string
-        auto_login:
-          type: boolean
-          default: false
-          description: If true, the response includes the user's auth token so the client can log them in immediately. Used by the welcome / first-password-set onboarding flow to avoid bouncing the user back through the login screen.
-      required:
-      - confirm_password
-      - key
-      - password
-    UserAuthToken:
-      type: object
-      properties:
-        token:
-          type: string
-          readOnly: true
-      required:
-      - token
-    GoogleHandshake:
-      type: object
-      properties:
-        opply_jwt:
-          type: string
-      required:
-      - opply_jwt
     CreateUser:
       type: object
       properties:
@@ -682,6 +556,27 @@ components:
       - email
       - id
       - password
+    UserDetails:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        company_name:
+          type: string
+          readOnly: true
+      required:
+      - company_name
+      - email
+      - uuid
     Userflow:
       type: object
       properties:
@@ -727,71 +622,17 @@ components:
       - signed_up_at
       - userflow_signature
       - uuid
-    UserDetails:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        email:
-          type: string
-          format: email
-          maxLength: 254
-        first_name:
-          type: string
-          maxLength: 150
-        company_name:
-          type: string
-          readOnly: true
-      required:
-      - company_name
-      - email
-      - uuid
-    UpdatePassword:
-      type: object
-      properties:
-        current_password:
-          type: string
-        password:
-          type: string
-          maxLength: 128
-      required:
-      - current_password
-      - password
-    PaginatedCompanyMembersListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompanyMembersList'
-    RemoveMember:
-      type: object
-      properties:
-        email:
-          type: string
-          format: email
-      required:
-      - email
+    CompanyRoleEnum:
+      enum:
+      - admin
+      - member
+      - staff
+      type: string
+      description: '* `admin` - Admin
+
+        * `member` - Member
+
+        * `staff` - Staff'
     PasswordResetInit:
       type: object
       properties:
@@ -843,6 +684,110 @@ components:
       - last_name
       - modified
       - uuid
+    RemoveMember:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    PaginatedCompanyMembersListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyMembersList'
+    PasswordResetCommit:
+      type: object
+      properties:
+        key:
+          type: string
+        password:
+          type: string
+        confirm_password:
+          type: string
+        auto_login:
+          type: boolean
+          default: false
+          description: If true, the response includes the user's auth token so the client can log them in immediately. Used by the welcome / first-password-set onboarding flow to avoid bouncing the user back through the login screen.
+      required:
+      - confirm_password
+      - key
+      - password
+    UserAuthToken:
+      type: object
+      properties:
+        token:
+          type: string
+          readOnly: true
+      required:
+      - token
+    Token:
+      type: object
+      properties:
+        access_token:
+          type: string
+      required:
+      - access_token
+    CompanyMembersList:
+      type: object
+      properties:
+        uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        first_name:
+          type: string
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+        email:
+          type: string
+          format: email
+        status:
+          $ref: '#/components/schemas/CompanyMembersListStatusEnum'
+        is_admin:
+          type: boolean
+          default: false
+      required:
+      - email
+      - first_name
+      - last_name
+      - status
+      - uuid
+    UserInviteAcceptRequest:
+      type: object
+      properties:
+        invite_uuid:
+          type: string
+          format: uuid
+        password:
+          type: string
+      required:
+      - invite_uuid
+      - password
     Login:
       type: object
       properties:
@@ -854,62 +799,6 @@ components:
       required:
       - email
       - password
-    Token:
-      type: object
-      properties:
-        access_token:
-          type: string
-      required:
-      - access_token
-    SetAdmin:
-      type: object
-      properties:
-        user_uuid:
-          type: string
-          format: uuid
-        is_admin:
-          type: boolean
-      required:
-      - is_admin
-      - user_uuid
-    UserInviteCreate:
-      type: object
-      properties:
-        first_name:
-          type: string
-          maxLength: 30
-        last_name:
-          type: string
-          maxLength: 30
-        email:
-          type: string
-          format: email
-          maxLength: 254
-        is_admin:
-          type: boolean
-          default: false
-      required:
-      - email
-      - first_name
-      - last_name
-    UserJWTTokenResponse:
-      type: object
-      properties:
-        token:
-          type: string
-      required:
-      - token
-    CompanyMembersListStatusEnum:
-      enum:
-      - pending
-      - accepted
-      - owner
-      type: string
-      description: '* `pending` - Pending
-
-        * `accepted` - Accepted
-
-        * `owner` - Owner'
     User:
       type: object
       properties:
@@ -942,6 +831,117 @@ components:
       - email
       - id
       - uuid
+    UpdatePassword:
+      type: object
+      properties:
+        current_password:
+          type: string
+        password:
+          type: string
+          maxLength: 128
+      required:
+      - current_password
+      - password
+    GoogleHandshake:
+      type: object
+      properties:
+        opply_jwt:
+          type: string
+      required:
+      - opply_jwt
+    EmailInviteResponseStatusEnum:
+      enum:
+      - pending
+      - accepted
+      type: string
+      description: '* `pending` - Pending
+
+        * `accepted` - Accepted'
+    PatchedUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        job_title:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        tc_version:
+          type: number
+          format: double
+    CompanyMembersListStatusEnum:
+      enum:
+      - pending
+      - accepted
+      - owner
+      type: string
+      description: '* `pending` - Pending
+
+        * `accepted` - Accepted
+
+        * `owner` - Owner'
+    SingleMessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          maxLength: 255
+      required:
+      - message
+    UserJWTTokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+      required:
+      - token
+    UserInviteCreate:
+      type: object
+      properties:
+        first_name:
+          type: string
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        is_admin:
+          type: boolean
+          default: false
+      required:
+      - email
+      - first_name
+      - last_name
+    SetAdmin:
+      type: object
+      properties:
+        user_uuid:
+          type: string
+          format: uuid
+        is_admin:
+          type: boolean
+      required:
+      - is_admin
+      - user_uuid
   securitySchemes:
     cookieAuth:
       type: apiKey

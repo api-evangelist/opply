@@ -100,18 +100,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CountryTypeEnum:
-      enum:
-      - EU
-      - GB
-      - Other
-      type: string
-      description: '* `EU` - Eu
-
-        * `GB` - Gb
-
-        * `Other` - Other'
-    PatchedQuoteDispatchAddress:
+    QuoteDispatchAddress:
       type: object
       properties:
         id:
@@ -219,6 +208,27 @@ components:
           allOf:
           - $ref: '#/components/schemas/CountryTypeEnum'
           readOnly: true
+      required:
+      - country
+      - country_type
+      - id
+      - name
+      - place_id
+      - uuid
+      - vat_country_code
+      - vat_exempt
+      - vat_number
+    CountryTypeEnum:
+      enum:
+      - EU
+      - GB
+      - Other
+      type: string
+      description: '* `EU` - Eu
+
+        * `GB` - Gb
+
+        * `Other` - Other'
     PhoneCountryCodeEnum:
       enum:
       - '+376'
@@ -905,127 +915,6 @@ components:
     BlankEnum:
       enum:
       - ''
-    NullEnum:
-      enum:
-      - null
-    QuoteDispatchAddress:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        street_1:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        street_2:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        contact_full_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        contact_phone:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-        phone_country_code:
-          oneOf:
-          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        town:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        region:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        postcode:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        eori_number:
-          type: string
-          maxLength: 20
-        delivery_instructions:
-          type:
-          - string
-          - 'null'
-        building:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        latitude:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-        longitude:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
-        collection_instructions:
-          type:
-          - string
-          - 'null'
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        country:
-          readOnly: true
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/NullEnum'
-        place_id:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        vat_number:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        vat_country_code:
-          readOnly: true
-          oneOf:
-          - $ref: '#/components/schemas/Country'
-          - $ref: '#/components/schemas/NullEnum'
-        vat_exempt:
-          type: boolean
-          readOnly: true
-        country_type:
-          allOf:
-          - $ref: '#/components/schemas/CountryTypeEnum'
-          readOnly: true
-      required:
-      - country
-      - country_type
-      - id
-      - name
-      - place_id
-      - uuid
-      - vat_country_code
-      - vat_exempt
-      - vat_number
     Country:
       enum:
       - AF
@@ -1778,6 +1667,117 @@ components:
         * `ZM` - Zambia
 
         * `ZW` - Zimbabwe'
+    NullEnum:
+      enum:
+      - null
+    PatchedQuoteDispatchAddress:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        street_1:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        street_2:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        contact_full_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        contact_phone:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        phone_country_code:
+          oneOf:
+          - $ref: '#/components/schemas/PhoneCountryCodeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        town:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        region:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        postcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        eori_number:
+          type: string
+          maxLength: 20
+        delivery_instructions:
+          type:
+          - string
+          - 'null'
+        building:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        latitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        longitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,15})?$
+        collection_instructions:
+          type:
+          - string
+          - 'null'
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        country:
+          readOnly: true
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/NullEnum'
+        place_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        vat_number:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        vat_country_code:
+          readOnly: true
+          oneOf:
+          - $ref: '#/components/schemas/Country'
+          - $ref: '#/components/schemas/NullEnum'
+        vat_exempt:
+          type: boolean
+          readOnly: true
+        country_type:
+          allOf:
+          - $ref: '#/components/schemas/CountryTypeEnum'
+          readOnly: true
   securitySchemes:
     cookieAuth:
       type: apiKey

@@ -208,6 +208,14 @@ paths:
           description: No response body
 components:
   schemas:
+    AssignThread:
+      type: object
+      properties:
+        external_id:
+          type: string
+          maxLength: 100
+      required:
+      - external_id
     Deals:
       type: object
       properties:
@@ -262,14 +270,6 @@ components:
       - deal_uuid
       - external_user_identifier
       - uuid
-    AssignThread:
-      type: object
-      properties:
-        external_id:
-          type: string
-          maxLength: 100
-      required:
-      - external_id
   securitySchemes:
     cookieAuth:
       type: apiKey
